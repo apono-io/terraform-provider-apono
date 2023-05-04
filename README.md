@@ -1,6 +1,6 @@
 <h1>
     <a href="https://apono.io">
-      <img src="./assets/logo.svg" style="float: left" height="46px" alt="Apono logo"/>
+      <img src="./assets/logo.svg" style="float: right" height="46px" alt="Apono logo"/>
     </a>
     <span>&nbsp;Apono Terraform Provider</span>
 </h1>
