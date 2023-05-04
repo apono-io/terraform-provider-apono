@@ -121,7 +121,9 @@ func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource 
 }
 
 func (p *AponoProvider) DataSources(_ context.Context) []func() datasource.DataSource {
-	return []func() datasource.DataSource{}
+	return []func() datasource.DataSource{
+		NewConnectorDataSource,
+	}
 }
 
 func New(version string) func() provider.Provider {
