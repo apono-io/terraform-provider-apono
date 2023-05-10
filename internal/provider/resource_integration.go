@@ -20,9 +20,9 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &IntegrationResource{}
-var _ resource.ResourceWithImportState = &IntegrationResource{}
-var _ resource.ResourceWithValidateConfig = &IntegrationResource{}
+var _ resource.Resource = &integrationResource{}
+var _ resource.ResourceWithImportState = &integrationResource{}
+var _ resource.ResourceWithValidateConfig = &integrationResource{}
 
 var (
 	secretTypeAttributeNames = map[string]string{
@@ -46,16 +46,16 @@ var (
 )
 
 func NewIntegrationResource() resource.Resource {
-	return &IntegrationResource{}
+	return &integrationResource{}
 }
 
-// IntegrationResource defines the resource implementation.
-type IntegrationResource struct {
+// integrationResource defines the resource implementation.
+type integrationResource struct {
 	provider *AponoProvider
 }
 
-// IntegrationResourceModel describes the resource data model.
-type IntegrationResourceModel struct {
+// integrationResourceModel describes the resource data model.
+type integrationResourceModel struct {
 	ID               types.String `tfsdk:"id"`
 	Name             types.String `tfsdk:"name"`
 	Type             types.String `tfsdk:"type"`
@@ -66,37 +66,38 @@ type IntegrationResourceModel struct {
 	KubernetesSecret types.Object `tfsdk:"kubernetes_secret"`
 }
 
-func (r *IntegrationResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *integrationResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_integration"
 }
 
-func (r *IntegrationResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "Example resource",
-
+		MarkdownDescription: "Apono Integration",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "Example identifier",
+				MarkdownDescription: "Integration identifier",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Example configurable attribute",
+				MarkdownDescription: "Integration name",
 				Required:            true,
 			},
 			"type": schema.StringAttribute{
-				MarkdownDescription: "Example configurable attribute with default value",
+				MarkdownDescription: "Integration type",
 				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"connector_id": schema.StringAttribute{
-				MarkdownDescription: "Example configurable attribute with default value",
+				MarkdownDescription: "Apono connector identifier",
 				Required:            true,
 			},
 			"metadata": schema.MapAttribute{
-				MarkdownDescription: "Example configurable attribute with default value",
+				MarkdownDescription: "Integration metadata",
 				Optional:            true,
 				ElementType:         types.StringType,
 			},
@@ -143,12 +144,12 @@ func (r *IntegrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 	}
 }
 
-func (r *IntegrationResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *integrationResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	r.provider, resp.Diagnostics = toProvider(req.ProviderData)
 }
 
-func (r *IntegrationResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationResourceModel
+func (r *integrationResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *integrationResourceModel
 
 	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -220,8 +221,8 @@ func (r *IntegrationResource) Create(ctx context.Context, req resource.CreateReq
 	resp.Diagnostics.Append(resp.State.Set(ctx, &model)...)
 }
 
-func (r *IntegrationResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationResourceModel
+func (r *integrationResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *integrationResourceModel
 
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -242,8 +243,8 @@ func (r *IntegrationResource) Read(ctx context.Context, req resource.ReadRequest
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationResourceModel
+func (r *integrationResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *integrationResourceModel
 
 	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -314,8 +315,8 @@ func (r *IntegrationResource) Update(ctx context.Context, req resource.UpdateReq
 	resp.Diagnostics.Append(resp.State.Set(ctx, &model)...)
 }
 
-func (r *IntegrationResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *IntegrationResourceModel
+func (r *integrationResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *integrationResourceModel
 
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -342,7 +343,7 @@ func (r *IntegrationResource) Delete(ctx context.Context, req resource.DeleteReq
 	})
 }
 
-func (r *IntegrationResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *integrationResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	integrationId := req.ID
 	tflog.Debug(ctx, "importing integration", map[string]interface{}{
 		"id": integrationId,
@@ -374,12 +375,12 @@ func (r *IntegrationResource) ImportState(ctx context.Context, req resource.Impo
 	})
 }
 
-func (r *IntegrationResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
 	if r.provider == nil {
 		return
 	}
 
-	var model IntegrationResourceModel
+	var model integrationResourceModel
 	resp.Diagnostics.Append(req.Config.Get(ctx, &model)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -444,10 +445,10 @@ func (r *IntegrationResource) ValidateConfig(ctx context.Context, req resource.V
 	}
 }
 
-func (r *IntegrationResource) convertToModel(ctx context.Context, integration *apono.Integration) (*IntegrationResourceModel, diag.Diagnostics) {
+func (r *integrationResource) convertToModel(ctx context.Context, integration *apono.Integration) (*integrationResourceModel, diag.Diagnostics) {
 	metadataMapValue, diagnostics := types.MapValueFrom(ctx, types.StringType, integration.GetMetadata())
 
-	data := IntegrationResourceModel{}
+	data := integrationResourceModel{}
 	data.ID = types.StringValue(integration.GetId())
 	data.Name = types.StringValue(integration.GetName())
 	data.Type = types.StringValue(integration.GetType())

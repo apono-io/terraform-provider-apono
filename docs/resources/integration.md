@@ -3,12 +3,12 @@
 page_title: "apono_integration Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
-  Example resource
+  Apono Integration
 ---
 
 # apono_integration (Resource)
 
-Example resource
+Apono Integration
 
 ## Example Usage
 
@@ -34,20 +34,20 @@ resource "apono_integration" "postgresql_prod" {
 
 ### Required
 
-- `connector_id` (String) Example configurable attribute with default value
-- `name` (String) Example configurable attribute
-- `type` (String) Example configurable attribute with default value
+- `connector_id` (String) Apono connector identifier
+- `name` (String) Integration name
+- `type` (String) Integration type
 
 ### Optional
 
 - `aws_secret` (Attributes) (see [below for nested schema](#nestedatt--aws_secret))
 - `gcp_secret` (Attributes) (see [below for nested schema](#nestedatt--gcp_secret))
 - `kubernetes_secret` (Attributes) (see [below for nested schema](#nestedatt--kubernetes_secret))
-- `metadata` (Map of String) Example configurable attribute with default value
+- `metadata` (Map of String) Integration metadata
 
 ### Read-Only
 
-- `id` (String) Example identifier
+- `id` (String) Integration identifier
 
 <a id="nestedatt--aws_secret"></a>
 ### Nested Schema for `aws_secret`
