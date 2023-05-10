@@ -15,7 +15,66 @@ import (
 func TestAccIntegrationResource(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
+	setupMockHttpServer()
 
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create and Read
+			{
+				Config: testAccExampleResourceConfig("integration-name"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrSet("apono_integration.test", "id"),
+					resource.TestCheckResourceAttr("apono_integration.test", "name", "integration-name"),
+					resource.TestCheckResourceAttr("apono_integration.test", "type", "postgresql"),
+					resource.TestCheckResourceAttr("apono_integration.test", "aws_secret.region", "us-east-1"),
+				),
+			},
+			// ImportState testing
+			{
+				ResourceName:      "apono_integration.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			// Update and Read testing
+			{
+				Config: testAccExampleResourceConfig("updated-name"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("apono_integration.test", "name", "updated-name"),
+					resource.TestCheckResourceAttr("apono_integration.test", "type", "postgresql"),
+				),
+			},
+			// Delete testing automatically occurs in TestCase
+		},
+	})
+}
+
+func testAccExampleResourceConfig(integrationName string) string {
+	return fmt.Sprintf(`
+provider apono {
+  endpoint = "http://api.apono.dev"
+  personal_token = "1234567890abcdefg"
+}
+
+resource "apono_integration" "test" {
+  name = "%[1]s"
+  type = "postgresql"
+  connector_id = "000-1111-222222-33333-444444"
+  metadata = {
+    hostname = "my-postgres-rds.aaabbbsss111.us-east-1.rds.amazonaws.com"
+    port = "5432"
+    dbname = "postgres"
+  }
+  aws_secret = {
+    region = "us-east-1"
+    secret_id = "my-secret"
+  }
+}
+`, integrationName)
+}
+
+func setupMockHttpServer() {
 	var integrations = map[string]*apono.Integration{}
 	httpmock.RegisterResponder(http.MethodPost, "http://api.apono.dev/api/v2/integrations", func(req *http.Request) (*http.Response, error) {
 		var createReq apono.CreateIntegration
@@ -147,60 +206,4 @@ func TestAccIntegrationResource(t *testing.T) {
 			return httpmock.NewStringResponse(400, "Unsupported config type"), nil
 		}
 	})
-
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			// Create and Read
-			{
-				Config: testAccExampleResourceConfig("one"),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttrSet("apono_integration.test", "id"),
-					resource.TestCheckResourceAttr("apono_integration.test", "name", "one"),
-					resource.TestCheckResourceAttr("apono_integration.test", "type", "postgresql"),
-					resource.TestCheckResourceAttr("apono_integration.test", "aws_secret.region", "us-east-1"),
-				),
-			},
-			// ImportState testing
-			{
-				ResourceName:      "apono_integration.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-			},
-			// Update and Read testing
-			{
-				Config: testAccExampleResourceConfig("two"),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("apono_integration.test", "name", "two"),
-					resource.TestCheckResourceAttr("apono_integration.test", "type", "postgresql"),
-				),
-			},
-			// Delete testing automatically occurs in TestCase
-		},
-	})
-}
-
-func testAccExampleResourceConfig(configurableAttribute string) string {
-	return fmt.Sprintf(`
-provider apono {
-  endpoint = "http://api.apono.dev"
-  personal_token = "1234567890abcdefg"
-}
-
-resource "apono_integration" "test" {
-  name = "%[1]s"
-  type = "postgresql"
-  connector_id = "000-1111-222222-33333-444444"
-  metadata = {
-    hostname = "my-postgres-rds.aaabbbsss111.us-east-1.rds.amazonaws.com"
-    port = "5432"
-    dbname = "postgres"
-  }
-  aws_secret = {
-    region = "us-east-1"
-    secret_arn = "my-secret"
-  }
-}
-`, configurableAttribute)
 }

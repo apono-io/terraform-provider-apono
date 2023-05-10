@@ -23,8 +23,8 @@ resource "apono_integration" "postgresql_prod" {
     dbname   = "postgres"
   }
   aws_secret = {
-    region     = "us-east-1"
-    secret_arn = "arn:aws:secretsmanager:us-east-1:123456789012:secret:/prod/postgresql/apono"
+    region    = "us-east-1"
+    secret_id = "arn:aws:secretsmanager:us-east-1:123456789012:secret:/prod/postgresql/apono"
   }
 }
 ```
@@ -54,8 +54,8 @@ resource "apono_integration" "postgresql_prod" {
 
 Required:
 
-- `region` (String) Example configurable attribute
-- `secret_arn` (String) Example configurable attribute
+- `region` (String) Aws secret region
+- `secret_id` (String) Aws secret name or ARN
 
 
 <a id="nestedatt--gcp_secret"></a>
@@ -63,8 +63,8 @@ Required:
 
 Required:
 
-- `project` (String) Example configurable attribute
-- `secret_id` (String) Example configurable attribute
+- `project` (String) GCP secret project
+- `secret_id` (String) GCP secret ID
 
 
 <a id="nestedatt--kubernetes_secret"></a>
@@ -72,7 +72,7 @@ Required:
 
 Required:
 
-- `name` (String) Example configurable attribute
-- `namespace` (String) Example configurable attribute
+- `name` (String) Kubernetes secret name
+- `namespace` (String) Kubernetes secret namespace
 
 

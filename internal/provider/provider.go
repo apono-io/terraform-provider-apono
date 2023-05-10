@@ -54,7 +54,7 @@ func (p *AponoProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp
 }
 
 func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
-	tflog.Debug(ctx, "Configuring provider")
+	tflog.Debug(ctx, "Start configuring Apono provider")
 
 	// Check environment variables
 	endpoint := os.Getenv("APONO_ENDPOINT")
@@ -102,6 +102,7 @@ func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	cfg := apono.NewConfiguration()
 	cfg.Scheme = endpointUrl.Scheme
 	cfg.Host = endpointUrl.Host
+	cfg.UserAgent = fmt.Sprintf("terraform-provider-apono/%s", p.version)
 	cfg.AddDefaultHeader("Authorization", fmt.Sprintf("Bearer %s", personalToken))
 
 	p.client = apono.NewAPIClient(cfg)

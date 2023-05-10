@@ -32,8 +32,8 @@ var (
 	}
 
 	awsSecretAttrMap = map[string]attr.Type{
-		"region":     basetypes.StringType{},
-		"secret_arn": basetypes.StringType{},
+		"region":    basetypes.StringType{},
+		"secret_id": basetypes.StringType{},
 	}
 	gcpSecretAttrMap = map[string]attr.Type{
 		"project":   basetypes.StringType{},
@@ -105,11 +105,11 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"region": schema.StringAttribute{
-						MarkdownDescription: "Example configurable attribute",
+						MarkdownDescription: "Aws secret region",
 						Required:            true,
 					},
-					"secret_arn": schema.StringAttribute{
-						MarkdownDescription: "Example configurable attribute",
+					"secret_id": schema.StringAttribute{
+						MarkdownDescription: "Aws secret name or ARN",
 						Required:            true,
 					},
 				},
@@ -118,11 +118,11 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"project": schema.StringAttribute{
-						MarkdownDescription: "Example configurable attribute",
+						MarkdownDescription: "GCP secret project",
 						Required:            true,
 					},
 					"secret_id": schema.StringAttribute{
-						MarkdownDescription: "Example configurable attribute",
+						MarkdownDescription: "GCP secret ID",
 						Required:            true,
 					},
 				},
@@ -131,11 +131,11 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"namespace": schema.StringAttribute{
-						MarkdownDescription: "Example configurable attribute",
+						MarkdownDescription: "Kubernetes secret namespace",
 						Required:            true,
 					},
 					"name": schema.StringAttribute{
-						MarkdownDescription: "Example configurable attribute",
+						MarkdownDescription: "Kubernetes secret name",
 						Required:            true,
 					},
 				},
@@ -169,7 +169,7 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 		secretConfig = map[string]interface{}{
 			"type":      "AWS",
 			"region":    attrValueToString(attributes["region"]),
-			"secret_id": attrValueToString(attributes["secret_arn"]),
+			"secret_id": attrValueToString(attributes["secret_id"]),
 		}
 	} else if !data.GcpSecret.IsNull() {
 		attributes := data.GcpSecret.Attributes()
@@ -213,7 +213,7 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	tflog.Trace(ctx, "created integration", map[string]interface{}{
+	tflog.Debug(ctx, "Created integration", map[string]interface{}{
 		"id": data.ID.ValueString(),
 	})
 
@@ -231,16 +231,25 @@ func (r *integrationResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	// If applicable, this is a great opportunity to initialize any necessary
-	// provider client data and make a call using it.
-	// httpResp, err := r.client.Do(httpReq)
-	// if err != nil {
-	//     resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read example, got error: %s", err))
-	//     return
-	// }
+	integration, _, err := r.provider.client.IntegrationsApi.GetIntegrationV2(ctx, data.ID.ValueString()).
+		Execute()
+	if err != nil {
+		if apiError, ok := err.(*apono.GenericOpenAPIError); ok {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration, error: %s, body: %s", apiError.Error(), string(apiError.Body())))
+		} else {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration: %s", err.Error()))
+		}
+
+		return
+	}
+	model, diagnostics := r.convertToModel(ctx, integration)
+	if len(diagnostics) > 0 {
+		resp.Diagnostics.Append(diagnostics...)
+		return
+	}
 
 	// Save updated data into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &model)...)
 }
 
 func (r *integrationResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -264,7 +273,7 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 		secretConfig = map[string]interface{}{
 			"type":      "AWS",
 			"region":    attrValueToString(attributes["region"]),
-			"secret_id": attrValueToString(attributes["secret_arn"]),
+			"secret_id": attrValueToString(attributes["secret_id"]),
 		}
 	} else if !data.GcpSecret.IsNull() {
 		attributes := data.GcpSecret.Attributes()
@@ -307,7 +316,7 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	tflog.Trace(ctx, "updated integration", map[string]interface{}{
+	tflog.Debug(ctx, "Updated integration", map[string]interface{}{
 		"id": data.ID.ValueString(),
 	})
 
@@ -337,7 +346,7 @@ func (r *integrationResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
-	tflog.Debug(ctx, "deleted integration", map[string]interface{}{
+	tflog.Debug(ctx, "Deleted integration", map[string]interface{}{
 		"id":       data.ID.ValueString(),
 		"response": messageResponse.GetMessage(),
 	})
@@ -370,7 +379,7 @@ func (r *integrationResource) ImportState(ctx context.Context, req resource.Impo
 	// Save imported data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &model)...)
 
-	tflog.Debug(ctx, "imported integration", map[string]interface{}{
+	tflog.Debug(ctx, "Imported integration", map[string]interface{}{
 		"id": integrationId,
 	})
 }
@@ -463,20 +472,20 @@ func (r *integrationResource) convertToModel(ctx context.Context, integration *a
 	switch secretConfig["type"] {
 	case "AWS":
 		secretAttributes := map[string]attr.Value{
-			"region":     basetypes.NewStringValue(fmt.Sprintf("%v", secretConfig["region"])),
-			"secret_arn": basetypes.NewStringValue(fmt.Sprintf("%v", secretConfig["secret_id"])),
+			"region":    basetypes.NewStringValue(toString(secretConfig["region"])),
+			"secret_id": basetypes.NewStringValue(toString(secretConfig["secret_id"])),
 		}
 		data.AwsSecret, diagnostics = types.ObjectValue(awsSecretAttrMap, secretAttributes)
 	case "GCP":
 		secretAttributes := map[string]attr.Value{
-			"project":   basetypes.NewStringValue(fmt.Sprintf("%v", secretConfig["project"])),
-			"secret_id": basetypes.NewStringValue(fmt.Sprintf("%v", secretConfig["secret_id"])),
+			"project":   basetypes.NewStringValue(toString(secretConfig["project"])),
+			"secret_id": basetypes.NewStringValue(toString(secretConfig["secret_id"])),
 		}
 		data.GcpSecret, diagnostics = types.ObjectValue(gcpSecretAttrMap, secretAttributes)
 	case "KUBERNETES":
 		secretAttributes := map[string]attr.Value{
-			"namespace": basetypes.NewStringValue(fmt.Sprintf("%v", secretConfig["namespace"])),
-			"name":      basetypes.NewStringValue(fmt.Sprintf("%v", secretConfig["name"])),
+			"namespace": basetypes.NewStringValue(toString(secretConfig["namespace"])),
+			"name":      basetypes.NewStringValue(toString(secretConfig["name"])),
 		}
 		data.KubernetesSecret, diagnostics = types.ObjectValue(kubernetesSecretAttrMap, secretAttributes)
 	}
@@ -495,4 +504,8 @@ func attrValueToString(val attr.Value) string {
 	default:
 		return value.String()
 	}
+}
+
+func toString(val interface{}) string {
+	return fmt.Sprintf("%v", val)
 }

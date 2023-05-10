@@ -8,7 +8,7 @@ resource "apono_integration" "postgresql_prod" {
     dbname   = "postgres"
   }
   aws_secret = {
-    region     = "us-east-1"
-    secret_arn = "arn:aws:secretsmanager:us-east-1:123456789012:secret:/prod/postgresql/apono"
+    region    = "us-east-1"
+    secret_id = "arn:aws:secretsmanager:us-east-1:123456789012:secret:/prod/postgresql/apono"
   }
 }
