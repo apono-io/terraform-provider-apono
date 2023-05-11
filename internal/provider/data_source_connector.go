@@ -34,7 +34,7 @@ func (d *connectorDataSource) Metadata(_ context.Context, req datasource.Metadat
 
 func (d *connectorDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Use this data source to get the ID of an Apono connector for when creating integrations.",
+		MarkdownDescription: "Use this data source to get the Apono connector metadata.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -63,7 +63,7 @@ func (d *connectorDataSource) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	tflog.Debug(ctx, "Looking for connector")
+	tflog.Debug(ctx, "Read Apono connector")
 
 	connectors, _, err := d.provider.client.ConnectorsApi.ListConnectors(ctx).
 		Execute()

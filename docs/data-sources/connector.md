@@ -3,12 +3,12 @@
 page_title: "apono_connector Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
-  Use this data source to get the ID of an Apono connector for when creating integrations.
+  Use this data source to get the Apono connector metadata.
 ---
 
 # apono_connector (Data Source)
 
-Use this data source to get the ID of an Apono connector for when creating integrations.
+Use this data source to get the Apono connector metadata.
 
 ## Example Usage
 
