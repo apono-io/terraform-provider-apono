@@ -10,7 +10,7 @@
 
 ## Releases
 
-This provider is currently still and beta and as such the current major release is: **0.x**
+This provider is currently still in beta and as such the current major release is: **0.x**
 
 See [CHANGELOG.md](CHANGELOG.md) for full details
 
