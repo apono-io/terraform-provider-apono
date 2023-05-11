@@ -15,7 +15,7 @@ import (
 func TestAccIntegrationResource(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
-	setupMockHttpServer()
+	setupMockHttpServerIntegrationResource()
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -23,7 +23,7 @@ func TestAccIntegrationResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Create and Read
 			{
-				Config: testAccExampleResourceConfig("integration-name"),
+				Config: testAccIntegrationResourceConfig("integration-name"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("apono_integration.test", "id"),
 					resource.TestCheckResourceAttr("apono_integration.test", "name", "integration-name"),
@@ -39,7 +39,7 @@ func TestAccIntegrationResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccExampleResourceConfig("updated-name"),
+				Config: testAccIntegrationResourceConfig("updated-name"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("apono_integration.test", "name", "updated-name"),
 					resource.TestCheckResourceAttr("apono_integration.test", "type", "postgresql"),
@@ -50,7 +50,7 @@ func TestAccIntegrationResource(t *testing.T) {
 	})
 }
 
-func testAccExampleResourceConfig(integrationName string) string {
+func testAccIntegrationResourceConfig(integrationName string) string {
 	return fmt.Sprintf(`
 provider apono {
   endpoint = "http://api.apono.dev"
@@ -74,7 +74,7 @@ resource "apono_integration" "test" {
 `, integrationName)
 }
 
-func setupMockHttpServer() {
+func setupMockHttpServerIntegrationResource() {
 	var integrations = map[string]*apono.Integration{}
 	httpmock.RegisterResponder(http.MethodPost, "http://api.apono.dev/api/v2/integrations", func(req *http.Request) (*http.Response, error) {
 		var createReq apono.CreateIntegration
