@@ -5,7 +5,7 @@
     <span>&nbsp;Apono Terraform Provider</span>
 </h1>
 
-[![Actions Status](https://github.com/apono-io/terraform-provider-apono/workflows/release/badge.svg)](https://github.com/apono-io/terraform-provider-apono/actions)
+[![Actions Status](https://github.com/apono-io/terraform-provider-apono/workflows/Release/badge.svg)](https://github.com/apono-io/terraform-provider-apono/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/apono-io/terraform-provider-apono)](https://goreportcard.com/report/github.com/apono-io/terraform-provider-apono)
 
 ## Releases
