@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccIntegrationDataSource(t *testing.T) {
+func TestAccConnectorDataSource(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 	setupMockHttpServerConnectorDataSource()
@@ -23,21 +23,21 @@ func TestAccIntegrationDataSource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Valid connector ID
 			{
-				Config: testAccIntegrationDataSourceConfig("test-connector-id"),
+				Config: testAccConnectorDataSourceConfig("test-connector-id"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.apono_connector.test", "id", "test-connector-id"),
 				),
 			},
 			// Invalid connector ID
 			{
-				Config:      testAccIntegrationDataSourceConfig("invalid-connector-id"),
+				Config:      testAccConnectorDataSourceConfig("invalid-connector-id"),
 				ExpectError: regexp.MustCompile("No connector matched the search criteria"),
 			},
 		},
 	})
 }
 
-func testAccIntegrationDataSourceConfig(connectorId string) string {
+func testAccConnectorDataSourceConfig(connectorId string) string {
 	return fmt.Sprintf(`
 provider apono {
   endpoint = "http://api.apono.dev"
