@@ -26,6 +26,53 @@ func TestAccIntegrationsDataSource(t *testing.T) {
 	integrations := createMockIntegrations()
 	setupMockHttpServerIntegrationsDataSource(integrations)
 
+	checks := createIntegrationsDataSourceChecks(integrations)
+
+	typeFilterPath := "data.apono_integrations.type_filter"
+	connectorFilterPath := "data.apono_integrations.connector_filter"
+	typeAndConnectorFilterPath := "data.apono_integrations.type_and_connector_filter"
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccIntegrationsDataSourceConfig(),
+				Check:  resource.ComposeAggregateTestCheckFunc(checks...),
+			},
+			{
+				Config: testAccIntegrationsDataSourceConfig(),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(typeFilterPath, "integrations.#", "2"),
+					resource.TestCheckResourceAttr(typeFilterPath, "integrations.0.name", "MySQL DEV"),
+					resource.TestCheckResourceAttr(typeFilterPath, "integrations.0.type", mysqlType),
+					resource.TestCheckResourceAttr(typeFilterPath, "integrations.1.name", "MySQL PROD"),
+					resource.TestCheckResourceAttr(typeFilterPath, "integrations.1.type", mysqlType),
+				),
+			},
+			{
+				Config: testAccIntegrationsDataSourceConfig(),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.#", "2"),
+					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.name", "MySQL PROD"),
+					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.connector_id", prodConnectorId),
+					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.1.name", "Postgresql PROD"),
+					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.1.connector_id", prodConnectorId),
+				),
+			},
+			{
+				Config: testAccIntegrationsDataSourceConfig(),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr(typeAndConnectorFilterPath, "integrations.#", "1"),
+					resource.TestCheckResourceAttr(typeAndConnectorFilterPath, "integrations.0.name", "MySQL PROD"),
+					resource.TestCheckResourceAttr(typeAndConnectorFilterPath, "integrations.0.type", mysqlType),
+					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.connector_id", prodConnectorId),
+				),
+			},
+		},
+	})
+}
+
+func createIntegrationsDataSourceChecks(integrations []apono.Integration) []resource.TestCheckFunc {
 	allPath := "data.apono_integrations.all"
 	checks := []resource.TestCheckFunc{
 		resource.TestCheckResourceAttr(allPath, "integrations.#", strconv.Itoa(len(integrations))),
@@ -83,49 +130,7 @@ func TestAccIntegrationsDataSource(t *testing.T) {
 			)
 		}
 	}
-
-	typeFilterPath := "data.apono_integrations.type_filter"
-	connectorFilterPath := "data.apono_integrations.connector_filter"
-	typeAndConnectorFilterPath := "data.apono_integrations.type_and_connector_filter"
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccIntegrationsDataSourceConfig(),
-				Check:  resource.ComposeAggregateTestCheckFunc(checks...),
-			},
-			{
-				Config: testAccIntegrationsDataSourceConfig(),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(typeFilterPath, "integrations.#", "2"),
-					resource.TestCheckResourceAttr(typeFilterPath, "integrations.0.name", "MySQL DEV"),
-					resource.TestCheckResourceAttr(typeFilterPath, "integrations.0.type", mysqlType),
-					resource.TestCheckResourceAttr(typeFilterPath, "integrations.1.name", "MySQL PROD"),
-					resource.TestCheckResourceAttr(typeFilterPath, "integrations.1.type", mysqlType),
-				),
-			},
-			{
-				Config: testAccIntegrationsDataSourceConfig(),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.#", "2"),
-					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.name", "MySQL PROD"),
-					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.connector_id", prodConnectorId),
-					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.1.name", "Postgresql PROD"),
-					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.1.connector_id", prodConnectorId),
-				),
-			},
-			{
-				Config: testAccIntegrationsDataSourceConfig(),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(typeAndConnectorFilterPath, "integrations.#", "1"),
-					resource.TestCheckResourceAttr(typeAndConnectorFilterPath, "integrations.0.name", "MySQL PROD"),
-					resource.TestCheckResourceAttr(typeAndConnectorFilterPath, "integrations.0.type", mysqlType),
-					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.connector_id", prodConnectorId),
-				),
-			},
-		},
-	})
+	return checks
 }
 
 func testAccIntegrationsDataSourceConfig() string {
