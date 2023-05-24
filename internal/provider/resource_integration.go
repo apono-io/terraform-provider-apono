@@ -4,17 +4,16 @@ import (
 	"context"
 	"fmt"
 	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/models"
 	"github.com/hashicorp/terraform-plugin-framework-validators/helpers/validatordiag"
 	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"golang.org/x/exp/slices"
 )
@@ -30,19 +29,6 @@ var (
 		"GCP":        "gcp_secret",
 		"KUBERNETES": "kubernetes_secret",
 	}
-
-	awsSecretAttrMap = map[string]attr.Type{
-		"region":    basetypes.StringType{},
-		"secret_id": basetypes.StringType{},
-	}
-	gcpSecretAttrMap = map[string]attr.Type{
-		"project":   basetypes.StringType{},
-		"secret_id": basetypes.StringType{},
-	}
-	kubernetesSecretAttrMap = map[string]attr.Type{
-		"namespace": basetypes.StringType{},
-		"name":      basetypes.StringType{},
-	}
 )
 
 func NewIntegrationResource() resource.Resource {
@@ -52,18 +38,6 @@ func NewIntegrationResource() resource.Resource {
 // integrationResource defines the resource implementation.
 type integrationResource struct {
 	provider *AponoProvider
-}
-
-// integrationResourceModel describes the resource data model.
-type integrationResourceModel struct {
-	ID               types.String `tfsdk:"id"`
-	Name             types.String `tfsdk:"name"`
-	Type             types.String `tfsdk:"type"`
-	ConnectorID      types.String `tfsdk:"connector_id"`
-	Metadata         types.Map    `tfsdk:"metadata"`
-	AwsSecret        types.Object `tfsdk:"aws_secret"`
-	GcpSecret        types.Object `tfsdk:"gcp_secret"`
-	KubernetesSecret types.Object `tfsdk:"kubernetes_secret"`
 }
 
 func (r *integrationResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -149,7 +123,7 @@ func (r *integrationResource) Configure(_ context.Context, req resource.Configur
 }
 
 func (r *integrationResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *integrationResourceModel
+	var data *models.IntegrationModel
 
 	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -164,26 +138,23 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 	}
 
 	var secretConfig map[string]interface{}
-	if !data.AwsSecret.IsNull() {
-		attributes := data.AwsSecret.Attributes()
+	if data.AwsSecret != nil {
 		secretConfig = map[string]interface{}{
 			"type":      "AWS",
-			"region":    attrValueToString(attributes["region"]),
-			"secret_id": attrValueToString(attributes["secret_id"]),
+			"region":    data.AwsSecret.Region.ValueString(),
+			"secret_id": data.AwsSecret.SecretID.ValueString(),
 		}
-	} else if !data.GcpSecret.IsNull() {
-		attributes := data.GcpSecret.Attributes()
+	} else if data.GcpSecret != nil {
 		secretConfig = map[string]interface{}{
 			"type":      "GCP",
-			"project":   attrValueToString(attributes["project"]),
-			"secret_id": attrValueToString(attributes["secret_id"]),
+			"project":   data.GcpSecret.Project.ValueString(),
+			"secret_id": data.GcpSecret.SecretID.ValueString(),
 		}
-	} else if !data.KubernetesSecret.IsNull() {
-		attributes := data.KubernetesSecret.Attributes()
+	} else if data.KubernetesSecret != nil {
 		secretConfig = map[string]interface{}{
 			"type":      "KUBERNETES",
-			"namespace": attrValueToString(attributes["namespace"]),
-			"name":      attrValueToString(attributes["name"]),
+			"namespace": data.KubernetesSecret.Namespace.ValueString(),
+			"name":      data.KubernetesSecret.Name.ValueString(),
 		}
 	}
 
@@ -207,7 +178,7 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	model, diagnostics := r.convertToModel(ctx, integration)
+	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -222,7 +193,7 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 }
 
 func (r *integrationResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *integrationResourceModel
+	var data *models.IntegrationModel
 
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -242,7 +213,7 @@ func (r *integrationResource) Read(ctx context.Context, req resource.ReadRequest
 
 		return
 	}
-	model, diagnostics := r.convertToModel(ctx, integration)
+	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -253,7 +224,7 @@ func (r *integrationResource) Read(ctx context.Context, req resource.ReadRequest
 }
 
 func (r *integrationResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *integrationResourceModel
+	var data *models.IntegrationModel
 
 	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -268,26 +239,23 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 
 	var secretConfig map[string]interface{}
-	if !data.AwsSecret.IsNull() {
-		attributes := data.AwsSecret.Attributes()
+	if data.AwsSecret != nil {
 		secretConfig = map[string]interface{}{
 			"type":      "AWS",
-			"region":    attrValueToString(attributes["region"]),
-			"secret_id": attrValueToString(attributes["secret_id"]),
+			"region":    data.AwsSecret.Region.ValueString(),
+			"secret_id": data.AwsSecret.SecretID.ValueString(),
 		}
-	} else if !data.GcpSecret.IsNull() {
-		attributes := data.GcpSecret.Attributes()
+	} else if data.GcpSecret != nil {
 		secretConfig = map[string]interface{}{
 			"type":      "GCP",
-			"project":   attrValueToString(attributes["project"]),
-			"secret_id": attrValueToString(attributes["secret_id"]),
+			"project":   data.GcpSecret.Project.ValueString(),
+			"secret_id": data.GcpSecret.SecretID.ValueString(),
 		}
-	} else if !data.KubernetesSecret.IsNull() {
-		attributes := data.KubernetesSecret.Attributes()
+	} else if data.KubernetesSecret != nil {
 		secretConfig = map[string]interface{}{
 			"type":      "KUBERNETES",
-			"namespace": attrValueToString(attributes["namespace"]),
-			"name":      attrValueToString(attributes["name"]),
+			"namespace": data.KubernetesSecret.Namespace.ValueString(),
+			"name":      data.KubernetesSecret.Name.ValueString(),
 		}
 	}
 
@@ -310,7 +278,7 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	model, diagnostics := r.convertToModel(ctx, integration)
+	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -325,7 +293,7 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 }
 
 func (r *integrationResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *integrationResourceModel
+	var data *models.IntegrationModel
 
 	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -370,7 +338,7 @@ func (r *integrationResource) ImportState(ctx context.Context, req resource.Impo
 		return
 	}
 
-	model, diagnostics := r.convertToModel(ctx, integration)
+	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -389,7 +357,7 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 		return
 	}
 
-	var model integrationResourceModel
+	var model models.IntegrationModel
 	resp.Diagnostics.Append(req.Config.Get(ctx, &model)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -454,49 +422,6 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 	}
 }
 
-func (r *integrationResource) convertToModel(ctx context.Context, integration *apono.Integration) (*integrationResourceModel, diag.Diagnostics) {
-	metadataMapValue, diagnostics := types.MapValueFrom(ctx, types.StringType, integration.GetMetadata())
-
-	data := integrationResourceModel{}
-	data.ID = types.StringValue(integration.GetId())
-	data.Name = types.StringValue(integration.GetName())
-	data.Type = types.StringValue(integration.GetType())
-	data.ConnectorID = types.StringValue(integration.GetProvisionerId())
-	data.Metadata = metadataMapValue
-
-	data.AwsSecret = types.ObjectNull(awsSecretAttrMap)
-	data.GcpSecret = types.ObjectNull(gcpSecretAttrMap)
-	data.KubernetesSecret = types.ObjectNull(kubernetesSecretAttrMap)
-
-	secretConfig := integration.GetSecretConfig()
-	switch secretConfig["type"] {
-	case "AWS":
-		secretAttributes := map[string]attr.Value{
-			"region":    basetypes.NewStringValue(toString(secretConfig["region"])),
-			"secret_id": basetypes.NewStringValue(toString(secretConfig["secret_id"])),
-		}
-		data.AwsSecret, diagnostics = types.ObjectValue(awsSecretAttrMap, secretAttributes)
-	case "GCP":
-		secretAttributes := map[string]attr.Value{
-			"project":   basetypes.NewStringValue(toString(secretConfig["project"])),
-			"secret_id": basetypes.NewStringValue(toString(secretConfig["secret_id"])),
-		}
-		data.GcpSecret, diagnostics = types.ObjectValue(gcpSecretAttrMap, secretAttributes)
-	case "KUBERNETES":
-		secretAttributes := map[string]attr.Value{
-			"namespace": basetypes.NewStringValue(toString(secretConfig["namespace"])),
-			"name":      basetypes.NewStringValue(toString(secretConfig["name"])),
-		}
-		data.KubernetesSecret, diagnostics = types.ObjectValue(kubernetesSecretAttrMap, secretAttributes)
-	}
-
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
-	}
-
-	return &data, nil
-}
-
 func attrValueToString(val attr.Value) string {
 	switch value := val.(type) {
 	case types.String:
@@ -504,8 +429,4 @@ func attrValueToString(val attr.Value) string {
 	default:
 		return value.String()
 	}
-}
-
-func toString(val interface{}) string {
-	return fmt.Sprintf("%v", val)
 }
