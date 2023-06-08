@@ -82,5 +82,3 @@ Required:
 
 - `name` (String) Kubernetes secret name
 - `namespace` (String) Kubernetes secret namespace
-
-
