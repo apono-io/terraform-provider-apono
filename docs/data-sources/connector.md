@@ -28,5 +28,3 @@ data "apono_connector" "prod_us" {
 ### Read-Only
 
 - `name` (String) Connector name
-
-
