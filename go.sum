@@ -11,8 +11,8 @@ github.com/ProtonMail/go-crypto v0.0.0-20230217124315-7d5c6f04bbb8/go.mod h1:I0g
 github.com/acomagu/bufpipe v1.0.4 h1:e3H4WUzM3npvo5uv95QuJM3cQspFNtFBzvJ2oNjKIDQ=
 github.com/agext/levenshtein v1.2.2 h1:0S/Yg6LYmFJ5stwQeRp6EeOcCbj7xiqQSdNelsXvaqE=
 github.com/agext/levenshtein v1.2.2/go.mod h1:JEDfjyjHDjOF/1e4FlBE/PkbqA9OfWu2ki2W0IB5558=
-github.com/apono-io/apono-sdk-go v0.1.0-alpha2 h1:kiBs6MqnQAZsa4HcQJT00ri1x+8X7TIU2N5ca55avnU=
-github.com/apono-io/apono-sdk-go v0.1.0-alpha2/go.mod h1:L5PuZ7jwgPtZ8QK3iOeDylAkLBJcB6HPyhaEPhPUuKY=
+github.com/apono-io/apono-sdk-go v0.1.0-alpha4 h1:PkSkiV6N72npyzIYXJN89ha8pnbUoSbbNUBvpOwiB10=
+github.com/apono-io/apono-sdk-go v0.1.0-alpha4/go.mod h1:L5PuZ7jwgPtZ8QK3iOeDylAkLBJcB6HPyhaEPhPUuKY=
 github.com/apparentlymart/go-textseg/v12 v12.0.0/go.mod h1:S/4uRK2UtaQttw1GenVJEynmyUenKwP++x/+DdGV/Ec=
 github.com/apparentlymart/go-textseg/v13 v13.0.0 h1:Y+KvPE1NYz0xl601PVImeQfFyEy6iT90AvPUL1NNfNw=
 github.com/apparentlymart/go-textseg/v13 v13.0.0/go.mod h1:ZK2fH7c4NqDTLtiYLvIkEghdlcqw7yxLeM89kiTRPUo=

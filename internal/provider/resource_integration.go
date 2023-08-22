@@ -386,11 +386,15 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 		paramName := param.GetId()
 		paramPossibleValues := param.GetValues()
 		paramDefaultValue := param.GetDefault()
+		paramIsOptional := param.GetOptional()
 
 		attributePath := path.Root(fmt.Sprintf(`metadata["%s"]`, paramName))
 
 		metadataValue, hasValue := metadataElements[paramName]
 		if !hasValue {
+			if paramIsOptional && paramDefaultValue == "" {
+				continue
+			}
 			if paramDefaultValue != "" {
 				resp.Diagnostics.AddAttributeError(
 					attributePath,
