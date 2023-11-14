@@ -47,7 +47,7 @@ func (p *AponoProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp
 			},
 			"personal_token": schema.StringAttribute{
 				Description: "Personal API token",
-				Optional:    true,
+				Required:    true,
 			},
 		},
 	}
