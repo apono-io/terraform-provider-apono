@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/apono-io/apono-sdk-go"
 	"github.com/apono-io/terraform-provider-apono/internal/models"
+	"github.com/apono-io/terraform-provider-apono/internal/utils"
 	"github.com/hashicorp/terraform-plugin-framework-validators/helpers/validatordiag"
 	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -134,7 +134,7 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 
 	metadata := map[string]interface{}{}
 	for name, value := range data.Metadata.Elements() {
-		metadata[name] = attrValueToString(value)
+		metadata[name] = utils.AttrValueToString(value)
 	}
 
 	var secretConfig map[string]interface{}
@@ -169,11 +169,8 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 		}).
 		Execute()
 	if err != nil {
-		if apiError, ok := err.(*apono.GenericOpenAPIError); ok {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to create integration, error: %s, body: %s", apiError.Error(), string(apiError.Body())))
-		} else {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to create integration: %s", err.Error()))
-		}
+		diagnostics := utils.GetDiagnosticsForApiError(err, "create", "integration", "")
+		resp.Diagnostics.Append(diagnostics...)
 
 		return
 	}
@@ -205,11 +202,8 @@ func (r *integrationResource) Read(ctx context.Context, req resource.ReadRequest
 	integration, _, err := r.provider.client.IntegrationsApi.GetIntegrationV2(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
-		if apiError, ok := err.(*apono.GenericOpenAPIError); ok {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration, error: %s, body: %s", apiError.Error(), string(apiError.Body())))
-		} else {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration: %s", err.Error()))
-		}
+		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "integration", data.ID.ValueString())
+		resp.Diagnostics.Append(diagnostics...)
 
 		return
 	}
@@ -235,7 +229,7 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 
 	metadata := map[string]interface{}{}
 	for name, value := range data.Metadata.Elements() {
-		metadata[name] = attrValueToString(value)
+		metadata[name] = utils.AttrValueToString(value)
 	}
 
 	var secretConfig map[string]interface{}
@@ -269,11 +263,8 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 		}).
 		Execute()
 	if err != nil {
-		if apiError, ok := err.(*apono.GenericOpenAPIError); ok {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to update integration with id %s, error: %s, body: %s", data.ID, apiError.Error(), string(apiError.Body())))
-		} else {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to update integration with id %s: %s", data.ID, err.Error()))
-		}
+		diagnostics := utils.GetDiagnosticsForApiError(err, "update", "integration", data.ID.ValueString())
+		resp.Diagnostics.Append(diagnostics...)
 
 		return
 	}
@@ -305,11 +296,8 @@ func (r *integrationResource) Delete(ctx context.Context, req resource.DeleteReq
 	messageResponse, _, err := r.provider.client.IntegrationsApi.DeleteIntegrationV2(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
-		if apiError, ok := err.(*apono.GenericOpenAPIError); ok {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete integration with id %s, error: %s, body: %s", data.ID, apiError.Error(), string(apiError.Body())))
-		} else {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete integration with id %s: %s", data.ID, err.Error()))
-		}
+		diagnostics := utils.GetDiagnosticsForApiError(err, "delete", "integration", data.ID.ValueString())
+		resp.Diagnostics.Append(diagnostics...)
 
 		return
 	}
@@ -329,12 +317,8 @@ func (r *integrationResource) ImportState(ctx context.Context, req resource.Impo
 	integration, _, err := r.provider.client.IntegrationsApi.GetIntegrationV2(ctx, integrationId).
 		Execute()
 	if err != nil {
-		if apiError, ok := err.(*apono.GenericOpenAPIError); ok {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration with id %s, error: %s, body: %s", integrationId, apiError.Error(), string(apiError.Body())))
-		} else {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration with id %s: %s", integrationId, err.Error()))
-		}
-
+		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "integration", integrationId)
+		resp.Diagnostics.Append(diagnostics...)
 		return
 	}
 
@@ -415,7 +399,7 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 			continue
 		}
 
-		metadataValueStr := attrValueToString(metadataValue)
+		metadataValueStr := utils.AttrValueToString(metadataValue)
 		if len(paramPossibleValues) > 0 && !slices.Contains(paramPossibleValues, metadataValueStr) {
 			resp.Diagnostics.Append(validatordiag.InvalidAttributeValueMatchDiagnostic(
 				attributePath,
@@ -423,14 +407,5 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 				metadataValueStr,
 			))
 		}
-	}
-}
-
-func attrValueToString(val attr.Value) string {
-	switch value := val.(type) {
-	case types.String:
-		return value.ValueString()
-	default:
-		return value.String()
 	}
 }
