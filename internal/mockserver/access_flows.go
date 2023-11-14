@@ -11,9 +11,9 @@ import (
 )
 
 func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.AccessFlowV1) {
-	var accessFlows = map[string]*apono.AccessFlowV1{}
+	var accessFlows = map[string]apono.AccessFlowV1{}
 	for _, accessFlow := range existingAccessFlows {
-		accessFlows[accessFlow.Id] = &accessFlow
+		accessFlows[accessFlow.Id] = accessFlow
 	}
 
 	httpmock.RegisterResponder(http.MethodPost, "http://api.apono.dev/api/v1/access-flows", func(req *http.Request) (*http.Response, error) {
@@ -40,7 +40,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 			Settings:           createReq.Settings,
 			CreatedDate:        apono.Instant{Time: time.Now()},
 		}
-		accessFlows[accessFlow.Id] = &accessFlow
+		accessFlows[accessFlow.Id] = accessFlow
 
 		fixedJsonResponse, err := fixCreateDateOnJsonResponse(&accessFlow)
 		if err != nil {
@@ -61,7 +61,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 			return httpmock.NewStringResponse(404, "Access Flow not found"), nil
 		}
 
-		fixedJsonResponse, err := fixCreateDateOnJsonResponse(accessFlow)
+		fixedJsonResponse, err := fixCreateDateOnJsonResponse(&accessFlow)
 		if err != nil {
 			return httpmock.NewStringResponse(500, err.Error()), nil
 		}
@@ -117,7 +117,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 			accessFlow.Settings = *apono.NewNullableAccessFlowV1Settings(updateReq.Settings.Get())
 		}
 
-		fixedJsonResponse, err := fixCreateDateOnJsonResponse(accessFlow)
+		fixedJsonResponse, err := fixCreateDateOnJsonResponse(&accessFlow)
 		if err != nil {
 			return httpmock.NewStringResponse(500, err.Error()), nil
 		}
@@ -126,6 +126,8 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 		if err != nil {
 			return httpmock.NewStringResponse(500, err.Error()), nil
 		}
+
+		accessFlows[accessFlow.Id] = accessFlow
 
 		return resp, nil
 	})

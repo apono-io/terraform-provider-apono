@@ -17,9 +17,9 @@ var (
 )
 
 func SetupMockHttpServerIntegrationV2Endpoints(existingIntegrations []apono.Integration) {
-	var integrations = map[string]*apono.Integration{}
+	var integrations = map[string]apono.Integration{}
 	for _, integration := range existingIntegrations {
-		integrations[integration.Id] = &integration
+		integrations[integration.Id] = integration
 	}
 
 	httpmock.RegisterResponder(http.MethodPost, "http://api.apono.dev/api/v2/integrations", func(req *http.Request) (*http.Response, error) {
@@ -42,7 +42,7 @@ func SetupMockHttpServerIntegrationV2Endpoints(existingIntegrations []apono.Inte
 			Metadata:      createReq.Metadata,
 			SecretConfig:  createReq.SecretConfig,
 		}
-		integrations[integration.Id] = &integration
+		integrations[integration.Id] = integration
 
 		resp, err := httpmock.NewJsonResponse(200, integration)
 		if err != nil {
@@ -99,6 +99,8 @@ func SetupMockHttpServerIntegrationV2Endpoints(existingIntegrations []apono.Inte
 		integration.ProvisionerId = updateReq.ProvisionerId
 		integration.Metadata = updateReq.Metadata
 		integration.SecretConfig = updateReq.SecretConfig
+
+		integrations[integration.Id] = integration
 
 		resp, err := httpmock.NewJsonResponse(200, integration)
 		if err != nil {

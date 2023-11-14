@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// TimeRegex Regular expression for HH:MM:SS format
+// TimeRegex Regular expression for HH:MM:SS format.
 var TimeRegex = regexp.MustCompile(`^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$`)
 
 func AttrValueToString(val attr.Value) string {
