@@ -36,11 +36,14 @@ func ConvertToAccessFlowModel(ctx context.Context, aponoClient *apono.APIClient,
 			return nil, diagnostics
 		}
 
+		startTimeString := utils.SecondsToDayTimeFormat(int(timeframe.GetStartOfDayTimeInSeconds()))
+		endTimeString := utils.SecondsToDayTimeFormat(int(timeframe.GetEndOfDayTimeInSeconds()))
+
 		dataTrigger.Timeframe = &models.Timeframe{
-			StartOfDayTimeInSeconds: types.NumberValue(big.NewFloat(float64(timeframe.GetStartOfDayTimeInSeconds()))),
-			EndOfDayTimeInSeconds:   types.NumberValue(big.NewFloat(float64(timeframe.GetEndOfDayTimeInSeconds()))),
-			DaysInWeek:              daysInWeek,
-			TimeZone:                types.StringValue(timeframe.GetTimeZone()),
+			StartTime:  types.StringValue(startTimeString),
+			EndTime:    types.StringValue(endTimeString),
+			DaysInWeek: daysInWeek,
+			TimeZone:   types.StringValue(timeframe.GetTimeZone()),
 		}
 
 	}
@@ -214,13 +217,20 @@ func ConvertToAccessFlowUpdateApiModel(ctx context.Context, aponoClient *apono.A
 		Timeframe: updateAccessFlowRequest.Trigger.Timeframe,
 	}
 
+	var approvers []apono.ApproverV1
+	if updateAccessFlowRequest.Approvers == nil {
+		approvers = make([]apono.ApproverV1, 0)
+	} else {
+		approvers = updateAccessFlowRequest.Approvers
+	}
+
 	data := apono.UpdateAccessFlowV1{
 		Name:               *apono.NewNullableString(&updateAccessFlowRequest.Name),
 		Active:             *apono.NewNullableBool(&updateAccessFlowRequest.Active),
 		RevokeAfterInSec:   *apono.NewNullableInt32(&updateAccessFlowRequest.RevokeAfterInSec),
 		Trigger:            *apono.NewNullableUpdateAccessFlowV1Trigger(&trigger),
 		Grantees:           updateAccessFlowRequest.Grantees,
-		Approvers:          updateAccessFlowRequest.Approvers,
+		Approvers:          approvers,
 		IntegrationTargets: updateAccessFlowRequest.IntegrationTargets,
 		Settings:           updateAccessFlowRequest.Settings,
 	}
@@ -390,8 +400,19 @@ func convertTriggerToApiModel(trigger models.Trigger) (*apono.AccessFlowTriggerV
 			timeframeDays = append(timeframeDays, apono.DayOfWeek(utils.AttrValueToString(day)))
 		}
 
-		startOfDayTimeInSeconds, _ := trigger.Timeframe.StartOfDayTimeInSeconds.ValueBigFloat().Int64()
-		endOfDayTimeInSeconds, _ := trigger.Timeframe.EndOfDayTimeInSeconds.ValueBigFloat().Int64()
+		startOfDayTimeInSeconds, err := utils.DayTimeFormatToSeconds(trigger.Timeframe.StartTime.ValueString())
+		if err != nil {
+			diagnostics := diag.Diagnostics{}
+			diagnostics.AddError("Client Error", fmt.Sprintf("Failed to parse start time: %s", trigger.Timeframe.StartTime.ValueString()))
+			return nil, diagnostics
+		}
+		endOfDayTimeInSeconds, err := utils.DayTimeFormatToSeconds(trigger.Timeframe.EndTime.ValueString())
+		if err != nil {
+			diagnostics := diag.Diagnostics{}
+			diagnostics.AddError("Client Error", fmt.Sprintf("Failed to parse end time: %s", trigger.Timeframe.EndTime.ValueString()))
+			return nil, diagnostics
+		}
+
 		dataTimeFrame := apono.AccessFlowTriggerV1Timeframe{
 			StartOfDayTimeInSeconds: startOfDayTimeInSeconds,
 			EndOfDayTimeInSeconds:   endOfDayTimeInSeconds,

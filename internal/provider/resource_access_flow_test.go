@@ -79,6 +79,12 @@ resource "apono_access_flow" "test" {
   revoke_after_in_sec = 3600
   trigger = {
     type = "user_request"
+	timeframe = {
+		  start_time = "00:00:00"
+		  end_time = "23:59:59"
+		  days_in_week = ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY"]
+		  time_zone = "Asia/Jerusalem"
+	}
   }
   grantees = [
     {

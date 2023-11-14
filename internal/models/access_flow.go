@@ -24,17 +24,17 @@ type Trigger struct {
 }
 
 type Timeframe struct {
-	StartOfDayTimeInSeconds types.Number `tfsdk:"start_of_day_time_in_seconds"`
-	EndOfDayTimeInSeconds   types.Number `tfsdk:"end_of_day_time_in_seconds"`
-	DaysInWeek              types.Set    `tfsdk:"days_in_week"`
-	TimeZone                types.String `tfsdk:"time_zone"`
+	StartTime  types.String `tfsdk:"start_time"`
+	EndTime    types.String `tfsdk:"end_time"`
+	DaysInWeek types.Set    `tfsdk:"days_in_week"`
+	TimeZone   types.String `tfsdk:"time_zone"`
 }
 
 type IntegrationTarget struct {
 	Name                   types.String     `tfsdk:"name"`
 	ResourceType           types.String     `tfsdk:"resource_type"`
 	ResourceIncludeFilters []ResourceFilter `tfsdk:"resource_include_filters"`
-	ResourceExcludeFilters []ResourceFilter `tfsdk:"resource_excludes_filters"`
+	ResourceExcludeFilters []ResourceFilter `tfsdk:"resource_exclude_filters"`
 	Permissions            types.Set        `tfsdk:"permissions"`
 }
 
