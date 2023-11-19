@@ -3,8 +3,8 @@ package provider
 import (
 	"fmt"
 	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/mockserver"
 	"github.com/jarcoal/httpmock"
-	"net/http"
 	"regexp"
 	"testing"
 	"time"
@@ -15,7 +15,15 @@ import (
 func TestAccConnectorDataSource(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
-	setupMockHttpServerConnectorDataSource()
+
+	connectors := []apono.Connector{
+		{
+			ConnectorId:   "test-connector-id",
+			LastConnected: *apono.NewNullableInstant(&apono.Instant{Time: time.Now()}),
+			Status:        "Connected",
+		},
+	}
+	mockserver.SetupMockHttpServerConnectorV2Api(connectors)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -48,22 +56,4 @@ data "apono_connector" "test" {
   id = "%[1]s"
 }
 `, connectorId)
-}
-
-func setupMockHttpServerConnectorDataSource() {
-	httpmock.RegisterResponder(http.MethodGet, "http://api.apono.dev/api/v2/connectors", func(req *http.Request) (*http.Response, error) {
-		connectors := []apono.Connector{
-			{
-				ConnectorId:   "test-connector-id",
-				LastConnected: *apono.NewNullableInstant(&apono.Instant{Time: time.Now()}),
-				Status:        "Connected",
-			},
-		}
-		resp, err := httpmock.NewJsonResponse(200, connectors)
-		if err != nil {
-			return httpmock.NewStringResponse(500, err.Error()), nil
-		}
-
-		return resp, nil
-	})
 }

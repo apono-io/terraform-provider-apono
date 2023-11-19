@@ -1,0 +1,26 @@
+package utils
+
+import (
+	"fmt"
+	"github.com/apono-io/apono-sdk-go"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+)
+
+func GetDiagnosticsForApiError(err error, actionType string, objectName string, objectId string) diag.Diagnostics {
+	diagnostics := diag.Diagnostics{}
+
+	var errorMessagePrefix string
+	if objectId != "" {
+		errorMessagePrefix = fmt.Sprintf("Failed to %s %s with id %s", actionType, objectName, objectId)
+	} else {
+		errorMessagePrefix = fmt.Sprintf("Failed to %s %s", actionType, objectName)
+	}
+
+	if apiError, ok := err.(*apono.GenericOpenAPIError); ok {
+		diagnostics.AddError("Client Error", fmt.Sprintf("%s, error: %s, body: %s", errorMessagePrefix, apiError.Error(), string(apiError.Body())))
+	} else {
+		diagnostics.AddError("Client Error", fmt.Sprintf("%s: %s", errorMessagePrefix, err.Error()))
+	}
+
+	return diagnostics
+}

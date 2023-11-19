@@ -1,12 +1,10 @@
 package provider
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/apono-io/apono-sdk-go"
-	"github.com/google/uuid"
+	"github.com/apono-io/terraform-provider-apono/internal/mockserver"
 	"github.com/jarcoal/httpmock"
-	"net/http"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -15,7 +13,7 @@ import (
 func TestAccIntegrationResource(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
-	setupMockHttpServerIntegrationResource()
+	mockserver.SetupMockHttpServerIntegrationV2Endpoints(make([]apono.Integration, 0))
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -72,138 +70,4 @@ resource "apono_integration" "test" {
   }
 }
 `, integrationName)
-}
-
-func setupMockHttpServerIntegrationResource() {
-	var integrations = map[string]*apono.Integration{}
-	httpmock.RegisterResponder(http.MethodPost, "http://api.apono.dev/api/v2/integrations", func(req *http.Request) (*http.Response, error) {
-		var createReq apono.CreateIntegration
-		if err := json.NewDecoder(req.Body).Decode(&createReq); err != nil {
-			return httpmock.NewStringResponse(400, err.Error()), nil
-		}
-
-		id, err := uuid.NewUUID()
-		if err != nil {
-			return httpmock.NewStringResponse(500, err.Error()), nil
-		}
-
-		integration := apono.Integration{
-			Id:            id.String(),
-			Name:          createReq.Name,
-			Type:          createReq.Type,
-			ProvisionerId: createReq.ProvisionerId,
-			Status:        apono.INTEGRATIONSTATUS_ACTIVE,
-			Metadata:      createReq.Metadata,
-			SecretConfig:  createReq.SecretConfig,
-		}
-		integrations[integration.Id] = &integration
-
-		resp, err := httpmock.NewJsonResponse(200, integration)
-		if err != nil {
-			return httpmock.NewStringResponse(500, err.Error()), nil
-		}
-
-		return resp, nil
-	})
-
-	httpmock.RegisterResponder(http.MethodGet, `=~^http://api\.apono\.dev/api/v2/integrations/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
-		id := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
-		integration, exists := integrations[id]
-		if !exists {
-			return httpmock.NewStringResponse(404, "Integration not found"), nil
-		}
-
-		resp, err := httpmock.NewJsonResponse(200, integration)
-		if err != nil {
-			return httpmock.NewStringResponse(500, err.Error()), nil
-		}
-
-		return resp, nil
-	})
-
-	httpmock.RegisterResponder(http.MethodPut, `=~^http://api\.apono\.dev/api/v2/integrations/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
-		id := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
-
-		var updateReq apono.UpdateIntegration
-		if err := json.NewDecoder(req.Body).Decode(&updateReq); err != nil {
-			return httpmock.NewStringResponse(400, err.Error()), nil
-		}
-
-		integration, exists := integrations[id]
-		if !exists {
-			return httpmock.NewStringResponse(404, "Integration not found"), nil
-		}
-
-		integration.Name = updateReq.Name
-		integration.ProvisionerId = updateReq.ProvisionerId
-		integration.Metadata = updateReq.Metadata
-		integration.SecretConfig = updateReq.SecretConfig
-
-		resp, err := httpmock.NewJsonResponse(200, integration)
-		if err != nil {
-			return httpmock.NewStringResponse(500, err.Error()), nil
-		}
-
-		return resp, nil
-	})
-
-	httpmock.RegisterResponder(http.MethodDelete, `=~^http://api\.apono\.dev/api/v2/integrations/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
-		id := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
-
-		delete(integrations, id)
-
-		messageResponse := apono.MessageResponse{
-			Message: "Deleted integration",
-		}
-
-		resp, err := httpmock.NewJsonResponse(200, messageResponse)
-		if err != nil {
-			return httpmock.NewStringResponse(500, err.Error()), nil
-		}
-
-		return resp, nil
-	})
-
-	httpmock.RegisterResponder(http.MethodGet, `=~^http://api\.apono\.dev/api/v2/integrations-catalog/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
-		configType := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
-		switch configType {
-		case "postgresql":
-			config := apono.IntegrationConfig{
-				Name:        "PostgreSQL",
-				Type:        "postgresql",
-				Description: "An open-source relational database management system emphasizing extensibility and SQL compliance.",
-				Params: []apono.IntegrationConfigParam{
-					{
-						Id:    "hostname",
-						Label: "Hostname",
-					},
-					{
-						Id:      "port",
-						Label:   "Port",
-						Default: "5432",
-					},
-					{
-						Id:      "dbname",
-						Label:   "Database Name",
-						Default: "postgres",
-					},
-				},
-				RequiresSecret: true,
-				SupportedSecretTypes: []string{
-					"AWS",
-					"GCP",
-					"KUBERNETES",
-				},
-			}
-
-			resp, err := httpmock.NewJsonResponse(200, config)
-			if err != nil {
-				return httpmock.NewStringResponse(500, err.Error()), nil
-			}
-
-			return resp, nil
-		default:
-			return httpmock.NewStringResponse(400, "Unsupported config type"), nil
-		}
-	})
 }

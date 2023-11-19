@@ -3,28 +3,19 @@ package provider
 import (
 	"fmt"
 	"github.com/apono-io/apono-sdk-go"
-	"github.com/google/uuid"
+	"github.com/apono-io/terraform-provider-apono/internal/mockserver"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/jarcoal/httpmock"
-	"net/http"
 	"strconv"
 	"testing"
-	"time"
-)
-
-var (
-	devConnectorId  = "dev-connector"
-	prodConnectorId = "prod-connector"
-	mysqlType       = "mysql"
-	postgresqlType  = "postgresql"
 )
 
 func TestAccIntegrationsDataSource(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	integrations := createMockIntegrations()
-	setupMockHttpServerIntegrationsDataSource(integrations)
+	integrations := mockserver.CreateMockIntegrations()
+	mockserver.SetupMockHttpServerIntegrationV2Endpoints(integrations)
 
 	checks := createIntegrationsDataSourceChecks(integrations)
 
@@ -44,9 +35,9 @@ func TestAccIntegrationsDataSource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(typeFilterPath, "integrations.#", "2"),
 					resource.TestCheckResourceAttr(typeFilterPath, "integrations.0.name", "MySQL DEV"),
-					resource.TestCheckResourceAttr(typeFilterPath, "integrations.0.type", mysqlType),
+					resource.TestCheckResourceAttr(typeFilterPath, "integrations.0.type", mockserver.MysqlType),
 					resource.TestCheckResourceAttr(typeFilterPath, "integrations.1.name", "MySQL PROD"),
-					resource.TestCheckResourceAttr(typeFilterPath, "integrations.1.type", mysqlType),
+					resource.TestCheckResourceAttr(typeFilterPath, "integrations.1.type", mockserver.MysqlType),
 				),
 			},
 			{
@@ -54,9 +45,9 @@ func TestAccIntegrationsDataSource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.#", "2"),
 					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.name", "MySQL PROD"),
-					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.connector_id", prodConnectorId),
+					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.connector_id", mockserver.ProdConnectorId),
 					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.1.name", "Postgresql PROD"),
-					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.1.connector_id", prodConnectorId),
+					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.1.connector_id", mockserver.ProdConnectorId),
 				),
 			},
 			{
@@ -64,8 +55,8 @@ func TestAccIntegrationsDataSource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(typeAndConnectorFilterPath, "integrations.#", "1"),
 					resource.TestCheckResourceAttr(typeAndConnectorFilterPath, "integrations.0.name", "MySQL PROD"),
-					resource.TestCheckResourceAttr(typeAndConnectorFilterPath, "integrations.0.type", mysqlType),
-					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.connector_id", prodConnectorId),
+					resource.TestCheckResourceAttr(typeAndConnectorFilterPath, "integrations.0.type", mockserver.MysqlType),
+					resource.TestCheckResourceAttr(connectorFilterPath, "integrations.0.connector_id", mockserver.ProdConnectorId),
 				),
 			},
 		},
@@ -155,94 +146,5 @@ data "apono_integrations" "type_and_connector_filter" {
   type = "%[1]s"
   connector_id = "%[2]s"
 }
-`, mysqlType, prodConnectorId)
-}
-
-func setupMockHttpServerIntegrationsDataSource(integrations []apono.Integration) {
-	httpmock.RegisterResponder(http.MethodGet, "http://api.apono.dev/api/v2/integrations", func(req *http.Request) (*http.Response, error) {
-		resp, err := httpmock.NewJsonResponse(200, apono.PaginatedResponseIntegrationModel{
-			Data: integrations,
-			Pagination: apono.PaginationInfo{
-				Total:  int32(len(integrations)),
-				Limit:  int32(len(integrations)),
-				Offset: 0,
-			},
-		})
-		if err != nil {
-			return httpmock.NewStringResponse(500, err.Error()), nil
-		}
-
-		return resp, nil
-	})
-}
-
-func createMockIntegrations() []apono.Integration {
-	details := "4 resources loaded"
-	return []apono.Integration{
-		{
-			Id:            uuid.NewString(),
-			Name:          "MySQL DEV",
-			Type:          mysqlType,
-			Status:        "Active",
-			Details:       *apono.NewNullableString(&details),
-			ProvisionerId: *apono.NewNullableString(&devConnectorId),
-			Connection:    map[string]interface{}{},
-			LastSyncTime:  *apono.NewNullableInstant(&apono.Instant{Time: time.Now()}),
-			Metadata: map[string]interface{}{
-				"aws_account_id": "0123456789",
-			},
-			SecretConfig: map[string]interface{}{},
-		},
-		{
-			Id:            uuid.NewString(),
-			Name:          "Postgres DEV",
-			Type:          postgresqlType,
-			Status:        "Active",
-			Details:       *apono.NewNullableString(&details),
-			ProvisionerId: *apono.NewNullableString(&devConnectorId),
-			Connection:    map[string]interface{}{},
-			LastSyncTime:  *apono.NewNullableInstant(&apono.Instant{Time: time.Now()}),
-			Metadata: map[string]interface{}{
-				"hostname": "rds.amazon.example.com",
-				"port":     "4560",
-			},
-			SecretConfig: map[string]interface{}{
-				"type":      "AWS",
-				"region":    "us-east-1",
-				"secret_id": "my-secret-id",
-			},
-		},
-		{
-			Id:            uuid.NewString(),
-			Name:          "MySQL PROD",
-			Type:          mysqlType,
-			Status:        "Active",
-			Details:       *apono.NewNullableString(&details),
-			ProvisionerId: *apono.NewNullableString(&prodConnectorId),
-			Connection:    map[string]interface{}{},
-			LastSyncTime:  *apono.NewNullableInstant(&apono.Instant{Time: time.Now()}),
-			Metadata:      map[string]interface{}{},
-			SecretConfig: map[string]interface{}{
-				"type":      "GCP",
-				"project":   "my-project-id",
-				"secret_id": "my-secret-id",
-			},
-		},
-		{
-			Id:            uuid.NewString(),
-			Name:          "Postgresql PROD",
-			Type:          postgresqlType,
-			Status:        "Active",
-			Details:       *apono.NewNullableString(&details),
-			ProvisionerId: *apono.NewNullableString(&prodConnectorId),
-			Connection:    map[string]interface{}{},
-			LastSyncTime:  *apono.NewNullableInstant(&apono.Instant{Time: time.Now()}),
-			Metadata:      nil,
-			SecretConfig: map[string]interface{}{
-				"type":      "KUBERNETES",
-				"namespace": "prod",
-				"name":      "postgres-credentials",
-			},
-		},
-	}
+`, mockserver.MysqlType, mockserver.ProdConnectorId)
 }
