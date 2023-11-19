@@ -29,20 +29,20 @@ func TestAccAccessFlowResource(t *testing.T) {
 			{
 				Config: testAccAccessFlowResourceConfig("access-flow-name"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttrSet("apono_access_flow.test", "id"),
-					resource.TestCheckResourceAttr("apono_access_flow.test", "name", "access-flow-name"),
-					resource.TestCheckResourceAttr("apono_access_flow.test", "active", "true"),
-					resource.TestCheckResourceAttr("apono_access_flow.test", "settings.require_all_approvers", "true"),
-					resource.TestCheckResourceAttr("apono_access_flow.test", "grantees.#", "2"),
-					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test", "grantees.*", map[string]string{
+					resource.TestCheckResourceAttrSet("apono_access_flow.test_access_flow_resource", "id"),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "name", "access-flow-name"),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "active", "true"),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "settings.require_all_approvers", "true"),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "grantees.#", "2"),
+					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "grantees.*", map[string]string{
 						"type": "group",
 						"name": "Test Group 1",
 					}),
-					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test", "integration_targets.*", map[string]string{
+					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "integration_targets.*", map[string]string{
 						"name":          "Postgres DEV",
 						"resource_type": "postgresql-db",
 					}),
-					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test", "approvers.*", map[string]string{
+					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "approvers.*", map[string]string{
 						"type": "context_attribute",
 						"name": "Manager",
 					}),
@@ -50,7 +50,7 @@ func TestAccAccessFlowResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
-				ResourceName:      "apono_access_flow.test",
+				ResourceName:      "apono_access_flow.test_access_flow_resource",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -58,7 +58,7 @@ func TestAccAccessFlowResource(t *testing.T) {
 			{
 				Config: testAccAccessFlowResourceConfig("updated-name"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("apono_access_flow.test", "name", "updated-name"),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "name", "updated-name"),
 				),
 			},
 			// Delete testing automatically occurs in TestCase
@@ -73,7 +73,7 @@ provider apono {
   personal_token = "1234567890abcdefg"
 }
 
-resource "apono_access_flow" "test" {
+resource "apono_access_flow" "test_access_flow_resource" {
   name = "%[1]s"
   active = true
   revoke_after_in_sec = 3600

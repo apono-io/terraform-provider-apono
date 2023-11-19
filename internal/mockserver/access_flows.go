@@ -54,6 +54,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 
 		return resp, nil
 	})
+
 	httpmock.RegisterResponder(http.MethodGet, `=~^http://api\.apono\.dev/api/v1/access-flows/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
 		id := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
 		accessFlow, exists := accessFlows[id]
@@ -73,6 +74,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 
 		return resp, nil
 	})
+
 	httpmock.RegisterResponder(http.MethodPatch, `=~^http://api\.apono\.dev/api/v1/access-flows/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
 		id := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
 
@@ -131,6 +133,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 
 		return resp, nil
 	})
+
 	httpmock.RegisterResponder(http.MethodDelete, `=~^http://api\.apono\.dev/api/v1/access-flows/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
 		id := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
 
@@ -154,6 +157,8 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 	})
 }
 
+// fixCreateDateOnJsonResponse is a workaround for when the AccessFlow model is serialized the
+// CreatedDate field is not being set correctly. This is a bug in the 'httpmock' library.
 func fixCreateDateOnJsonResponse(accessFlow *apono.AccessFlowV1) (map[string]interface{}, error) {
 	cleanJson, err := json.Marshal(accessFlow)
 	if err != nil {

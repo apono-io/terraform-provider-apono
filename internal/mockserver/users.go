@@ -39,6 +39,22 @@ func SetupMockHttpServerUsersV2Endpoints(existingUsers []apono.UserModel) {
 
 		return resp, nil
 	})
+
+	httpmock.RegisterResponder(http.MethodGet, "http://api.apono.dev/api/v2/users", func(req *http.Request) (*http.Response, error) {
+		resp, err := httpmock.NewJsonResponse(200, apono.PaginatedResponseUserModel{
+			Data: existingUsers,
+			Pagination: apono.PaginationInfo{
+				Total:  int32(len(existingUsers)),
+				Limit:  int32(len(existingUsers)),
+				Offset: 0,
+			},
+		})
+		if err != nil {
+			return httpmock.NewStringResponse(500, err.Error()), nil
+		}
+
+		return resp, nil
+	})
 }
 
 func CreateMockUsers() []apono.UserModel {

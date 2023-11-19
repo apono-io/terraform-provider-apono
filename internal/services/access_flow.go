@@ -13,12 +13,8 @@ import (
 	"strings"
 )
 
-func ConvertToAccessFlowModel(ctx context.Context, aponoClient *apono.APIClient, accessFlow *apono.AccessFlowV1) (*models.AccessFlowModel, diag.Diagnostics) {
-	data := models.AccessFlowModel{}
-	data.ID = types.StringValue(accessFlow.GetId())
-	data.Name = types.StringValue(accessFlow.GetName())
-	data.Active = types.BoolValue(accessFlow.GetActive())
-	data.RevokeAfterInSec = types.NumberValue(big.NewFloat(float64(accessFlow.GetRevokeAfterInSec())))
+func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apono.APIClient, accessFlow *apono.AccessFlowV1) (*models.AccessFlowModel, diag.Diagnostics) {
+	revokeAfterInSec := types.NumberValue(big.NewFloat(float64(accessFlow.GetRevokeAfterInSec())))
 
 	trigger := accessFlow.GetTrigger()
 	dataTrigger := models.Trigger{
@@ -45,44 +41,49 @@ func ConvertToAccessFlowModel(ctx context.Context, aponoClient *apono.APIClient,
 			DaysInWeek: daysInWeek,
 			TimeZone:   types.StringValue(timeframe.GetTimeZone()),
 		}
-
 	}
-	data.Trigger = &dataTrigger
 
 	availableIdentities, _, err := aponoClient.IdentitiesApi.ListIdentities(ctx).Execute()
 	if err != nil {
 		return nil, utils.GetDiagnosticsForApiError(err, "list", "identities", "")
 	}
 
+	availableUsers, _, err := aponoClient.UsersApi.ListUsers(ctx).Execute()
+	if err != nil {
+		return nil, utils.GetDiagnosticsForApiError(err, "list", "users", "")
+	}
+
 	var dataGrantees []models.Identity
 	for _, grantee := range accessFlow.GetGrantees() {
-		identity, diagnostics := convertToIdentityModel(ctx, grantee.Id, strings.ToLower(grantee.Type), aponoClient, availableIdentities.Data)
+		identity, diagnostics := convertIdentityApiToTerraformModel(grantee.Id, strings.ToLower(grantee.Type), availableIdentities.Data, availableUsers.Data)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics
 		}
 
 		dataGrantees = append(dataGrantees, *identity)
 	}
+
+	// This converts the list of identities to a Terraform Set, which require map of attribute name to type.
 	setGrantees, diags := types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.IdentityObject}, getUniqueListOfIdentities(dataGrantees))
 	if len(diags) > 0 {
 		return nil, diags
 	}
-	data.Grantees = setGrantees
 
 	var dataApprovers []models.Identity
 	for _, approver := range accessFlow.GetApprovers() {
-		identity, diagnostics := convertToIdentityModel(ctx, approver.Id, strings.ToLower(approver.Type), aponoClient, availableIdentities.Data)
+		identity, diagnostics := convertIdentityApiToTerraformModel(approver.Id, strings.ToLower(approver.Type), availableIdentities.Data, availableUsers.Data)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics
 		}
 
 		dataApprovers = append(dataApprovers, *identity)
 	}
+
+	// This converts the list of identities to a Terraform Set, which require map of attribute name to type.
 	setApprovers, diags := types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.IdentityObject}, getUniqueListOfIdentities(dataApprovers))
 	if len(diags) > 0 {
 		return nil, diags
 	}
-	data.Approvers = setApprovers
 
 	availableIntegrations, _, err := aponoClient.IntegrationsApi.ListIntegrationsV2(ctx).Execute()
 	if err != nil {
@@ -92,45 +93,57 @@ func ConvertToAccessFlowModel(ctx context.Context, aponoClient *apono.APIClient,
 	integrationTargets := accessFlow.GetIntegrationTargets()
 	var dataIntegrationTargets []models.IntegrationTarget
 	for _, integrationTarget := range integrationTargets {
-		integration, diagnostics := convertToIntegrationTargetModel(ctx, &integrationTarget, availableIntegrations.Data)
+		integration, diagnostics := convertIntegrationTargetApiToTerraformModel(ctx, &integrationTarget, availableIntegrations.Data)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics
 		}
 
 		dataIntegrationTargets = append(dataIntegrationTargets, *integration)
 	}
-	data.IntegrationTargets = dataIntegrationTargets
 
-	settings, ok := accessFlow.GetSettingsOk()
-	if ok && settings != nil {
-		dataSettings := models.Settings{
-			RequireJustificationOnRequestAgain: types.BoolValue(settings.GetRequireJustificationOnRequestAgain()),
-			RequireAllApprovers:                types.BoolValue(settings.GetRequireAllApprovers()),
-			ApproverCannotApproveHimself:       types.BoolValue(settings.GetApproverCannotApproveHimself()),
+	var dataSettings *models.Settings
+	existingSettings, ok := accessFlow.GetSettingsOk()
+	if ok && existingSettings != nil {
+		dataSettings = &models.Settings{
+			RequireJustificationOnRequestAgain: types.BoolValue(existingSettings.GetRequireJustificationOnRequestAgain()),
+			RequireAllApprovers:                types.BoolValue(existingSettings.GetRequireAllApprovers()),
+			ApproverCannotApproveHimself:       types.BoolValue(existingSettings.GetApproverCannotApproveHimself()),
 		}
-		data.Settings = &dataSettings
+	} else {
+		dataSettings = nil
+	}
+
+	data := models.AccessFlowModel{
+		ID:                 types.StringValue(accessFlow.GetId()),
+		Name:               types.StringValue(accessFlow.GetName()),
+		Active:             types.BoolValue(accessFlow.GetActive()),
+		RevokeAfterInSec:   revokeAfterInSec,
+		Trigger:            &dataTrigger,
+		Grantees:           setGrantees,
+		IntegrationTargets: dataIntegrationTargets,
+		Approvers:          setApprovers,
+		Settings:           dataSettings,
 	}
 
 	return &data, nil
 }
 
-func ConvertToAccessFlowUpsertApiModel(ctx context.Context, aponoClient *apono.APIClient, accessFlow *models.AccessFlowModel) (*apono.UpsertAccessFlowV1, diag.Diagnostics) {
-	var data apono.UpsertAccessFlowV1
-
-	data.Name = accessFlow.Name.ValueString()
-	data.Active = accessFlow.Active.ValueBool()
+func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apono.APIClient, accessFlow *models.AccessFlowModel) (*apono.UpsertAccessFlowV1, diag.Diagnostics) {
 	revokeAfterInSec, _ := accessFlow.RevokeAfterInSec.ValueBigFloat().Int64()
-	data.RevokeAfterInSec = int32(revokeAfterInSec)
 
-	dataTrigger, diagnostics := convertTriggerToApiModel(*accessFlow.Trigger)
+	dataTrigger, diagnostics := convertTriggerTerraformModelToApi(*accessFlow.Trigger)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
-	data.Trigger = *dataTrigger
 
 	availableIdentities, _, err := aponoClient.IdentitiesApi.ListIdentities(ctx).Execute()
 	if err != nil {
 		return nil, utils.GetDiagnosticsForApiError(err, "list", "identities", "")
+	}
+
+	availableUsers, _, err := aponoClient.UsersApi.ListUsers(ctx).Execute()
+	if err != nil {
+		return nil, utils.GetDiagnosticsForApiError(err, "list", "users", "")
 	}
 
 	existingGrantees := make([]models.Identity, 0, len(accessFlow.Grantees.Elements()))
@@ -141,7 +154,7 @@ func ConvertToAccessFlowUpsertApiModel(ctx context.Context, aponoClient *apono.A
 
 	var dataGrantees []apono.GranteeV1
 	for _, grantee := range existingGrantees {
-		granteeIds, diagnostics := getIdentitiesIdsByNameAndType(ctx, grantee.Name.ValueString(), grantee.Type.ValueString(), availableIdentities.Data, aponoClient)
+		granteeIds, diagnostics := getIdentitiesIdsByNameAndType(grantee.Name.ValueString(), grantee.Type.ValueString(), availableIdentities.Data, availableUsers.Data)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics
 		}
@@ -153,7 +166,6 @@ func ConvertToAccessFlowUpsertApiModel(ctx context.Context, aponoClient *apono.A
 			})
 		}
 	}
-	data.Grantees = dataGrantees
 
 	existingApprovers := make([]models.Identity, 0, len(accessFlow.Approvers.Elements()))
 	diagnostics = accessFlow.Approvers.ElementsAs(ctx, &existingApprovers, false)
@@ -163,7 +175,7 @@ func ConvertToAccessFlowUpsertApiModel(ctx context.Context, aponoClient *apono.A
 
 	var dataApprovers []apono.ApproverV1
 	for _, approver := range existingApprovers {
-		approverIds, diagnostics := getIdentitiesIdsByNameAndType(ctx, approver.Name.ValueString(), approver.Type.ValueString(), availableIdentities.Data, aponoClient)
+		approverIds, diagnostics := getIdentitiesIdsByNameAndType(approver.Name.ValueString(), approver.Type.ValueString(), availableIdentities.Data, availableUsers.Data)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics
 		}
@@ -175,7 +187,6 @@ func ConvertToAccessFlowUpsertApiModel(ctx context.Context, aponoClient *apono.A
 			})
 		}
 	}
-	data.Approvers = dataApprovers
 
 	availableIntegrations, _, err := aponoClient.IntegrationsApi.ListIntegrationsV2(ctx).Execute()
 	if err != nil {
@@ -184,15 +195,15 @@ func ConvertToAccessFlowUpsertApiModel(ctx context.Context, aponoClient *apono.A
 
 	var dataIntegrationTargets []apono.AccessTargetIntegrationV1
 	for _, integrationTarget := range accessFlow.IntegrationTargets {
-		dataIntegrationTarget, diagnostics := convertIntegrationTargetToApiModel(integrationTarget, availableIntegrations.Data)
+		dataIntegrationTarget, diagnostics := convertIntegrationTargetTerraformModelToApi(integrationTarget, availableIntegrations.Data)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics
 		}
 
 		dataIntegrationTargets = append(dataIntegrationTargets, *dataIntegrationTarget)
 	}
-	data.IntegrationTargets = dataIntegrationTargets
 
+	setting := apono.NullableAccessFlowV1Settings{}
 	if accessFlow.Settings != nil {
 		settings := apono.AccessFlowV1Settings{
 			RequireJustificationOnRequestAgain: *apono.NewNullableBool(accessFlow.Settings.RequireJustificationOnRequestAgain.ValueBoolPointer()),
@@ -200,14 +211,27 @@ func ConvertToAccessFlowUpsertApiModel(ctx context.Context, aponoClient *apono.A
 			ApproverCannotApproveHimself:       *apono.NewNullableBool(accessFlow.Settings.ApproverCannotApproveHimself.ValueBoolPointer()),
 		}
 
-		data.Settings = *apono.NewNullableAccessFlowV1Settings(&settings)
+		setting.Set(&settings)
+	} else {
+		setting.Unset()
+	}
+
+	data := apono.UpsertAccessFlowV1{
+		Name:               accessFlow.Name.ValueString(),
+		Active:             accessFlow.Active.ValueBool(),
+		RevokeAfterInSec:   int32(revokeAfterInSec),
+		Trigger:            *dataTrigger,
+		Grantees:           dataGrantees,
+		Approvers:          dataApprovers,
+		IntegrationTargets: dataIntegrationTargets,
+		Settings:           setting,
 	}
 
 	return &data, nil
 }
 
-func ConvertToAccessFlowUpdateApiModel(ctx context.Context, aponoClient *apono.APIClient, accessFlow *models.AccessFlowModel) (*apono.UpdateAccessFlowV1, diag.Diagnostics) {
-	updateAccessFlowRequest, diagnostics := ConvertToAccessFlowUpsertApiModel(ctx, aponoClient, accessFlow)
+func ConvertAccessFlowTerraformModelToUpdateApi(ctx context.Context, aponoClient *apono.APIClient, accessFlow *models.AccessFlowModel) (*apono.UpdateAccessFlowV1, diag.Diagnostics) {
+	updateAccessFlowRequest, diagnostics := ConvertAccessFlowTerraformModelToApi(ctx, aponoClient, accessFlow)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
@@ -239,58 +263,76 @@ func ConvertToAccessFlowUpdateApiModel(ctx context.Context, aponoClient *apono.A
 
 }
 
-func convertToIntegrationTargetModel(ctx context.Context, integrationTarget *apono.AccessTargetIntegrationV1, availableIntegrations []apono.Integration) (*models.IntegrationTarget, diag.Diagnostics) {
+func convertIntegrationTargetApiToTerraformModel(ctx context.Context, integrationTarget *apono.AccessTargetIntegrationV1, availableIntegrations []apono.Integration) (*models.IntegrationTarget, diag.Diagnostics) {
+	var result *models.IntegrationTarget
 	for _, integration := range availableIntegrations {
 		if integration.Id == integrationTarget.GetIntegrationId() {
-			resourceIncludeFilters := convertTagsToFiltersModel(integrationTarget.GetResourceTagIncludes())
-			resourceExcludeFilters := convertTagsToFiltersModel(integrationTarget.GetResourceTagExcludes())
+			resourceIncludeFilters := convertTagV1ListToResourceFilter(integrationTarget.GetResourceTagIncludes())
+			resourceExcludeFilters := convertTagV1ListToResourceFilter(integrationTarget.GetResourceTagExcludes())
 
 			permissions, diagnostics := types.SetValueFrom(ctx, types.StringType, integrationTarget.GetPermissions())
 			if len(diagnostics) > 0 {
 				return nil, diagnostics
 			}
 
-			return &models.IntegrationTarget{
+			result = &models.IntegrationTarget{
 				Name:                   types.StringValue(integration.GetName()),
 				ResourceType:           types.StringValue(integrationTarget.GetResourceType()),
 				ResourceIncludeFilters: resourceIncludeFilters,
 				ResourceExcludeFilters: resourceExcludeFilters,
 				Permissions:            permissions,
-			}, nil
+			}
 		}
 	}
 
-	diagnostics := diag.Diagnostics{}
-	diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration: %s", integrationTarget.GetIntegrationId()))
-	return nil, diagnostics
+	if result == nil {
+		diagnostics := diag.Diagnostics{}
+		diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration: %s", integrationTarget.GetIntegrationId()))
+		return nil, diagnostics
+	}
 
+	return result, nil
 }
 
-func convertToIdentityModel(ctx context.Context, identityId string, identityType string, aponoClient *apono.APIClient, availableIdentities []apono.IdentityModel2) (*models.Identity, diag.Diagnostics) {
+func convertIdentityApiToTerraformModel(identityId string, identityType string, availableIdentities []apono.IdentityModel2, availableUsers []apono.UserModel) (*models.Identity, diag.Diagnostics) {
 	switch identityType {
 	case "user":
-		user, _, err := aponoClient.UsersApi.GetUser(ctx, identityId).Execute()
-		if err != nil {
-			return nil, utils.GetDiagnosticsForApiError(err, "list", "user", identityId)
-		}
-		return &models.Identity{
-			Name: types.StringValue(user.GetEmail()),
-			Type: types.StringValue("user"),
-		}, nil
-
-	case "group", "context_attribute":
-		for _, identity := range availableIdentities {
-			if identity.Id == identityId {
-				return &models.Identity{
-					Name: types.StringValue(identity.GetName()),
-					Type: types.StringValue(identityType),
-				}, nil
+		var result *models.Identity
+		for _, user := range availableUsers {
+			if user.Id == identityId {
+				result = &models.Identity{
+					Name: types.StringValue(user.GetEmail()),
+					Type: types.StringValue("user"),
+				}
 			}
 		}
 
-		diagnostics := diag.Diagnostics{}
-		diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get identity %s: %s", identityType, identityId))
-		return nil, diagnostics
+		if result == nil {
+			diagnostics := diag.Diagnostics{}
+			diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get user: %s", identityId))
+			return nil, diagnostics
+		}
+
+		return result, nil
+
+	case "group", "context_attribute":
+		var result *models.Identity
+		for _, identity := range availableIdentities {
+			if identity.Id == identityId {
+				result = &models.Identity{
+					Name: types.StringValue(identity.GetName()),
+					Type: types.StringValue(identityType),
+				}
+			}
+		}
+
+		if result == nil {
+			diagnostics := diag.Diagnostics{}
+			diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get identity %s: %s", identityType, identityId))
+			return nil, diagnostics
+		}
+
+		return result, nil
 
 	default:
 		diagnostics := diag.Diagnostics{}
@@ -302,14 +344,15 @@ func convertToIdentityModel(ctx context.Context, identityId string, identityType
 	}
 }
 
-func convertIntegrationTargetToApiModel(integrationTarget models.IntegrationTarget, availableIntegrations []apono.Integration) (*apono.AccessTargetIntegrationV1, diag.Diagnostics) {
+func convertIntegrationTargetTerraformModelToApi(integrationTarget models.IntegrationTarget, availableIntegrations []apono.Integration) (*apono.AccessTargetIntegrationV1, diag.Diagnostics) {
+	var result *apono.AccessTargetIntegrationV1
 	for _, integration := range availableIntegrations {
 		if integration.Name == integrationTarget.Name.ValueString() && slices.Contains(integration.ConnectedResourceTypes, integrationTarget.ResourceType.ValueString()) {
-			resourceTagInclude, diagnostics := convertFiltersToListTagsApiModel(integrationTarget.ResourceIncludeFilters)
+			resourceTagInclude, diagnostics := convertResourceFilterListToTagV1Api(integrationTarget.ResourceIncludeFilters)
 			if len(diagnostics) > 0 {
 				return nil, diagnostics
 			}
-			resourceTagExclude, diagnostics := convertFiltersToListTagsApiModel(integrationTarget.ResourceExcludeFilters)
+			resourceTagExclude, diagnostics := convertResourceFilterListToTagV1Api(integrationTarget.ResourceExcludeFilters)
 			if len(diagnostics) > 0 {
 				return nil, diagnostics
 			}
@@ -319,28 +362,32 @@ func convertIntegrationTargetToApiModel(integrationTarget models.IntegrationTarg
 				permissions = append(permissions, utils.AttrValueToString(permission))
 			}
 
-			return &apono.AccessTargetIntegrationV1{
+			result = &apono.AccessTargetIntegrationV1{
 				IntegrationId:       integration.Id,
 				ResourceType:        integrationTarget.ResourceType.ValueString(),
 				ResourceTagIncludes: resourceTagInclude,
 				ResourceTagExcludes: resourceTagExclude,
 				Permissions:         permissions,
-			}, nil
+			}
 		}
 	}
 
-	diagnostics := diag.Diagnostics{}
-	diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration: (%s) with resource type (%s)", integrationTarget.Name.ValueString(), integrationTarget.ResourceType.ValueString()))
-	return nil, diagnostics
+	if result == nil {
+		diagnostics := diag.Diagnostics{}
+		diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration: (%s) with resource type (%s)", integrationTarget.Name.ValueString(), integrationTarget.ResourceType.ValueString()))
+		return nil, diagnostics
+	}
+
+	return result, nil
 }
 
-func convertFiltersToListTagsApiModel(filters []models.ResourceFilter) ([]apono.TagV1, diag.Diagnostics) {
+func convertResourceFilterListToTagV1Api(filters []models.ResourceFilter) ([]apono.TagV1, diag.Diagnostics) {
 	data := []apono.TagV1{}
 	for _, filter := range filters {
 		switch filter.Type.ValueString() {
 		case "tag":
 			data = append(data, apono.TagV1{
-				Name:  filter.Name.ValueString(),
+				Name:  filter.Key.ValueString(),
 				Value: filter.Value.ValueString(),
 			})
 		case "id":
@@ -364,7 +411,7 @@ func convertFiltersToListTagsApiModel(filters []models.ResourceFilter) ([]apono.
 	return data, nil
 }
 
-func convertTagsToFiltersModel(tags []apono.TagV1) []models.ResourceFilter {
+func convertTagV1ListToResourceFilter(tags []apono.TagV1) []models.ResourceFilter {
 	var filters []models.ResourceFilter
 	for _, tag := range tags {
 		switch tag.Name {
@@ -381,7 +428,7 @@ func convertTagsToFiltersModel(tags []apono.TagV1) []models.ResourceFilter {
 		default:
 			filters = append(filters, models.ResourceFilter{
 				Type:  types.StringValue("tag"),
-				Name:  types.StringValue(tag.Name),
+				Key:   types.StringValue(tag.Name),
 				Value: types.StringValue(tag.Value),
 			})
 		}
@@ -390,7 +437,7 @@ func convertTagsToFiltersModel(tags []apono.TagV1) []models.ResourceFilter {
 	return filters
 }
 
-func convertTriggerToApiModel(trigger models.Trigger) (*apono.AccessFlowTriggerV1, diag.Diagnostics) {
+func convertTriggerTerraformModelToApi(trigger models.Trigger) (*apono.AccessFlowTriggerV1, diag.Diagnostics) {
 	var data apono.AccessFlowTriggerV1
 	data.Type = trigger.Type.ValueString()
 
@@ -426,15 +473,23 @@ func convertTriggerToApiModel(trigger models.Trigger) (*apono.AccessFlowTriggerV
 	return &data, nil
 }
 
-func getIdentitiesIdsByNameAndType(ctx context.Context, identityName string, identityType string, availableIdentities []apono.IdentityModel2, aponoClient *apono.APIClient) ([]string, diag.Diagnostics) {
+func getIdentitiesIdsByNameAndType(identityName string, identityType string, availableIdentities []apono.IdentityModel2, availableUsers []apono.UserModel) ([]string, diag.Diagnostics) {
 	switch identityType {
 	case "user":
-		user, _, err := aponoClient.UsersApi.GetUser(ctx, identityName).Execute()
-		if err != nil {
-			return nil, utils.GetDiagnosticsForApiError(err, "get", "user", identityName)
+		var userId string
+		for _, user := range availableUsers {
+			if user.Email == identityName {
+				userId = user.GetId()
+			}
 		}
 
-		return []string{user.GetId()}, nil
+		if userId == "" {
+			diagnostics := diag.Diagnostics{}
+			diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get user: %s", identityName))
+			return nil, diagnostics
+		}
+
+		return []string{userId}, nil
 
 	case "group", "context_attribute":
 		var identitiesIds []string
@@ -461,6 +516,8 @@ func getIdentitiesIdsByNameAndType(ctx context.Context, identityName string, ide
 	}
 }
 
+// getUniqueListOfIdentities returns a unique list of identities.
+// This is used because the API returns duplicate identities in case of groups with the same name.
 func getUniqueListOfIdentities(identities []models.Identity) []models.Identity {
 	var uniqueIdentities []models.Identity
 	existingKeys := make(map[models.Identity]bool)

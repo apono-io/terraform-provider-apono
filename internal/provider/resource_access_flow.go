@@ -8,6 +8,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
 	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
@@ -22,6 +23,8 @@ import (
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &accessFlowResource{}
 var _ resource.ResourceWithImportState = &accessFlowResource{}
+
+var _ resource.ResourceWithValidateConfig = &accessFlowResource{}
 
 func NewAccessFlowResource() resource.Resource {
 	return &accessFlowResource{}
@@ -51,8 +54,8 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 					stringvalidator.OneOf("id", "name", "tag"),
 				},
 			},
-			"name": schema.StringAttribute{
-				MarkdownDescription: "Filter name, only used when type is 'tag'",
+			"key": schema.StringAttribute{
+				MarkdownDescription: "Filter key, only used when type is 'tag'",
 				Optional:            true,
 			},
 			"value": schema.StringAttribute{
@@ -70,6 +73,9 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 			"type": schema.StringAttribute{
 				MarkdownDescription: "Identity type (user, group, context_attribute)",
 				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("user", "group", "context_attribute"),
+				},
 			},
 		},
 	}
@@ -103,6 +109,9 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 					"type": schema.StringAttribute{
 						MarkdownDescription: "Type of trigger, currently only 'user_request' is supported",
 						Required:            true,
+						Validators: []validator.String{
+							stringvalidator.OneOf("user_request"),
+						},
 					},
 					"timeframe": schema.SingleNestedAttribute{
 						MarkdownDescription: "Timeframe for trigger to be active",
@@ -244,7 +253,7 @@ func (a accessFlowResource) Read(ctx context.Context, request resource.ReadReque
 		return
 	}
 
-	model, diagnostics := services.ConvertToAccessFlowModel(ctx, a.provider.client, accessFlow)
+	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
@@ -268,7 +277,7 @@ func (a accessFlowResource) Create(ctx context.Context, request resource.CreateR
 		return
 	}
 
-	newAccessFlowRequest, diagnostics := services.ConvertToAccessFlowUpsertApiModel(ctx, a.provider.client, data)
+	newAccessFlowRequest, diagnostics := services.ConvertAccessFlowTerraformModelToApi(ctx, a.provider.client, data)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
@@ -282,7 +291,7 @@ func (a accessFlowResource) Create(ctx context.Context, request resource.CreateR
 		return
 	}
 
-	model, diagnostics := services.ConvertToAccessFlowModel(ctx, a.provider.client, accessFlow)
+	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
@@ -311,7 +320,7 @@ func (a accessFlowResource) Update(ctx context.Context, request resource.UpdateR
 		"id": data.ID.ValueString(),
 	})
 
-	updateAccessFlowRequest, diagnostics := services.ConvertToAccessFlowUpdateApiModel(ctx, a.provider.client, data)
+	updateAccessFlowRequest, diagnostics := services.ConvertAccessFlowTerraformModelToUpdateApi(ctx, a.provider.client, data)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
@@ -327,7 +336,7 @@ func (a accessFlowResource) Update(ctx context.Context, request resource.UpdateR
 		return
 	}
 
-	model, diagnostics := services.ConvertToAccessFlowModel(ctx, a.provider.client, accessFlow)
+	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
@@ -384,7 +393,7 @@ func (a accessFlowResource) ImportState(ctx context.Context, request resource.Im
 		return
 	}
 
-	model, diagnostics := services.ConvertToAccessFlowModel(ctx, a.provider.client, accessFlow)
+	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
@@ -396,4 +405,27 @@ func (a accessFlowResource) ImportState(ctx context.Context, request resource.Im
 	tflog.Debug(ctx, "Successfully imported access flow", map[string]interface{}{
 		"id": accessFlowId,
 	})
+}
+
+func (a *accessFlowResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	if a.provider == nil {
+		return
+	}
+
+	var model models.AccessFlowModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &model)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	attributePath := path.Root("revoke_after_in_sec")
+
+	revokeAfterInSec, _ := model.RevokeAfterInSec.ValueBigFloat().Int64()
+	if revokeAfterInSec != -1 && revokeAfterInSec <= 0 {
+		resp.Diagnostics.AddAttributeError(
+			attributePath,
+			"Invalid revoke_after_in_sec value",
+			"must be -1 or positive number",
+		)
+	}
 }

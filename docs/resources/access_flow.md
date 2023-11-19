@@ -104,7 +104,7 @@ Required:
 
 Optional:
 
-- `name` (String) Filter name, only used when type is 'tag'
+- `key` (String) Filter key, only used when type is 'tag'
 
 
 <a id="nestedatt--integration_targets--resource_include_filters"></a>
@@ -117,7 +117,7 @@ Required:
 
 Optional:
 
-- `name` (String) Filter name, only used when type is 'tag'
+- `key` (String) Filter key, only used when type is 'tag'
 
 
 

@@ -46,7 +46,7 @@ type Settings struct {
 
 type ResourceFilter struct {
 	Type  types.String `tfsdk:"type"`
-	Name  types.String `tfsdk:"name"`
+	Key   types.String `tfsdk:"key"`
 	Value types.String `tfsdk:"value"`
 }
 
