@@ -34,7 +34,7 @@ type Timeframe struct {
 type Settings struct {
 	RequireJustificationOnRequestAgain types.Bool `tfsdk:"require_justification_on_request_again"`
 	RequireAllApprovers                types.Bool `tfsdk:"require_all_approvers"`
-	ApproverCannotApproveHimself       types.Bool `tfsdk:"approver_cannot_approve_himself"`
+	ApproverCannotSelfApprove          types.Bool `tfsdk:"approver_cannot_self_approve"`
 }
 
 type Identity struct {

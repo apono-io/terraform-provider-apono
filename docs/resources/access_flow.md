@@ -49,8 +49,8 @@ resource "apono_access_flow" "postgresql_prod" {
     }
   ]
   settings = {
-    approver_cannot_approve_himself = true
-    require_approver_justification  = true
+    approver_cannot_self_approve   = true
+    require_approver_justification = true
   }
 }
 ```
@@ -172,6 +172,6 @@ Optional:
 
 Optional:
 
-- `approver_cannot_approve_himself` (Boolean) Approver cannot self-approve the request.
+- `approver_cannot_self_approve` (Boolean) Approver cannot self-approve the request.
 - `require_all_approvers` (Boolean) All approvers must approver the request.
 - `require_justification_on_request_again` (Boolean) Require justification on request again.

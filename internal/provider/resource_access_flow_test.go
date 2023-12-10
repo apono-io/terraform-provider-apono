@@ -145,7 +145,7 @@ approvers = [
     }
   ]
 settings = {
-    approver_cannot_approve_himself = true
+    approver_cannot_self_approve = true
     require_all_approvers = true
   }
 }

@@ -165,7 +165,7 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 							boolplanmodifier.UseStateForUnknown(),
 						},
 					},
-					"approver_cannot_approve_himself": schema.BoolAttribute{
+					"approver_cannot_self_approve": schema.BoolAttribute{
 						MarkdownDescription: "Approver cannot self-approve the request.",
 						Optional:            true,
 						Computed:            true,
