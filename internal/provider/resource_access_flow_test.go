@@ -15,10 +15,16 @@ func TestAccAccessFlowResource(t *testing.T) {
 
 	identities := mockserver.CreateMockIdentities()
 	mockserver.SetupMockHttpServerIdentitiesV2Endpoints(identities)
+
 	integrations := mockserver.CreateMockIntegrations()
 	mockserver.SetupMockHttpServerIntegrationV2Endpoints(integrations)
+
 	users := mockserver.CreateMockUsers()
 	mockserver.SetupMockHttpServerUsersV2Endpoints(users)
+
+	accessBundles := mockserver.CreateMockAccessBundles()
+	mockserver.SetupMockHttpServerAccessBundleV1Endpoints(accessBundles)
+
 	mockserver.SetupMockHttpServerAccessFlowV1Endpoints(make([]apono.AccessFlowV1, 0))
 
 	resource.Test(t, resource.TestCase{
@@ -122,6 +128,11 @@ integration_targets = [
       resource_type = "mysql-cluster"
       permissions = ["Admin"]
     }
+  ]
+bundle_targets = [
+	{
+		name = "DB PROD"
+	}
   ]
 approvers = [
     {

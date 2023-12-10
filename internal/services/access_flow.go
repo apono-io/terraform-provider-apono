@@ -8,7 +8,6 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"golang.org/x/exp/slices"
 	"math/big"
 	"strings"
 )
@@ -85,20 +84,14 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 		return nil, diags
 	}
 
-	availableIntegrations, _, err := aponoClient.IntegrationsApi.ListIntegrationsV2(ctx).Execute()
-	if err != nil {
-		return nil, utils.GetDiagnosticsForApiError(err, "list", "integrations", "")
+	dataIntegrationTargets, diagnostics := ConvertIntegrationTargetsApiToTerraformModel(ctx, aponoClient, accessFlow.GetIntegrationTargets())
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
 	}
 
-	integrationTargets := accessFlow.GetIntegrationTargets()
-	var dataIntegrationTargets []models.IntegrationTarget
-	for _, integrationTarget := range integrationTargets {
-		integration, diagnostics := convertIntegrationTargetApiToTerraformModel(ctx, &integrationTarget, availableIntegrations.Data)
-		if len(diagnostics) > 0 {
-			return nil, diagnostics
-		}
-
-		dataIntegrationTargets = append(dataIntegrationTargets, *integration)
+	dataBundleTargets, diagnostics := ConvertBundleTargetsApiToTerraformModel(ctx, aponoClient, accessFlow.GetBundleTargets())
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
 	}
 
 	var dataSettings *models.Settings
@@ -121,6 +114,7 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 		Trigger:            &dataTrigger,
 		Grantees:           setGrantees,
 		IntegrationTargets: dataIntegrationTargets,
+		BundleTargets:      dataBundleTargets,
 		Approvers:          setApprovers,
 		Settings:           dataSettings,
 	}
@@ -188,19 +182,14 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 		}
 	}
 
-	availableIntegrations, _, err := aponoClient.IntegrationsApi.ListIntegrationsV2(ctx).Execute()
-	if err != nil {
-		return nil, utils.GetDiagnosticsForApiError(err, "list", "integrations", "")
+	dataIntegrationTargets, diagnostics := ConvertIntegrationTargetsTerraformModelToApi(ctx, aponoClient, accessFlow.IntegrationTargets)
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
 	}
 
-	var dataIntegrationTargets []apono.AccessTargetIntegrationV1
-	for _, integrationTarget := range accessFlow.IntegrationTargets {
-		dataIntegrationTarget, diagnostics := convertIntegrationTargetTerraformModelToApi(integrationTarget, availableIntegrations.Data)
-		if len(diagnostics) > 0 {
-			return nil, diagnostics
-		}
-
-		dataIntegrationTargets = append(dataIntegrationTargets, *dataIntegrationTarget)
+	dataBundleTargets, diagnostics := ConvertBundleTargetsTerraformModelToApi(ctx, aponoClient, accessFlow.BundleTargets)
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
 	}
 
 	setting := apono.NullableAccessFlowV1Settings{}
@@ -224,6 +213,7 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 		Grantees:           dataGrantees,
 		Approvers:          dataApprovers,
 		IntegrationTargets: dataIntegrationTargets,
+		BundleTargets:      dataBundleTargets,
 		Settings:           setting,
 	}
 
@@ -248,6 +238,20 @@ func ConvertAccessFlowTerraformModelToUpdateApi(ctx context.Context, aponoClient
 		approvers = updateAccessFlowRequest.Approvers
 	}
 
+	var integrationTargets []apono.AccessTargetIntegrationV1
+	if updateAccessFlowRequest.IntegrationTargets == nil {
+		integrationTargets = make([]apono.AccessTargetIntegrationV1, 0)
+	} else {
+		integrationTargets = updateAccessFlowRequest.IntegrationTargets
+	}
+
+	var bundleTargets []apono.AccessTargetBundleV1
+	if updateAccessFlowRequest.BundleTargets == nil {
+		bundleTargets = make([]apono.AccessTargetBundleV1, 0)
+	} else {
+		bundleTargets = updateAccessFlowRequest.BundleTargets
+	}
+
 	data := apono.UpdateAccessFlowV1{
 		Name:               *apono.NewNullableString(&updateAccessFlowRequest.Name),
 		Active:             *apono.NewNullableBool(&updateAccessFlowRequest.Active),
@@ -255,43 +259,12 @@ func ConvertAccessFlowTerraformModelToUpdateApi(ctx context.Context, aponoClient
 		Trigger:            *apono.NewNullableUpdateAccessFlowV1Trigger(&trigger),
 		Grantees:           updateAccessFlowRequest.Grantees,
 		Approvers:          approvers,
-		IntegrationTargets: updateAccessFlowRequest.IntegrationTargets,
+		IntegrationTargets: integrationTargets,
+		BundleTargets:      bundleTargets,
 		Settings:           updateAccessFlowRequest.Settings,
 	}
 
 	return &data, nil
-
-}
-
-func convertIntegrationTargetApiToTerraformModel(ctx context.Context, integrationTarget *apono.AccessTargetIntegrationV1, availableIntegrations []apono.Integration) (*models.IntegrationTarget, diag.Diagnostics) {
-	var result *models.IntegrationTarget
-	for _, integration := range availableIntegrations {
-		if integration.Id == integrationTarget.GetIntegrationId() {
-			resourceIncludeFilters := convertTagV1ListToResourceFilter(integrationTarget.GetResourceTagIncludes())
-			resourceExcludeFilters := convertTagV1ListToResourceFilter(integrationTarget.GetResourceTagExcludes())
-
-			permissions, diagnostics := types.SetValueFrom(ctx, types.StringType, integrationTarget.GetPermissions())
-			if len(diagnostics) > 0 {
-				return nil, diagnostics
-			}
-
-			result = &models.IntegrationTarget{
-				Name:                   types.StringValue(integration.GetName()),
-				ResourceType:           types.StringValue(integrationTarget.GetResourceType()),
-				ResourceIncludeFilters: resourceIncludeFilters,
-				ResourceExcludeFilters: resourceExcludeFilters,
-				Permissions:            permissions,
-			}
-		}
-	}
-
-	if result == nil {
-		diagnostics := diag.Diagnostics{}
-		diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration: %s", integrationTarget.GetIntegrationId()))
-		return nil, diagnostics
-	}
-
-	return result, nil
 }
 
 func convertIdentityApiToTerraformModel(identityId string, identityType string, availableIdentities []apono.IdentityModel2, availableUsers []apono.UserModel) (*models.Identity, diag.Diagnostics) {
@@ -342,43 +315,6 @@ func convertIdentityApiToTerraformModel(identityId string, identityType string, 
 		)
 		return nil, diagnostics
 	}
-}
-
-func convertIntegrationTargetTerraformModelToApi(integrationTarget models.IntegrationTarget, availableIntegrations []apono.Integration) (*apono.AccessTargetIntegrationV1, diag.Diagnostics) {
-	var result *apono.AccessTargetIntegrationV1
-	for _, integration := range availableIntegrations {
-		if integration.Name == integrationTarget.Name.ValueString() && slices.Contains(integration.ConnectedResourceTypes, integrationTarget.ResourceType.ValueString()) {
-			resourceTagInclude, diagnostics := convertResourceFilterListToTagV1Api(integrationTarget.ResourceIncludeFilters)
-			if len(diagnostics) > 0 {
-				return nil, diagnostics
-			}
-			resourceTagExclude, diagnostics := convertResourceFilterListToTagV1Api(integrationTarget.ResourceExcludeFilters)
-			if len(diagnostics) > 0 {
-				return nil, diagnostics
-			}
-
-			var permissions []string
-			for _, permission := range integrationTarget.Permissions.Elements() {
-				permissions = append(permissions, utils.AttrValueToString(permission))
-			}
-
-			result = &apono.AccessTargetIntegrationV1{
-				IntegrationId:       integration.Id,
-				ResourceType:        integrationTarget.ResourceType.ValueString(),
-				ResourceTagIncludes: resourceTagInclude,
-				ResourceTagExcludes: resourceTagExclude,
-				Permissions:         permissions,
-			}
-		}
-	}
-
-	if result == nil {
-		diagnostics := diag.Diagnostics{}
-		diagnostics.AddError("Client Error", fmt.Sprintf("Failed to get integration: (%s) with resource type (%s)", integrationTarget.Name.ValueString(), integrationTarget.ResourceType.ValueString()))
-		return nil, diagnostics
-	}
-
-	return result, nil
 }
 
 func convertResourceFilterListToTagV1Api(filters []models.ResourceFilter) ([]apono.TagV1, diag.Diagnostics) {

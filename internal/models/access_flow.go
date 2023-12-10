@@ -14,6 +14,7 @@ type AccessFlowModel struct {
 	Trigger            *Trigger            `tfsdk:"trigger"`
 	Grantees           types.Set           `tfsdk:"grantees"`
 	IntegrationTargets []IntegrationTarget `tfsdk:"integration_targets"`
+	BundleTargets      []BundleTarget      `tfsdk:"bundle_targets"`
 	Approvers          types.Set           `tfsdk:"approvers"`
 	Settings           *Settings           `tfsdk:"settings"`
 }
@@ -30,24 +31,10 @@ type Timeframe struct {
 	TimeZone   types.String `tfsdk:"time_zone"`
 }
 
-type IntegrationTarget struct {
-	Name                   types.String     `tfsdk:"name"`
-	ResourceType           types.String     `tfsdk:"resource_type"`
-	ResourceIncludeFilters []ResourceFilter `tfsdk:"resource_include_filters"`
-	ResourceExcludeFilters []ResourceFilter `tfsdk:"resource_exclude_filters"`
-	Permissions            types.Set        `tfsdk:"permissions"`
-}
-
 type Settings struct {
 	RequireJustificationOnRequestAgain types.Bool `tfsdk:"require_justification_on_request_again"`
 	RequireAllApprovers                types.Bool `tfsdk:"require_all_approvers"`
 	ApproverCannotApproveHimself       types.Bool `tfsdk:"approver_cannot_approve_himself"`
-}
-
-type ResourceFilter struct {
-	Type  types.String `tfsdk:"type"`
-	Key   types.String `tfsdk:"key"`
-	Value types.String `tfsdk:"value"`
 }
 
 type Identity struct {

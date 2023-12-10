@@ -28,6 +28,11 @@ resource "apono_access_flow" "postgresql_prod" {
       permissions   = ["READ_ONLY", "READ_WRITE", "ADMIN"]
     }
   ]
+  bundle_targets = [
+    {
+      name = "PROD ENV"
+    }
+  ]
   settings = {
     approver_cannot_approve_himself = true
     require_approver_justification  = true

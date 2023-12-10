@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/apono-io/apono-sdk-go"
 	"github.com/apono-io/terraform-provider-apono/internal/models"
+	"github.com/apono-io/terraform-provider-apono/internal/schemas"
 	"github.com/apono-io/terraform-provider-apono/internal/services"
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
 	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
@@ -45,33 +46,14 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 		allowedDaysOfTheWeek = append(allowedDaysOfTheWeek, string(day))
 	}
 
-	var resourceFilterSchema = schema.NestedAttributeObject{
-		Attributes: map[string]schema.Attribute{
-			"type": schema.StringAttribute{
-				MarkdownDescription: "Filter type, can be 'id', 'name' or 'tag'",
-				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("id", "name", "tag"),
-				},
-			},
-			"key": schema.StringAttribute{
-				MarkdownDescription: "Filter key, only used when type is 'tag'",
-				Optional:            true,
-			},
-			"value": schema.StringAttribute{
-				MarkdownDescription: "Filter value",
-				Required:            true,
-			},
-		},
-	}
 	var identitySchema = schema.NestedAttributeObject{
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Identity Name (in user type, use email address instead)",
+				MarkdownDescription: "Name of the grantee. When `type = context_attribute`, this is the shift name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.**",
 				Required:            true,
 			},
 			"type": schema.StringAttribute{
-				MarkdownDescription: "Identity type (user, group, context_attribute)",
+				MarkdownDescription: "Identity type. **Possible Values**: `context_attribute`, `group`, or `user`",
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("user", "group", "context_attribute"),
@@ -95,11 +77,11 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				Required:            true,
 			},
 			"active": schema.BoolAttribute{
-				MarkdownDescription: "Is Access Flow active",
+				MarkdownDescription: "Indicates whether Access flow is active or inactive",
 				Required:            true,
 			},
 			"revoke_after_in_sec": schema.NumberAttribute{
-				MarkdownDescription: "Number of seconds after which access should be revoked, -1 means never",
+				MarkdownDescription: "Number of seconds after which access should be revoked. To never revoke access, set the value to `-1`.",
 				Required:            true,
 			},
 			"trigger": schema.SingleNestedAttribute{
@@ -107,25 +89,25 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				Required:            true,
 				Attributes: map[string]schema.Attribute{
 					"type": schema.StringAttribute{
-						MarkdownDescription: "Type of trigger, currently only 'user_request' is supported",
+						MarkdownDescription: "Type of trigger. Only `user_request` is supported.",
 						Required:            true,
 						Validators: []validator.String{
 							stringvalidator.OneOf("user_request"),
 						},
 					},
 					"timeframe": schema.SingleNestedAttribute{
-						MarkdownDescription: "Timeframe for trigger to be active",
+						MarkdownDescription: "Active duration for the trigger.",
 						Optional:            true,
 						Attributes: map[string]schema.Attribute{
 							"start_time": schema.StringAttribute{
-								MarkdownDescription: "Timeframe start time, must be in HH:MM:SS format",
+								MarkdownDescription: "Beginning of the timeframe in `HH:MM:SS` format.",
 								Required:            true,
 								Validators: []validator.String{
 									stringvalidator.RegexMatches(utils.TimeRegex, "Time must be in HH:MM:SS format"),
 								},
 							},
 							"end_time": schema.StringAttribute{
-								MarkdownDescription: "Timeframe end time, must be in HH:MM:SS format",
+								MarkdownDescription: "End of the timeframe in `HH:MM:SS` format.",
 								Required:            true,
 								Validators: []validator.String{
 									stringvalidator.RegexMatches(utils.TimeRegex, "Time must be in HH:MM:SS format"),
@@ -133,14 +115,14 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 							},
 							"days_in_week": schema.SetAttribute{
 								ElementType:         types.StringType,
-								MarkdownDescription: "Days in week when timeframe is active (in uppercase)",
+								MarkdownDescription: "Names in uppercase of timeframe active days",
 								Required:            true,
 								Validators: []validator.Set{
 									setvalidator.ValueStringsAre(stringvalidator.OneOf(allowedDaysOfTheWeek...)),
 								},
 							},
 							"time_zone": schema.StringAttribute{
-								MarkdownDescription: "Timezone for timeframe, use timezone name (e.g. Europe/Prague). For all options see [Wiki Page](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List)",
+								MarkdownDescription: "Timezone name for the timeframe, such as `Europe/Prague`. For all options, see  [Wiki Page](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List).",
 								Required:            true,
 							},
 						},
@@ -152,37 +134,8 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				Required:            true,
 				NestedObject:        identitySchema,
 			},
-			"integration_targets": schema.SetNestedAttribute{
-				MarkdownDescription: "Represents number of resources from integration to grant access to. If both include and exclude filters are omitted then all resources will be targeted",
-				Required:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: "Target Integration name (must match existing integration name)",
-							Required:            true,
-						},
-						"resource_type": schema.StringAttribute{
-							MarkdownDescription: "Target resource type",
-							Required:            true,
-						},
-						"resource_include_filters": schema.SetNestedAttribute{
-							MarkdownDescription: "Include every resource that matches one of this filters",
-							Optional:            true,
-							NestedObject:        resourceFilterSchema,
-						},
-						"resource_exclude_filters": schema.SetNestedAttribute{
-							MarkdownDescription: "Exclude every resource that matches one of this filters",
-							Optional:            true,
-							NestedObject:        resourceFilterSchema,
-						},
-						"permissions": schema.SetAttribute{
-							MarkdownDescription: "Permissions to grant",
-							Required:            true,
-							ElementType:         types.StringType,
-						},
-					},
-				},
-			},
+			"integration_targets": schemas.GetIntegrationTargetSchema(false),
+			"bundle_targets":      schemas.GetBundleTargetSchema(false),
 			"approvers": schema.SetNestedAttribute{
 				MarkdownDescription: "Represents which identities should approve this access",
 				Optional:            true,
@@ -197,7 +150,7 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				},
 				Attributes: map[string]schema.Attribute{
 					"require_justification_on_request_again": schema.BoolAttribute{
-						MarkdownDescription: "Require justification on request again",
+						MarkdownDescription: "Require justification on request again.",
 						Optional:            true,
 						Computed:            true,
 						PlanModifiers: []planmodifier.Bool{
@@ -205,7 +158,7 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 						},
 					},
 					"require_all_approvers": schema.BoolAttribute{
-						MarkdownDescription: "Require all approvers",
+						MarkdownDescription: "All approvers must approver the request.",
 						Optional:            true,
 						Computed:            true,
 						PlanModifiers: []planmodifier.Bool{
@@ -213,7 +166,7 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 						},
 					},
 					"approver_cannot_approve_himself": schema.BoolAttribute{
-						MarkdownDescription: "Approver cannot approve himself",
+						MarkdownDescription: "Approver cannot self-approve the request.",
 						Optional:            true,
 						Computed:            true,
 						PlanModifiers: []planmodifier.Bool{
@@ -303,7 +256,6 @@ func (a accessFlowResource) Create(ctx context.Context, request resource.CreateR
 	tflog.Debug(ctx, "Successfully created access flow", map[string]interface{}{
 		"id": data.ID.ValueString(),
 	})
-
 }
 
 func (a accessFlowResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
@@ -426,6 +378,13 @@ func (a *accessFlowResource) ValidateConfig(ctx context.Context, req resource.Va
 			attributePath,
 			"Invalid revoke_after_in_sec value",
 			"must be -1 or positive number",
+		)
+	}
+
+	if len(model.IntegrationTargets) == 0 && len(model.BundleTargets) == 0 {
+		resp.Diagnostics.AddError(
+			"Invalid access flow configuration",
+			"at least one integration_target or bundle_target must be specified",
 		)
 	}
 }
