@@ -82,7 +82,7 @@ resource "apono_access_flow" "postgresql_prod" {
 
 Required:
 
-- `name` (String) Name of the grantee. When `type = context_attribute`, this is the shift name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.**
+- `name` (String) Name of the identity. When `type = context_attribute`, this is the shift name or manager attribute name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.**
 - `type` (String) Identity type. **Possible Values**: `context_attribute`, `group`, or `user`
 
 
@@ -114,7 +114,7 @@ Required:
 
 Required:
 
-- `name` (String) Name of the grantee. When `type = context_attribute`, this is the shift name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.**
+- `name` (String) Name of the identity. When `type = context_attribute`, this is the shift name or manager attribute name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.**
 - `type` (String) Identity type. **Possible Values**: `context_attribute`, `group`, or `user`
 
 
