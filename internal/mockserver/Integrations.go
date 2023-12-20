@@ -175,7 +175,7 @@ func CreateMockIntegrations() []apono.Integration {
 	details := "4 resources loaded"
 	return []apono.Integration{
 		{
-			Id:            uuid.NewString(),
+			Id:            "1",
 			Name:          "MySQL DEV",
 			Type:          MysqlType,
 			Status:        "Active",
@@ -190,7 +190,7 @@ func CreateMockIntegrations() []apono.Integration {
 			ConnectedResourceTypes: []string{"mysql-cluster", "mysql-db"},
 		},
 		{
-			Id:            uuid.NewString(),
+			Id:            "2",
 			Name:          "Postgres DEV",
 			Type:          PostgresqlType,
 			Status:        "Active",
@@ -207,10 +207,10 @@ func CreateMockIntegrations() []apono.Integration {
 				"region":    "us-east-1",
 				"secret_id": "my-secret-id",
 			},
-			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-db"},
+			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-database"},
 		},
 		{
-			Id:            uuid.NewString(),
+			Id:            "3",
 			Name:          "MySQL PROD",
 			Type:          MysqlType,
 			Status:        "Active",
@@ -227,7 +227,7 @@ func CreateMockIntegrations() []apono.Integration {
 			ConnectedResourceTypes: []string{"mysql-cluster", "mysql-db"},
 		},
 		{
-			Id:            uuid.NewString(),
+			Id:            "4",
 			Name:          "Postgresql PROD",
 			Type:          PostgresqlType,
 			Status:        "Active",
@@ -241,7 +241,7 @@ func CreateMockIntegrations() []apono.Integration {
 				"namespace": "prod",
 				"name":      "postgres-credentials",
 			},
-			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-db"},
+			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-database"},
 		},
 	}
 }

@@ -39,13 +39,18 @@ resource "apono_access_flow" "postgresql_prod" {
   integration_targets = [
     {
       name          = "DB Prod"
-      resource_type = "postgresql-db"
+      resource_type = "postgresql-database"
       permissions   = ["READ_ONLY", "READ_WRITE", "ADMIN"]
     }
   ]
+  bundle_targets = [
+    {
+      name = "PROD ENV"
+    }
+  ]
   settings = {
-    approver_cannot_approve_himself = true
-    require_approver_justification  = true
+    approver_cannot_self_approve   = true
+    require_approver_justification = true
   }
 }
 ```
@@ -55,16 +60,17 @@ resource "apono_access_flow" "postgresql_prod" {
 
 ### Required
 
-- `active` (Boolean) Is Access Flow active
+- `active` (Boolean) Indicates whether Access flow is active or inactive
 - `grantees` (Attributes Set) Represents which identities should be granted access (see [below for nested schema](#nestedatt--grantees))
-- `integration_targets` (Attributes Set) Represents number of resources from integration to grant access to. If both include and exclude filters are omitted then all resources will be targeted (see [below for nested schema](#nestedatt--integration_targets))
 - `name` (String) Access Flow name
-- `revoke_after_in_sec` (Number) Number of seconds after which access should be revoked, -1 means never
+- `revoke_after_in_sec` (Number) Number of seconds after which access should be revoked. To never revoke access, set the value to `-1`.
 - `trigger` (Attributes) Access Flow trigger (see [below for nested schema](#nestedatt--trigger))
 
 ### Optional
 
 - `approvers` (Attributes Set) Represents which identities should approve this access (see [below for nested schema](#nestedatt--approvers))
+- `bundle_targets` (Attributes Set) Represents the number of resources from access bundle to which access is granted. (see [below for nested schema](#nestedatt--bundle_targets))
+- `integration_targets` (Attributes Set) Represents the number of resources from the integration to which access is granted. If both include and exclude filters are omitted, all resources will be targeted. (see [below for nested schema](#nestedatt--integration_targets))
 - `settings` (Attributes) Access Flow settings (see [below for nested schema](#nestedatt--settings))
 
 ### Read-Only
@@ -76,49 +82,8 @@ resource "apono_access_flow" "postgresql_prod" {
 
 Required:
 
-- `name` (String) Identity Name (in user type, use email address instead)
-- `type` (String) Identity type (user, group, context_attribute)
-
-
-<a id="nestedatt--integration_targets"></a>
-### Nested Schema for `integration_targets`
-
-Required:
-
-- `name` (String) Target Integration name (must match existing integration name)
-- `permissions` (Set of String) Permissions to grant
-- `resource_type` (String) Target resource type
-
-Optional:
-
-- `resource_exclude_filters` (Attributes Set) Exclude every resource that matches one of this filters (see [below for nested schema](#nestedatt--integration_targets--resource_exclude_filters))
-- `resource_include_filters` (Attributes Set) Include every resource that matches one of this filters (see [below for nested schema](#nestedatt--integration_targets--resource_include_filters))
-
-<a id="nestedatt--integration_targets--resource_exclude_filters"></a>
-### Nested Schema for `integration_targets.resource_exclude_filters`
-
-Required:
-
-- `type` (String) Filter type, can be 'id', 'name' or 'tag'
-- `value` (String) Filter value
-
-Optional:
-
-- `key` (String) Filter key, only used when type is 'tag'
-
-
-<a id="nestedatt--integration_targets--resource_include_filters"></a>
-### Nested Schema for `integration_targets.resource_include_filters`
-
-Required:
-
-- `type` (String) Filter type, can be 'id', 'name' or 'tag'
-- `value` (String) Filter value
-
-Optional:
-
-- `key` (String) Filter key, only used when type is 'tag'
-
+- `name` (String) Name of the identity. When `type = context_attribute`, this is the shift name or manager attribute name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.**
+- `type` (String) Identity type. **Possible Values**: `context_attribute`, `group`, or `user`
 
 
 <a id="nestedatt--trigger"></a>
@@ -126,21 +91,21 @@ Optional:
 
 Required:
 
-- `type` (String) Type of trigger, currently only 'user_request' is supported
+- `type` (String) Type of trigger. Only `user_request` is supported.
 
 Optional:
 
-- `timeframe` (Attributes) Timeframe for trigger to be active (see [below for nested schema](#nestedatt--trigger--timeframe))
+- `timeframe` (Attributes) Active duration for the trigger. (see [below for nested schema](#nestedatt--trigger--timeframe))
 
 <a id="nestedatt--trigger--timeframe"></a>
 ### Nested Schema for `trigger.timeframe`
 
 Required:
 
-- `days_in_week` (Set of String) Days in week when timeframe is active (in uppercase)
-- `end_time` (String) Timeframe end time, must be in HH:MM:SS format
-- `start_time` (String) Timeframe start time, must be in HH:MM:SS format
-- `time_zone` (String) Timezone for timeframe, use timezone name (e.g. Europe/Prague). For all options see [Wiki Page](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List)
+- `days_in_week` (Set of String) Names in uppercase of timeframe active days
+- `end_time` (String) End of the timeframe in `HH:MM:SS` format.
+- `start_time` (String) Beginning of the timeframe in `HH:MM:SS` format.
+- `time_zone` (String) Timezone name for the timeframe, such as `Europe/Prague`. For all options, see  [Wiki Page](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List).
 
 
 
@@ -149,8 +114,57 @@ Required:
 
 Required:
 
-- `name` (String) Identity Name (in user type, use email address instead)
-- `type` (String) Identity type (user, group, context_attribute)
+- `name` (String) Name of the identity. When `type = context_attribute`, this is the shift name or manager attribute name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.**
+- `type` (String) Identity type. **Possible Values**: `context_attribute`, `group`, or `user`
+
+
+<a id="nestedatt--bundle_targets"></a>
+### Nested Schema for `bundle_targets`
+
+Required:
+
+- `name` (String) Target bundle name. **IMPORTANT: This value must match the existing bundle name.**
+
+
+<a id="nestedatt--integration_targets"></a>
+### Nested Schema for `integration_targets`
+
+Required:
+
+- `name` (String) Target integration name. **IMPORTANT: This value must match the existing integration name.**
+- `permissions` (Set of String) Permissions to grant
+- `resource_type` (String) Type of target resource. For possible values, query the [list integrations](https://docs.apono.io/reference/listintegrationsv2) route.
+
+Optional:
+
+- `resource_exclude_filters` (Attributes Set) Exclude every resource that matches one of the defined filters. (see [below for nested schema](#nestedatt--integration_targets--resource_exclude_filters))
+- `resource_include_filters` (Attributes Set) Include every resource that matches one of the defined filters. (see [below for nested schema](#nestedatt--integration_targets--resource_include_filters))
+
+<a id="nestedatt--integration_targets--resource_exclude_filters"></a>
+### Nested Schema for `integration_targets.resource_exclude_filters`
+
+Required:
+
+- `type` (String) Type of filter, **Possible Values**: 'id', 'name' or 'tag'.
+- `value` (String) Value of the filter
+
+Optional:
+
+- `key` (String) Key of the filter, needed only when `type = tag`.
+
+
+<a id="nestedatt--integration_targets--resource_include_filters"></a>
+### Nested Schema for `integration_targets.resource_include_filters`
+
+Required:
+
+- `type` (String) Type of filter, **Possible Values**: 'id', 'name' or 'tag'.
+- `value` (String) Value of the filter
+
+Optional:
+
+- `key` (String) Key of the filter, needed only when `type = tag`.
+
 
 
 <a id="nestedatt--settings"></a>
@@ -158,6 +172,6 @@ Required:
 
 Optional:
 
-- `approver_cannot_approve_himself` (Boolean) Approver cannot approve himself
-- `require_all_approvers` (Boolean) Require all approvers
-- `require_justification_on_request_again` (Boolean) Require justification on request again
+- `approver_cannot_self_approve` (Boolean) Approver cannot self-approve the request.
+- `require_all_approvers` (Boolean) All approvers must approver the request.
+- `require_justification_on_request_again` (Boolean) Require justification on request again.

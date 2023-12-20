@@ -15,10 +15,16 @@ func TestAccAccessFlowResource(t *testing.T) {
 
 	identities := mockserver.CreateMockIdentities()
 	mockserver.SetupMockHttpServerIdentitiesV2Endpoints(identities)
+
 	integrations := mockserver.CreateMockIntegrations()
 	mockserver.SetupMockHttpServerIntegrationV2Endpoints(integrations)
+
 	users := mockserver.CreateMockUsers()
 	mockserver.SetupMockHttpServerUsersV2Endpoints(users)
+
+	accessBundles := mockserver.CreateMockAccessBundles()
+	mockserver.SetupMockHttpServerAccessBundleV1Endpoints(accessBundles)
+
 	mockserver.SetupMockHttpServerAccessFlowV1Endpoints(make([]apono.AccessFlowV1, 0))
 
 	resource.Test(t, resource.TestCase{
@@ -40,7 +46,7 @@ func TestAccAccessFlowResource(t *testing.T) {
 					}),
 					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "integration_targets.*", map[string]string{
 						"name":          "Postgres DEV",
-						"resource_type": "postgresql-db",
+						"resource_type": "postgresql-database",
 					}),
 					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "approvers.*", map[string]string{
 						"type": "context_attribute",
@@ -99,7 +105,7 @@ resource "apono_access_flow" "test_access_flow_resource" {
 integration_targets = [
     {
       name = "Postgres DEV"
-      resource_type = "postgresql-db"
+      resource_type = "postgresql-database"
       resource_include_filter = [[
         {
           type = "id"
@@ -123,6 +129,11 @@ integration_targets = [
       permissions = ["Admin"]
     }
   ]
+bundle_targets = [
+	{
+		name = "DB PROD"
+	}
+  ]
 approvers = [
     {
       name = "test2@example.com"
@@ -134,7 +145,7 @@ approvers = [
     }
   ]
 settings = {
-    approver_cannot_approve_himself = true
+    approver_cannot_self_approve = true
     require_all_approvers = true
   }
 }

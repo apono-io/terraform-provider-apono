@@ -24,12 +24,17 @@ resource "apono_access_flow" "postgresql_prod" {
   integration_targets = [
     {
       name          = "DB Prod"
-      resource_type = "postgresql-db"
+      resource_type = "postgresql-database"
       permissions   = ["READ_ONLY", "READ_WRITE", "ADMIN"]
     }
   ]
+  bundle_targets = [
+    {
+      name = "PROD ENV"
+    }
+  ]
   settings = {
-    approver_cannot_approve_himself = true
-    require_approver_justification  = true
+    approver_cannot_self_approve   = true
+    require_approver_justification = true
   }
 }
