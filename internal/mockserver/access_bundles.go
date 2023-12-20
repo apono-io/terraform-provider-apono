@@ -141,7 +141,7 @@ func CreateMockAccessBundles() []apono.AccessBundleV1 {
 				},
 				{
 					IntegrationId:       "2",
-					ResourceType:        "postgresql-db",
+					ResourceType:        "postgresql-database",
 					ResourceTagIncludes: []apono.TagV1{{Name: "env", Value: "dev"}},
 					ResourceTagExcludes: nil,
 					Permissions:         []string{"ReadOnly", "ReadWrite", "Admin"},
@@ -161,7 +161,7 @@ func CreateMockAccessBundles() []apono.AccessBundleV1 {
 				},
 				{
 					IntegrationId:       "4",
-					ResourceType:        "postgresql-db",
+					ResourceType:        "postgresql-database",
 					ResourceTagIncludes: []apono.TagV1{{Name: "env", Value: "prod"}},
 					ResourceTagExcludes: nil,
 					Permissions:         []string{"ReadOnly", "ReadWrite", "Admin"},

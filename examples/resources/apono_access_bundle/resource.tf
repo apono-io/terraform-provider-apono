@@ -3,7 +3,7 @@ resource "apono_access_bundle" "prod" {
   integration_targets = [
     {
       name          = "DB Prod"
-      resource_type = "postgresql-db"
+      resource_type = "postgresql-database"
       permissions   = ["READ_ONLY", "READ_WRITE", "ADMIN"]
     }
   ]

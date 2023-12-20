@@ -207,7 +207,7 @@ func CreateMockIntegrations() []apono.Integration {
 				"region":    "us-east-1",
 				"secret_id": "my-secret-id",
 			},
-			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-db"},
+			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-database"},
 		},
 		{
 			Id:            "3",
@@ -241,7 +241,7 @@ func CreateMockIntegrations() []apono.Integration {
 				"namespace": "prod",
 				"name":      "postgres-credentials",
 			},
-			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-db"},
+			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-database"},
 		},
 	}
 }

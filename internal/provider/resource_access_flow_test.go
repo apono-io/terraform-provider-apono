@@ -46,7 +46,7 @@ func TestAccAccessFlowResource(t *testing.T) {
 					}),
 					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "integration_targets.*", map[string]string{
 						"name":          "Postgres DEV",
-						"resource_type": "postgresql-db",
+						"resource_type": "postgresql-database",
 					}),
 					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "approvers.*", map[string]string{
 						"type": "context_attribute",
@@ -105,7 +105,7 @@ resource "apono_access_flow" "test_access_flow_resource" {
 integration_targets = [
     {
       name = "Postgres DEV"
-      resource_type = "postgresql-db"
+      resource_type = "postgresql-database"
       resource_include_filter = [[
         {
           type = "id"

@@ -29,7 +29,7 @@ func TestAccAccessBundleResource(t *testing.T) {
 					resource.TestCheckResourceAttr("apono_access_bundle.test_access_bundle_resource", "name", "access-bundle-name"),
 					resource.TestCheckTypeSetElemNestedAttrs("apono_access_bundle.test_access_bundle_resource", "integration_targets.*", map[string]string{
 						"name":          "Postgres DEV",
-						"resource_type": "postgresql-db",
+						"resource_type": "postgresql-database",
 					}),
 				),
 			},
@@ -63,7 +63,7 @@ resource "apono_access_bundle" "test_access_bundle_resource" {
 integration_targets = [
     {
       name = "Postgres DEV"
-      resource_type = "postgresql-db"
+      resource_type = "postgresql-database"
       resource_include_filter = [[
         {
           type = "id"
