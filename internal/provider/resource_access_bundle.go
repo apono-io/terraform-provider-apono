@@ -101,7 +101,7 @@ func (a accessBundleResource) Create(ctx context.Context, request resource.Creat
 		return
 	}
 
-	newAccessBundleRequest, diagnostics := services.ConvertAccessBundleTerraformModelToApi(ctx, a.provider.client, data)
+	newAccessBundleRequest, diagnostics := services.ConvertAccessBundleTerraformModelToUpsertApi(ctx, a.provider.client, data)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return

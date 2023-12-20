@@ -24,7 +24,7 @@ func ConvertAccessBundleApiToTerraformModel(ctx context.Context, aponoClient *ap
 	return &accessBundleModel, nil
 }
 
-func ConvertAccessBundleTerraformModelToApi(ctx context.Context, aponoClient *apono.APIClient, accessBundle *models.AccessBundleModel) (*apono.UpsertAccessBundleV1, diag.Diagnostics) {
+func ConvertAccessBundleTerraformModelToUpsertApi(ctx context.Context, aponoClient *apono.APIClient, accessBundle *models.AccessBundleModel) (*apono.UpsertAccessBundleV1, diag.Diagnostics) {
 	dataIntegrationTargets, diagnostics := ConvertIntegrationTargetsTerraformModelToApi(ctx, aponoClient, accessBundle.IntegrationTargets)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
@@ -39,7 +39,7 @@ func ConvertAccessBundleTerraformModelToApi(ctx context.Context, aponoClient *ap
 }
 
 func ConvertAccessBundleTerraformModelToUpdateApi(ctx context.Context, aponoClient *apono.APIClient, accessBundle *models.AccessBundleModel) (*apono.UpdateAccessBundleV1, diag.Diagnostics) {
-	updateAccessBundleRequest, diagnostics := ConvertAccessBundleTerraformModelToApi(ctx, aponoClient, accessBundle)
+	updateAccessBundleRequest, diagnostics := ConvertAccessBundleTerraformModelToUpsertApi(ctx, aponoClient, accessBundle)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
