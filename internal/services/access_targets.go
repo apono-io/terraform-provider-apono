@@ -71,7 +71,7 @@ func ConvertBundleTargetsApiToTerraformModel(ctx context.Context, aponoClient *a
 func ConvertBundleTargetsTerraformModelToApi(ctx context.Context, aponoClient *apono.APIClient, bundleTargets []models.BundleTarget) ([]apono.AccessTargetBundleV1, diag.Diagnostics) {
 	availableBundles, _, err := aponoClient.AccessBundlesApi.ListAccessBundles(ctx).Execute()
 	if err != nil {
-		return nil, utils.GetDiagnosticsForApiError(err, "list", "bundles", "")
+		return nil, utils.GetDiagnosticsForApiError(err, "list", "access bundles", "")
 	}
 
 	var resultBundleTargets []apono.AccessTargetBundleV1
