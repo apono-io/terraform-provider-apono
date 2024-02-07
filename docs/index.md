@@ -9,7 +9,6 @@ description: |-
 # apono Provider
 
 
-
 ## Example Usage
 
 ```terraform
