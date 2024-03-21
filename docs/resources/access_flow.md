@@ -150,7 +150,7 @@ Required:
 
 Optional:
 
-- `key` (String) Key of the filter, needed only when `type = tag`.
+- `key` (String) Key of the filter, **required** only when `type = tag`.
 
 
 <a id="nestedatt--integration_targets--resource_include_filters"></a>
@@ -163,7 +163,7 @@ Required:
 
 Optional:
 
-- `key` (String) Key of the filter, needed only when `type = tag`.
+- `key` (String) Key of the filter, **required** only when `type = tag`.
 
 
 
