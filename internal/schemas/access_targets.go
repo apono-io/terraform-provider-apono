@@ -2,6 +2,7 @@ package schemas
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -64,11 +65,17 @@ var resourceFilterSchema = schema.NestedAttributeObject{
 			MarkdownDescription: "Type of filter, **Possible Values**: 'id', 'name' or 'tag'.",
 			Required:            true,
 			Validators: []validator.String{
-				stringvalidator.OneOf("id", "name", "tag"),
+				stringvalidator.Any(
+					stringvalidator.OneOf("id", "name"),
+					stringvalidator.All(
+						stringvalidator.OneOf("tag"),
+						stringvalidator.AlsoRequires(path.Expressions{path.MatchRelative().AtParent().AtName("key")}...),
+					),
+				),
 			},
 		},
 		"key": schema.StringAttribute{
-			MarkdownDescription: "Key of the filter, needed only when `type = tag`.",
+			MarkdownDescription: "Key of the filter, **required** only when `type = tag`.",
 			Optional:            true,
 		},
 		"value": schema.StringAttribute{
