@@ -42,6 +42,10 @@ func SetupMockHttpServerIntegrationV2Endpoints(existingIntegrations []apono.Inte
 			Metadata:      createReq.Metadata,
 			SecretConfig:  createReq.SecretConfig,
 		}
+		if createReq.ConnectedResourceTypes != nil {
+			integration.ConnectedResourceTypes = createReq.ConnectedResourceTypes
+		}
+
 		integrations[integration.Id] = integration
 
 		resp, err := httpmock.NewJsonResponse(200, integration)
@@ -99,6 +103,9 @@ func SetupMockHttpServerIntegrationV2Endpoints(existingIntegrations []apono.Inte
 		integration.ProvisionerId = updateReq.ProvisionerId
 		integration.Metadata = updateReq.Metadata
 		integration.SecretConfig = updateReq.SecretConfig
+		if updateReq.ConnectedResourceTypes != nil {
+			integration.ConnectedResourceTypes = updateReq.ConnectedResourceTypes
+		}
 
 		integrations[integration.Id] = integration
 

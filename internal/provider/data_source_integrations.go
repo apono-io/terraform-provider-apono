@@ -130,6 +130,11 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 			Computed:            true,
 			MarkdownDescription: "Apono connector identifier",
 		},
+		"connected_resource_types": schema.SetAttribute{
+			MarkdownDescription: "Connected resource types",
+			Computed:            true,
+			ElementType:         types.StringType,
+		},
 		"metadata": schema.MapAttribute{
 			MarkdownDescription: "Integration metadata",
 			Optional:            true,
