@@ -52,6 +52,7 @@ Optional:
 
 Read-Only:
 
+- `connected_resource_types` (Set of String) Connected resource types
 - `connector_id` (String) Apono connector identifier
 - `id` (String) Integration identifier
 - `name` (String) Integration name
