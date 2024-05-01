@@ -3,7 +3,7 @@ module github.com/apono-io/terraform-provider-apono
 go 1.20
 
 require (
-	github.com/apono-io/apono-sdk-go v0.1.0-alpha6
+	github.com/apono-io/apono-sdk-go v0.1.0-alpha7
 	github.com/google/uuid v1.3.1
 	github.com/hashicorp/terraform-plugin-docs v0.16.0
 	github.com/hashicorp/terraform-plugin-framework v1.3.5
