@@ -172,19 +172,15 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 	}
 
 	connectorID := data.ConnectorID.ValueString()
-	createIntegrationRequest := apono.CreateIntegration{
-		Name:          data.Name.ValueString(),
-		Type:          data.Type.ValueString(),
-		ProvisionerId: *apono.NewNullableString(&connectorID),
-		Metadata:      metadata,
-		SecretConfig:  secretConfig,
-	}
-	if connectedResourceTypes != nil {
-		createIntegrationRequest.ConnectedResourceTypes = connectedResourceTypes
-	}
-
 	integration, _, err := r.provider.client.IntegrationsApi.CreateIntegrationV2(ctx).
-		CreateIntegration(createIntegrationRequest).
+		CreateIntegration(apono.CreateIntegration{
+			Name:                   data.Name.ValueString(),
+			Type:                   data.Type.ValueString(),
+			ProvisionerId:          *apono.NewNullableString(&connectorID),
+			Metadata:               metadata,
+			SecretConfig:           secretConfig,
+			ConnectedResourceTypes: connectedResourceTypes,
+		}).
 		Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "create", "integration", "")
@@ -279,18 +275,14 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 
 	connectorID := data.ConnectorID.ValueString()
-	updateIntegrationRequest := apono.UpdateIntegration{
-		Name:          data.Name.ValueString(),
-		ProvisionerId: *apono.NewNullableString(&connectorID),
-		Metadata:      metadata,
-		SecretConfig:  secretConfig,
-	}
-	if connectedResourceTypes != nil {
-		updateIntegrationRequest.ConnectedResourceTypes = connectedResourceTypes
-	}
-
 	integration, _, err := r.provider.client.IntegrationsApi.UpdateIntegrationV2(ctx, data.ID.ValueString()).
-		UpdateIntegration(updateIntegrationRequest).
+		UpdateIntegration(apono.UpdateIntegration{
+			Name:                   data.Name.ValueString(),
+			ProvisionerId:          *apono.NewNullableString(&connectorID),
+			Metadata:               metadata,
+			SecretConfig:           secretConfig,
+			ConnectedResourceTypes: connectedResourceTypes,
+		}).
 		Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "update", "integration", data.ID.ValueString())
