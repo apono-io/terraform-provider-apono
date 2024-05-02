@@ -70,6 +70,12 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 				MarkdownDescription: "Apono connector identifier",
 				Required:            true,
 			},
+			"connected_resource_types": schema.SetAttribute{
+				MarkdownDescription: "Resource types to sync, if omitted all resources types will be synced.",
+				Optional:            true,
+				Computed:            true,
+				ElementType:         types.StringType,
+			},
 			"metadata": schema.MapAttribute{
 				MarkdownDescription: "Integration metadata",
 				Optional:            true,
@@ -137,6 +143,13 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 		metadata[name] = utils.AttrValueToString(value)
 	}
 
+	var connectedResourceTypes []string
+	if !data.ConnectedResourceTypes.IsNull() {
+		for _, resourceType := range data.ConnectedResourceTypes.Elements() {
+			connectedResourceTypes = append(connectedResourceTypes, utils.AttrValueToString(resourceType))
+		}
+	}
+
 	var secretConfig map[string]interface{}
 	if data.AwsSecret != nil {
 		secretConfig = map[string]interface{}{
@@ -161,11 +174,12 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 	connectorID := data.ConnectorID.ValueString()
 	integration, _, err := r.provider.client.IntegrationsApi.CreateIntegrationV2(ctx).
 		CreateIntegration(apono.CreateIntegration{
-			Name:          data.Name.ValueString(),
-			Type:          data.Type.ValueString(),
-			ProvisionerId: *apono.NewNullableString(&connectorID),
-			Metadata:      metadata,
-			SecretConfig:  secretConfig,
+			Name:                   data.Name.ValueString(),
+			Type:                   data.Type.ValueString(),
+			ProvisionerId:          *apono.NewNullableString(&connectorID),
+			Metadata:               metadata,
+			SecretConfig:           secretConfig,
+			ConnectedResourceTypes: connectedResourceTypes,
 		}).
 		Execute()
 	if err != nil {
@@ -232,6 +246,13 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 		metadata[name] = utils.AttrValueToString(value)
 	}
 
+	var connectedResourceTypes []string
+	if !data.ConnectedResourceTypes.IsNull() {
+		for _, resourceType := range data.ConnectedResourceTypes.Elements() {
+			connectedResourceTypes = append(connectedResourceTypes, utils.AttrValueToString(resourceType))
+		}
+	}
+
 	var secretConfig map[string]interface{}
 	if data.AwsSecret != nil {
 		secretConfig = map[string]interface{}{
@@ -256,10 +277,11 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 	connectorID := data.ConnectorID.ValueString()
 	integration, _, err := r.provider.client.IntegrationsApi.UpdateIntegrationV2(ctx, data.ID.ValueString()).
 		UpdateIntegration(apono.UpdateIntegration{
-			Name:          data.Name.ValueString(),
-			ProvisionerId: *apono.NewNullableString(&connectorID),
-			Metadata:      metadata,
-			SecretConfig:  secretConfig,
+			Name:                   data.Name.ValueString(),
+			ProvisionerId:          *apono.NewNullableString(&connectorID),
+			Metadata:               metadata,
+			SecretConfig:           secretConfig,
+			ConnectedResourceTypes: connectedResourceTypes,
 		}).
 		Execute()
 	if err != nil {

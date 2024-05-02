@@ -11,14 +11,15 @@ import (
 
 // IntegrationModel describes the resource data model.
 type IntegrationModel struct {
-	ID               types.String      `tfsdk:"id"`
-	Name             types.String      `tfsdk:"name"`
-	Type             types.String      `tfsdk:"type"`
-	ConnectorID      types.String      `tfsdk:"connector_id"`
-	Metadata         types.Map         `tfsdk:"metadata"`
-	AwsSecret        *AwsSecret        `tfsdk:"aws_secret"`
-	GcpSecret        *GcpSecret        `tfsdk:"gcp_secret"`
-	KubernetesSecret *KubernetesSecret `tfsdk:"kubernetes_secret"`
+	ID                     types.String      `tfsdk:"id"`
+	Name                   types.String      `tfsdk:"name"`
+	Type                   types.String      `tfsdk:"type"`
+	ConnectorID            types.String      `tfsdk:"connector_id"`
+	ConnectedResourceTypes types.Set         `tfsdk:"connected_resource_types"`
+	Metadata               types.Map         `tfsdk:"metadata"`
+	AwsSecret              *AwsSecret        `tfsdk:"aws_secret"`
+	GcpSecret              *GcpSecret        `tfsdk:"gcp_secret"`
+	KubernetesSecret       *KubernetesSecret `tfsdk:"kubernetes_secret"`
 }
 
 type AwsSecret struct {
@@ -38,6 +39,9 @@ type KubernetesSecret struct {
 
 func ConvertToIntegrationModel(ctx context.Context, integration *apono.Integration) (*IntegrationModel, diag.Diagnostics) {
 	metadataMapValue, diagnostics := types.MapValueFrom(ctx, types.StringType, integration.GetMetadata())
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
+	}
 
 	data := IntegrationModel{}
 	data.ID = types.StringValue(integration.GetId())
@@ -45,6 +49,12 @@ func ConvertToIntegrationModel(ctx context.Context, integration *apono.Integrati
 	data.Type = types.StringValue(integration.GetType())
 	data.ConnectorID = types.StringValue(integration.GetProvisionerId())
 	data.Metadata = metadataMapValue
+
+	connectedResourceTypes, diagnostics := types.SetValueFrom(ctx, types.StringType, integration.GetConnectedResourceTypes())
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
+	}
+	data.ConnectedResourceTypes = connectedResourceTypes
 
 	secretConfig := integration.GetSecretConfig()
 	switch secretConfig["type"] {
@@ -63,10 +73,6 @@ func ConvertToIntegrationModel(ctx context.Context, integration *apono.Integrati
 			Namespace: basetypes.NewStringValue(toString(secretConfig["namespace"])),
 			Name:      basetypes.NewStringValue(toString(secretConfig["name"])),
 		}
-	}
-
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
 	}
 
 	return &data, nil
