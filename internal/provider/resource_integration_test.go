@@ -29,6 +29,7 @@ func TestAccIntegrationResource(t *testing.T) {
 					resource.TestCheckResourceAttr("apono_integration.test", "aws_secret.region", "us-east-1"),
 					resource.TestCheckResourceAttr("apono_integration.test", "connected_resource_types.#", "1"),
 					resource.TestCheckTypeSetElemAttr("apono_integration.test", "connected_resource_types.*", "postgres-database"),
+					resource.TestCheckResourceAttr("apono_integration.test", "custom_access_details", "This is a custom access detail"),
 				),
 			},
 			// ImportState testing
@@ -62,6 +63,7 @@ resource "apono_integration" "test" {
   type = "postgresql"
   connector_id = "000-1111-222222-33333-444444"
   connected_resource_types = ["postgres-database"]
+  custom_access_details    = "This is a custom access detail"
   metadata = {
     hostname = "my-postgres-rds.aaabbbsss111.us-east-1.rds.amazonaws.com"
     port = "5432"

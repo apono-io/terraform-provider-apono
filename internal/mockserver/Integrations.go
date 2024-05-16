@@ -34,13 +34,14 @@ func SetupMockHttpServerIntegrationV2Endpoints(existingIntegrations []apono.Inte
 		}
 
 		integration := apono.Integration{
-			Id:            id.String(),
-			Name:          createReq.Name,
-			Type:          createReq.Type,
-			ProvisionerId: createReq.ProvisionerId,
-			Status:        apono.INTEGRATIONSTATUS_ACTIVE,
-			Metadata:      createReq.Metadata,
-			SecretConfig:  createReq.SecretConfig,
+			Id:                  id.String(),
+			Name:                createReq.Name,
+			Type:                createReq.Type,
+			ProvisionerId:       createReq.ProvisionerId,
+			Status:              apono.INTEGRATIONSTATUS_ACTIVE,
+			Metadata:            createReq.Metadata,
+			SecretConfig:        createReq.SecretConfig,
+			CustomAccessDetails: createReq.CustomAccessDetails,
 		}
 		if createReq.ConnectedResourceTypes != nil {
 			integration.ConnectedResourceTypes = createReq.ConnectedResourceTypes
@@ -103,6 +104,7 @@ func SetupMockHttpServerIntegrationV2Endpoints(existingIntegrations []apono.Inte
 		integration.ProvisionerId = updateReq.ProvisionerId
 		integration.Metadata = updateReq.Metadata
 		integration.SecretConfig = updateReq.SecretConfig
+		integration.CustomAccessDetails = updateReq.CustomAccessDetails
 		if updateReq.ConnectedResourceTypes != nil {
 			integration.ConnectedResourceTypes = updateReq.ConnectedResourceTypes
 		}
@@ -180,6 +182,7 @@ func SetupMockHttpServerIntegrationV2Endpoints(existingIntegrations []apono.Inte
 
 func CreateMockIntegrations() []apono.Integration {
 	details := "4 resources loaded"
+	customAccessDetails := "Please dont forget to save the secret"
 	return []apono.Integration{
 		{
 			Id:            "1",
@@ -195,6 +198,7 @@ func CreateMockIntegrations() []apono.Integration {
 			},
 			SecretConfig:           map[string]interface{}{},
 			ConnectedResourceTypes: []string{"mysql-cluster", "mysql-db"},
+			CustomAccessDetails:    *apono.NewNullableString(&customAccessDetails),
 		},
 		{
 			Id:            "2",
@@ -232,6 +236,7 @@ func CreateMockIntegrations() []apono.Integration {
 				"secret_id": "my-secret-id",
 			},
 			ConnectedResourceTypes: []string{"mysql-cluster", "mysql-db"},
+			CustomAccessDetails:    *apono.NewNullableString(&customAccessDetails),
 		},
 		{
 			Id:            "4",

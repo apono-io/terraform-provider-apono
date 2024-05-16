@@ -76,6 +76,10 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 				Computed:            true,
 				ElementType:         types.StringType,
 			},
+			"custom_access_details": schema.StringAttribute{
+				MarkdownDescription: "Custom access details message that will be displayed to end users when they access this integration.",
+				Optional:            true,
+			},
 			"metadata": schema.MapAttribute{
 				MarkdownDescription: "Integration metadata",
 				Optional:            true,
@@ -180,6 +184,7 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 			Metadata:               metadata,
 			SecretConfig:           secretConfig,
 			ConnectedResourceTypes: connectedResourceTypes,
+			CustomAccessDetails:    *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
 		}).
 		Execute()
 	if err != nil {
@@ -282,6 +287,7 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 			Metadata:               metadata,
 			SecretConfig:           secretConfig,
 			ConnectedResourceTypes: connectedResourceTypes,
+			CustomAccessDetails:    *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
 		}).
 		Execute()
 	if err != nil {
@@ -430,4 +436,11 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 			))
 		}
 	}
+}
+
+func getCustomAccessDetailsFromData(msg string) *apono.NullableString {
+	if msg == "" {
+		return apono.NewNullableString(nil)
+	}
+	return apono.NewNullableString(&msg)
 }

@@ -17,6 +17,7 @@ type IntegrationModel struct {
 	ConnectorID            types.String      `tfsdk:"connector_id"`
 	ConnectedResourceTypes types.Set         `tfsdk:"connected_resource_types"`
 	Metadata               types.Map         `tfsdk:"metadata"`
+	CustomAccessDetails    types.String      `tfsdk:"custom_access_details"`
 	AwsSecret              *AwsSecret        `tfsdk:"aws_secret"`
 	GcpSecret              *GcpSecret        `tfsdk:"gcp_secret"`
 	KubernetesSecret       *KubernetesSecret `tfsdk:"kubernetes_secret"`
@@ -49,6 +50,10 @@ func ConvertToIntegrationModel(ctx context.Context, integration *apono.Integrati
 	data.Type = types.StringValue(integration.GetType())
 	data.ConnectorID = types.StringValue(integration.GetProvisionerId())
 	data.Metadata = metadataMapValue
+
+	if integration.CustomAccessDetails.IsSet() {
+		data.CustomAccessDetails = types.StringValue(integration.GetCustomAccessDetails())
+	}
 
 	connectedResourceTypes, diagnostics := types.SetValueFrom(ctx, types.StringType, integration.GetConnectedResourceTypes())
 	if len(diagnostics) > 0 {

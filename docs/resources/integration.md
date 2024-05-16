@@ -18,6 +18,7 @@ resource "apono_integration" "postgresql_prod" {
   type                     = "postgresql"
   connector_id             = "00000-1111-222222-33333-444444"
   connected_resource_types = ["postgresql-database", "postgresql-table"]
+  custom_access_details    = "This is a custom access detail"
   metadata = {
     hostname = "prod-postgresql.us-east-1.internal.example.com"
     port     = "5432"
@@ -43,6 +44,7 @@ resource "apono_integration" "postgresql_prod" {
 
 - `aws_secret` (Attributes) (see [below for nested schema](#nestedatt--aws_secret))
 - `connected_resource_types` (Set of String) Resource types to sync, if omitted all resources types will be synced.
+- `custom_access_details` (String) Custom access details message that will be displayed to end users when they access this integration.
 - `gcp_secret` (Attributes) (see [below for nested schema](#nestedatt--gcp_secret))
 - `kubernetes_secret` (Attributes) (see [below for nested schema](#nestedatt--kubernetes_secret))
 - `metadata` (Map of String) Integration metadata

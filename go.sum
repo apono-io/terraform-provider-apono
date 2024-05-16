@@ -17,6 +17,10 @@ github.com/apono-io/apono-sdk-go v0.1.0-alpha6 h1:QWFVvthMYs9EF/YEc9aWoItzLlZplg
 github.com/apono-io/apono-sdk-go v0.1.0-alpha6/go.mod h1:L5PuZ7jwgPtZ8QK3iOeDylAkLBJcB6HPyhaEPhPUuKY=
 github.com/apono-io/apono-sdk-go v0.1.0-alpha7 h1:VGjictC7p/QWArGaC4VRIOuzGGKda3HDE/ShWKwfhI0=
 github.com/apono-io/apono-sdk-go v0.1.0-alpha7/go.mod h1:L5PuZ7jwgPtZ8QK3iOeDylAkLBJcB6HPyhaEPhPUuKY=
+github.com/apono-io/apono-sdk-go v0.1.0-alpha8 h1:cypI3h2nLppcPPfwBO4OP56wQlpER0PObw44sNGyZEw=
+github.com/apono-io/apono-sdk-go v0.1.0-alpha8/go.mod h1:L5PuZ7jwgPtZ8QK3iOeDylAkLBJcB6HPyhaEPhPUuKY=
+github.com/apono-io/apono-sdk-go v0.1.0-alpha9 h1:AthMFF3QtavSI7nzW/ddx/IVO/ZBSEg0r/v5wReDw4c=
+github.com/apono-io/apono-sdk-go v0.1.0-alpha9/go.mod h1:L5PuZ7jwgPtZ8QK3iOeDylAkLBJcB6HPyhaEPhPUuKY=
 github.com/apparentlymart/go-textseg/v12 v12.0.0/go.mod h1:S/4uRK2UtaQttw1GenVJEynmyUenKwP++x/+DdGV/Ec=
 github.com/apparentlymart/go-textseg/v13 v13.0.0 h1:Y+KvPE1NYz0xl601PVImeQfFyEy6iT90AvPUL1NNfNw=
 github.com/apparentlymart/go-textseg/v13 v13.0.0/go.mod h1:ZK2fH7c4NqDTLtiYLvIkEghdlcqw7yxLeM89kiTRPUo=
