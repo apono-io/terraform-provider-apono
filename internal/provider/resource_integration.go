@@ -178,13 +178,13 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 	connectorID := data.ConnectorID.ValueString()
 	integration, _, err := r.provider.client.IntegrationsApi.CreateIntegrationV2(ctx).
 		CreateIntegration(apono.CreateIntegration{
-			Name:                     data.Name.ValueString(),
-			Type:                     data.Type.ValueString(),
-			ProvisionerId:            *apono.NewNullableString(&connectorID),
-			Metadata:                 metadata,
-			SecretConfig:             secretConfig,
-			ConnectedResourceTypes:   connectedResourceTypes,
-			CustomInstructionMessage: *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
+			Name:                   data.Name.ValueString(),
+			Type:                   data.Type.ValueString(),
+			ProvisionerId:          *apono.NewNullableString(&connectorID),
+			Metadata:               metadata,
+			SecretConfig:           secretConfig,
+			ConnectedResourceTypes: connectedResourceTypes,
+			CustomAccessDetails:    *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
 		}).
 		Execute()
 	if err != nil {
@@ -282,12 +282,12 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 	connectorID := data.ConnectorID.ValueString()
 	integration, _, err := r.provider.client.IntegrationsApi.UpdateIntegrationV2(ctx, data.ID.ValueString()).
 		UpdateIntegration(apono.UpdateIntegration{
-			Name:                     data.Name.ValueString(),
-			ProvisionerId:            *apono.NewNullableString(&connectorID),
-			Metadata:                 metadata,
-			SecretConfig:             secretConfig,
-			ConnectedResourceTypes:   connectedResourceTypes,
-			CustomInstructionMessage: *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
+			Name:                   data.Name.ValueString(),
+			ProvisionerId:          *apono.NewNullableString(&connectorID),
+			Metadata:               metadata,
+			SecretConfig:           secretConfig,
+			ConnectedResourceTypes: connectedResourceTypes,
+			CustomAccessDetails:    *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
 		}).
 		Execute()
 	if err != nil {

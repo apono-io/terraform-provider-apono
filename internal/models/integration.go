@@ -51,8 +51,8 @@ func ConvertToIntegrationModel(ctx context.Context, integration *apono.Integrati
 	data.ConnectorID = types.StringValue(integration.GetProvisionerId())
 	data.Metadata = metadataMapValue
 
-	if integration.CustomInstructionMessage.IsSet() {
-		data.CustomAccessDetails = types.StringValue(integration.GetCustomInstructionMessage())
+	if integration.CustomAccessDetails.IsSet() {
+		data.CustomAccessDetails = types.StringValue(integration.GetCustomAccessDetails())
 	}
 
 	connectedResourceTypes, diagnostics := types.SetValueFrom(ctx, types.StringType, integration.GetConnectedResourceTypes())
