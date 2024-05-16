@@ -135,6 +135,10 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 			Computed:            true,
 			ElementType:         types.StringType,
 		},
+		"custom_access_details": schema.StringAttribute{
+			Computed:            true,
+			MarkdownDescription: "Custom access details message that will be displayed to end users when they access this integration",
+		},
 		"metadata": schema.MapAttribute{
 			MarkdownDescription: "Integration metadata",
 			Optional:            true,

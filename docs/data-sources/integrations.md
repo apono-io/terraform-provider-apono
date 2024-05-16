@@ -54,6 +54,7 @@ Read-Only:
 
 - `connected_resource_types` (Set of String) Connected resource types
 - `connector_id` (String) Apono connector identifier
+- `custom_access_details` (String) Custom access details message that will be displayed to end users when they access this integration
 - `id` (String) Integration identifier
 - `name` (String) Integration name
 - `type` (String) Integration type

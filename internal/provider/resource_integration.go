@@ -76,6 +76,10 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 				Computed:            true,
 				ElementType:         types.StringType,
 			},
+			"custom_access_details": schema.StringAttribute{
+				MarkdownDescription: "Custom access details message that will be displayed to end users when they access this integration.",
+				Optional:            true,
+			},
 			"metadata": schema.MapAttribute{
 				MarkdownDescription: "Integration metadata",
 				Optional:            true,
@@ -174,12 +178,13 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 	connectorID := data.ConnectorID.ValueString()
 	integration, _, err := r.provider.client.IntegrationsApi.CreateIntegrationV2(ctx).
 		CreateIntegration(apono.CreateIntegration{
-			Name:                   data.Name.ValueString(),
-			Type:                   data.Type.ValueString(),
-			ProvisionerId:          *apono.NewNullableString(&connectorID),
-			Metadata:               metadata,
-			SecretConfig:           secretConfig,
-			ConnectedResourceTypes: connectedResourceTypes,
+			Name:                     data.Name.ValueString(),
+			Type:                     data.Type.ValueString(),
+			ProvisionerId:            *apono.NewNullableString(&connectorID),
+			Metadata:                 metadata,
+			SecretConfig:             secretConfig,
+			ConnectedResourceTypes:   connectedResourceTypes,
+			CustomInstructionMessage: *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
 		}).
 		Execute()
 	if err != nil {
@@ -277,11 +282,12 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 	connectorID := data.ConnectorID.ValueString()
 	integration, _, err := r.provider.client.IntegrationsApi.UpdateIntegrationV2(ctx, data.ID.ValueString()).
 		UpdateIntegration(apono.UpdateIntegration{
-			Name:                   data.Name.ValueString(),
-			ProvisionerId:          *apono.NewNullableString(&connectorID),
-			Metadata:               metadata,
-			SecretConfig:           secretConfig,
-			ConnectedResourceTypes: connectedResourceTypes,
+			Name:                     data.Name.ValueString(),
+			ProvisionerId:            *apono.NewNullableString(&connectorID),
+			Metadata:                 metadata,
+			SecretConfig:             secretConfig,
+			ConnectedResourceTypes:   connectedResourceTypes,
+			CustomInstructionMessage: *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
 		}).
 		Execute()
 	if err != nil {
@@ -430,4 +436,11 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 			))
 		}
 	}
+}
+
+func getCustomAccessDetailsFromData(msg string) *apono.NullableString {
+	if msg == "" {
+		return apono.NewNullableString(nil)
+	}
+	return apono.NewNullableString(&msg)
 }
