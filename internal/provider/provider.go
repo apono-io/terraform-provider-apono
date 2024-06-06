@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -23,8 +24,9 @@ type AponoProvider struct {
 	// version is set to the provider version on release, "dev" when the
 	// provider is built and ran locally, and "test" when running acceptance
 	// testing.
-	version string
-	client  *apono.APIClient
+	version        string
+	client         *apono.APIClient
+	internalClient *aponoapi.APIClient
 }
 
 // AponoProviderConfig describes the provider data model.
@@ -106,6 +108,15 @@ func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	cfg.AddDefaultHeader("Authorization", fmt.Sprintf("Bearer %s", personalToken))
 
 	p.client = apono.NewAPIClient(cfg)
+
+	internalCfg := aponoapi.NewConfiguration()
+	internalCfg.Scheme = cfg.Scheme
+	internalCfg.Host = cfg.Host
+	internalCfg.UserAgent = cfg.UserAgent
+	internalCfg.AddDefaultHeader("Authorization", fmt.Sprintf("Bearer %s", personalToken))
+
+	p.internalClient = aponoapi.NewAPIClient(internalCfg)
+
 	tflog.Debug(ctx, "Provider configuration", map[string]interface{}{
 		"provider": fmt.Sprintf("%+v", p),
 	})
