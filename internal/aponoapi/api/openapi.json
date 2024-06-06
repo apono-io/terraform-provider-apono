@@ -1,0 +1,607 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Apono",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Apono Terraform Api"
+    }
+  ],
+  "security": [
+    {
+      "Authorization": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Access Flows"
+    }
+  ],
+  "paths": {
+    "/api/terraform/v1/access-flows": {
+      "get": {
+        "tags": [
+          "Access Flows"
+        ],
+        "summary": "List Access Flows",
+        "operationId": "listAccessFlowsV1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponseAccessFlowTerraformModel"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Access Flows"
+        ],
+        "summary": "Create Access Flow",
+        "operationId": "createAccessFlowV1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertAccessFlowTerraformV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessFlowTerraformV1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/terraform/v1/access-flows/{id}": {
+      "get": {
+        "tags": [
+          "Access Flows"
+        ],
+        "summary": "Get Access Flow",
+        "operationId": "getAccessFlowV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessFlowTerraformV1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Access Flows"
+        ],
+        "summary": "Update Access Flow",
+        "operationId": "updateAccessFlowV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertAccessFlowTerraformV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessFlowTerraformV1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Access Flows"
+        ],
+        "summary": "Delete Access Flow",
+        "operationId": "deleteAccessFlowV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccessFlowSettingsTerraformV1": {
+        "type": "object",
+        "properties": {
+          "require_justification_on_request_again": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "require_all_approvers": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "require_approver_justification": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "approver_cannot_approve_himself": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "AccessFlowTerraformV1": {
+        "required": [
+          "id",
+          "name",
+          "active",
+          "trigger",
+          "grantees",
+          "integration_targets",
+          "bundle_targets",
+          "revoke_after_in_sec",
+          "created_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/AccessFlowTriggerTerraformV1"
+          },
+          "grantees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GranteeTerraformV1"
+            }
+          },
+          "grantee_filter_group": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GranteeV2"
+              }
+            ],
+            "nullable": true
+          },
+          "integration_targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessTargetIntegrationTerraformV1"
+            }
+          },
+          "bundle_targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessTargetBundleTerraformV1"
+            }
+          },
+          "approvers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApproverTerraformV1"
+            },
+            "nullable": true
+          },
+          "revoke_after_in_sec": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "settings": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccessFlowSettingsTerraformV1"
+              }
+            ],
+            "nullable": true
+          },
+          "created_date": {
+            "$ref": "#/components/schemas/Instant"
+          }
+        }
+      },
+      "AccessFlowTriggerTerraformV1": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "timeframe": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TimeframeTerraformV1"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "AccessTargetBundleTerraformV1": {
+        "required": [
+          "bundle_id"
+        ],
+        "type": "object",
+        "properties": {
+          "bundle_id": {
+            "type": "string"
+          }
+        }
+      },
+      "AccessTargetIntegrationTerraformV1": {
+        "required": [
+          "integration_id",
+          "resource_type",
+          "resource_tag_includes",
+          "resource_tag_excludes",
+          "permissions"
+        ],
+        "type": "object",
+        "properties": {
+          "integration_id": {
+            "type": "string"
+          },
+          "resource_type": {
+            "type": "string"
+          },
+          "resource_tag_includes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagTerraformV1"
+            }
+          },
+          "resource_tag_excludes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagTerraformV1"
+            }
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ApproverTerraformV1": {
+        "required": [
+          "id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "AttributeFilterTerraformV1": {
+        "required": [
+          "operator",
+          "attribute_type_id",
+          "attribute_value"
+        ],
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string"
+          },
+          "attribute_type_id": {
+            "type": "string"
+          },
+          "attribute_value": {},
+          "integration_id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "DayOfWeek": {
+        "enum": [
+          "MONDAY",
+          "TUESDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "FRIDAY",
+          "SATURDAY",
+          "SUNDAY"
+        ],
+        "type": "string"
+      },
+      "GranteeFilterGroupOperatorTerraformV1": {
+        "enum": [
+          "AND",
+          "OR"
+        ],
+        "type": "string"
+      },
+      "GranteeTerraformV1": {
+        "required": [
+          "id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "GranteeV2": {
+        "required": [
+          "logical_operator",
+          "attribute_filters"
+        ],
+        "type": "object",
+        "properties": {
+          "logical_operator": {
+            "$ref": "#/components/schemas/GranteeFilterGroupOperatorTerraformV1"
+          },
+          "attribute_filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttributeFilterTerraformV1"
+            }
+          }
+        }
+      },
+      "Instant": {
+        "format": "double",
+        "type": "number",
+        "example": "{seconds}.{nanos}"
+      },
+      "MessageResponse": {
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "PaginatedResponseAccessFlowTerraformModel": {
+        "required": [
+          "data",
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessFlowTerraformV1"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationInfo"
+          }
+        }
+      },
+      "PaginationInfo": {
+        "required": [
+          "total",
+          "limit",
+          "offset"
+        ],
+        "type": "object",
+        "properties": {
+          "total": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "limit": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "offset": {
+            "format": "int32",
+            "type": "integer"
+          }
+        }
+      },
+      "TagTerraformV1": {
+        "required": [
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "TimeframeTerraformV1": {
+        "required": [
+          "start_of_day_time_in_seconds",
+          "end_of_day_time_in_seconds",
+          "days_in_week",
+          "time_zone"
+        ],
+        "type": "object",
+        "properties": {
+          "start_of_day_time_in_seconds": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "end_of_day_time_in_seconds": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "days_in_week": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DayOfWeek"
+            }
+          },
+          "time_zone": {
+            "type": "string"
+          }
+        }
+      },
+      "UpsertAccessFlowTerraformV1": {
+        "required": [
+          "name",
+          "active",
+          "trigger",
+          "grantees",
+          "revoke_after_in_sec"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/AccessFlowTriggerTerraformV1"
+          },
+          "grantees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GranteeTerraformV1"
+            }
+          },
+          "grantee_filter_group": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GranteeV2"
+              }
+            ],
+            "nullable": true
+          },
+          "integration_targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessTargetIntegrationTerraformV1"
+            },
+            "nullable": true
+          },
+          "bundle_targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessTargetBundleTerraformV1"
+            },
+            "nullable": true
+          },
+          "approvers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApproverTerraformV1"
+            },
+            "nullable": true
+          },
+          "revoke_after_in_sec": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "settings": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccessFlowSettingsTerraformV1"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
