@@ -10,7 +10,7 @@ import (
 
 func ConvertAccessBundleApiToTerraformModel(ctx context.Context, aponoClient *apono.APIClient, accessBundle *apono.AccessBundleV1) (*models.AccessBundleModel, diag.Diagnostics) {
 	integrationTargets := accessBundle.GetIntegrationTargets()
-	dataIntegrationTargets, diagnostics := ConvertIntegrationTargetsApiToTerraformModel(ctx, aponoClient, integrationTargets)
+	dataIntegrationTargets, diagnostics := convertIntegrationTargetsApiToTerraformModel(ctx, aponoClient, integrationTargets)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
@@ -25,7 +25,7 @@ func ConvertAccessBundleApiToTerraformModel(ctx context.Context, aponoClient *ap
 }
 
 func ConvertAccessBundleTerraformModelToUpsertApi(ctx context.Context, aponoClient *apono.APIClient, accessBundle *models.AccessBundleModel) (*apono.UpsertAccessBundleV1, diag.Diagnostics) {
-	dataIntegrationTargets, diagnostics := ConvertIntegrationTargetsTerraformModelToApi(ctx, aponoClient, accessBundle.IntegrationTargets)
+	dataIntegrationTargets, diagnostics := convertIntegrationTargetsTerraformModelToApi(ctx, aponoClient, accessBundle.IntegrationTargets)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}

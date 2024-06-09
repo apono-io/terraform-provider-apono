@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
@@ -17,6 +18,8 @@ func GetDiagnosticsForApiError(err error, actionType string, objectName string, 
 	}
 
 	if apiError, ok := err.(*apono.GenericOpenAPIError); ok {
+		diagnostics.AddError("Client Error", fmt.Sprintf("%s, error: %s, body: %s", errorMessagePrefix, apiError.Error(), string(apiError.Body())))
+	} else if apiError, ok := err.(*aponoapi.GenericOpenAPIError); ok {
 		diagnostics.AddError("Client Error", fmt.Sprintf("%s, error: %s, body: %s", errorMessagePrefix, apiError.Error(), string(apiError.Body())))
 	} else {
 		diagnostics.AddError("Client Error", fmt.Sprintf("%s: %s", errorMessagePrefix, err.Error()))

@@ -49,7 +49,7 @@ resource "apono_access_flow" "postgresql_prod" {
     }
   ]
   settings = {
-    approver_cannot_self_approve   = true
+    approver_cannot_self_approve = true
   }
 }
 ```

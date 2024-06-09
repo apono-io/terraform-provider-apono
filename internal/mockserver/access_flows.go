@@ -2,22 +2,21 @@ package mockserver
 
 import (
 	"encoding/json"
-	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/google/uuid"
 	"github.com/jarcoal/httpmock"
 	"net/http"
-	"strings"
 	"time"
 )
 
-func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.AccessFlowV1) {
-	var accessFlows = map[string]apono.AccessFlowV1{}
+func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []aponoapi.AccessFlowTerraformV1) {
+	var accessFlows = map[string]aponoapi.AccessFlowTerraformV1{}
 	for _, accessFlow := range existingAccessFlows {
 		accessFlows[accessFlow.Id] = accessFlow
 	}
 
-	httpmock.RegisterResponder(http.MethodPost, "http://api.apono.dev/api/v1/access-flows", func(req *http.Request) (*http.Response, error) {
-		var createReq apono.UpsertAccessFlowV1
+	httpmock.RegisterResponder(http.MethodPost, "http://api.apono.dev/api/terraform/v1/access-flows", func(req *http.Request) (*http.Response, error) {
+		var createReq aponoapi.UpsertAccessFlowTerraformV1
 		if err := json.NewDecoder(req.Body).Decode(&createReq); err != nil {
 			return httpmock.NewStringResponse(400, err.Error()), nil
 		}
@@ -27,7 +26,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 			return httpmock.NewStringResponse(500, err.Error()), nil
 		}
 
-		accessFlow := apono.AccessFlowV1{
+		accessFlow := aponoapi.AccessFlowTerraformV1{
 			Id:                 id.String(),
 			Name:               createReq.Name,
 			Active:             createReq.Active,
@@ -38,16 +37,11 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 			Approvers:          createReq.Approvers,
 			RevokeAfterInSec:   createReq.RevokeAfterInSec,
 			Settings:           createReq.Settings,
-			CreatedDate:        apono.Instant{Time: time.Now()},
+			CreatedDate:        getTimeAsInstantFloat(),
 		}
 		accessFlows[accessFlow.Id] = accessFlow
 
-		fixedJsonResponse, err := fixCreateDateOnJsonResponse(&accessFlow)
-		if err != nil {
-			return httpmock.NewStringResponse(500, err.Error()), nil
-		}
-
-		resp, err := httpmock.NewJsonResponse(200, fixedJsonResponse)
+		resp, err := httpmock.NewJsonResponse(200, accessFlow)
 		if err != nil {
 			return httpmock.NewStringResponse(500, err.Error()), nil
 		}
@@ -55,19 +49,14 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 		return resp, nil
 	})
 
-	httpmock.RegisterResponder(http.MethodGet, `=~^http://api\.apono\.dev/api/v1/access-flows/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
+	httpmock.RegisterResponder(http.MethodGet, `=~^http://api\.apono\.dev/api/terraform/v1/access-flows/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
 		id := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
 		accessFlow, exists := accessFlows[id]
 		if !exists {
 			return httpmock.NewStringResponse(404, "Access Flow not found"), nil
 		}
 
-		fixedJsonResponse, err := fixCreateDateOnJsonResponse(&accessFlow)
-		if err != nil {
-			return httpmock.NewStringResponse(500, err.Error()), nil
-		}
-
-		resp, err := httpmock.NewJsonResponse(200, fixedJsonResponse)
+		resp, err := httpmock.NewJsonResponse(200, accessFlow)
 		if err != nil {
 			return httpmock.NewStringResponse(500, err.Error()), nil
 		}
@@ -75,10 +64,10 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 		return resp, nil
 	})
 
-	httpmock.RegisterResponder(http.MethodPatch, `=~^http://api\.apono\.dev/api/v1/access-flows/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
+	httpmock.RegisterResponder(http.MethodPut, `=~^http://api\.apono\.dev/api/terraform/v1/access-flows/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
 		id := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
 
-		var updateReq apono.UpdateAccessFlowV1
+		var updateReq aponoapi.UpsertAccessFlowTerraformV1
 		if err := json.NewDecoder(req.Body).Decode(&updateReq); err != nil {
 			return httpmock.NewStringResponse(400, err.Error()), nil
 		}
@@ -88,43 +77,20 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 			return httpmock.NewStringResponse(404, "Access Flow not found"), nil
 		}
 
-		if updateReq.Name.IsSet() {
-			accessFlow.Name = *updateReq.Name.Get()
+		accessFlow.Name = updateReq.Name
+		accessFlow.Active = updateReq.Active
+		accessFlow.Trigger = aponoapi.AccessFlowTriggerTerraformV1{
+			Type:      updateReq.Trigger.Type,
+			Timeframe: updateReq.Trigger.Timeframe,
 		}
-		if updateReq.Active.IsSet() {
-			accessFlow.Active = *updateReq.Active.Get()
-		}
-		if updateReq.Trigger.IsSet() {
-			accessFlow.Trigger = apono.AccessFlowTriggerV1{
-				Type:      updateReq.Trigger.Get().Type,
-				Timeframe: updateReq.Trigger.Get().Timeframe,
-			}
-		}
-		if updateReq.HasGrantees() {
-			accessFlow.Grantees = updateReq.Grantees
-		}
-		if updateReq.HasIntegrationTargets() {
-			accessFlow.IntegrationTargets = updateReq.IntegrationTargets
-		}
-		if updateReq.HasBundleTargets() {
-			accessFlow.BundleTargets = updateReq.BundleTargets
-		}
-		if updateReq.HasApprovers() {
-			accessFlow.Approvers = updateReq.Approvers
-		}
-		if updateReq.RevokeAfterInSec.IsSet() {
-			accessFlow.RevokeAfterInSec = *updateReq.RevokeAfterInSec.Get()
-		}
-		if updateReq.Settings.IsSet() {
-			accessFlow.Settings = *apono.NewNullableAccessFlowV1Settings(updateReq.Settings.Get())
-		}
+		accessFlow.Grantees = updateReq.Grantees
+		accessFlow.IntegrationTargets = updateReq.IntegrationTargets
+		accessFlow.BundleTargets = updateReq.BundleTargets
+		accessFlow.Approvers = updateReq.Approvers
+		accessFlow.RevokeAfterInSec = updateReq.RevokeAfterInSec
+		accessFlow.Settings = updateReq.Settings
 
-		fixedJsonResponse, err := fixCreateDateOnJsonResponse(&accessFlow)
-		if err != nil {
-			return httpmock.NewStringResponse(500, err.Error()), nil
-		}
-
-		resp, err := httpmock.NewJsonResponse(200, fixedJsonResponse)
+		resp, err := httpmock.NewJsonResponse(200, accessFlow)
 		if err != nil {
 			return httpmock.NewStringResponse(500, err.Error()), nil
 		}
@@ -134,7 +100,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 		return resp, nil
 	})
 
-	httpmock.RegisterResponder(http.MethodDelete, `=~^http://api\.apono\.dev/api/v1/access-flows/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
+	httpmock.RegisterResponder(http.MethodDelete, `=~^http://api\.apono\.dev/api/terraform/v1/access-flows/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
 		id := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
 
 		_, exists := accessFlows[id]
@@ -144,7 +110,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 
 		delete(accessFlows, id)
 
-		messageResponse := apono.MessageResponse{
+		messageResponse := aponoapi.MessageResponse{
 			Message: "Deleted access flow",
 		}
 
@@ -157,22 +123,12 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []apono.Access
 	})
 }
 
-// fixCreateDateOnJsonResponse is a workaround for when the AccessFlow model is serialized the
-// CreatedDate field is not being set correctly. This is a bug in the 'httpmock' library.
-func fixCreateDateOnJsonResponse(accessFlow *apono.AccessFlowV1) (map[string]interface{}, error) {
-	cleanJson, err := json.Marshal(accessFlow)
-	if err != nil {
-		return nil, err
-	}
+func getTimeAsInstantFloat() float64 {
+	now := time.Now()
 
-	var jsonFields map[string]interface{}
-	err = json.Unmarshal(cleanJson, &jsonFields)
-	if err != nil {
-		return nil, err
-	}
+	milliseconds := float64(now.UnixMilli())
 
-	timeAsInstantString, _ := accessFlow.CreatedDate.MarshalJSON()
-	jsonFields["created_date"] = strings.Replace(string(timeAsInstantString), "\"", "", -1)
+	nanoseconds := float64(now.Nanosecond()) / 1_000_000_000.0
 
-	return jsonFields, nil
+	return milliseconds + nanoseconds
 }
