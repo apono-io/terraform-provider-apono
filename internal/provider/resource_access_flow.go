@@ -2,7 +2,7 @@ package provider
 
 import (
 	"context"
-	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/apono-io/terraform-provider-apono/internal/models"
 	"github.com/apono-io/terraform-provider-apono/internal/schemas"
 	"github.com/apono-io/terraform-provider-apono/internal/services"
@@ -42,7 +42,7 @@ func (a accessFlowResource) Metadata(_ context.Context, request resource.Metadat
 
 func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, response *resource.SchemaResponse) {
 	var allowedDaysOfTheWeek []string
-	for _, day := range apono.AllowedDayOfWeekEnumValues {
+	for _, day := range aponoapi.AllowedDayOfWeekEnumValues {
 		allowedDaysOfTheWeek = append(allowedDaysOfTheWeek, string(day))
 	}
 
@@ -140,6 +140,9 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				MarkdownDescription: "Represents which identities should approve this access",
 				Optional:            true,
 				NestedObject:        identitySchema,
+				Validators: []validator.Set{
+					setvalidator.SizeAtLeast(1),
+				},
 			},
 			"settings": schema.SingleNestedAttribute{
 				MarkdownDescription: "Access Flow settings",
@@ -197,7 +200,7 @@ func (a accessFlowResource) Read(ctx context.Context, request resource.ReadReque
 		"id": data.ID.ValueString(),
 	})
 
-	accessFlow, _, err := a.provider.client.AccessFlowsApi.GetAccessFlowV1(ctx, data.ID.ValueString()).
+	accessFlow, _, err := a.provider.terraformClient.AccessFlowsAPI.GetAccessFlowV1(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "access_flow", data.ID.ValueString())
@@ -236,7 +239,7 @@ func (a accessFlowResource) Create(ctx context.Context, request resource.CreateR
 		return
 	}
 
-	accessFlow, _, err := a.provider.client.AccessFlowsApi.CreateAccessFlowV1(ctx).UpsertAccessFlowV1(*newAccessFlowRequest).Execute()
+	accessFlow, _, err := a.provider.terraformClient.AccessFlowsAPI.CreateAccessFlowV1(ctx).UpsertAccessFlowTerraformV1(*newAccessFlowRequest).Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "create", "access flow", "")
 		response.Diagnostics.Append(diagnostics...)
@@ -272,14 +275,14 @@ func (a accessFlowResource) Update(ctx context.Context, request resource.UpdateR
 		"id": data.ID.ValueString(),
 	})
 
-	updateAccessFlowRequest, diagnostics := services.ConvertAccessFlowTerraformModelToUpdateApi(ctx, a.provider.client, data)
+	updateAccessFlowRequest, diagnostics := services.ConvertAccessFlowTerraformModelToApi(ctx, a.provider.client, data)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
 	}
 
-	accessFlow, _, err := a.provider.client.AccessFlowsApi.UpdateAccessFlowV1(ctx, data.ID.ValueString()).
-		UpdateAccessFlowV1(*updateAccessFlowRequest).
+	accessFlow, _, err := a.provider.terraformClient.AccessFlowsAPI.UpdateAccessFlowV1(ctx, data.ID.ValueString()).
+		UpsertAccessFlowTerraformV1(*updateAccessFlowRequest).
 		Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "update", "access flow", data.ID.ValueString())
@@ -316,7 +319,7 @@ func (a accessFlowResource) Delete(ctx context.Context, request resource.DeleteR
 		"id": data.ID.ValueString(),
 	})
 
-	messageResponse, _, err := a.provider.client.AccessFlowsApi.DeleteAccessFlowV1(ctx, data.ID.ValueString()).
+	messageResponse, _, err := a.provider.terraformClient.AccessFlowsAPI.DeleteAccessFlowV1(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "delete", "access flow", data.ID.ValueString())
@@ -337,7 +340,7 @@ func (a accessFlowResource) ImportState(ctx context.Context, request resource.Im
 		"id": accessFlowId,
 	})
 
-	accessFlow, _, err := a.provider.client.AccessFlowsApi.GetAccessFlowV1(ctx, accessFlowId).
+	accessFlow, _, err := a.provider.terraformClient.AccessFlowsAPI.GetAccessFlowV1(ctx, accessFlowId).
 		Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "access flow", accessFlowId)

@@ -2,7 +2,7 @@ package provider
 
 import (
 	"fmt"
-	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/apono-io/terraform-provider-apono/internal/mockserver"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/jarcoal/httpmock"
@@ -25,7 +25,7 @@ func TestAccAccessFlowResource(t *testing.T) {
 	accessBundles := mockserver.CreateMockAccessBundles()
 	mockserver.SetupMockHttpServerAccessBundleV1Endpoints(accessBundles)
 
-	mockserver.SetupMockHttpServerAccessFlowV1Endpoints(make([]apono.AccessFlowV1, 0))
+	mockserver.SetupMockHttpServerAccessFlowV1Endpoints(make([]aponoapi.AccessFlowTerraformV1, 0))
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },

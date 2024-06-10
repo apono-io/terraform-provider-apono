@@ -34,7 +34,6 @@ resource "apono_access_flow" "postgresql_prod" {
     }
   ]
   settings = {
-    approver_cannot_self_approve   = true
-    require_approver_justification = true
+    approver_cannot_self_approve = true
   }
 }

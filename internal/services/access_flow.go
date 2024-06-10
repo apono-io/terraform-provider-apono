@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/apono-io/terraform-provider-apono/internal/models"
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -12,7 +13,7 @@ import (
 	"strings"
 )
 
-func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apono.APIClient, accessFlow *apono.AccessFlowV1) (*models.AccessFlowModel, diag.Diagnostics) {
+func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apono.APIClient, accessFlow *aponoapi.AccessFlowTerraformV1) (*models.AccessFlowModel, diag.Diagnostics) {
 	revokeAfterInSec := types.NumberValue(big.NewFloat(float64(accessFlow.GetRevokeAfterInSec())))
 
 	trigger := accessFlow.GetTrigger()
@@ -84,12 +85,13 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 		return nil, diags
 	}
 
-	dataIntegrationTargets, diagnostics := ConvertIntegrationTargetsApiToTerraformModel(ctx, aponoClient, accessFlow.GetIntegrationTargets())
+	apiIntegrationTargets := convertIntegrationTargetsNewApiToOldApiModel(accessFlow.GetIntegrationTargets())
+	dataIntegrationTargets, diagnostics := convertIntegrationTargetsApiToTerraformModel(ctx, aponoClient, apiIntegrationTargets)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
 
-	dataBundleTargets, diagnostics := ConvertBundleTargetsApiToTerraformModel(ctx, aponoClient, accessFlow.GetBundleTargets())
+	dataBundleTargets, diagnostics := convertBundleTargetsApiToTerraformModel(ctx, aponoClient, accessFlow.GetBundleTargets())
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
@@ -122,7 +124,7 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 	return &data, nil
 }
 
-func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apono.APIClient, accessFlow *models.AccessFlowModel) (*apono.UpsertAccessFlowV1, diag.Diagnostics) {
+func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apono.APIClient, accessFlow *models.AccessFlowModel) (*aponoapi.UpsertAccessFlowTerraformV1, diag.Diagnostics) {
 	revokeAfterInSec, _ := accessFlow.RevokeAfterInSec.ValueBigFloat().Int64()
 
 	dataTrigger, diagnostics := convertTriggerTerraformModelToApi(*accessFlow.Trigger)
@@ -146,7 +148,7 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 		return nil, diagnostics
 	}
 
-	var dataGrantees []apono.GranteeV1
+	var dataGrantees []aponoapi.GranteeTerraformV1
 	for _, grantee := range existingGrantees {
 		granteeIds, diagnostics := getIdentitiesIdsByNameAndType(grantee.Name.ValueString(), grantee.Type.ValueString(), availableIdentities.Data, availableUsers.Data)
 		if len(diagnostics) > 0 {
@@ -154,7 +156,7 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 		}
 
 		for _, granteeId := range granteeIds {
-			dataGrantees = append(dataGrantees, apono.GranteeV1{
+			dataGrantees = append(dataGrantees, aponoapi.GranteeTerraformV1{
 				Id:   granteeId,
 				Type: grantee.Type.ValueString(),
 			})
@@ -167,7 +169,7 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 		return nil, diagnostics
 	}
 
-	var dataApprovers []apono.ApproverV1
+	var dataApprovers []aponoapi.ApproverTerraformV1
 	for _, approver := range existingApprovers {
 		approverIds, diagnostics := getIdentitiesIdsByNameAndType(approver.Name.ValueString(), approver.Type.ValueString(), availableIdentities.Data, availableUsers.Data)
 		if len(diagnostics) > 0 {
@@ -175,29 +177,29 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 		}
 
 		for _, approverId := range approverIds {
-			dataApprovers = append(dataApprovers, apono.ApproverV1{
+			dataApprovers = append(dataApprovers, aponoapi.ApproverTerraformV1{
 				Id:   approverId,
 				Type: approver.Type.ValueString(),
 			})
 		}
 	}
 
-	dataIntegrationTargets, diagnostics := ConvertIntegrationTargetsTerraformModelToApi(ctx, aponoClient, accessFlow.IntegrationTargets)
+	dataIntegrationTargets, diagnostics := convertIntegrationTargetsTerraformModelToApi(ctx, aponoClient, accessFlow.IntegrationTargets)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
 
-	dataBundleTargets, diagnostics := ConvertBundleTargetsTerraformModelToApi(ctx, aponoClient, accessFlow.BundleTargets)
+	dataBundleTargets, diagnostics := convertBundleTargetsTerraformModelToApi(ctx, aponoClient, accessFlow.BundleTargets)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
 
-	setting := apono.NullableAccessFlowV1Settings{}
+	setting := aponoapi.NullableAccessFlowTerraformV1Settings{}
 	if accessFlow.Settings != nil {
-		settings := apono.AccessFlowV1Settings{
-			RequireJustificationOnRequestAgain: *apono.NewNullableBool(accessFlow.Settings.RequireJustificationOnRequestAgain.ValueBoolPointer()),
-			RequireAllApprovers:                *apono.NewNullableBool(accessFlow.Settings.RequireAllApprovers.ValueBoolPointer()),
-			ApproverCannotApproveHimself:       *apono.NewNullableBool(accessFlow.Settings.ApproverCannotSelfApprove.ValueBoolPointer()),
+		settings := aponoapi.AccessFlowTerraformV1Settings{
+			RequireJustificationOnRequestAgain: *aponoapi.NewNullableBool(accessFlow.Settings.RequireJustificationOnRequestAgain.ValueBoolPointer()),
+			RequireAllApprovers:                *aponoapi.NewNullableBool(accessFlow.Settings.RequireAllApprovers.ValueBoolPointer()),
+			ApproverCannotApproveHimself:       *aponoapi.NewNullableBool(accessFlow.Settings.ApproverCannotSelfApprove.ValueBoolPointer()),
 		}
 
 		setting.Set(&settings)
@@ -205,63 +207,16 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 		setting.Unset()
 	}
 
-	data := apono.UpsertAccessFlowV1{
+	data := aponoapi.UpsertAccessFlowTerraformV1{
 		Name:               accessFlow.Name.ValueString(),
 		Active:             accessFlow.Active.ValueBool(),
 		RevokeAfterInSec:   int32(revokeAfterInSec),
 		Trigger:            *dataTrigger,
 		Grantees:           dataGrantees,
 		Approvers:          dataApprovers,
-		IntegrationTargets: dataIntegrationTargets,
+		IntegrationTargets: convertIntegrationTargetsOldApiToNewApiModel(dataIntegrationTargets),
 		BundleTargets:      dataBundleTargets,
 		Settings:           setting,
-	}
-
-	return &data, nil
-}
-
-func ConvertAccessFlowTerraformModelToUpdateApi(ctx context.Context, aponoClient *apono.APIClient, accessFlow *models.AccessFlowModel) (*apono.UpdateAccessFlowV1, diag.Diagnostics) {
-	updateAccessFlowRequest, diagnostics := ConvertAccessFlowTerraformModelToApi(ctx, aponoClient, accessFlow)
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
-	}
-
-	trigger := apono.UpdateAccessFlowV1Trigger{
-		Type:      updateAccessFlowRequest.Trigger.Type,
-		Timeframe: updateAccessFlowRequest.Trigger.Timeframe,
-	}
-
-	var approvers []apono.ApproverV1
-	if updateAccessFlowRequest.Approvers == nil {
-		approvers = make([]apono.ApproverV1, 0)
-	} else {
-		approvers = updateAccessFlowRequest.Approvers
-	}
-
-	var integrationTargets []apono.AccessTargetIntegrationV1
-	if updateAccessFlowRequest.IntegrationTargets == nil {
-		integrationTargets = make([]apono.AccessTargetIntegrationV1, 0)
-	} else {
-		integrationTargets = updateAccessFlowRequest.IntegrationTargets
-	}
-
-	var bundleTargets []apono.AccessTargetBundleV1
-	if updateAccessFlowRequest.BundleTargets == nil {
-		bundleTargets = make([]apono.AccessTargetBundleV1, 0)
-	} else {
-		bundleTargets = updateAccessFlowRequest.BundleTargets
-	}
-
-	data := apono.UpdateAccessFlowV1{
-		Name:               *apono.NewNullableString(&updateAccessFlowRequest.Name),
-		Active:             *apono.NewNullableBool(&updateAccessFlowRequest.Active),
-		RevokeAfterInSec:   *apono.NewNullableInt32(&updateAccessFlowRequest.RevokeAfterInSec),
-		Trigger:            *apono.NewNullableUpdateAccessFlowV1Trigger(&trigger),
-		Grantees:           updateAccessFlowRequest.Grantees,
-		Approvers:          approvers,
-		IntegrationTargets: integrationTargets,
-		BundleTargets:      bundleTargets,
-		Settings:           updateAccessFlowRequest.Settings,
 	}
 
 	return &data, nil
@@ -373,14 +328,14 @@ func convertTagV1ListToResourceFilter(tags []apono.TagV1) []models.ResourceFilte
 	return filters
 }
 
-func convertTriggerTerraformModelToApi(trigger models.Trigger) (*apono.AccessFlowTriggerV1, diag.Diagnostics) {
-	var data apono.AccessFlowTriggerV1
+func convertTriggerTerraformModelToApi(trigger models.Trigger) (*aponoapi.AccessFlowTriggerTerraformV1, diag.Diagnostics) {
+	var data aponoapi.AccessFlowTriggerTerraformV1
 	data.Type = trigger.Type.ValueString()
 
 	if trigger.Timeframe != nil {
-		var timeframeDays []apono.DayOfWeek
+		var timeframeDays []aponoapi.DayOfWeek
 		for _, day := range trigger.Timeframe.DaysInWeek.Elements() {
-			timeframeDays = append(timeframeDays, apono.DayOfWeek(utils.AttrValueToString(day)))
+			timeframeDays = append(timeframeDays, aponoapi.DayOfWeek(utils.AttrValueToString(day)))
 		}
 
 		startOfDayTimeInSeconds, err := utils.DayTimeFormatToSeconds(trigger.Timeframe.StartTime.ValueString())
@@ -396,14 +351,14 @@ func convertTriggerTerraformModelToApi(trigger models.Trigger) (*apono.AccessFlo
 			return nil, diagnostics
 		}
 
-		dataTimeFrame := apono.AccessFlowTriggerV1Timeframe{
+		dataTimeFrame := aponoapi.AccessFlowTriggerTerraformV1Timeframe{
 			StartOfDayTimeInSeconds: startOfDayTimeInSeconds,
 			EndOfDayTimeInSeconds:   endOfDayTimeInSeconds,
 			DaysInWeek:              timeframeDays,
 			TimeZone:                trigger.Timeframe.TimeZone.ValueString(),
 		}
 
-		data.Timeframe = *apono.NewNullableAccessFlowTriggerV1Timeframe(&dataTimeFrame)
+		data.Timeframe = *aponoapi.NewNullableAccessFlowTriggerTerraformV1Timeframe(&dataTimeFrame)
 	}
 
 	return &data, nil
