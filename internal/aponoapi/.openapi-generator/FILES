@@ -20,7 +20,6 @@ model_integration_owner_terraform.go
 model_integration_owners_terraform.go
 model_integration_status.go
 model_integration_terraform.go
-model_integration_terraform_integration_owners.go
 model_message_response.go
 model_paginated_response_access_flow_terraform_model.go
 model_paginated_response_integration_terraform_model.go
