@@ -3,7 +3,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
+
 	"github.com/apono-io/terraform-provider-apono/internal/models"
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
 	"github.com/hashicorp/terraform-plugin-framework-validators/helpers/validatordiag"
@@ -124,6 +125,46 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 					},
 				},
 			},
+			"resource_owner_mappings": schema.ListNestedAttribute{
+				MarkdownDescription: "List of resource-to-owner-mappings. Used to map resource owner to apono owner.",
+				Required:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"tag_name": schema.StringAttribute{
+							Required: true,
+						},
+						"attribute_type": schema.StringAttribute{
+							Required: true,
+						},
+						"attribute_integration_id": schema.StringAttribute{
+							Required: true,
+						},
+					},
+				},
+			},
+			"integration_owners": schema.SingleNestedAttribute{
+				MarkdownDescription: "List of integration owner. Each item defines owner of the integration.",
+				Required:            true,
+				Attributes: map[string]schema.Attribute{
+					"owners": schema.ListNestedAttribute{
+						Required: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"integration_id": schema.StringAttribute{
+									Required: true,
+								},
+								"attribute_type_id": schema.StringAttribute{
+									Required: true,
+								},
+								"attribute_value": schema.ListAttribute{
+									ElementType: types.StringType,
+									Required:    true,
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -176,15 +217,17 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 	}
 
 	connectorID := data.ConnectorID.ValueString()
-	integration, _, err := r.provider.client.IntegrationsApi.CreateIntegrationV2(ctx).
-		CreateIntegration(apono.CreateIntegration{
+	integration, _, err := r.provider.terraformClient.IntegrationsAPI.TfCreateIntegrationV1(ctx).
+		UpsertIntegrationTerraform(aponoapi.UpsertIntegrationTerraform{
 			Name:                   data.Name.ValueString(),
 			Type:                   data.Type.ValueString(),
-			ProvisionerId:          *apono.NewNullableString(&connectorID),
-			Metadata:               metadata,
+			ProvisionerId:          *aponoapi.NewNullableString(&connectorID),
+			Params:                 metadata,
 			SecretConfig:           secretConfig,
 			ConnectedResourceTypes: connectedResourceTypes,
-			CustomAccessDetails:    *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
+			CustomAccessDetails:    data.CustomAccessDetails.ValueString(),
+			IntegrationOwners:      integrationOwnersToModel(data.IntegrationOwners),
+			ResourceOwnersMappings: convertMappingsArrayToModel(data.ResourceOwnerMappings),
 		}).
 		Execute()
 	if err != nil {
@@ -218,7 +261,7 @@ func (r *integrationResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	integration, _, err := r.provider.client.IntegrationsApi.GetIntegrationV2(ctx, data.ID.ValueString()).
+	integration, _, err := r.provider.terraformClient.IntegrationsAPI.TfGetIntegrationV1(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "integration", data.ID.ValueString())
@@ -280,14 +323,17 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 
 	connectorID := data.ConnectorID.ValueString()
-	integration, _, err := r.provider.client.IntegrationsApi.UpdateIntegrationV2(ctx, data.ID.ValueString()).
-		UpdateIntegration(apono.UpdateIntegration{
+	integration, _, err := r.provider.terraformClient.IntegrationsAPI.TfUpdateIntegrationV1(ctx, data.ID.ValueString()).
+		UpsertIntegrationTerraform(aponoapi.UpsertIntegrationTerraform{
 			Name:                   data.Name.ValueString(),
-			ProvisionerId:          *apono.NewNullableString(&connectorID),
-			Metadata:               metadata,
+			Type:                   data.Type.ValueString(),
+			ProvisionerId:          *aponoapi.NewNullableString(&connectorID),
+			Params:                 metadata,
 			SecretConfig:           secretConfig,
 			ConnectedResourceTypes: connectedResourceTypes,
-			CustomAccessDetails:    *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
+			CustomAccessDetails:    data.CustomAccessDetails.ValueString(),
+			IntegrationOwners:      integrationOwnersToModel(data.IntegrationOwners),
+			ResourceOwnersMappings: convertMappingsArrayToModel(data.ResourceOwnerMappings),
 		}).
 		Execute()
 	if err != nil {
@@ -342,7 +388,7 @@ func (r *integrationResource) ImportState(ctx context.Context, req resource.Impo
 		"id": integrationId,
 	})
 
-	integration, _, err := r.provider.client.IntegrationsApi.GetIntegrationV2(ctx, integrationId).
+	integration, _, err := r.provider.terraformClient.IntegrationsAPI.TfGetIntegrationV1(ctx, integrationId).
 		Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "integration", integrationId)
@@ -438,9 +484,44 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 	}
 }
 
-func getCustomAccessDetailsFromData(msg string) *apono.NullableString {
-	if msg == "" {
-		return apono.NewNullableString(nil)
+func convertMappingsArrayToModel(m []*models.ResourceOwnerMapping) []aponoapi.ResourceOwnerMappingTerraform {
+	result := make([]aponoapi.ResourceOwnerMappingTerraform, len(m))
+	for i, rom := range m {
+		result[i] = resourceOwnerMappingToModel(rom)
 	}
-	return apono.NewNullableString(&msg)
+	return result
+}
+
+func resourceOwnerMappingToModel(rom *models.ResourceOwnerMapping) aponoapi.ResourceOwnerMappingTerraform {
+	return aponoapi.ResourceOwnerMappingTerraform{
+		TagName:                rom.TagName.ValueString(),
+		AttributeType:          rom.AttributeType.ValueString(),
+		AttributeIntegrationId: *aponoapi.NewNullableString(rom.AttributeIntegrationId.ValueStringPointer()),
+	}
+}
+
+func integrationOwnersToModel(IntegrationOwners *models.IntegrationOwners) aponoapi.IntegrationOwnersTerraform {
+	owners := make([]aponoapi.IntegrationOwnerTerraform, len(IntegrationOwners.Owners))
+	for i, o := range IntegrationOwners.Owners {
+		owners[i] = integrationOwnerToModel(o)
+	}
+	return aponoapi.IntegrationOwnersTerraform{
+		Owners: owners,
+	}
+}
+
+func integrationOwnerToModel(owner *models.IntegrationOwner) aponoapi.IntegrationOwnerTerraform {
+	return aponoapi.IntegrationOwnerTerraform{
+		IntegrationId:   *aponoapi.NewNullableString(owner.IntegrationId.ValueStringPointer()),
+		AttributeTypeId: owner.AttributeTypeId.ValueString(),
+		AttributeValue:  convertStringArray(owner.AttributeValue),
+	}
+}
+
+func convertStringArray(a []types.String) []string {
+	result := make([]string, len(a))
+	for i, item := range a {
+		result[i] = item.ValueString()
+	}
+	return result
 }

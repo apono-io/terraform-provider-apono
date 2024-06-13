@@ -3,7 +3,7 @@ package models
 import (
 	"context"
 	"fmt"
-	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -11,16 +11,18 @@ import (
 
 // IntegrationModel describes the resource data model.
 type IntegrationModel struct {
-	ID                     types.String      `tfsdk:"id"`
-	Name                   types.String      `tfsdk:"name"`
-	Type                   types.String      `tfsdk:"type"`
-	ConnectorID            types.String      `tfsdk:"connector_id"`
-	ConnectedResourceTypes types.Set         `tfsdk:"connected_resource_types"`
-	Metadata               types.Map         `tfsdk:"metadata"`
-	CustomAccessDetails    types.String      `tfsdk:"custom_access_details"`
-	AwsSecret              *AwsSecret        `tfsdk:"aws_secret"`
-	GcpSecret              *GcpSecret        `tfsdk:"gcp_secret"`
-	KubernetesSecret       *KubernetesSecret `tfsdk:"kubernetes_secret"`
+	ID                     types.String            `tfsdk:"id"`
+	Name                   types.String            `tfsdk:"name"`
+	Type                   types.String            `tfsdk:"type"`
+	ConnectorID            types.String            `tfsdk:"connector_id"`
+	ConnectedResourceTypes types.Set               `tfsdk:"connected_resource_types"`
+	Metadata               types.Map               `tfsdk:"metadata"`
+	CustomAccessDetails    types.String            `tfsdk:"custom_access_details"`
+	AwsSecret              *AwsSecret              `tfsdk:"aws_secret"`
+	GcpSecret              *GcpSecret              `tfsdk:"gcp_secret"`
+	KubernetesSecret       *KubernetesSecret       `tfsdk:"kubernetes_secret"`
+	ResourceOwnerMappings  []*ResourceOwnerMapping `tfsdk:"resource_owner_mappings"`
+	IntegrationOwners      *IntegrationOwners      `tfsdk:"integration_owners"`
 }
 
 type AwsSecret struct {
@@ -38,8 +40,24 @@ type KubernetesSecret struct {
 	Name      types.String `tfsdk:"name"`
 }
 
-func ConvertToIntegrationModel(ctx context.Context, integration *apono.Integration) (*IntegrationModel, diag.Diagnostics) {
-	metadataMapValue, diagnostics := types.MapValueFrom(ctx, types.StringType, integration.GetMetadata())
+type ResourceOwnerMapping struct {
+	TagName                types.String `tfsdk:"tag_name"`
+	AttributeType          types.String `tfsdk:"attribute_type"`
+	AttributeIntegrationId types.String `tfsdk:"attribute_integration_id"`
+}
+
+type IntegrationOwner struct {
+	IntegrationId   types.String   `tfsdk:"integration_id"`
+	AttributeTypeId types.String   `tfsdk:"attribute_type_id"`
+	AttributeValue  []types.String `tfsdk:"attribute_value"`
+}
+
+type IntegrationOwners struct {
+	Owners []*IntegrationOwner `tfsdk:"owners"`
+}
+
+func ConvertToIntegrationModel(ctx context.Context, integration *aponoapi.IntegrationTerraform) (*IntegrationModel, diag.Diagnostics) {
+	metadataMapValue, diagnostics := types.MapValueFrom(ctx, types.StringType, integration.GetParams())
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
@@ -80,7 +98,53 @@ func ConvertToIntegrationModel(ctx context.Context, integration *apono.Integrati
 		}
 	}
 
+	data.ResourceOwnerMappings = ConvertResourceOwnersMappingToModel(integration.ResourceOwnersMappings)
+	data.IntegrationOwners = ConvertIntegrationOwnerToData(integration.IntegrationOwners)
+
 	return &data, nil
+}
+
+func ConvertIntegrationOwnerToData(owners aponoapi.IntegrationOwnersTerraform) *IntegrationOwners {
+	var integrationOwners = make([]*IntegrationOwner, len(owners.Owners))
+	for i, in := range owners.GetOwners() {
+		var AttributeValue = make([]types.String, len(in.AttributeValue))
+		for j, av := range in.AttributeValue {
+			AttributeValue[j] = basetypes.NewStringValue(av)
+		}
+		var IntegrationId types.String
+		if in.IntegrationId.IsSet() {
+			IntegrationId = basetypes.NewStringValue(*in.IntegrationId.Get())
+		} else {
+			IntegrationId = basetypes.NewStringNull()
+		}
+		integrationOwners[i] = &IntegrationOwner{
+			IntegrationId:   IntegrationId,
+			AttributeTypeId: basetypes.NewStringValue(in.AttributeTypeId),
+			AttributeValue:  AttributeValue,
+		}
+	}
+	return &IntegrationOwners{
+		Owners: integrationOwners,
+	}
+}
+
+func ConvertResourceOwnersMappingToModel(ResourceOwnersMappings []aponoapi.ResourceOwnerMappingTerraform) []*ResourceOwnerMapping {
+	result := make([]*ResourceOwnerMapping, len(ResourceOwnersMappings))
+	for i, r := range ResourceOwnersMappings {
+		var AttributeIntegrationId types.String
+		if r.AttributeIntegrationId.IsSet() {
+			AttributeIntegrationId = basetypes.NewStringValue(*r.AttributeIntegrationId.Get())
+		} else {
+			AttributeIntegrationId = basetypes.NewStringNull()
+		}
+		result[i] = &ResourceOwnerMapping{
+			TagName:                basetypes.NewStringValue(r.TagName),
+			AttributeType:          basetypes.NewStringValue(r.AttributeType),
+			AttributeIntegrationId: AttributeIntegrationId,
+		}
+	}
+
+	return result
 }
 
 func toString(val interface{}) string {

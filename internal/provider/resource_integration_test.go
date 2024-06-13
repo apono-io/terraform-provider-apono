@@ -2,7 +2,7 @@ package provider
 
 import (
 	"fmt"
-	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/apono-io/terraform-provider-apono/internal/mockserver"
 	"github.com/jarcoal/httpmock"
 	"testing"
@@ -13,7 +13,7 @@ import (
 func TestAccIntegrationResource(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
-	mockserver.SetupMockHttpServerIntegrationV2Endpoints(make([]apono.Integration, 0))
+	mockserver.SetupMockHttpServerIntegrationTFV1Endpoints(make([]aponoapi.IntegrationTerraform, 0))
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -30,6 +30,11 @@ func TestAccIntegrationResource(t *testing.T) {
 					resource.TestCheckResourceAttr("apono_integration.test", "connected_resource_types.#", "1"),
 					resource.TestCheckTypeSetElemAttr("apono_integration.test", "connected_resource_types.*", "postgres-database"),
 					resource.TestCheckResourceAttr("apono_integration.test", "custom_access_details", "This is a custom access detail"),
+					resource.TestCheckResourceAttr("apono_integration.test", "resource_owner_mappings.#", "1"),
+					resource.TestCheckResourceAttr("apono_integration.test", "resource_owner_mappings.0.tag_name", "__group"),
+					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.owners.#", "1"),
+					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.owners.0.integration_id", "123654"),
+					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.owners.0.attribute_value.#", "0"),
 				),
 			},
 			// ImportState testing
@@ -72,6 +77,20 @@ resource "apono_integration" "test" {
   aws_secret = {
     region = "us-east-1"
     secret_id = "my-secret"
+  }
+  resource_owner_mappings = [
+  	{ 
+		tag_name = "__group",
+		attribute_type = "group",
+		attribute_integration_id = ""
+  	}
+  ]
+  integration_owners = {
+	owners = [{
+		integration_id = "123654"
+		attribute_type_id = "9871569"
+		attribute_value = []
+	}]
   }
 }
 `, integrationName)

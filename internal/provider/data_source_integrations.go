@@ -77,7 +77,7 @@ func (d *integrationsDataSource) Read(ctx context.Context, req datasource.ReadRe
 	}
 
 	tflog.Debug(ctx, "Read integrations")
-	response, _, err := d.provider.client.IntegrationsApi.ListIntegrationsV2(ctx).
+	response, _, err := d.provider.terraformClient.IntegrationsAPI.TfListIntegrationsV1(ctx).
 		Execute()
 	if err != nil {
 		if apiError, ok := err.(*apono.GenericOpenAPIError); ok {
@@ -180,6 +180,46 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 				"name": schema.StringAttribute{
 					MarkdownDescription: "Kubernetes secret name",
 					Required:            true,
+				},
+			},
+		},
+		"resource_owner_mappings": schema.ListNestedAttribute{
+			MarkdownDescription: "List of resource-to-owner-mappings. Used to map resource owner to apono owner.",
+			Required:            true,
+			NestedObject: schema.NestedAttributeObject{
+				Attributes: map[string]schema.Attribute{
+					"tag_name": schema.StringAttribute{
+						Required: true,
+					},
+					"attribute_type": schema.StringAttribute{
+						Required: true,
+					},
+					"attribute_integration_id": schema.StringAttribute{
+						Required: true,
+					},
+				},
+			},
+		},
+		"integration_owners": schema.SingleNestedAttribute{
+			MarkdownDescription: "List of integration owner. Each item defines owner of the integration.",
+			Required:            true,
+			Attributes: map[string]schema.Attribute{
+				"owners": schema.ListNestedAttribute{
+					Required: true,
+					NestedObject: schema.NestedAttributeObject{
+						Attributes: map[string]schema.Attribute{
+							"integration_id": schema.StringAttribute{
+								Required: true,
+							},
+							"attribute_type_id": schema.StringAttribute{
+								Required: true,
+							},
+							"attribute_value": schema.ListAttribute{
+								ElementType: types.StringType,
+								Required:    true,
+							},
+						},
+					},
 				},
 			},
 		},
