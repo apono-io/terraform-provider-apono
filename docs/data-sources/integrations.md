@@ -43,6 +43,11 @@ data "apono_integrations" "prod_mysql_integrations" {
 <a id="nestedatt--integrations"></a>
 ### Nested Schema for `integrations`
 
+Required:
+
+- `integration_owners` (Attributes) List of integration owner. Each item defines owner of the integration. (see [below for nested schema](#nestedatt--integrations--integration_owners))
+- `resource_owner_mappings` (Attributes List) List of resource-to-owner-mappings. Used to map resource owner to apono owner. (see [below for nested schema](#nestedatt--integrations--resource_owner_mappings))
+
 Optional:
 
 - `aws_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--aws_secret))
@@ -58,6 +63,34 @@ Read-Only:
 - `id` (String) Integration identifier
 - `name` (String) Integration name
 - `type` (String) Integration type
+
+<a id="nestedatt--integrations--integration_owners"></a>
+### Nested Schema for `integrations.integration_owners`
+
+Required:
+
+- `owners` (Attributes List) (see [below for nested schema](#nestedatt--integrations--integration_owners--owners))
+
+<a id="nestedatt--integrations--integration_owners--owners"></a>
+### Nested Schema for `integrations.integration_owners.owners`
+
+Required:
+
+- `attribute_type_id` (String)
+- `attribute_value` (List of String)
+- `integration_id` (String)
+
+
+
+<a id="nestedatt--integrations--resource_owner_mappings"></a>
+### Nested Schema for `integrations.resource_owner_mappings`
+
+Required:
+
+- `attribute_integration_id` (String)
+- `attribute_type` (String)
+- `tag_name` (String)
+
 
 <a id="nestedatt--integrations--aws_secret"></a>
 ### Nested Schema for `integrations.aws_secret`

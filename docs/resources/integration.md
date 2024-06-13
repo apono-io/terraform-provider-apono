@@ -37,7 +37,9 @@ resource "apono_integration" "postgresql_prod" {
 ### Required
 
 - `connector_id` (String) Apono connector identifier
+- `integration_owners` (Attributes) List of integration owner. Each item defines owner of the integration. (see [below for nested schema](#nestedatt--integration_owners))
 - `name` (String) Integration name
+- `resource_owner_mappings` (Attributes List) List of resource-to-owner-mappings. Used to map resource owner to apono owner. (see [below for nested schema](#nestedatt--resource_owner_mappings))
 - `type` (String) Integration type
 
 ### Optional
@@ -52,6 +54,34 @@ resource "apono_integration" "postgresql_prod" {
 ### Read-Only
 
 - `id` (String) Integration identifier
+
+<a id="nestedatt--integration_owners"></a>
+### Nested Schema for `integration_owners`
+
+Required:
+
+- `owners` (Attributes List) (see [below for nested schema](#nestedatt--integration_owners--owners))
+
+<a id="nestedatt--integration_owners--owners"></a>
+### Nested Schema for `integration_owners.owners`
+
+Required:
+
+- `attribute_type_id` (String)
+- `attribute_value` (List of String)
+- `integration_id` (String)
+
+
+
+<a id="nestedatt--resource_owner_mappings"></a>
+### Nested Schema for `resource_owner_mappings`
+
+Required:
+
+- `attribute_integration_id` (String)
+- `attribute_type` (String)
+- `tag_name` (String)
+
 
 <a id="nestedatt--aws_secret"></a>
 ### Nested Schema for `aws_secret`
