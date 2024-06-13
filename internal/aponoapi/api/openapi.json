@@ -609,7 +609,9 @@
           "type",
           "status",
           "params",
-          "connected_resource_types"
+          "connected_resource_types",
+          "integration_owners",
+          "resource_owners_mappings"
         ],
         "type": "object",
         "properties": {
@@ -661,20 +663,13 @@
             "nullable": true
           },
           "integration_owners": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IntegrationOwnersTerraform"
-              }
-            ],
-            "nullable": true
+            "$ref": "#/components/schemas/IntegrationOwnersTerraform"
           },
           "resource_owners_mappings": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ResourceOwnerMappingTerraform"
-            },
-            "nullable": true
+            }
           }
         }
       },
