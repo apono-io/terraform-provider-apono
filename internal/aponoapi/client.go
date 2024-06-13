@@ -49,6 +49,8 @@ type APIClient struct {
 	// API Services
 
 	AccessFlowsAPI *AccessFlowsAPIService
+
+	IntegrationsAPI *IntegrationsAPIService
 }
 
 type service struct {
@@ -68,6 +70,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 
 	// API Services
 	c.AccessFlowsAPI = (*AccessFlowsAPIService)(&c.common)
+	c.IntegrationsAPI = (*IntegrationsAPIService)(&c.common)
 
 	return c
 }
