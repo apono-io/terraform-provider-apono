@@ -1,6 +1,7 @@
 api_access_flows.go
 client.go
 configuration.go
+model_access_flow_label_terraform_v1.go
 model_access_flow_settings_terraform_v1.go
 model_access_flow_terraform_v1.go
 model_access_flow_terraform_v1_grantee_filter_group.go
@@ -14,7 +15,7 @@ model_attribute_filter_terraform_v1.go
 model_day_of_week.go
 model_grantee_filter_group_operator_terraform_v1.go
 model_grantee_terraform_v1.go
-model_grantee_v2.go
+model_grantee_terraform_v2.go
 model_message_response.go
 model_paginated_response_access_flow_terraform_model.go
 model_pagination_info.go

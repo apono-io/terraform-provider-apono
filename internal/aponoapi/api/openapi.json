@@ -173,6 +173,17 @@
   },
   "components": {
     "schemas": {
+      "AccessFlowLabelTerraformV1": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "AccessFlowSettingsTerraformV1": {
         "type": "object",
         "properties": {
@@ -180,11 +191,11 @@
             "type": "boolean",
             "nullable": true
           },
-          "require_all_approvers": {
+          "require_justification": {
             "type": "boolean",
             "nullable": true
           },
-          "require_approver_justification": {
+          "require_all_approvers": {
             "type": "boolean",
             "nullable": true
           },
@@ -204,7 +215,8 @@
           "integration_targets",
           "bundle_targets",
           "revoke_after_in_sec",
-          "created_date"
+          "created_date",
+          "labels"
         ],
         "type": "object",
         "properties": {
@@ -230,7 +242,7 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/GranteeV2"
+                "$ref": "#/components/schemas/GranteeTerraformV2"
               }
             ],
             "nullable": true
@@ -269,6 +281,12 @@
           },
           "created_date": {
             "$ref": "#/components/schemas/Instant"
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessFlowLabelTerraformV1"
+            }
           }
         }
       },
@@ -356,14 +374,14 @@
       },
       "AttributeFilterTerraformV1": {
         "required": [
-          "operator",
           "attribute_type_id",
           "attribute_value"
         ],
         "type": "object",
         "properties": {
           "operator": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "attribute_type_id": {
             "type": "string"
@@ -409,7 +427,7 @@
           }
         }
       },
-      "GranteeV2": {
+      "GranteeTerraformV2": {
         "required": [
           "logical_operator",
           "attribute_filters"
@@ -532,7 +550,8 @@
           "active",
           "trigger",
           "grantees",
-          "revoke_after_in_sec"
+          "revoke_after_in_sec",
+          "labels"
         ],
         "type": "object",
         "properties": {
@@ -555,7 +574,7 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/GranteeV2"
+                "$ref": "#/components/schemas/GranteeTerraformV2"
               }
             ],
             "nullable": true
@@ -593,6 +612,12 @@
               }
             ],
             "nullable": true
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessFlowLabelTerraformV1"
+            }
           }
         }
       }
