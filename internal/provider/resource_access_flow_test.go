@@ -84,7 +84,7 @@ func TestAccAccessFlowResource(t *testing.T) {
 func testAccAccessFlowResourceConfig(accessFlowName string, useOldGrantees bool) string {
 	var grantees string
 	if useOldGrantees {
-		grantees = fmt.Sprintf(`
+		grantees = `
   grantees = [
     {
       name = "test1@example.com"
@@ -95,9 +95,9 @@ func testAccAccessFlowResourceConfig(accessFlowName string, useOldGrantees bool)
       type = "group"
     }
   ]
-`)
+`
 	} else {
-		grantees = fmt.Sprintf(`
+		grantees = `
 grantees_filter_group = {
     conditions_logical_operator = "AND"
     attribute_filters           = [
@@ -112,7 +112,7 @@ grantees_filter_group = {
       }
     ]
   }
-`)
+`
 	}
 
 	return fmt.Sprintf(`

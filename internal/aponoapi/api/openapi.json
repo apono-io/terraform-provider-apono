@@ -18,6 +18,9 @@
   "tags": [
     {
       "name": "Access Flows"
+    },
+    {
+      "name": "Integrations"
     }
   ],
   "paths": {
@@ -163,6 +166,126 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/terraform/v1/integrations": {
+      "get": {
+        "tags": [
+          "Integrations"
+        ],
+        "summary": "list integrations",
+        "operationId": "tfListIntegrationsV1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponseIntegrationTerraformModel"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Integrations"
+        ],
+        "summary": "create integration",
+        "operationId": "tfCreateIntegrationV1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertIntegrationTerraform"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationTerraform"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/terraform/v1/integrations/{id}": {
+      "get": {
+        "tags": [
+          "Integrations"
+        ],
+        "summary": "get integration",
+        "operationId": "tfGetIntegrationV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationTerraform"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Integrations"
+        ],
+        "summary": "update integration",
+        "operationId": "tfUpdateIntegrationV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertIntegrationTerraform"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationTerraform"
                 }
               }
             }
@@ -450,6 +573,124 @@
         "type": "number",
         "example": "{seconds}.{nanos}"
       },
+      "IntegrationOwnerTerraform": {
+        "required": [
+          "attribute_type_id",
+          "attribute_value"
+        ],
+        "type": "object",
+        "properties": {
+          "integration_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "attribute_type_id": {
+            "type": "string"
+          },
+          "attribute_value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "IntegrationOwnersTerraform": {
+        "required": [
+          "owners"
+        ],
+        "type": "object",
+        "properties": {
+          "owners": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegrationOwnerTerraform"
+            }
+          }
+        }
+      },
+      "IntegrationStatus": {
+        "enum": [
+          "Initializing",
+          "Refreshing",
+          "Active",
+          "Error",
+          "Warning",
+          "Disabled"
+        ],
+        "type": "string"
+      },
+      "IntegrationTerraform": {
+        "required": [
+          "id",
+          "name",
+          "type",
+          "status",
+          "params",
+          "connected_resource_types",
+          "integration_owners",
+          "resource_owners_mappings"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/IntegrationStatus"
+          },
+          "provisioner_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "last_sync_time": {
+            "type": "number",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Instant"
+              }
+            ],
+            "nullable": true
+          },
+          "params": {
+            "type": "object"
+          },
+          "secret_config": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SecretConfig"
+              }
+            ],
+            "nullable": true
+          },
+          "connected_resource_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "custom_access_details": {
+            "type": "string",
+            "nullable": true
+          },
+          "integration_owners": {
+            "$ref": "#/components/schemas/IntegrationOwnersTerraform"
+          },
+          "resource_owners_mappings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceOwnerMappingTerraform"
+            }
+          }
+        }
+      },
       "MessageResponse": {
         "required": [
           "message"
@@ -479,6 +720,24 @@
           }
         }
       },
+      "PaginatedResponseIntegrationTerraformModel": {
+        "required": [
+          "data",
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegrationTerraform"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationInfo"
+          }
+        }
+      },
       "PaginationInfo": {
         "required": [
           "total",
@@ -500,6 +759,28 @@
             "type": "integer"
           }
         }
+      },
+      "ResourceOwnerMappingTerraform": {
+        "required": [
+          "tag_name",
+          "attribute_type"
+        ],
+        "type": "object",
+        "properties": {
+          "tag_name": {
+            "type": "string"
+          },
+          "attribute_type": {
+            "type": "string"
+          },
+          "attribute_integration_id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SecretConfig": {
+        "type": "object"
       },
       "TagTerraformV1": {
         "required": [
@@ -617,6 +898,55 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AccessFlowLabelTerraformV1"
+            }
+          }
+        }
+      },
+      "UpsertIntegrationTerraform": {
+        "required": [
+          "name",
+          "type",
+          "params",
+          "secret_config",
+          "connected_resource_types",
+          "custom_access_details",
+          "integration_owners",
+          "resource_owners_mappings"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "provisioner_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "params": {
+            "type": "object"
+          },
+          "secret_config": {
+            "$ref": "#/components/schemas/SecretConfig"
+          },
+          "connected_resource_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "custom_access_details": {
+            "type": "string"
+          },
+          "integration_owners": {
+            "$ref": "#/components/schemas/IntegrationOwnersTerraform"
+          },
+          "resource_owners_mappings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceOwnerMappingTerraform"
             }
           }
         }

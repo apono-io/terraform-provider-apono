@@ -1,4 +1,5 @@
 api_access_flows.go
+api_integrations.go
 client.go
 configuration.go
 model_access_flow_label_terraform_v1.go
@@ -16,11 +17,18 @@ model_day_of_week.go
 model_grantee_filter_group_operator_terraform_v1.go
 model_grantee_terraform_v1.go
 model_grantee_terraform_v2.go
+model_integration_owner_terraform.go
+model_integration_owners_terraform.go
+model_integration_status.go
+model_integration_terraform.go
 model_message_response.go
 model_paginated_response_access_flow_terraform_model.go
+model_paginated_response_integration_terraform_model.go
 model_pagination_info.go
+model_resource_owner_mapping_terraform.go
 model_tag_terraform_v1.go
 model_timeframe_terraform_v1.go
 model_upsert_access_flow_terraform_v1.go
+model_upsert_integration_terraform.go
 response.go
 utils.go
