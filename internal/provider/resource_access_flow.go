@@ -197,6 +197,14 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 					},
 				},
 			},
+			"labels": schema.ListAttribute{
+				MarkdownDescription: "List of labels to attach to the access flow",
+				Optional:            true,
+				ElementType:         types.StringType,
+				Validators: []validator.List{
+					listvalidator.SizeAtLeast(1),
+				},
+			},
 		},
 	}
 }

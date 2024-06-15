@@ -118,6 +118,11 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 		dataSettings = nil
 	}
 
+	dataLabels, diagnostics := convertLabelsApiToTerraformModel(ctx, accessFlow.GetLabels())
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
+	}
+
 	data := models.AccessFlowModel{
 		ID:                  types.StringValue(accessFlow.GetId()),
 		Name:                types.StringValue(accessFlow.GetName()),
@@ -130,6 +135,7 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 		BundleTargets:       dataBundleTargets,
 		Approvers:           setApprovers,
 		Settings:            dataSettings,
+		Labels:              *dataLabels,
 	}
 
 	return &data, nil
@@ -233,7 +239,7 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 		setting.Unset()
 	}
 
-	dataLabels := []aponoapi.AccessFlowLabelTerraformV1{}
+	dataLabels := convertLabelsTerraformModelToApi(accessFlow.Labels)
 
 	data := aponoapi.UpsertAccessFlowTerraformV1{
 		Name:               accessFlow.Name.ValueString(),
@@ -544,4 +550,34 @@ func convertAttributeFiltersTerraformModelToApi(ctx context.Context, filter apon
 		AttributeNames: dataFilterNames,
 		IntegrationID:  types.StringPointerValue(filter.IntegrationId.Get()),
 	}, nil
+}
+
+func convertLabelsApiToTerraformModel(ctx context.Context, labels []aponoapi.AccessFlowLabelTerraformV1) (*basetypes.ListValue, diag.Diagnostics) {
+	var labelNames []string
+	for _, label := range labels {
+		labelNames = append(labelNames, label.Name)
+	}
+
+	if len(labelNames) == 0 {
+		undefinedList := basetypes.NewListNull(types.StringType)
+		return &undefinedList, nil
+	}
+
+	dataLabels, diagnostics := types.ListValueFrom(ctx, types.StringType, labelNames)
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
+	}
+
+	return &dataLabels, nil
+}
+
+func convertLabelsTerraformModelToApi(labels basetypes.ListValue) []aponoapi.AccessFlowLabelTerraformV1 {
+	data := []aponoapi.AccessFlowLabelTerraformV1{}
+	for _, label := range labels.Elements() {
+		data = append(data, aponoapi.AccessFlowLabelTerraformV1{
+			Name: utils.AttrValueToString(label),
+		})
+	}
+
+	return data
 }

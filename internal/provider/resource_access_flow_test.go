@@ -52,6 +52,9 @@ func TestAccAccessFlowResource(t *testing.T) {
 						"type": "context_attribute",
 						"name": "Manager",
 					}),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "labels.#", "2"),
+					resource.TestCheckTypeSetElemAttr("apono_access_flow.test_access_flow_resource", "labels.*", "label1"),
+					resource.TestCheckTypeSetElemAttr("apono_access_flow.test_access_flow_resource", "labels.*", "label2"),
 				),
 			},
 			// ImportState testing
@@ -178,6 +181,7 @@ settings = {
     approver_cannot_self_approve = true
     require_all_approvers = true
   }
+labels = ["label1","label2"]
 }
 `, accessFlowName, grantees)
 }
