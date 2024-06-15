@@ -90,11 +90,8 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				Required:            true,
 				Attributes: map[string]schema.Attribute{
 					"type": schema.StringAttribute{
-						MarkdownDescription: "Type of trigger. Only `user_request` is supported.",
+						MarkdownDescription: "Type of trigger.`user_request` or 'auto_grant' is supported.",
 						Required:            true,
-						Validators: []validator.String{
-							stringvalidator.OneOf("user_request"),
-						},
 					},
 					"timeframe": schema.SingleNestedAttribute{
 						MarkdownDescription: "Active duration for the trigger.",
