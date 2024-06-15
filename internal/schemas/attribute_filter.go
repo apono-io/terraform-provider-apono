@@ -10,22 +10,22 @@ var (
 	AttributeFilterSchema = schema.NestedAttributeObject{
 		Attributes: map[string]schema.Attribute{
 			"operator": schema.StringAttribute{
-				Description: "", // TODO: Add description
-				Optional:    true,
-				Computed:    true,
+				MarkdownDescription: "placeholder", // TODO: Add description
+				Optional:            true,
+				Computed:            true,
 			},
 			"attribute_type": schema.StringAttribute{
-				Description: "", // TODO: Add description
-				Required:    true,
+				MarkdownDescription: "placeholder", // TODO: Add description
+				Required:            true,
 			},
 			"attribute_names": schema.ListAttribute{
-				Description: "", // TODO: Add description
-				Optional:    true,
-				ElementType: types.StringType,
+				MarkdownDescription: "placeholder", // TODO: Add description
+				Optional:            true,
+				ElementType:         types.StringType,
 			},
 			"integration_id": schema.StringAttribute{
-				Description: "", // TODO: Add description
-				Optional:    true,
+				MarkdownDescription: "placeholder", // TODO: Add description
+				Optional:            true,
 			},
 		},
 	}

@@ -138,13 +138,13 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				},
 			},
 			"grantees_filter_group": schema.SingleNestedAttribute{
-				MarkdownDescription: "", // TODO: Add description
+				MarkdownDescription: "placeholder", // TODO: Add description
 				Optional:            true,
 				Computed:            true,
 				Attributes: map[string]schema.Attribute{
 					"conditions_logical_operator": schemas.ConditionLogicalOperatorSchema,
 					"attribute_filters": schema.ListNestedAttribute{
-						MarkdownDescription: "", // TODO: Add description
+						MarkdownDescription: "placeholder", // TODO: Add description
 						Required:            true,
 						NestedObject:        schemas.AttributeFilterSchema,
 						Validators: []validator.List{
