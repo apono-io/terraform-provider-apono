@@ -9,6 +9,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"math/big"
 	"strings"
 )
@@ -69,6 +70,15 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 		return nil, diags
 	}
 
+	dataGranteeFilterGroup, diags := convertGranteeFilterGroupApiToTerraformModel(ctx, accessFlow.GranteeFilterGroup.Get())
+	if len(diags) > 0 {
+		return nil, diags
+	}
+	objectGranteeFilterGroup, diags := types.ObjectValueFrom(ctx, models.GranteeFilterGroupObject, dataGranteeFilterGroup)
+	if len(diags) > 0 {
+		return nil, diags
+	}
+
 	var dataApprovers []models.Identity
 	for _, approver := range accessFlow.GetApprovers() {
 		identity, diagnostics := convertIdentityApiToTerraformModel(approver.Id, strings.ToLower(approver.Type), availableIdentities.Data, availableUsers.Data)
@@ -109,16 +119,17 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 	}
 
 	data := models.AccessFlowModel{
-		ID:                 types.StringValue(accessFlow.GetId()),
-		Name:               types.StringValue(accessFlow.GetName()),
-		Active:             types.BoolValue(accessFlow.GetActive()),
-		RevokeAfterInSec:   revokeAfterInSec,
-		Trigger:            &dataTrigger,
-		Grantees:           setGrantees,
-		IntegrationTargets: dataIntegrationTargets,
-		BundleTargets:      dataBundleTargets,
-		Approvers:          setApprovers,
-		Settings:           dataSettings,
+		ID:                  types.StringValue(accessFlow.GetId()),
+		Name:                types.StringValue(accessFlow.GetName()),
+		Active:              types.BoolValue(accessFlow.GetActive()),
+		RevokeAfterInSec:    revokeAfterInSec,
+		Trigger:             &dataTrigger,
+		Grantees:            setGrantees,
+		GranteesFilterGroup: objectGranteeFilterGroup,
+		IntegrationTargets:  dataIntegrationTargets,
+		BundleTargets:       dataBundleTargets,
+		Approvers:           setApprovers,
+		Settings:            dataSettings,
 	}
 
 	return &data, nil
@@ -143,12 +154,14 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 	}
 
 	existingGrantees := make([]models.Identity, 0, len(accessFlow.Grantees.Elements()))
-	diagnostics = accessFlow.Grantees.ElementsAs(ctx, &existingGrantees, false)
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
+	if !accessFlow.Grantees.IsNull() && !accessFlow.Grantees.IsUnknown() {
+		diagnostics = accessFlow.Grantees.ElementsAs(ctx, &existingGrantees, false)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
 	}
 
-	var dataGrantees []aponoapi.GranteeTerraformV1
+	dataGrantees := []aponoapi.GranteeTerraformV1{}
 	for _, grantee := range existingGrantees {
 		granteeIds, diagnostics := getIdentitiesIdsByNameAndType(grantee.Name.ValueString(), grantee.Type.ValueString(), availableIdentities.Data, availableUsers.Data)
 		if len(diagnostics) > 0 {
@@ -160,6 +173,19 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 				Id:   granteeId,
 				Type: grantee.Type.ValueString(),
 			})
+		}
+	}
+
+	var dataGranteeFilterGroup *aponoapi.AccessFlowTerraformV1GranteeFilterGroup
+	if !accessFlow.GranteesFilterGroup.IsNull() && !accessFlow.GranteesFilterGroup.IsUnknown() {
+		var modelGranteeFilterGroup models.GranteeFilterGroup
+		diagnostics = accessFlow.GranteesFilterGroup.As(ctx, &modelGranteeFilterGroup, basetypes.ObjectAsOptions{})
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
+		dataGranteeFilterGroup, diagnostics = convertGranteeFilterGroupTerraformModelToApi(ctx, &modelGranteeFilterGroup)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
 		}
 	}
 
@@ -207,16 +233,20 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 		setting.Unset()
 	}
 
+	dataLabels := []aponoapi.AccessFlowLabelTerraformV1{}
+
 	data := aponoapi.UpsertAccessFlowTerraformV1{
 		Name:               accessFlow.Name.ValueString(),
 		Active:             accessFlow.Active.ValueBool(),
 		RevokeAfterInSec:   int32(revokeAfterInSec),
 		Trigger:            *dataTrigger,
 		Grantees:           dataGrantees,
+		GranteeFilterGroup: *aponoapi.NewNullableAccessFlowTerraformV1GranteeFilterGroup(dataGranteeFilterGroup),
 		Approvers:          dataApprovers,
 		IntegrationTargets: convertIntegrationTargetsOldApiToNewApiModel(dataIntegrationTargets),
 		BundleTargets:      dataBundleTargets,
 		Settings:           setting,
+		Labels:             dataLabels,
 	}
 
 	return &data, nil
@@ -421,4 +451,97 @@ func getUniqueListOfIdentities(identities []models.Identity) []models.Identity {
 	}
 
 	return uniqueIdentities
+}
+
+func convertGranteeFilterGroupApiToTerraformModel(ctx context.Context, granteeFilterGroup *aponoapi.AccessFlowTerraformV1GranteeFilterGroup) (*models.GranteeFilterGroup, diag.Diagnostics) {
+	if granteeFilterGroup == nil {
+		return nil, nil
+	}
+
+	var dataFilters []models.AttributeFilter
+	for _, apiFilter := range granteeFilterGroup.GetAttributeFilters() {
+		dataFilter, diagnostics := convertAttributeFiltersTerraformModelToApi(ctx, apiFilter)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
+
+		dataFilters = append(dataFilters, *dataFilter)
+	}
+
+	filters, diags := types.ListValueFrom(ctx, types.ObjectType{AttrTypes: models.AttributeFilterObject}, dataFilters)
+	if len(diags) > 0 {
+		return nil, diags
+	}
+
+	return &models.GranteeFilterGroup{
+		Operator: types.StringValue(string(granteeFilterGroup.GetLogicalOperator())),
+		Filters:  filters,
+	}, nil
+}
+
+func convertGranteeFilterGroupTerraformModelToApi(ctx context.Context, granteeFilterGroup *models.GranteeFilterGroup) (*aponoapi.AccessFlowTerraformV1GranteeFilterGroup, diag.Diagnostics) {
+	if granteeFilterGroup == nil {
+		return nil, nil
+	}
+
+	dataFilters := make([]models.AttributeFilter, 0, len(granteeFilterGroup.Filters.Elements()))
+	diagnostics := granteeFilterGroup.Filters.ElementsAs(ctx, &dataFilters, false)
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
+	}
+
+	var apiFilters []aponoapi.AttributeFilterTerraformV1
+	for _, dataFilter := range dataFilters {
+		apiFilter, diagnostics := convertAttributeFiltersApiToTerraformModel(ctx, dataFilter)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
+
+		apiFilters = append(apiFilters, *apiFilter)
+	}
+
+	return &aponoapi.AccessFlowTerraformV1GranteeFilterGroup{
+		LogicalOperator:  aponoapi.GranteeFilterGroupOperatorTerraformV1(granteeFilterGroup.Operator.ValueString()),
+		AttributeFilters: apiFilters,
+	}, nil
+}
+
+func convertAttributeFiltersApiToTerraformModel(ctx context.Context, filter models.AttributeFilter) (*aponoapi.AttributeFilterTerraformV1, diag.Diagnostics) {
+	attributeValues := make([]string, 0, len(filter.AttributeNames.Elements()))
+	diagnostics := filter.AttributeNames.ElementsAs(ctx, &attributeValues, false)
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
+	}
+
+	var operator *string
+	if !filter.Operator.IsNull() && !filter.Operator.IsUnknown() {
+		operator = filter.Operator.ValueStringPointer()
+	}
+
+	return &aponoapi.AttributeFilterTerraformV1{
+		Operator:        *aponoapi.NewNullableString(operator),
+		AttributeTypeId: filter.AttributeType.ValueString(),
+		AttributeValue:  attributeValues,
+		IntegrationId:   *aponoapi.NewNullableString(filter.IntegrationID.ValueStringPointer()),
+	}, nil
+}
+
+func convertAttributeFiltersTerraformModelToApi(ctx context.Context, filter aponoapi.AttributeFilterTerraformV1) (*models.AttributeFilter, diag.Diagnostics) {
+	apiFilterNames, err := utils.ConvertInterfaceToListOfString(filter.GetAttributeValue())
+	if err != nil {
+		diagnostics := diag.Diagnostics{}
+		diagnostics.AddError("Client Error", fmt.Sprintf("Failed to convert attribute names for attribute filter: %s", err.Error()))
+		return nil, diagnostics
+	}
+	dataFilterNames, diagnostics := types.ListValueFrom(ctx, types.StringType, apiFilterNames)
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
+	}
+
+	return &models.AttributeFilter{
+		Operator:       types.StringPointerValue(filter.Operator.Get()),
+		AttributeType:  types.StringValue(filter.AttributeTypeId),
+		AttributeNames: dataFilterNames,
+		IntegrationID:  types.StringPointerValue(filter.IntegrationId.Get()),
+	}, nil
 }
