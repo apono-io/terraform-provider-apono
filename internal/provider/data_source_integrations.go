@@ -183,42 +183,41 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 				},
 			},
 		},
-		"resource_owner_mappings": schema.ListNestedAttribute{
+		"resource_owner_mappings": schema.SetNestedAttribute{
 			MarkdownDescription: "List of resource-to-owner-mappings. Used to map resource owner to apono owner.",
 			Required:            true,
 			NestedObject: schema.NestedAttributeObject{
 				Attributes: map[string]schema.Attribute{
 					"tag_name": schema.StringAttribute{
-						Required: true,
+						MarkdownDescription: "Placeholder.",
+						Required:            true,
 					},
 					"attribute_type": schema.StringAttribute{
-						Required: true,
+						MarkdownDescription: "Placeholder.",
+						Required:            true,
 					},
 					"attribute_integration_id": schema.StringAttribute{
-						Required: true,
+						MarkdownDescription: "Placeholder.",
 					},
 				},
 			},
 		},
-		"integration_owners": schema.SingleNestedAttribute{
+		"integration_owners": schema.SetNestedAttribute{
 			MarkdownDescription: "List of integration owner. Each item defines owner of the integration.",
 			Required:            true,
-			Attributes: map[string]schema.Attribute{
-				"owners": schema.ListNestedAttribute{
-					Required: true,
-					NestedObject: schema.NestedAttributeObject{
-						Attributes: map[string]schema.Attribute{
-							"integration_id": schema.StringAttribute{
-								Required: true,
-							},
-							"attribute_type_id": schema.StringAttribute{
-								Required: true,
-							},
-							"attribute_value": schema.ListAttribute{
-								ElementType: types.StringType,
-								Required:    true,
-							},
-						},
+			NestedObject: schema.NestedAttributeObject{
+				Attributes: map[string]schema.Attribute{
+					"integration_id": schema.StringAttribute{
+						MarkdownDescription: "Placeholder.",
+					},
+					"attribute_type_id": schema.StringAttribute{
+						MarkdownDescription: "Placeholder.",
+						Required:            true,
+					},
+					"attribute_value": schema.ListAttribute{
+						MarkdownDescription: "Placeholder.",
+						ElementType:         types.StringType,
+						Required:            true,
 					},
 				},
 			},
