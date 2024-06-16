@@ -7,7 +7,6 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/schemas"
 	"github.com/apono-io/terraform-provider-apono/internal/services"
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -130,7 +129,6 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 			"grantees": schema.SetNestedAttribute{
 				MarkdownDescription: "Represents which identities should be granted access",
 				Optional:            true,
-				Computed:            true,
 				NestedObject:        identitySchema,
 				DeprecationMessage:  "Configure grantees_filter_group instead. This attribute will be removed in the next major version of the provider",
 				Validators: []validator.Set{
@@ -140,15 +138,14 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 			"grantees_filter_group": schema.SingleNestedAttribute{
 				MarkdownDescription: "placeholder", // TODO: Add description
 				Optional:            true,
-				Computed:            true,
 				Attributes: map[string]schema.Attribute{
 					"conditions_logical_operator": schemas.ConditionLogicalOperatorSchema,
-					"attribute_filters": schema.ListNestedAttribute{
+					"attribute_filters": schema.SetNestedAttribute{
 						MarkdownDescription: "placeholder", // TODO: Add description
 						Required:            true,
 						NestedObject:        schemas.AttributeFilterSchema,
-						Validators: []validator.List{
-							listvalidator.SizeAtLeast(1),
+						Validators: []validator.Set{
+							setvalidator.SizeAtLeast(1),
 						},
 					},
 				},
@@ -228,7 +225,7 @@ func (a accessFlowResource) Read(ctx context.Context, request resource.ReadReque
 		return
 	}
 
-	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow)
+	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow, data)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
@@ -266,7 +263,7 @@ func (a accessFlowResource) Create(ctx context.Context, request resource.CreateR
 		return
 	}
 
-	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow)
+	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow, data)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
@@ -310,7 +307,7 @@ func (a accessFlowResource) Update(ctx context.Context, request resource.UpdateR
 		return
 	}
 
-	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow)
+	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow, data)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
@@ -367,7 +364,7 @@ func (a accessFlowResource) ImportState(ctx context.Context, request resource.Im
 		return
 	}
 
-	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow)
+	model, diagnostics := services.ConvertAccessFlowApiToTerraformModel(ctx, a.provider.client, accessFlow, nil)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return

@@ -56,9 +56,8 @@ func TestAccAccessFlowResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
-				ResourceName:      "apono_access_flow.test_access_flow_resource",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName: "apono_access_flow.test_access_flow_resource",
+				ImportState:  true,
 			},
 			// Update and Read testing
 			{
