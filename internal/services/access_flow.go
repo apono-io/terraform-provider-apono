@@ -469,17 +469,17 @@ func convertGranteeFilterGroupApiToTerraformModel(ctx context.Context, granteeFi
 		return nil, nil
 	}
 
-	var dataFilters []models.AttributeFilter
+	var filtersState []models.AttributeFilter
 	for _, apiFilter := range granteeFilterGroup.GetAttributeFilters() {
 		dataFilter, diagnostics := convertAttributeFiltersTerraformModelToApi(ctx, apiFilter)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics
 		}
 
-		dataFilters = append(dataFilters, *dataFilter)
+		filtersState = append(filtersState, *dataFilter)
 	}
 
-	filters, diags := types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.AttributeFilterObject}, dataFilters)
+	filters, diags := types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.AttributeFilterObject}, filtersState)
 	if len(diags) > 0 {
 		return nil, diags
 	}

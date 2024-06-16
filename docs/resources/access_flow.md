@@ -86,7 +86,7 @@ resource "apono_access_flow" "postgresql_prod" {
 
 Required:
 
-- `type` (String) Type of trigger.`user_request` or 'auto_grant' is supported.
+- `type` (String) Type of trigger. `user_request` or 'auto_grant' is supported.
 
 Optional:
 
@@ -146,13 +146,13 @@ Optional:
 
 Required:
 
-- `attribute_type` (String) placeholder
+- `attribute_type` (String) Pick the user context type, for example 'user', 'group', 'okta_city', 'pagerduty_shift', etc.
 
 Optional:
 
-- `attribute_names` (Set of String) placeholder
-- `integration_id` (String) placeholder
-- `operator` (String) placeholder
+- `attribute_names` (Set of String) Insert the specific values you'd like to include or exclude from the Access Flow, for example the user email, group name, etc.
+- `integration_id` (String) Use the integration ID this attribute originates from. This can be any user context integration, for example PagerDuty, Okta, etc.
+- `operator` (String)
 
 
 
