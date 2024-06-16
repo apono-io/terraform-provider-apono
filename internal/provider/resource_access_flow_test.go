@@ -61,6 +61,8 @@ func TestAccAccessFlowResource(t *testing.T) {
 			{
 				ResourceName: "apono_access_flow.test_access_flow_resource",
 				ImportState:  true,
+				// Need to apply this test after removing the old grantees from the config schema
+				// ImportStateVerify: true,
 			},
 			// Update and Read testing
 			{

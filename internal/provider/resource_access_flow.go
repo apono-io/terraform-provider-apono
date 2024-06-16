@@ -90,7 +90,7 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				Required:            true,
 				Attributes: map[string]schema.Attribute{
 					"type": schema.StringAttribute{
-						MarkdownDescription: "Type of trigger.`user_request` or 'auto_grant' is supported.",
+						MarkdownDescription: "Type of trigger. `user_request` or 'auto_grant' is supported.",
 						Required:            true,
 					},
 					"timeframe": schema.SingleNestedAttribute{
@@ -138,7 +138,8 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 			},
 			"grantees_filter_group": schema.SingleNestedAttribute{
 				MarkdownDescription: "placeholder", // TODO: Add description
-				Optional:            true,
+				// This field is Optional as long as the old `grantees` field is present in the configuration
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"conditions_logical_operator": schemas.ConditionLogicalOperatorSchema,
 					"attribute_filters": schema.SetNestedAttribute{
