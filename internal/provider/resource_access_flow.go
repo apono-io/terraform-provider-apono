@@ -7,6 +7,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/schemas"
 	"github.com/apono-io/terraform-provider-apono/internal/services"
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -193,6 +194,14 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 							boolplanmodifier.UseStateForUnknown(),
 						},
 					},
+				},
+			},
+			"labels": schema.ListAttribute{
+				MarkdownDescription: "List of labels to attach to the access flow",
+				Optional:            true,
+				ElementType:         types.StringType,
+				Validators: []validator.List{
+					listvalidator.SizeAtLeast(1),
 				},
 			},
 		},

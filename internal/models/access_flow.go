@@ -19,6 +19,7 @@ type AccessFlowModel struct {
 	BundleTargets       []BundleTarget      `tfsdk:"bundle_targets"`
 	Approvers           types.Set           `tfsdk:"approvers"`
 	Settings            *Settings           `tfsdk:"settings"`
+	Labels              types.List          `tfsdk:"labels"`
 }
 
 type Trigger struct {

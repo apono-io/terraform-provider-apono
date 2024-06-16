@@ -55,6 +55,7 @@ resource "apono_access_flow" "postgresql_prod" {
   settings = {
     approver_cannot_self_approve = true
   }
+  labels = ["DB", "PROD", "TERRAFORM"]
 }
 ```
 
@@ -75,6 +76,7 @@ resource "apono_access_flow" "postgresql_prod" {
 - `grantees` (Attributes Set, Deprecated) Represents which identities should be granted access (see [below for nested schema](#nestedatt--grantees))
 - `grantees_filter_group` (Attributes) placeholder (see [below for nested schema](#nestedatt--grantees_filter_group))
 - `integration_targets` (Attributes Set) Represents the number of resources from the integration to which access is granted. If both include and exclude filters are omitted, all resources will be targeted. (see [below for nested schema](#nestedatt--integration_targets))
+- `labels` (List of String) List of labels to attach to the access flow
 - `settings` (Attributes) Access Flow settings (see [below for nested schema](#nestedatt--settings))
 
 ### Read-Only
