@@ -32,6 +32,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []aponoapi.Acc
 			Active:             createReq.Active,
 			Trigger:            createReq.Trigger,
 			Grantees:           createReq.Grantees,
+			GranteeFilterGroup: createReq.GranteeFilterGroup,
 			IntegrationTargets: createReq.IntegrationTargets,
 			BundleTargets:      createReq.BundleTargets,
 			Approvers:          createReq.Approvers,
@@ -84,6 +85,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []aponoapi.Acc
 			Timeframe: updateReq.Trigger.Timeframe,
 		}
 		accessFlow.Grantees = updateReq.Grantees
+		accessFlow.GranteeFilterGroup = updateReq.GranteeFilterGroup
 		accessFlow.IntegrationTargets = updateReq.IntegrationTargets
 		accessFlow.BundleTargets = updateReq.BundleTargets
 		accessFlow.Approvers = updateReq.Approvers

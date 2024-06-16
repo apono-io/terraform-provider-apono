@@ -32,6 +32,7 @@ type AccessFlowTerraformV1 struct {
 	RevokeAfterInSec   int32                                           `json:"revoke_after_in_sec"`
 	Settings           NullableAccessFlowTerraformV1Settings           `json:"settings,omitempty"`
 	CreatedDate        float64                                         `json:"created_date"`
+	Labels             []AccessFlowLabelTerraformV1                    `json:"labels"`
 }
 
 type _AccessFlowTerraformV1 AccessFlowTerraformV1
@@ -40,7 +41,7 @@ type _AccessFlowTerraformV1 AccessFlowTerraformV1
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAccessFlowTerraformV1(id string, name string, active bool, trigger AccessFlowTriggerTerraformV1, grantees []GranteeTerraformV1, integrationTargets []AccessTargetIntegrationTerraformV1, bundleTargets []AccessTargetBundleTerraformV1, revokeAfterInSec int32, createdDate float64) *AccessFlowTerraformV1 {
+func NewAccessFlowTerraformV1(id string, name string, active bool, trigger AccessFlowTriggerTerraformV1, grantees []GranteeTerraformV1, integrationTargets []AccessTargetIntegrationTerraformV1, bundleTargets []AccessTargetBundleTerraformV1, revokeAfterInSec int32, createdDate float64, labels []AccessFlowLabelTerraformV1) *AccessFlowTerraformV1 {
 	this := AccessFlowTerraformV1{}
 	this.Id = id
 	this.Name = name
@@ -51,6 +52,7 @@ func NewAccessFlowTerraformV1(id string, name string, active bool, trigger Acces
 	this.BundleTargets = bundleTargets
 	this.RevokeAfterInSec = revokeAfterInSec
 	this.CreatedDate = createdDate
+	this.Labels = labels
 	return &this
 }
 
@@ -397,6 +399,30 @@ func (o *AccessFlowTerraformV1) SetCreatedDate(v float64) {
 	o.CreatedDate = v
 }
 
+// GetLabels returns the Labels field value
+func (o *AccessFlowTerraformV1) GetLabels() []AccessFlowLabelTerraformV1 {
+	if o == nil {
+		var ret []AccessFlowLabelTerraformV1
+		return ret
+	}
+
+	return o.Labels
+}
+
+// GetLabelsOk returns a tuple with the Labels field value
+// and a boolean to check if the value has been set.
+func (o *AccessFlowTerraformV1) GetLabelsOk() ([]AccessFlowLabelTerraformV1, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Labels, true
+}
+
+// SetLabels sets field value
+func (o *AccessFlowTerraformV1) SetLabels(v []AccessFlowLabelTerraformV1) {
+	o.Labels = v
+}
+
 func (o AccessFlowTerraformV1) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -425,6 +451,7 @@ func (o AccessFlowTerraformV1) ToMap() (map[string]interface{}, error) {
 		toSerialize["settings"] = o.Settings.Get()
 	}
 	toSerialize["created_date"] = o.CreatedDate
+	toSerialize["labels"] = o.Labels
 	return toSerialize, nil
 }
 
@@ -442,6 +469,7 @@ func (o *AccessFlowTerraformV1) UnmarshalJSON(bytes []byte) (err error) {
 		"bundle_targets",
 		"revoke_after_in_sec",
 		"created_date",
+		"labels",
 	}
 
 	allProperties := make(map[string]interface{})

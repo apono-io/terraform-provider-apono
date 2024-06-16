@@ -52,3 +52,25 @@ func SecondsToDayTimeFormat(seconds int) string {
 
 	return formattedDuration
 }
+
+func ConvertInterfaceToListOfString(input interface{}) (*[]string, error) {
+	var output []string
+	switch assertedInput := input.(type) {
+	case []interface{}:
+		for _, item := range assertedInput {
+			if stringItem, ok := item.(string); !ok {
+				return nil, fmt.Errorf("input is not a list of strings")
+			} else {
+				output = append(output, stringItem)
+			}
+		}
+	case string:
+		output = append(output, assertedInput)
+	case nil:
+		return nil, nil
+	default:
+		return nil, fmt.Errorf("input is not a list of strings")
+	}
+
+	return &output, nil
+}

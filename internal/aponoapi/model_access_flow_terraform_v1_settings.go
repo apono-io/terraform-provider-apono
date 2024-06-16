@@ -20,8 +20,8 @@ var _ MappedNullable = &AccessFlowTerraformV1Settings{}
 // AccessFlowTerraformV1Settings struct for AccessFlowTerraformV1Settings
 type AccessFlowTerraformV1Settings struct {
 	RequireJustificationOnRequestAgain NullableBool `json:"require_justification_on_request_again,omitempty"`
+	RequireJustification               NullableBool `json:"require_justification,omitempty"`
 	RequireAllApprovers                NullableBool `json:"require_all_approvers,omitempty"`
-	RequireApproverJustification       NullableBool `json:"require_approver_justification,omitempty"`
 	ApproverCannotApproveHimself       NullableBool `json:"approver_cannot_approve_himself,omitempty"`
 }
 
@@ -85,6 +85,49 @@ func (o *AccessFlowTerraformV1Settings) UnsetRequireJustificationOnRequestAgain(
 	o.RequireJustificationOnRequestAgain.Unset()
 }
 
+// GetRequireJustification returns the RequireJustification field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *AccessFlowTerraformV1Settings) GetRequireJustification() bool {
+	if o == nil || IsNil(o.RequireJustification.Get()) {
+		var ret bool
+		return ret
+	}
+	return *o.RequireJustification.Get()
+}
+
+// GetRequireJustificationOk returns a tuple with the RequireJustification field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *AccessFlowTerraformV1Settings) GetRequireJustificationOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.RequireJustification.Get(), o.RequireJustification.IsSet()
+}
+
+// HasRequireJustification returns a boolean if a field has been set.
+func (o *AccessFlowTerraformV1Settings) HasRequireJustification() bool {
+	if o != nil && o.RequireJustification.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetRequireJustification gets a reference to the given NullableBool and assigns it to the RequireJustification field.
+func (o *AccessFlowTerraformV1Settings) SetRequireJustification(v bool) {
+	o.RequireJustification.Set(&v)
+}
+
+// SetRequireJustificationNil sets the value for RequireJustification to be an explicit nil
+func (o *AccessFlowTerraformV1Settings) SetRequireJustificationNil() {
+	o.RequireJustification.Set(nil)
+}
+
+// UnsetRequireJustification ensures that no value is present for RequireJustification, not even an explicit nil
+func (o *AccessFlowTerraformV1Settings) UnsetRequireJustification() {
+	o.RequireJustification.Unset()
+}
+
 // GetRequireAllApprovers returns the RequireAllApprovers field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *AccessFlowTerraformV1Settings) GetRequireAllApprovers() bool {
 	if o == nil || IsNil(o.RequireAllApprovers.Get()) {
@@ -126,49 +169,6 @@ func (o *AccessFlowTerraformV1Settings) SetRequireAllApproversNil() {
 // UnsetRequireAllApprovers ensures that no value is present for RequireAllApprovers, not even an explicit nil
 func (o *AccessFlowTerraformV1Settings) UnsetRequireAllApprovers() {
 	o.RequireAllApprovers.Unset()
-}
-
-// GetRequireApproverJustification returns the RequireApproverJustification field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *AccessFlowTerraformV1Settings) GetRequireApproverJustification() bool {
-	if o == nil || IsNil(o.RequireApproverJustification.Get()) {
-		var ret bool
-		return ret
-	}
-	return *o.RequireApproverJustification.Get()
-}
-
-// GetRequireApproverJustificationOk returns a tuple with the RequireApproverJustification field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AccessFlowTerraformV1Settings) GetRequireApproverJustificationOk() (*bool, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.RequireApproverJustification.Get(), o.RequireApproverJustification.IsSet()
-}
-
-// HasRequireApproverJustification returns a boolean if a field has been set.
-func (o *AccessFlowTerraformV1Settings) HasRequireApproverJustification() bool {
-	if o != nil && o.RequireApproverJustification.IsSet() {
-		return true
-	}
-
-	return false
-}
-
-// SetRequireApproverJustification gets a reference to the given NullableBool and assigns it to the RequireApproverJustification field.
-func (o *AccessFlowTerraformV1Settings) SetRequireApproverJustification(v bool) {
-	o.RequireApproverJustification.Set(&v)
-}
-
-// SetRequireApproverJustificationNil sets the value for RequireApproverJustification to be an explicit nil
-func (o *AccessFlowTerraformV1Settings) SetRequireApproverJustificationNil() {
-	o.RequireApproverJustification.Set(nil)
-}
-
-// UnsetRequireApproverJustification ensures that no value is present for RequireApproverJustification, not even an explicit nil
-func (o *AccessFlowTerraformV1Settings) UnsetRequireApproverJustification() {
-	o.RequireApproverJustification.Unset()
 }
 
 // GetApproverCannotApproveHimself returns the ApproverCannotApproveHimself field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -227,11 +227,11 @@ func (o AccessFlowTerraformV1Settings) ToMap() (map[string]interface{}, error) {
 	if o.RequireJustificationOnRequestAgain.IsSet() {
 		toSerialize["require_justification_on_request_again"] = o.RequireJustificationOnRequestAgain.Get()
 	}
+	if o.RequireJustification.IsSet() {
+		toSerialize["require_justification"] = o.RequireJustification.Get()
+	}
 	if o.RequireAllApprovers.IsSet() {
 		toSerialize["require_all_approvers"] = o.RequireAllApprovers.Get()
-	}
-	if o.RequireApproverJustification.IsSet() {
-		toSerialize["require_approver_justification"] = o.RequireApproverJustification.Get()
 	}
 	if o.ApproverCannotApproveHimself.IsSet() {
 		toSerialize["approver_cannot_approve_himself"] = o.ApproverCannotApproveHimself.Get()

@@ -30,6 +30,7 @@ type UpsertAccessFlowTerraformV1 struct {
 	Approvers          []ApproverTerraformV1                           `json:"approvers,omitempty"`
 	RevokeAfterInSec   int32                                           `json:"revoke_after_in_sec"`
 	Settings           NullableAccessFlowTerraformV1Settings           `json:"settings,omitempty"`
+	Labels             []AccessFlowLabelTerraformV1                    `json:"labels"`
 }
 
 type _UpsertAccessFlowTerraformV1 UpsertAccessFlowTerraformV1
@@ -38,13 +39,14 @@ type _UpsertAccessFlowTerraformV1 UpsertAccessFlowTerraformV1
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpsertAccessFlowTerraformV1(name string, active bool, trigger AccessFlowTriggerTerraformV1, grantees []GranteeTerraformV1, revokeAfterInSec int32) *UpsertAccessFlowTerraformV1 {
+func NewUpsertAccessFlowTerraformV1(name string, active bool, trigger AccessFlowTriggerTerraformV1, grantees []GranteeTerraformV1, revokeAfterInSec int32, labels []AccessFlowLabelTerraformV1) *UpsertAccessFlowTerraformV1 {
 	this := UpsertAccessFlowTerraformV1{}
 	this.Name = name
 	this.Active = active
 	this.Trigger = trigger
 	this.Grantees = grantees
 	this.RevokeAfterInSec = revokeAfterInSec
+	this.Labels = labels
 	return &this
 }
 
@@ -361,6 +363,30 @@ func (o *UpsertAccessFlowTerraformV1) UnsetSettings() {
 	o.Settings.Unset()
 }
 
+// GetLabels returns the Labels field value
+func (o *UpsertAccessFlowTerraformV1) GetLabels() []AccessFlowLabelTerraformV1 {
+	if o == nil {
+		var ret []AccessFlowLabelTerraformV1
+		return ret
+	}
+
+	return o.Labels
+}
+
+// GetLabelsOk returns a tuple with the Labels field value
+// and a boolean to check if the value has been set.
+func (o *UpsertAccessFlowTerraformV1) GetLabelsOk() ([]AccessFlowLabelTerraformV1, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Labels, true
+}
+
+// SetLabels sets field value
+func (o *UpsertAccessFlowTerraformV1) SetLabels(v []AccessFlowLabelTerraformV1) {
+	o.Labels = v
+}
+
 func (o UpsertAccessFlowTerraformV1) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -391,6 +417,7 @@ func (o UpsertAccessFlowTerraformV1) ToMap() (map[string]interface{}, error) {
 	if o.Settings.IsSet() {
 		toSerialize["settings"] = o.Settings.Get()
 	}
+	toSerialize["labels"] = o.Labels
 	return toSerialize, nil
 }
 
@@ -404,6 +431,7 @@ func (o *UpsertAccessFlowTerraformV1) UnmarshalJSON(bytes []byte) (err error) {
 		"trigger",
 		"grantees",
 		"revoke_after_in_sec",
+		"labels",
 	}
 
 	allProperties := make(map[string]interface{})

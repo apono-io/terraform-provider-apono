@@ -15,38 +15,38 @@ import (
 	"fmt"
 )
 
-// checks if the GranteeV2 type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &GranteeV2{}
+// checks if the GranteeTerraformV2 type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &GranteeTerraformV2{}
 
-// GranteeV2 struct for GranteeV2
-type GranteeV2 struct {
+// GranteeTerraformV2 struct for GranteeTerraformV2
+type GranteeTerraformV2 struct {
 	LogicalOperator  GranteeFilterGroupOperatorTerraformV1 `json:"logical_operator"`
 	AttributeFilters []AttributeFilterTerraformV1          `json:"attribute_filters"`
 }
 
-type _GranteeV2 GranteeV2
+type _GranteeTerraformV2 GranteeTerraformV2
 
-// NewGranteeV2 instantiates a new GranteeV2 object
+// NewGranteeTerraformV2 instantiates a new GranteeTerraformV2 object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGranteeV2(logicalOperator GranteeFilterGroupOperatorTerraformV1, attributeFilters []AttributeFilterTerraformV1) *GranteeV2 {
-	this := GranteeV2{}
+func NewGranteeTerraformV2(logicalOperator GranteeFilterGroupOperatorTerraformV1, attributeFilters []AttributeFilterTerraformV1) *GranteeTerraformV2 {
+	this := GranteeTerraformV2{}
 	this.LogicalOperator = logicalOperator
 	this.AttributeFilters = attributeFilters
 	return &this
 }
 
-// NewGranteeV2WithDefaults instantiates a new GranteeV2 object
+// NewGranteeTerraformV2WithDefaults instantiates a new GranteeTerraformV2 object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewGranteeV2WithDefaults() *GranteeV2 {
-	this := GranteeV2{}
+func NewGranteeTerraformV2WithDefaults() *GranteeTerraformV2 {
+	this := GranteeTerraformV2{}
 	return &this
 }
 
 // GetLogicalOperator returns the LogicalOperator field value
-func (o *GranteeV2) GetLogicalOperator() GranteeFilterGroupOperatorTerraformV1 {
+func (o *GranteeTerraformV2) GetLogicalOperator() GranteeFilterGroupOperatorTerraformV1 {
 	if o == nil {
 		var ret GranteeFilterGroupOperatorTerraformV1
 		return ret
@@ -57,7 +57,7 @@ func (o *GranteeV2) GetLogicalOperator() GranteeFilterGroupOperatorTerraformV1 {
 
 // GetLogicalOperatorOk returns a tuple with the LogicalOperator field value
 // and a boolean to check if the value has been set.
-func (o *GranteeV2) GetLogicalOperatorOk() (*GranteeFilterGroupOperatorTerraformV1, bool) {
+func (o *GranteeTerraformV2) GetLogicalOperatorOk() (*GranteeFilterGroupOperatorTerraformV1, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -65,12 +65,12 @@ func (o *GranteeV2) GetLogicalOperatorOk() (*GranteeFilterGroupOperatorTerraform
 }
 
 // SetLogicalOperator sets field value
-func (o *GranteeV2) SetLogicalOperator(v GranteeFilterGroupOperatorTerraformV1) {
+func (o *GranteeTerraformV2) SetLogicalOperator(v GranteeFilterGroupOperatorTerraformV1) {
 	o.LogicalOperator = v
 }
 
 // GetAttributeFilters returns the AttributeFilters field value
-func (o *GranteeV2) GetAttributeFilters() []AttributeFilterTerraformV1 {
+func (o *GranteeTerraformV2) GetAttributeFilters() []AttributeFilterTerraformV1 {
 	if o == nil {
 		var ret []AttributeFilterTerraformV1
 		return ret
@@ -81,7 +81,7 @@ func (o *GranteeV2) GetAttributeFilters() []AttributeFilterTerraformV1 {
 
 // GetAttributeFiltersOk returns a tuple with the AttributeFilters field value
 // and a boolean to check if the value has been set.
-func (o *GranteeV2) GetAttributeFiltersOk() ([]AttributeFilterTerraformV1, bool) {
+func (o *GranteeTerraformV2) GetAttributeFiltersOk() ([]AttributeFilterTerraformV1, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -89,11 +89,11 @@ func (o *GranteeV2) GetAttributeFiltersOk() ([]AttributeFilterTerraformV1, bool)
 }
 
 // SetAttributeFilters sets field value
-func (o *GranteeV2) SetAttributeFilters(v []AttributeFilterTerraformV1) {
+func (o *GranteeTerraformV2) SetAttributeFilters(v []AttributeFilterTerraformV1) {
 	o.AttributeFilters = v
 }
 
-func (o GranteeV2) MarshalJSON() ([]byte, error) {
+func (o GranteeTerraformV2) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -101,14 +101,14 @@ func (o GranteeV2) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o GranteeV2) ToMap() (map[string]interface{}, error) {
+func (o GranteeTerraformV2) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["logical_operator"] = o.LogicalOperator
 	toSerialize["attribute_filters"] = o.AttributeFilters
 	return toSerialize, nil
 }
 
-func (o *GranteeV2) UnmarshalJSON(bytes []byte) (err error) {
+func (o *GranteeTerraformV2) UnmarshalJSON(bytes []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -131,51 +131,51 @@ func (o *GranteeV2) UnmarshalJSON(bytes []byte) (err error) {
 		}
 	}
 
-	varGranteeV2 := _GranteeV2{}
+	varGranteeTerraformV2 := _GranteeTerraformV2{}
 
-	err = json.Unmarshal(bytes, &varGranteeV2)
+	err = json.Unmarshal(bytes, &varGranteeTerraformV2)
 
 	if err != nil {
 		return err
 	}
 
-	*o = GranteeV2(varGranteeV2)
+	*o = GranteeTerraformV2(varGranteeTerraformV2)
 
 	return err
 }
 
-type NullableGranteeV2 struct {
-	value *GranteeV2
+type NullableGranteeTerraformV2 struct {
+	value *GranteeTerraformV2
 	isSet bool
 }
 
-func (v NullableGranteeV2) Get() *GranteeV2 {
+func (v NullableGranteeTerraformV2) Get() *GranteeTerraformV2 {
 	return v.value
 }
 
-func (v *NullableGranteeV2) Set(val *GranteeV2) {
+func (v *NullableGranteeTerraformV2) Set(val *GranteeTerraformV2) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableGranteeV2) IsSet() bool {
+func (v NullableGranteeTerraformV2) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableGranteeV2) Unset() {
+func (v *NullableGranteeTerraformV2) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableGranteeV2(val *GranteeV2) *NullableGranteeV2 {
-	return &NullableGranteeV2{value: val, isSet: true}
+func NewNullableGranteeTerraformV2(val *GranteeTerraformV2) *NullableGranteeTerraformV2 {
+	return &NullableGranteeTerraformV2{value: val, isSet: true}
 }
 
-func (v NullableGranteeV2) MarshalJSON() ([]byte, error) {
+func (v NullableGranteeTerraformV2) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableGranteeV2) UnmarshalJSON(src []byte) error {
+func (v *NullableGranteeTerraformV2) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
