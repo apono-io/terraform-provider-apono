@@ -2,6 +2,7 @@ api_access_flows.go
 api_integrations.go
 client.go
 configuration.go
+model_access_flow_label_terraform_v1.go
 model_access_flow_settings_terraform_v1.go
 model_access_flow_terraform_v1.go
 model_access_flow_terraform_v1_grantee_filter_group.go
@@ -15,7 +16,7 @@ model_attribute_filter_terraform_v1.go
 model_day_of_week.go
 model_grantee_filter_group_operator_terraform_v1.go
 model_grantee_terraform_v1.go
-model_grantee_v2.go
+model_grantee_terraform_v2.go
 model_integration_owner_terraform.go
 model_integration_owners_terraform.go
 model_integration_status.go

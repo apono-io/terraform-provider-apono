@@ -20,7 +20,7 @@ var _ MappedNullable = &AttributeFilterTerraformV1{}
 
 // AttributeFilterTerraformV1 struct for AttributeFilterTerraformV1
 type AttributeFilterTerraformV1 struct {
-	Operator        string         `json:"operator"`
+	Operator        NullableString `json:"operator,omitempty"`
 	AttributeTypeId string         `json:"attribute_type_id"`
 	AttributeValue  interface{}    `json:"attribute_value"`
 	IntegrationId   NullableString `json:"integration_id,omitempty"`
@@ -32,9 +32,8 @@ type _AttributeFilterTerraformV1 AttributeFilterTerraformV1
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAttributeFilterTerraformV1(operator string, attributeTypeId string, attributeValue interface{}) *AttributeFilterTerraformV1 {
+func NewAttributeFilterTerraformV1(attributeTypeId string, attributeValue interface{}) *AttributeFilterTerraformV1 {
 	this := AttributeFilterTerraformV1{}
-	this.Operator = operator
 	this.AttributeTypeId = attributeTypeId
 	this.AttributeValue = attributeValue
 	return &this
@@ -48,28 +47,47 @@ func NewAttributeFilterTerraformV1WithDefaults() *AttributeFilterTerraformV1 {
 	return &this
 }
 
-// GetOperator returns the Operator field value
+// GetOperator returns the Operator field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *AttributeFilterTerraformV1) GetOperator() string {
-	if o == nil {
+	if o == nil || IsNil(o.Operator.Get()) {
 		var ret string
 		return ret
 	}
-
-	return o.Operator
+	return *o.Operator.Get()
 }
 
-// GetOperatorOk returns a tuple with the Operator field value
+// GetOperatorOk returns a tuple with the Operator field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AttributeFilterTerraformV1) GetOperatorOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.Operator, true
+	return o.Operator.Get(), o.Operator.IsSet()
 }
 
-// SetOperator sets field value
+// HasOperator returns a boolean if a field has been set.
+func (o *AttributeFilterTerraformV1) HasOperator() bool {
+	if o != nil && o.Operator.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetOperator gets a reference to the given NullableString and assigns it to the Operator field.
 func (o *AttributeFilterTerraformV1) SetOperator(v string) {
-	o.Operator = v
+	o.Operator.Set(&v)
+}
+
+// SetOperatorNil sets the value for Operator to be an explicit nil
+func (o *AttributeFilterTerraformV1) SetOperatorNil() {
+	o.Operator.Set(nil)
+}
+
+// UnsetOperator ensures that no value is present for Operator, not even an explicit nil
+func (o *AttributeFilterTerraformV1) UnsetOperator() {
+	o.Operator.Unset()
 }
 
 // GetAttributeTypeId returns the AttributeTypeId field value
@@ -175,7 +193,9 @@ func (o AttributeFilterTerraformV1) MarshalJSON() ([]byte, error) {
 
 func (o AttributeFilterTerraformV1) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["operator"] = o.Operator
+	if o.Operator.IsSet() {
+		toSerialize["operator"] = o.Operator.Get()
+	}
 	toSerialize["attribute_type_id"] = o.AttributeTypeId
 	if o.AttributeValue != nil {
 		toSerialize["attribute_value"] = o.AttributeValue
@@ -191,7 +211,6 @@ func (o *AttributeFilterTerraformV1) UnmarshalJSON(bytes []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"operator",
 		"attribute_type_id",
 		"attribute_value",
 	}

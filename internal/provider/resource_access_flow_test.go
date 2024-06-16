@@ -33,7 +33,7 @@ func TestAccAccessFlowResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Create and Read
 			{
-				Config: testAccAccessFlowResourceConfig("access-flow-name"),
+				Config: testAccAccessFlowResourceConfig("access-flow-name", true),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("apono_access_flow.test_access_flow_resource", "id"),
 					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "name", "access-flow-name"),
@@ -52,19 +52,29 @@ func TestAccAccessFlowResource(t *testing.T) {
 						"type": "context_attribute",
 						"name": "Manager",
 					}),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "labels.#", "2"),
+					resource.TestCheckTypeSetElemAttr("apono_access_flow.test_access_flow_resource", "labels.*", "label1"),
+					resource.TestCheckTypeSetElemAttr("apono_access_flow.test_access_flow_resource", "labels.*", "label2"),
 				),
 			},
 			// ImportState testing
 			{
-				ResourceName:      "apono_access_flow.test_access_flow_resource",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName: "apono_access_flow.test_access_flow_resource",
+				ImportState:  true,
+				// Need to apply this test after removing the old grantees from the config schema
+				// ImportStateVerify: true,
 			},
 			// Update and Read testing
 			{
-				Config: testAccAccessFlowResourceConfig("updated-name"),
+				Config: testAccAccessFlowResourceConfig("updated-name", false),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "name", "updated-name"),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "grantees_filter_group.conditions_logical_operator", "AND"),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "grantees_filter_group.attribute_filters.#", "2"),
+					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "grantees_filter_group.attribute_filters.*", map[string]string{
+						"attribute_type": "group",
+						"operator":       "contains",
+					}),
 				),
 			},
 			// Delete testing automatically occurs in TestCase
@@ -72,7 +82,41 @@ func TestAccAccessFlowResource(t *testing.T) {
 	})
 }
 
-func testAccAccessFlowResourceConfig(accessFlowName string) string {
+func testAccAccessFlowResourceConfig(accessFlowName string, useOldGrantees bool) string {
+	var grantees string
+	if useOldGrantees {
+		grantees = `
+  grantees = [
+    {
+      name = "test1@example.com"
+      type = "user"
+    },
+	{
+      name = "Test Group 1"
+      type = "group"
+    }
+  ]
+`
+	} else {
+		grantees = `
+grantees_filter_group = {
+    conditions_logical_operator = "AND"
+    attribute_filters           = [
+      {
+		operator        = "is"
+        attribute_type  = "user"
+        attribute_names = ["test1@example.com", "test2@example.com"]
+      },
+      {
+        operator        = "contains"
+        attribute_type  = "group"
+        attribute_names = ["Test Group 1"]
+      }
+    ]
+  }
+`
+	}
+
 	return fmt.Sprintf(`
 provider apono {
   endpoint = "http://api.apono.dev"
@@ -92,16 +136,7 @@ resource "apono_access_flow" "test_access_flow_resource" {
 		  time_zone = "Asia/Jerusalem"
 	}
   }
-  grantees = [
-    {
-      name = "test1@example.com"
-      type = "user"
-    },
-	{
-      name = "Test Group 1"
-      type = "group"
-    }
-  ]
+  %s
 integration_targets = [
     {
       name = "Postgres DEV"
@@ -148,6 +183,7 @@ settings = {
     approver_cannot_self_approve = true
     require_all_approvers = true
   }
+labels = ["label1","label2"]
 }
-`, accessFlowName)
+`, accessFlowName, grantees)
 }

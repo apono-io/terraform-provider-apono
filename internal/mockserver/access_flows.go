@@ -32,12 +32,14 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []aponoapi.Acc
 			Active:             createReq.Active,
 			Trigger:            createReq.Trigger,
 			Grantees:           createReq.Grantees,
+			GranteeFilterGroup: createReq.GranteeFilterGroup,
 			IntegrationTargets: createReq.IntegrationTargets,
 			BundleTargets:      createReq.BundleTargets,
 			Approvers:          createReq.Approvers,
 			RevokeAfterInSec:   createReq.RevokeAfterInSec,
 			Settings:           createReq.Settings,
 			CreatedDate:        getTimeAsInstantFloat(),
+			Labels:             createReq.Labels,
 		}
 		accessFlows[accessFlow.Id] = accessFlow
 
@@ -84,11 +86,13 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []aponoapi.Acc
 			Timeframe: updateReq.Trigger.Timeframe,
 		}
 		accessFlow.Grantees = updateReq.Grantees
+		accessFlow.GranteeFilterGroup = updateReq.GranteeFilterGroup
 		accessFlow.IntegrationTargets = updateReq.IntegrationTargets
 		accessFlow.BundleTargets = updateReq.BundleTargets
 		accessFlow.Approvers = updateReq.Approvers
 		accessFlow.RevokeAfterInSec = updateReq.RevokeAfterInSec
 		accessFlow.Settings = updateReq.Settings
+		accessFlow.Labels = updateReq.Labels
 
 		resp, err := httpmock.NewJsonResponse(200, accessFlow)
 		if err != nil {

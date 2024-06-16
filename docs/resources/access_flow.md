@@ -26,16 +26,20 @@ resource "apono_access_flow" "postgresql_prod" {
       time_zone    = "Asia/Jerusalem"
     }
   }
-  grantees = [
-    {
-      name = "person@example.com"
-      type = "user"
-    },
-    {
-      name = "R&D Team"
-      type = "group"
-    }
-  ]
+  grantees_filter_group = {
+    conditions_logical_operator = "OR"
+    attribute_filters = [
+      {
+        attribute_type  = "user"
+        attribute_names = ["person@example.com", "person_two@example.com"]
+      },
+      {
+        attribute_type  = "group"
+        operator        = "contains"
+        attribute_names = ["R&D Team"]
+      }
+    ]
+  }
   integration_targets = [
     {
       name          = "DB Prod"
@@ -51,6 +55,7 @@ resource "apono_access_flow" "postgresql_prod" {
   settings = {
     approver_cannot_self_approve = true
   }
+  labels = ["DB", "PROD", "TERRAFORM"]
 }
 ```
 
@@ -60,7 +65,6 @@ resource "apono_access_flow" "postgresql_prod" {
 ### Required
 
 - `active` (Boolean) Indicates whether Access flow is active or inactive
-- `grantees` (Attributes Set) Represents which identities should be granted access (see [below for nested schema](#nestedatt--grantees))
 - `name` (String) Access Flow name
 - `revoke_after_in_sec` (Number) Number of seconds after which access should be revoked. To never revoke access, set the value to `-1`.
 - `trigger` (Attributes) Access Flow trigger (see [below for nested schema](#nestedatt--trigger))
@@ -69,28 +73,22 @@ resource "apono_access_flow" "postgresql_prod" {
 
 - `approvers` (Attributes Set) Represents which identities should approve this access (see [below for nested schema](#nestedatt--approvers))
 - `bundle_targets` (Attributes Set) Represents the number of resources from access bundle to which access is granted. (see [below for nested schema](#nestedatt--bundle_targets))
+- `grantees` (Attributes Set, Deprecated) Represents which identities should be granted access (see [below for nested schema](#nestedatt--grantees))
+- `grantees_filter_group` (Attributes) placeholder (see [below for nested schema](#nestedatt--grantees_filter_group))
 - `integration_targets` (Attributes Set) Represents the number of resources from the integration to which access is granted. If both include and exclude filters are omitted, all resources will be targeted. (see [below for nested schema](#nestedatt--integration_targets))
+- `labels` (List of String) List of labels to attach to the access flow
 - `settings` (Attributes) Access Flow settings (see [below for nested schema](#nestedatt--settings))
 
 ### Read-Only
 
 - `id` (String) Access Flow identifier
 
-<a id="nestedatt--grantees"></a>
-### Nested Schema for `grantees`
-
-Required:
-
-- `name` (String) Name of the identity. When `type = context_attribute`, this is the shift name or manager attribute name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.**
-- `type` (String) Identity type. **Possible Values**: `context_attribute`, `group`, or `user`
-
-
 <a id="nestedatt--trigger"></a>
 ### Nested Schema for `trigger`
 
 Required:
 
-- `type` (String) Type of trigger. Only `user_request` is supported.
+- `type` (String) Type of trigger. `user_request` or 'auto_grant' is supported.
 
 Optional:
 
@@ -123,6 +121,41 @@ Required:
 Required:
 
 - `name` (String) Target bundle name. **IMPORTANT: This value must match the existing bundle name.**
+
+
+<a id="nestedatt--grantees"></a>
+### Nested Schema for `grantees`
+
+Required:
+
+- `name` (String) Name of the identity. When `type = context_attribute`, this is the shift name or manager attribute name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.**
+- `type` (String) Identity type. **Possible Values**: `context_attribute`, `group`, or `user`
+
+
+<a id="nestedatt--grantees_filter_group"></a>
+### Nested Schema for `grantees_filter_group`
+
+Required:
+
+- `attribute_filters` (Attributes Set) placeholder (see [below for nested schema](#nestedatt--grantees_filter_group--attribute_filters))
+
+Optional:
+
+- `conditions_logical_operator` (String) Logical operator to apply to the conditions. **Possible Values**: `AND`, `OR` (Default `OR`)
+
+<a id="nestedatt--grantees_filter_group--attribute_filters"></a>
+### Nested Schema for `grantees_filter_group.attribute_filters`
+
+Required:
+
+- `attribute_type` (String) Pick the user context type, for example 'user', 'group', 'okta_city', 'pagerduty_shift', etc.
+
+Optional:
+
+- `attribute_names` (Set of String) Insert the specific values you'd like to include or exclude from the Access Flow, for example the user email, group name, etc.
+- `integration_id` (String) Use the integration ID this attribute originates from. This can be any user context integration, for example PagerDuty, Okta, etc.
+- `operator` (String)
+
 
 
 <a id="nestedatt--integration_targets"></a>
