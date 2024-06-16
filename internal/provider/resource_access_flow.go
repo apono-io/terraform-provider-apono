@@ -7,6 +7,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/schemas"
 	"github.com/apono-io/terraform-provider-apono/internal/services"
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
