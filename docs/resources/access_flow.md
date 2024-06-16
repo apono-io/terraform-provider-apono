@@ -137,7 +137,7 @@ Required:
 
 Required:
 
-- `attribute_filters` (Attributes List) placeholder (see [below for nested schema](#nestedatt--grantees_filter_group--attribute_filters))
+- `attribute_filters` (Attributes Set) placeholder (see [below for nested schema](#nestedatt--grantees_filter_group--attribute_filters))
 
 Optional:
 
@@ -152,7 +152,7 @@ Required:
 
 Optional:
 
-- `attribute_names` (List of String) placeholder
+- `attribute_names` (Set of String) placeholder
 - `integration_id` (String) placeholder
 - `operator` (String) placeholder
 

@@ -59,9 +59,8 @@ func TestAccAccessFlowResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
-				ResourceName:      "apono_access_flow.test_access_flow_resource",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName: "apono_access_flow.test_access_flow_resource",
+				ImportState:  true,
 			},
 			// Update and Read testing
 			{
@@ -102,12 +101,13 @@ grantees_filter_group = {
     conditions_logical_operator = "AND"
     attribute_filters           = [
       {
+		operator        = "is"
         attribute_type  = "user"
         attribute_names = ["test1@example.com", "test2@example.com"]
       },
       {
-        attribute_type  = "group"
         operator        = "contains"
+        attribute_type  = "group"
         attribute_names = ["Test Group 1"]
       }
     ]

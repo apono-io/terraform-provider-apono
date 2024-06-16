@@ -52,24 +52,24 @@ var IdentityObject = map[string]attr.Type{
 
 type GranteeFilterGroup struct {
 	Operator types.String `tfsdk:"conditions_logical_operator"`
-	Filters  types.List   `tfsdk:"attribute_filters"`
+	Filters  types.Set    `tfsdk:"attribute_filters"`
 }
 
 type AttributeFilter struct {
 	Operator       types.String `tfsdk:"operator"`
 	AttributeType  types.String `tfsdk:"attribute_type"`
-	AttributeNames types.List   `tfsdk:"attribute_names"`
+	AttributeNames types.Set    `tfsdk:"attribute_names"`
 	IntegrationID  types.String `tfsdk:"integration_id"`
 }
 
 var GranteeFilterGroupObject = map[string]attr.Type{
 	"conditions_logical_operator": types.StringType,
-	"attribute_filters":           basetypes.ListType{ElemType: basetypes.ObjectType{AttrTypes: AttributeFilterObject}},
+	"attribute_filters":           basetypes.SetType{ElemType: basetypes.ObjectType{AttrTypes: AttributeFilterObject}},
 }
 
 var AttributeFilterObject = map[string]attr.Type{
 	"operator":        types.StringType,
 	"attribute_type":  types.StringType,
-	"attribute_names": basetypes.ListType{ElemType: types.StringType},
+	"attribute_names": basetypes.SetType{ElemType: types.StringType},
 	"integration_id":  types.StringType,
 }

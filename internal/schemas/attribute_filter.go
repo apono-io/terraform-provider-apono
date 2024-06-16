@@ -18,7 +18,7 @@ var (
 				MarkdownDescription: "placeholder", // TODO: Add description
 				Required:            true,
 			},
-			"attribute_names": schema.ListAttribute{
+			"attribute_names": schema.SetAttribute{
 				MarkdownDescription: "placeholder", // TODO: Add description
 				Optional:            true,
 				ElementType:         types.StringType,

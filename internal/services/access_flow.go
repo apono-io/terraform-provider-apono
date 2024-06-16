@@ -14,7 +14,7 @@ import (
 	"strings"
 )
 
-func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apono.APIClient, accessFlow *aponoapi.AccessFlowTerraformV1) (*models.AccessFlowModel, diag.Diagnostics) {
+func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apono.APIClient, accessFlow *aponoapi.AccessFlowTerraformV1, oldState *models.AccessFlowModel) (*models.AccessFlowModel, diag.Diagnostics) {
 	revokeAfterInSec := types.NumberValue(big.NewFloat(float64(accessFlow.GetRevokeAfterInSec())))
 
 	trigger := accessFlow.GetTrigger()
@@ -54,29 +54,40 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 		return nil, utils.GetDiagnosticsForApiError(err, "list", "users", "")
 	}
 
-	var dataGrantees []models.Identity
-	for _, grantee := range accessFlow.GetGrantees() {
-		identity, diagnostics := convertIdentityApiToTerraformModel(grantee.Id, strings.ToLower(grantee.Type), availableIdentities.Data, availableUsers.Data)
-		if len(diagnostics) > 0 {
-			return nil, diagnostics
+	var setGrantees types.Set
+	if isGranteesDefinedInState(oldState) {
+		var dataGrantees []models.Identity
+		for _, grantee := range accessFlow.GetGrantees() {
+			identity, diagnostics := convertIdentityApiToTerraformModel(grantee.Id, strings.ToLower(grantee.Type), availableIdentities.Data, availableUsers.Data)
+			if len(diagnostics) > 0 {
+				return nil, diagnostics
+			}
+
+			dataGrantees = append(dataGrantees, *identity)
 		}
 
-		dataGrantees = append(dataGrantees, *identity)
+		// This converts the list of identities to a Terraform Set, which require map of attribute name to type.
+		var diags diag.Diagnostics
+		setGrantees, diags = types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.IdentityObject}, getUniqueListOfIdentities(dataGrantees))
+		if len(diags) > 0 {
+			return nil, diags
+		}
+	} else {
+		setGrantees = types.SetNull(types.ObjectType{AttrTypes: models.IdentityObject})
 	}
 
-	// This converts the list of identities to a Terraform Set, which require map of attribute name to type.
-	setGrantees, diags := types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.IdentityObject}, getUniqueListOfIdentities(dataGrantees))
-	if len(diags) > 0 {
-		return nil, diags
-	}
-
-	dataGranteeFilterGroup, diags := convertGranteeFilterGroupApiToTerraformModel(ctx, accessFlow.GranteeFilterGroup.Get())
-	if len(diags) > 0 {
-		return nil, diags
-	}
-	objectGranteeFilterGroup, diags := types.ObjectValueFrom(ctx, models.GranteeFilterGroupObject, dataGranteeFilterGroup)
-	if len(diags) > 0 {
-		return nil, diags
+	var objectGranteeFilterGroup types.Object
+	if isGranteeFilterGroupDefinedInState(oldState) {
+		dataGranteeFilterGroup, diags := convertGranteeFilterGroupApiToTerraformModel(ctx, accessFlow.GranteeFilterGroup.Get())
+		if len(diags) > 0 {
+			return nil, diags
+		}
+		objectGranteeFilterGroup, diags = types.ObjectValueFrom(ctx, models.GranteeFilterGroupObject, dataGranteeFilterGroup)
+		if len(diags) > 0 {
+			return nil, diags
+		}
+	} else {
+		objectGranteeFilterGroup = types.ObjectNull(models.GranteeFilterGroupObject)
 	}
 
 	var dataApprovers []models.Identity
@@ -474,7 +485,7 @@ func convertGranteeFilterGroupApiToTerraformModel(ctx context.Context, granteeFi
 		dataFilters = append(dataFilters, *dataFilter)
 	}
 
-	filters, diags := types.ListValueFrom(ctx, types.ObjectType{AttrTypes: models.AttributeFilterObject}, dataFilters)
+	filters, diags := types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.AttributeFilterObject}, dataFilters)
 	if len(diags) > 0 {
 		return nil, diags
 	}
@@ -539,7 +550,7 @@ func convertAttributeFiltersTerraformModelToApi(ctx context.Context, filter apon
 		diagnostics.AddError("Client Error", fmt.Sprintf("Failed to convert attribute names for attribute filter: %s", err.Error()))
 		return nil, diagnostics
 	}
-	dataFilterNames, diagnostics := types.ListValueFrom(ctx, types.StringType, apiFilterNames)
+	dataFilterNames, diagnostics := types.SetValueFrom(ctx, types.StringType, apiFilterNames)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
@@ -550,6 +561,22 @@ func convertAttributeFiltersTerraformModelToApi(ctx context.Context, filter apon
 		AttributeNames: dataFilterNames,
 		IntegrationID:  types.StringPointerValue(filter.IntegrationId.Get()),
 	}, nil
+}
+
+func isGranteesDefinedInState(state *models.AccessFlowModel) bool {
+	if state == nil {
+		return false
+	}
+
+	return !state.Grantees.IsNull() && !state.Grantees.IsUnknown()
+}
+
+func isGranteeFilterGroupDefinedInState(state *models.AccessFlowModel) bool {
+	if state == nil {
+		return true
+	}
+
+	return !state.GranteesFilterGroup.IsNull() && !state.GranteesFilterGroup.IsUnknown()
 }
 
 func convertLabelsApiToTerraformModel(ctx context.Context, labels []aponoapi.AccessFlowLabelTerraformV1) (*basetypes.ListValue, diag.Diagnostics) {
