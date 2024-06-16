@@ -99,12 +99,13 @@ grantees_filter_group = {
     conditions_logical_operator = "AND"
     attribute_filters           = [
       {
+		operator        = "is"
         attribute_type  = "user"
         attribute_names = ["test1@example.com", "test2@example.com"]
       },
       {
-        attribute_type  = "group"
         operator        = "contains"
+        attribute_type  = "group"
         attribute_names = ["Test Group 1"]
       }
     ]
