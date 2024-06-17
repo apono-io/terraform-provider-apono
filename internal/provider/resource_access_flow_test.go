@@ -69,9 +69,9 @@ func TestAccAccessFlowResource(t *testing.T) {
 				Config: testAccAccessFlowResourceConfig("updated-name", false),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "name", "updated-name"),
-					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "grantees_filter_group.conditions_logical_operator", "AND"),
-					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "grantees_filter_group.attribute_filters.#", "2"),
-					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "grantees_filter_group.attribute_filters.*", map[string]string{
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "grantees_conditions_group.conditions_logical_operator", "AND"),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "grantees_conditions_group.attribute_conditions.#", "2"),
+					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "grantees_conditions_group.attribute_conditions.*", map[string]string{
 						"attribute_type": "group",
 						"operator":       "contains",
 					}),
@@ -99,9 +99,9 @@ func testAccAccessFlowResourceConfig(accessFlowName string, useOldGrantees bool)
 `
 	} else {
 		grantees = `
-grantees_filter_group = {
+grantees_conditions_group = {
     conditions_logical_operator = "AND"
-    attribute_filters           = [
+    attribute_conditions           = [
       {
 		operator        = "is"
         attribute_type  = "user"

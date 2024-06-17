@@ -131,19 +131,19 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				MarkdownDescription: "Represents which identities should be granted access",
 				Optional:            true,
 				NestedObject:        identitySchema,
-				DeprecationMessage:  "Configure grantees_filter_group instead. This attribute will be removed in the next major version of the provider",
+				DeprecationMessage:  "Configure grantees_conditions_group instead. This attribute will be removed in the next major version of the provider",
 				Validators: []validator.Set{
 					setvalidator.SizeAtLeast(1),
 				},
 			},
-			"grantees_filter_group": schema.SingleNestedAttribute{
+			"grantees_conditions_group": schema.SingleNestedAttribute{
 				MarkdownDescription: "Create a conditions group based on different attribute types that represents who can request access.",
 				// This field is Optional as long as the old `grantees` field is present in the configuration
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"conditions_logical_operator": schemas.ConditionLogicalOperatorSchema,
-					"attribute_filters": schema.SetNestedAttribute{
-						MarkdownDescription: "placeholder", // TODO: Add description
+					"attribute_conditions": schema.SetNestedAttribute{
+						MarkdownDescription: "Array of conditions that each contain attribute type,operator, and attribute names.",
 						Required:            true,
 						NestedObject:        schemas.AttributeFilterSchema,
 						Validators: []validator.Set{
@@ -423,14 +423,14 @@ func (a *accessFlowResource) ValidateConfig(ctx context.Context, req resource.Va
 	if !isGranteeFilterGroupDefined && !isGranteesDefined {
 		resp.Diagnostics.AddError(
 			"Invalid access flow configuration",
-			"either grantees or grantees_filter_group must be specified",
+			"either grantees or grantees_conditions_group must be specified",
 		)
 	}
 
 	if isGranteeFilterGroupDefined && isGranteesDefined {
 		resp.Diagnostics.AddError(
 			"Invalid access flow configuration",
-			"only one of grantees or grantees_filter_group must be specified",
+			"only one of grantees or grantees_conditions_group must be specified",
 		)
 	}
 }
