@@ -74,7 +74,7 @@ resource "apono_access_flow" "postgresql_prod" {
 - `approvers` (Attributes Set) Represents which identities should approve this access (see [below for nested schema](#nestedatt--approvers))
 - `bundle_targets` (Attributes Set) Represents the number of resources from access bundle to which access is granted. (see [below for nested schema](#nestedatt--bundle_targets))
 - `grantees` (Attributes Set, Deprecated) Represents which identities should be granted access (see [below for nested schema](#nestedatt--grantees))
-- `grantees_filter_group` (Attributes) placeholder (see [below for nested schema](#nestedatt--grantees_filter_group))
+- `grantees_filter_group` (Attributes) Create a conditions group based on different attribute types that represents who can request access. (see [below for nested schema](#nestedatt--grantees_filter_group))
 - `integration_targets` (Attributes Set) Represents the number of resources from the integration to which access is granted. If both include and exclude filters are omitted, all resources will be targeted. (see [below for nested schema](#nestedatt--integration_targets))
 - `labels` (List of String) List of labels to attach to the access flow
 - `settings` (Attributes) Access Flow settings (see [below for nested schema](#nestedatt--settings))
@@ -88,7 +88,7 @@ resource "apono_access_flow" "postgresql_prod" {
 
 Required:
 
-- `type` (String) Type of trigger. `user_request` or 'auto_grant' is supported.
+- `type` (String) Type of trigger. 'user_request' or 'automatic' is supported.
 
 Optional:
 
@@ -148,13 +148,13 @@ Optional:
 
 Required:
 
-- `attribute_type` (String) Pick the user context type, for example 'user', 'group', 'okta_city', 'pagerduty_shift', etc.
+- `attribute_type` (String) Pick the user context type, for example `user`, `group`, `okta_city`, `pagerduty_shift`, etc.
 
 Optional:
 
 - `attribute_names` (Set of String) Insert the specific values you'd like to include or exclude from the Access Flow, for example the user email, group name, etc.
 - `integration_id` (String) Use the integration ID this attribute originates from. This can be any user context integration, for example PagerDuty, Okta, etc.
-- `operator` (String)
+- `operator` (String) Pick the operator that will be applied to the attribute names' values. Defaults to `is`. Supported operators: `is`, `is_not`, `contains`, `does_not_contain`, `starts_with`
 
 
 
