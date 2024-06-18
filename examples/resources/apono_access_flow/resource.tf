@@ -11,9 +11,9 @@ resource "apono_access_flow" "postgresql_prod" {
       time_zone    = "Asia/Jerusalem"
     }
   }
-  grantees_filter_group = {
+  grantees_conditions_group = {
     conditions_logical_operator = "OR"
-    attribute_filters = [
+    attribute_conditions = [
       {
         attribute_type  = "user"
         attribute_names = ["person@example.com", "person_two@example.com"]

@@ -14,7 +14,7 @@ type AccessFlowModel struct {
 	RevokeAfterInSec    types.Number        `tfsdk:"revoke_after_in_sec"`
 	Trigger             *Trigger            `tfsdk:"trigger"`
 	Grantees            types.Set           `tfsdk:"grantees"`
-	GranteesFilterGroup types.Object        `tfsdk:"grantees_filter_group"`
+	GranteesFilterGroup types.Object        `tfsdk:"grantees_conditions_group"`
 	IntegrationTargets  []IntegrationTarget `tfsdk:"integration_targets"`
 	BundleTargets       []BundleTarget      `tfsdk:"bundle_targets"`
 	Approvers           types.Set           `tfsdk:"approvers"`
@@ -52,7 +52,7 @@ var IdentityObject = map[string]attr.Type{
 
 type GranteeFilterGroup struct {
 	Operator types.String `tfsdk:"conditions_logical_operator"`
-	Filters  types.Set    `tfsdk:"attribute_filters"`
+	Filters  types.Set    `tfsdk:"attribute_conditions"`
 }
 
 type AttributeFilter struct {
@@ -64,7 +64,7 @@ type AttributeFilter struct {
 
 var GranteeFilterGroupObject = map[string]attr.Type{
 	"conditions_logical_operator": types.StringType,
-	"attribute_filters":           basetypes.SetType{ElemType: basetypes.ObjectType{AttrTypes: AttributeFilterObject}},
+	"attribute_conditions":        basetypes.SetType{ElemType: basetypes.ObjectType{AttrTypes: AttributeFilterObject}},
 }
 
 var AttributeFilterObject = map[string]attr.Type{
