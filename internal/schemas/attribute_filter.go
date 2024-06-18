@@ -10,12 +10,12 @@ var (
 	AttributeFilterSchema = schema.NestedAttributeObject{
 		Attributes: map[string]schema.Attribute{
 			"operator": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Pick the operator that will be applied to the attribute names' values. Defaults to `is`. Supported operators: `is`, `is_not`, `contains`, `does_not_contain`, `starts_with`",
 				Optional:            true,
 				Computed:            true,
 			},
 			"attribute_type": schema.StringAttribute{
-				MarkdownDescription: "Pick the user context type, for example 'user', 'group', 'okta_city', 'pagerduty_shift', etc.",
+				MarkdownDescription: "Pick the user context type, for example `user`, `group`, `okta_city`, `pagerduty_shift`, etc.",
 				Required:            true,
 			},
 			"attribute_names": schema.SetAttribute{
