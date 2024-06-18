@@ -31,10 +31,10 @@ func TestAccIntegrationResource(t *testing.T) {
 					resource.TestCheckTypeSetElemAttr("apono_integration.test", "connected_resource_types.*", "postgres-database"),
 					resource.TestCheckResourceAttr("apono_integration.test", "custom_access_details", "This is a custom access detail"),
 					resource.TestCheckResourceAttr("apono_integration.test", "resource_owner_mappings.#", "1"),
-					resource.TestCheckResourceAttr("apono_integration.test", "resource_owner_mappings.0.tag_name", "__group"),
-					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.owners.#", "1"),
-					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.owners.0.integration_id", "123654"),
-					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.owners.0.attribute_value.#", "0"),
+					resource.TestCheckResourceAttr("apono_integration.test", "resource_owner_mappings.0.key_name", "__group"),
+					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.#", "1"),
+					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.0.integration_id", "123654"),
+					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.0.value.#", "0"),
 				),
 			},
 			// ImportState testing
@@ -80,18 +80,16 @@ resource "apono_integration" "test" {
   }
   resource_owner_mappings = [
   	{ 
-		tag_name = "__group",
-		attribute_type = "group",
+		key_name = "__group",
+		attribute = "group",
 		attribute_integration_id = ""
   	}
   ]
-  integration_owners = {
-	owners = [{
+  integration_owners = [{
 		integration_id = "123654"
-		attribute_type_id = "9871569"
-		attribute_value = []
+		attribute = "9871569"
+		value = []
 	}]
-  }
 }
 `, integrationName)
 }
