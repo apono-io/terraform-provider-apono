@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/apono-io/terraform-provider-apono/internal/schemas"
+	"github.com/apono-io/terraform-provider-apono/internal/services"
 	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
@@ -199,13 +200,13 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 		UpsertIntegrationTerraform(aponoapi.UpsertIntegrationTerraform{
 			Name:                   data.Name.ValueString(),
 			Type:                   data.Type.ValueString(),
-			ProvisionerId:          toNullableString(data.ConnectorID),
+			ProvisionerId:          *aponoapi.NewNullableString(data.ConnectorID.ValueStringPointer()),
 			Params:                 metadata,
 			SecretConfig:           secretConfig,
 			ConnectedResourceTypes: connectedResourceTypes,
-			CustomAccessDetails:    toNullableString(data.CustomAccessDetails),
-			IntegrationOwners:      integrationOwnersToModel(data.IntegrationOwners),
-			ResourceOwnersMappings: convertMappingsArrayToModel(data.ResourceOwnerMappings),
+			CustomAccessDetails:    *aponoapi.NewNullableString(data.CustomAccessDetails.ValueStringPointer()),
+			IntegrationOwners:      services.IntegrationOwnersToModel(data.IntegrationOwners),
+			ResourceOwnersMappings: services.ConvertMappingsArrayToModel(data.ResourceOwnerMappings),
 		}).
 		Execute()
 	if err != nil {
@@ -215,7 +216,7 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
+	model, diagnostics := services.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -247,7 +248,7 @@ func (r *integrationResource) Read(ctx context.Context, req resource.ReadRequest
 
 		return
 	}
-	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
+	model, diagnostics := services.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -304,13 +305,13 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 		UpsertIntegrationTerraform(aponoapi.UpsertIntegrationTerraform{
 			Name:                   data.Name.ValueString(),
 			Type:                   data.Type.ValueString(),
-			ProvisionerId:          toNullableString(data.ConnectorID),
+			ProvisionerId:          *aponoapi.NewNullableString(data.ConnectorID.ValueStringPointer()),
 			Params:                 metadata,
 			SecretConfig:           secretConfig,
 			ConnectedResourceTypes: connectedResourceTypes,
-			CustomAccessDetails:    toNullableString(data.CustomAccessDetails),
-			IntegrationOwners:      integrationOwnersToModel(data.IntegrationOwners),
-			ResourceOwnersMappings: convertMappingsArrayToModel(data.ResourceOwnerMappings),
+			CustomAccessDetails:    *aponoapi.NewNullableString(data.CustomAccessDetails.ValueStringPointer()),
+			IntegrationOwners:      services.IntegrationOwnersToModel(data.IntegrationOwners),
+			ResourceOwnersMappings: services.ConvertMappingsArrayToModel(data.ResourceOwnerMappings),
 		}).
 		Execute()
 	if err != nil {
@@ -320,7 +321,7 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
+	model, diagnostics := services.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -373,7 +374,7 @@ func (r *integrationResource) ImportState(ctx context.Context, req resource.Impo
 		return
 	}
 
-	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
+	model, diagnostics := services.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -459,55 +460,12 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 			))
 		}
 	}
-}
 
-func convertMappingsArrayToModel(m []models.ResourceOwnerMapping) []aponoapi.ResourceOwnerMappingTerraform {
-	result := make([]aponoapi.ResourceOwnerMappingTerraform, len(m))
-	for i, rom := range m {
-		result[i] = resourceOwnerMappingToModel(rom)
+	if model.ResourceOwnerMappings != nil && model.IntegrationOwners == nil {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("resource_owner_mappings"),
+			"Invalid Configuration",
+			"`resource_owner_mappings` cannot be set unless `integration_owners` is also set.",
+		)
 	}
-	return result
-}
-
-func resourceOwnerMappingToModel(rom models.ResourceOwnerMapping) aponoapi.ResourceOwnerMappingTerraform {
-	return aponoapi.ResourceOwnerMappingTerraform{
-		TagName:                rom.TagName.ValueString(),
-		AttributeType:          rom.AttributeType.ValueString(),
-		AttributeIntegrationId: *aponoapi.NewNullableString(rom.AttributeIntegrationId.ValueStringPointer()),
-	}
-}
-
-func integrationOwnersToModel(IntegrationOwners []models.IntegrationOwner) []aponoapi.IntegrationOwnerTerraform {
-	owners := make([]aponoapi.IntegrationOwnerTerraform, len(IntegrationOwners))
-	for i, o := range IntegrationOwners {
-		owners[i] = integrationOwnerToModel(o)
-	}
-	return owners
-}
-
-func integrationOwnerToModel(owner models.IntegrationOwner) aponoapi.IntegrationOwnerTerraform {
-	return aponoapi.IntegrationOwnerTerraform{
-		IntegrationId:  *aponoapi.NewNullableString(owner.IntegrationId.ValueStringPointer()),
-		AttributeType:  owner.AttributeType.ValueString(),
-		AttributeValue: convertStringArray(owner.AttributeValue),
-	}
-}
-
-func convertStringArray(a []types.String) []string {
-	result := make([]string, len(a))
-	for i, item := range a {
-		result[i] = item.ValueString()
-	}
-	return result
-}
-
-func toNullableString(s types.String) aponoapi.NullableString {
-	result := aponoapi.NullableString{}
-	if s.IsNull() {
-		result.Unset()
-	} else {
-		vs := s.ValueString()
-		result.Set(&vs)
-	}
-	return result
 }

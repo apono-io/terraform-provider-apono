@@ -1,12 +1,7 @@
 package models
 
 import (
-	"context"
-	"fmt"
-	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 // IntegrationModel describes the resource data model.
@@ -50,103 +45,4 @@ type IntegrationOwner struct {
 	IntegrationId  types.String   `tfsdk:"integration_id"`
 	AttributeType  types.String   `tfsdk:"attribute"`
 	AttributeValue []types.String `tfsdk:"value"`
-}
-
-func ConvertToIntegrationModel(ctx context.Context, integration *aponoapi.IntegrationTerraform) (*IntegrationModel, diag.Diagnostics) {
-	metadataMapValue, diagnostics := types.MapValueFrom(ctx, types.StringType, integration.GetParams())
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
-	}
-
-	data := IntegrationModel{}
-	data.ID = types.StringValue(integration.GetId())
-	data.Name = types.StringValue(integration.GetName())
-	data.Type = types.StringValue(integration.GetType())
-	data.ConnectorID = types.StringValue(integration.GetProvisionerId())
-	data.Metadata = metadataMapValue
-
-	if integration.CustomAccessDetails.IsSet() {
-		data.CustomAccessDetails = types.StringValue(integration.GetCustomAccessDetails())
-	}
-
-	connectedResourceTypes, diagnostics := types.SetValueFrom(ctx, types.StringType, integration.GetConnectedResourceTypes())
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
-	}
-	data.ConnectedResourceTypes = connectedResourceTypes
-
-	secretConfig := integration.GetSecretConfig()
-	switch secretConfig["type"] {
-	case "AWS":
-		data.AwsSecret = &AwsSecret{
-			Region:   basetypes.NewStringValue(toString(secretConfig["region"])),
-			SecretID: basetypes.NewStringValue(toString(secretConfig["secret_id"])),
-		}
-	case "GCP":
-		data.GcpSecret = &GcpSecret{
-			Project:  basetypes.NewStringValue(toString(secretConfig["project"])),
-			SecretID: basetypes.NewStringValue(toString(secretConfig["secret_id"])),
-		}
-	case "KUBERNETES":
-		data.KubernetesSecret = &KubernetesSecret{
-			Namespace: basetypes.NewStringValue(toString(secretConfig["namespace"])),
-			Name:      basetypes.NewStringValue(toString(secretConfig["name"])),
-		}
-	}
-
-	data.ResourceOwnerMappings = ConvertResourceOwnersMappingToModel(integration.ResourceOwnersMappings)
-	data.IntegrationOwners = ConvertIntegrationOwnerToData(integration.IntegrationOwners)
-
-	return &data, nil
-}
-
-func ConvertIntegrationOwnerToData(Owners []aponoapi.IntegrationOwnerTerraform) []IntegrationOwner {
-	if Owners == nil {
-		return nil
-	}
-	var integrationOwners = make([]IntegrationOwner, len(Owners))
-	for i, in := range Owners {
-		var AttributeValue = make([]types.String, len(in.AttributeValue))
-		for j, av := range in.AttributeValue {
-			AttributeValue[j] = basetypes.NewStringValue(av)
-		}
-		var IntegrationId types.String
-		if in.IntegrationId.IsSet() {
-			IntegrationId = basetypes.NewStringValue(*in.IntegrationId.Get())
-		} else {
-			IntegrationId = basetypes.NewStringNull()
-		}
-		integrationOwners[i] = IntegrationOwner{
-			IntegrationId:  IntegrationId,
-			AttributeType:  basetypes.NewStringValue(in.AttributeType),
-			AttributeValue: AttributeValue,
-		}
-	}
-	return integrationOwners
-}
-
-func ConvertResourceOwnersMappingToModel(ResourceOwnersMappings []aponoapi.ResourceOwnerMappingTerraform) []ResourceOwnerMapping {
-	if ResourceOwnersMappings == nil {
-		return nil
-	}
-	result := make([]ResourceOwnerMapping, len(ResourceOwnersMappings))
-	for i, r := range ResourceOwnersMappings {
-		var AttributeIntegrationId types.String
-		if r.AttributeIntegrationId.IsSet() {
-			AttributeIntegrationId = basetypes.NewStringValue(*r.AttributeIntegrationId.Get())
-		} else {
-			AttributeIntegrationId = basetypes.NewStringNull()
-		}
-		result[i] = ResourceOwnerMapping{
-			TagName:                basetypes.NewStringValue(r.TagName),
-			AttributeType:          basetypes.NewStringValue(r.AttributeType),
-			AttributeIntegrationId: AttributeIntegrationId,
-		}
-	}
-
-	return result
-}
-
-func toString(val interface{}) string {
-	return fmt.Sprintf("%v", val)
 }

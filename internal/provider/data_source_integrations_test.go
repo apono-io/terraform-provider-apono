@@ -16,6 +16,7 @@ func TestAccIntegrationsDataSource(t *testing.T) {
 
 	integrations := mockserver.CreateTFIntegrations()
 	mockserver.SetupMockHttpServerIntegrationTFV1Endpoints(integrations)
+	mockserver.SetupMockHttpServerIntegrationCatalogEndpoints()
 
 	checks := createIntegrationsDataSourceChecks(integrations)
 

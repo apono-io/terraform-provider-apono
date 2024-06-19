@@ -14,6 +14,7 @@ func TestAccIntegrationResource(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 	mockserver.SetupMockHttpServerIntegrationTFV1Endpoints(make([]aponoapi.IntegrationTerraform, 0))
+	mockserver.SetupMockHttpServerIntegrationCatalogEndpoints()
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -34,7 +35,7 @@ func TestAccIntegrationResource(t *testing.T) {
 					resource.TestCheckResourceAttr("apono_integration.test", "resource_owner_mappings.0.key_name", "__group"),
 					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.#", "1"),
 					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.0.integration_id", "123654"),
-					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.0.value.#", "0"),
+					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.0.value.#", "1"),
 				),
 			},
 			// ImportState testing
@@ -88,7 +89,7 @@ resource "apono_integration" "test" {
   integration_owners = [{
 		integration_id = "123654"
 		attribute = "9871569"
-		value = []
+		value = ["444555"]
 	}]
 }
 `, integrationName)

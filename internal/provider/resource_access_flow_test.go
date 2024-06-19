@@ -18,6 +18,7 @@ func TestAccAccessFlowResource(t *testing.T) {
 
 	integrations := mockserver.CreateMockIntegrations()
 	mockserver.SetupMockHttpServerIntegrationV2Endpoints(integrations)
+	mockserver.SetupMockHttpServerIntegrationCatalogEndpoints()
 
 	users := mockserver.CreateMockUsers()
 	mockserver.SetupMockHttpServerUsersV2Endpoints(users)

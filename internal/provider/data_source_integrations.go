@@ -6,10 +6,9 @@ import (
 	"github.com/apono-io/apono-sdk-go"
 	"github.com/apono-io/terraform-provider-apono/internal/models"
 	"github.com/apono-io/terraform-provider-apono/internal/schemas"
-	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
+	"github.com/apono-io/terraform-provider-apono/internal/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/id"
@@ -102,7 +101,7 @@ func (d *integrationsDataSource) Read(ctx context.Context, req datasource.ReadRe
 			continue
 		}
 
-		m, diagnostics := models.ConvertToIntegrationModel(ctx, &integration)
+		m, diagnostics := services.ConvertToIntegrationModel(ctx, &integration)
 		resp.Diagnostics.Append(diagnostics...)
 		if resp.Diagnostics.HasError() {
 			return
@@ -188,19 +187,13 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 		},
 		"resource_owner_mappings": schema.SetNestedAttribute{
 			MarkdownDescription: "Let Apono know which tag represents owners and how to map it to a known attribute in Apono.",
-			Optional:            true,
+			Computed:            true,
 			NestedObject:        schemas.DataSourceResourceOwnerMapping,
-			Validators: []validator.Set{
-				setvalidator.SizeAtLeast(1),
-			},
 		},
 		"integration_owners": schema.SetNestedAttribute{
 			MarkdownDescription: "Enter one or more users, groups, shifts or attributes. This field is mandatory when using Resource Owners and serves as a fallback approver if no resource owner is found.",
-			Optional:            true,
+			Computed:            true,
 			NestedObject:        schemas.DataSourceIntegrationOwner,
-			Validators: []validator.Set{
-				setvalidator.SizeAtLeast(1),
-			},
 		},
 	}
 }

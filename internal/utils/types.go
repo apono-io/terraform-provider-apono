@@ -74,3 +74,11 @@ func ConvertInterfaceToListOfString(input interface{}) (*[]string, error) {
 
 	return &output, nil
 }
+
+func ConvertStringArray(items []types.String) []string {
+	var result []string
+	for _, item := range items {
+		result = append(result, item.ValueString())
+	}
+	return result
+}

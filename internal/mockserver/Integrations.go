@@ -136,49 +136,6 @@ func SetupMockHttpServerIntegrationTFV1Endpoints(existingIntegrations []aponoapi
 
 		return resp, nil
 	})
-
-	httpmock.RegisterResponder(http.MethodGet, `=~^http://api\.apono\.dev/api/v2/integrations-catalog/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
-		configType := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
-		switch configType {
-		case "postgresql":
-			config := apono.IntegrationConfig{
-				Name:        "PostgreSQL",
-				Type:        "postgresql",
-				Description: "An open-source relational database management system emphasizing extensibility and SQL compliance.",
-				Params: []apono.IntegrationConfigParam{
-					{
-						Id:    "hostname",
-						Label: "Hostname",
-					},
-					{
-						Id:      "port",
-						Label:   "Port",
-						Default: "5432",
-					},
-					{
-						Id:      "dbname",
-						Label:   "Database Name",
-						Default: "postgres",
-					},
-				},
-				RequiresSecret: true,
-				SupportedSecretTypes: []string{
-					"AWS",
-					"GCP",
-					"KUBERNETES",
-				},
-			}
-
-			resp, err := httpmock.NewJsonResponse(200, config)
-			if err != nil {
-				return httpmock.NewStringResponse(500, err.Error()), nil
-			}
-
-			return resp, nil
-		default:
-			return httpmock.NewStringResponse(400, "Unsupported config type"), nil
-		}
-	})
 }
 
 func SetupMockHttpServerIntegrationV2Endpoints(existingIntegrations []apono.Integration) {
@@ -300,7 +257,9 @@ func SetupMockHttpServerIntegrationV2Endpoints(existingIntegrations []apono.Inte
 
 		return resp, nil
 	})
+}
 
+func SetupMockHttpServerIntegrationCatalogEndpoints() {
 	httpmock.RegisterResponder(http.MethodGet, `=~^http://api\.apono\.dev/api/v2/integrations-catalog/([^/]+)\z`, func(req *http.Request) (*http.Response, error) {
 		configType := httpmock.MustGetSubmatch(req, 1) // 1=first regexp submatch
 		switch configType {
