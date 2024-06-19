@@ -20,9 +20,9 @@ var _ MappedNullable = &IntegrationOwnerTerraform{}
 
 // IntegrationOwnerTerraform struct for IntegrationOwnerTerraform
 type IntegrationOwnerTerraform struct {
-	IntegrationId   NullableString `json:"integration_id,omitempty"`
-	AttributeTypeId string         `json:"attribute_type_id"`
-	AttributeValue  []string       `json:"attribute_value"`
+	IntegrationId  NullableString `json:"integration_id,omitempty"`
+	AttributeType  string         `json:"attribute_type"`
+	AttributeValue []string       `json:"attribute_value"`
 }
 
 type _IntegrationOwnerTerraform IntegrationOwnerTerraform
@@ -31,9 +31,9 @@ type _IntegrationOwnerTerraform IntegrationOwnerTerraform
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationOwnerTerraform(attributeTypeId string, attributeValue []string) *IntegrationOwnerTerraform {
+func NewIntegrationOwnerTerraform(attributeType string, attributeValue []string) *IntegrationOwnerTerraform {
 	this := IntegrationOwnerTerraform{}
-	this.AttributeTypeId = attributeTypeId
+	this.AttributeType = attributeType
 	this.AttributeValue = attributeValue
 	return &this
 }
@@ -89,28 +89,28 @@ func (o *IntegrationOwnerTerraform) UnsetIntegrationId() {
 	o.IntegrationId.Unset()
 }
 
-// GetAttributeTypeId returns the AttributeTypeId field value
-func (o *IntegrationOwnerTerraform) GetAttributeTypeId() string {
+// GetAttributeType returns the AttributeType field value
+func (o *IntegrationOwnerTerraform) GetAttributeType() string {
 	if o == nil {
 		var ret string
 		return ret
 	}
 
-	return o.AttributeTypeId
+	return o.AttributeType
 }
 
-// GetAttributeTypeIdOk returns a tuple with the AttributeTypeId field value
+// GetAttributeTypeOk returns a tuple with the AttributeType field value
 // and a boolean to check if the value has been set.
-func (o *IntegrationOwnerTerraform) GetAttributeTypeIdOk() (*string, bool) {
+func (o *IntegrationOwnerTerraform) GetAttributeTypeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.AttributeTypeId, true
+	return &o.AttributeType, true
 }
 
-// SetAttributeTypeId sets field value
-func (o *IntegrationOwnerTerraform) SetAttributeTypeId(v string) {
-	o.AttributeTypeId = v
+// SetAttributeType sets field value
+func (o *IntegrationOwnerTerraform) SetAttributeType(v string) {
+	o.AttributeType = v
 }
 
 // GetAttributeValue returns the AttributeValue field value
@@ -150,7 +150,7 @@ func (o IntegrationOwnerTerraform) ToMap() (map[string]interface{}, error) {
 	if o.IntegrationId.IsSet() {
 		toSerialize["integration_id"] = o.IntegrationId.Get()
 	}
-	toSerialize["attribute_type_id"] = o.AttributeTypeId
+	toSerialize["attribute_type"] = o.AttributeType
 	toSerialize["attribute_value"] = o.AttributeValue
 	return toSerialize, nil
 }
@@ -160,7 +160,7 @@ func (o *IntegrationOwnerTerraform) UnmarshalJSON(bytes []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"attribute_type_id",
+		"attribute_type",
 		"attribute_value",
 	}
 
