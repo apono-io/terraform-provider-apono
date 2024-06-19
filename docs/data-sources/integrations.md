@@ -47,10 +47,8 @@ Optional:
 
 - `aws_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--aws_secret))
 - `gcp_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--gcp_secret))
-- `integration_owners` (Attributes Set) Enter one or more users, groups, shifts or attributes. This field is mandatory when using Resource Owners and serves as a fallback approver if no resource owner is found. (see [below for nested schema](#nestedatt--integrations--integration_owners))
 - `kubernetes_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--kubernetes_secret))
 - `metadata` (Map of String) Integration metadata
-- `resource_owner_mappings` (Attributes Set) Let Apono know which tag represents owners and how to map it to a known attribute in Apono. (see [below for nested schema](#nestedatt--integrations--resource_owner_mappings))
 
 Read-Only:
 
@@ -58,7 +56,9 @@ Read-Only:
 - `connector_id` (String) Apono connector identifier
 - `custom_access_details` (String) Custom access details message that will be displayed to end users when they access this integration
 - `id` (String) Integration identifier
+- `integration_owners` (Attributes Set) Enter one or more users, groups, shifts or attributes. This field is mandatory when using Resource Owners and serves as a fallback approver if no resource owner is found. (see [below for nested schema](#nestedatt--integrations--integration_owners))
 - `name` (String) Integration name
+- `resource_owner_mappings` (Attributes Set) Let Apono know which tag represents owners and how to map it to a known attribute in Apono. (see [below for nested schema](#nestedatt--integrations--resource_owner_mappings))
 - `type` (String) Integration type
 
 <a id="nestedatt--integrations--aws_secret"></a>
@@ -79,6 +79,15 @@ Required:
 - `secret_id` (String) GCP secret ID
 
 
+<a id="nestedatt--integrations--kubernetes_secret"></a>
+### Nested Schema for `integrations.kubernetes_secret`
+
+Required:
+
+- `name` (String) Kubernetes secret name
+- `namespace` (String) Kubernetes secret namespace
+
+
 <a id="nestedatt--integrations--integration_owners"></a>
 ### Nested Schema for `integrations.integration_owners`
 
@@ -90,15 +99,6 @@ Required:
 Optional:
 
 - `integration_id` (String) Provide the User Context integration ID the attribute originates from, for example Okta, Pagerduty, etc. You can find the ID in the Apono API Reference.
-
-
-<a id="nestedatt--integrations--kubernetes_secret"></a>
-### Nested Schema for `integrations.kubernetes_secret`
-
-Required:
-
-- `name` (String) Kubernetes secret name
-- `namespace` (String) Kubernetes secret namespace
 
 
 <a id="nestedatt--integrations--resource_owner_mappings"></a>
