@@ -29,6 +29,7 @@ type AccessFlowTerraformV1 struct {
 	IntegrationTargets []AccessTargetIntegrationTerraformV1            `json:"integration_targets"`
 	BundleTargets      []AccessTargetBundleTerraformV1                 `json:"bundle_targets"`
 	Approvers          []ApproverTerraformV1                           `json:"approvers,omitempty"`
+	ApproverPolicy     NullableAccessFlowTerraformV1ApproverPolicy     `json:"approver_policy,omitempty"`
 	RevokeAfterInSec   int32                                           `json:"revoke_after_in_sec"`
 	Settings           NullableAccessFlowTerraformV1Settings           `json:"settings,omitempty"`
 	CreatedDate        float64                                         `json:"created_date"`
@@ -308,6 +309,49 @@ func (o *AccessFlowTerraformV1) SetApprovers(v []ApproverTerraformV1) {
 	o.Approvers = v
 }
 
+// GetApproverPolicy returns the ApproverPolicy field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *AccessFlowTerraformV1) GetApproverPolicy() AccessFlowTerraformV1ApproverPolicy {
+	if o == nil || IsNil(o.ApproverPolicy.Get()) {
+		var ret AccessFlowTerraformV1ApproverPolicy
+		return ret
+	}
+	return *o.ApproverPolicy.Get()
+}
+
+// GetApproverPolicyOk returns a tuple with the ApproverPolicy field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *AccessFlowTerraformV1) GetApproverPolicyOk() (*AccessFlowTerraformV1ApproverPolicy, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ApproverPolicy.Get(), o.ApproverPolicy.IsSet()
+}
+
+// HasApproverPolicy returns a boolean if a field has been set.
+func (o *AccessFlowTerraformV1) HasApproverPolicy() bool {
+	if o != nil && o.ApproverPolicy.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetApproverPolicy gets a reference to the given NullableAccessFlowTerraformV1ApproverPolicy and assigns it to the ApproverPolicy field.
+func (o *AccessFlowTerraformV1) SetApproverPolicy(v AccessFlowTerraformV1ApproverPolicy) {
+	o.ApproverPolicy.Set(&v)
+}
+
+// SetApproverPolicyNil sets the value for ApproverPolicy to be an explicit nil
+func (o *AccessFlowTerraformV1) SetApproverPolicyNil() {
+	o.ApproverPolicy.Set(nil)
+}
+
+// UnsetApproverPolicy ensures that no value is present for ApproverPolicy, not even an explicit nil
+func (o *AccessFlowTerraformV1) UnsetApproverPolicy() {
+	o.ApproverPolicy.Unset()
+}
+
 // GetRevokeAfterInSec returns the RevokeAfterInSec field value
 func (o *AccessFlowTerraformV1) GetRevokeAfterInSec() int32 {
 	if o == nil {
@@ -445,6 +489,9 @@ func (o AccessFlowTerraformV1) ToMap() (map[string]interface{}, error) {
 	toSerialize["bundle_targets"] = o.BundleTargets
 	if o.Approvers != nil {
 		toSerialize["approvers"] = o.Approvers
+	}
+	if o.ApproverPolicy.IsSet() {
+		toSerialize["approver_policy"] = o.ApproverPolicy.Get()
 	}
 	toSerialize["revoke_after_in_sec"] = o.RevokeAfterInSec
 	if o.Settings.IsSet() {

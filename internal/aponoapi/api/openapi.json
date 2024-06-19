@@ -389,6 +389,15 @@
             },
             "nullable": true
           },
+          "approver_policy": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApproverPolicyTerraformV1"
+              }
+            ],
+            "nullable": true
+          },
           "revoke_after_in_sec": {
             "format": "int32",
             "type": "integer"
@@ -476,6 +485,56 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          }
+        }
+      },
+      "ApproverConditionGroupOperatorTerraformV1": {
+        "enum": [
+          "AND",
+          "OR"
+        ],
+        "type": "string"
+      },
+      "ApproverConditionGroupTerraformV1": {
+        "required": [
+          "conditions_logical_operator",
+          "conditions"
+        ],
+        "type": "object",
+        "properties": {
+          "conditions_logical_operator": {
+            "$ref": "#/components/schemas/ApproverConditionGroupOperatorTerraformV1"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttributeFilterTerraformV1"
+            }
+          }
+        }
+      },
+      "ApproverPolicyGroupsRelationshipTerraformV1": {
+        "enum": [
+          "ANY_OF",
+          "ALL_OF"
+        ],
+        "type": "string"
+      },
+      "ApproverPolicyTerraformV1": {
+        "required": [
+          "groups_relationship",
+          "condition_groups"
+        ],
+        "type": "object",
+        "properties": {
+          "groups_relationship": {
+            "$ref": "#/components/schemas/ApproverPolicyGroupsRelationshipTerraformV1"
+          },
+          "condition_groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApproverConditionGroupTerraformV1"
             }
           }
         }
@@ -868,6 +927,15 @@
             "items": {
               "$ref": "#/components/schemas/ApproverTerraformV1"
             },
+            "nullable": true
+          },
+          "approver_policy": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApproverPolicyTerraformV1"
+              }
+            ],
             "nullable": true
           },
           "revoke_after_in_sec": {
