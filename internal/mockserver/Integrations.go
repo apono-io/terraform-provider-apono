@@ -42,7 +42,7 @@ func SetupMockHttpServerIntegrationTFV1Endpoints(existingIntegrations []aponoapi
 			Params:                 createReq.Params,
 			SecretConfig:           createReq.SecretConfig,
 			ConnectedResourceTypes: createReq.ConnectedResourceTypes,
-			CustomAccessDetails:    *aponoapi.NewNullableString(&createReq.CustomAccessDetails),
+			CustomAccessDetails:    *aponoapi.NewNullableString(createReq.CustomAccessDetails.Get()),
 			IntegrationOwners:      createReq.IntegrationOwners,
 			ResourceOwnersMappings: createReq.ResourceOwnersMappings,
 		}
@@ -105,7 +105,7 @@ func SetupMockHttpServerIntegrationTFV1Endpoints(existingIntegrations []aponoapi
 		integration.ProvisionerId = updateReq.ProvisionerId
 		integration.Params = updateReq.Params
 		integration.SecretConfig = updateReq.SecretConfig
-		integration.CustomAccessDetails = *aponoapi.NewNullableString(&updateReq.CustomAccessDetails)
+		integration.CustomAccessDetails = *aponoapi.NewNullableString(updateReq.CustomAccessDetails.Get())
 		integration.ConnectedResourceTypes = updateReq.ConnectedResourceTypes
 		integration.IntegrationOwners = updateReq.IntegrationOwners
 		integration.ResourceOwnersMappings = updateReq.ResourceOwnersMappings
