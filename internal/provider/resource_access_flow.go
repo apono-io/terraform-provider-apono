@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -158,8 +159,41 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				MarkdownDescription: "Represents which identities should approve this access",
 				Optional:            true,
 				NestedObject:        identitySchema,
+				DeprecationMessage:  "Configure approver_policy instead. This attribute will be removed in the next major version of the provider",
 				Validators: []validator.Set{
 					setvalidator.SizeAtLeast(1),
+				},
+			},
+			"approver_policy": schema.SingleNestedAttribute{
+				MarkdownDescription: "Approver policy", // TODO: Add more detailed description
+				Optional:            true,
+				Attributes: map[string]schema.Attribute{
+					"approver_groups_relationship": schema.StringAttribute{
+						MarkdownDescription: "Approver groups relationship", // TODO: Add more detailed description
+						Optional:            true,
+						Computed:            true,
+						Default:             stringdefault.StaticString("ANY_OF"),
+					},
+					"approver_groups": schema.SetNestedAttribute{
+						MarkdownDescription: "Approver groups", // TODO: Add more detailed description
+						Required:            true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"conditions_logical_operator": schemas.ConditionLogicalOperatorSchema,
+								"attribute_conditions": schema.SetNestedAttribute{
+									MarkdownDescription: "Array of conditions that each contain attribute type,operator, and attribute names.",
+									Required:            true,
+									NestedObject:        schemas.AttributeFilterSchema,
+									Validators: []validator.Set{
+										setvalidator.SizeAtLeast(1),
+									},
+								},
+							},
+						},
+						Validators: []validator.Set{
+							setvalidator.SizeAtLeast(1),
+						},
+					},
 				},
 			},
 			"settings": schema.SingleNestedAttribute{
@@ -431,6 +465,16 @@ func (a *accessFlowResource) ValidateConfig(ctx context.Context, req resource.Va
 		resp.Diagnostics.AddError(
 			"Invalid access flow configuration",
 			"only one of grantees or grantees_conditions_group must be specified",
+		)
+	}
+
+	isApproverPolicyDefined := !model.ApproverPolicy.IsNull() && !model.ApproverPolicy.IsUnknown()
+	isApproversDefined := !model.Approvers.IsNull() && !model.Approvers.IsUnknown()
+
+	if isApproverPolicyDefined && isApproversDefined {
+		resp.Diagnostics.AddError(
+			"Invalid access flow configuration",
+			"only one of approvers or approver_policy can be specified",
 		)
 	}
 }

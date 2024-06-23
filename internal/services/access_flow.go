@@ -90,20 +90,39 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 		objectGranteeFilterGroup = types.ObjectNull(models.GranteeFilterGroupObject)
 	}
 
-	var dataApprovers []models.Identity
-	for _, approver := range accessFlow.GetApprovers() {
-		identity, diagnostics := convertIdentityApiToTerraformModel(approver.Id, strings.ToLower(approver.Type), availableIdentities.Data, availableUsers.Data)
-		if len(diagnostics) > 0 {
-			return nil, diagnostics
+	var setApprovers types.Set
+	if isApproversDefinedInState(oldState) {
+		var dataApprovers []models.Identity
+		for _, approver := range accessFlow.GetApprovers() {
+			identity, diags := convertIdentityApiToTerraformModel(approver.Id, strings.ToLower(approver.Type), availableIdentities.Data, availableUsers.Data)
+			if len(diags) > 0 {
+				return nil, diags
+			}
+
+			dataApprovers = append(dataApprovers, *identity)
 		}
 
-		dataApprovers = append(dataApprovers, *identity)
+		var diags diag.Diagnostics
+		setApprovers, diags = types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.IdentityObject}, getUniqueListOfIdentities(dataApprovers))
+		if len(diags) > 0 {
+			return nil, diags
+		}
+	} else {
+		setApprovers = types.SetNull(types.ObjectType{AttrTypes: models.IdentityObject})
 	}
 
-	// This converts the list of identities to a Terraform Set, which require map of attribute name to type.
-	setApprovers, diags := types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.IdentityObject}, getUniqueListOfIdentities(dataApprovers))
-	if len(diags) > 0 {
-		return nil, diags
+	var objectApproverPolicy types.Object
+	if isApproverPolicyDefinedInState(oldState) {
+		dataApproverPolicy, diags := convertApproverPolicyApiToTerraformModel(ctx, accessFlow.ApproverPolicy.Get())
+		if len(diags) > 0 {
+			return nil, diags
+		}
+		objectApproverPolicy, diags = types.ObjectValueFrom(ctx, models.ApproverPolicyObject, dataApproverPolicy)
+		if len(diags) > 0 {
+			return nil, diags
+		}
+	} else {
+		objectApproverPolicy = types.ObjectNull(models.ApproverPolicyObject)
 	}
 
 	apiIntegrationTargets := convertIntegrationTargetsNewApiToOldApiModel(accessFlow.GetIntegrationTargets())
@@ -145,6 +164,7 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 		IntegrationTargets:  dataIntegrationTargets,
 		BundleTargets:       dataBundleTargets,
 		Approvers:           setApprovers,
+		ApproverPolicy:      objectApproverPolicy,
 		Settings:            dataSettings,
 		Labels:              *dataLabels,
 	}
@@ -207,9 +227,11 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 	}
 
 	existingApprovers := make([]models.Identity, 0, len(accessFlow.Approvers.Elements()))
-	diagnostics = accessFlow.Approvers.ElementsAs(ctx, &existingApprovers, false)
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
+	if !accessFlow.Approvers.IsNull() && !accessFlow.Approvers.IsUnknown() {
+		diagnostics = accessFlow.Approvers.ElementsAs(ctx, &existingApprovers, false)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
 	}
 
 	var dataApprovers []aponoapi.ApproverTerraformV1
@@ -224,6 +246,19 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 				Id:   approverId,
 				Type: approver.Type.ValueString(),
 			})
+		}
+	}
+
+	var dataApproverPolicy *aponoapi.AccessFlowTerraformV1ApproverPolicy
+	if !accessFlow.ApproverPolicy.IsNull() && !accessFlow.ApproverPolicy.IsUnknown() {
+		var modelApproverPolicy models.ApproverPolicy
+		diagnostics = accessFlow.ApproverPolicy.As(ctx, &modelApproverPolicy, basetypes.ObjectAsOptions{})
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
+		dataApproverPolicy, diagnostics = convertApproverPolicyTerraformModelToApi(ctx, &modelApproverPolicy)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
 		}
 	}
 
@@ -260,6 +295,7 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 		Grantees:           dataGrantees,
 		GranteeFilterGroup: *aponoapi.NewNullableAccessFlowTerraformV1GranteeFilterGroup(dataGranteeFilterGroup),
 		Approvers:          dataApprovers,
+		ApproverPolicy:     *aponoapi.NewNullableAccessFlowTerraformV1ApproverPolicy(dataApproverPolicy),
 		IntegrationTargets: convertIntegrationTargetsOldApiToNewApiModel(dataIntegrationTargets),
 		BundleTargets:      dataBundleTargets,
 		Settings:           setting,
@@ -477,7 +513,7 @@ func convertGranteeFilterGroupApiToTerraformModel(ctx context.Context, granteeFi
 
 	var filtersState []models.AttributeFilter
 	for _, apiFilter := range granteeFilterGroup.GetAttributeFilters() {
-		dataFilter, diagnostics := convertAttributeFiltersTerraformModelToApi(ctx, apiFilter)
+		dataFilter, diagnostics := convertAttributeFiltersApiToTerraformModel(ctx, apiFilter)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics
 		}
@@ -509,7 +545,7 @@ func convertGranteeFilterGroupTerraformModelToApi(ctx context.Context, granteeFi
 
 	var apiFilters []aponoapi.AttributeFilterTerraformV1
 	for _, dataFilter := range dataFilters {
-		apiFilter, diagnostics := convertAttributeFiltersApiToTerraformModel(ctx, dataFilter)
+		apiFilter, diagnostics := convertAttributeFiltersFromTerraformToModelApi(ctx, dataFilter)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics
 		}
@@ -523,11 +559,14 @@ func convertGranteeFilterGroupTerraformModelToApi(ctx context.Context, granteeFi
 	}, nil
 }
 
-func convertAttributeFiltersApiToTerraformModel(ctx context.Context, filter models.AttributeFilter) (*aponoapi.AttributeFilterTerraformV1, diag.Diagnostics) {
-	attributeValues := make([]string, 0, len(filter.AttributeNames.Elements()))
-	diagnostics := filter.AttributeNames.ElementsAs(ctx, &attributeValues, false)
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
+func convertAttributeFiltersFromTerraformToModelApi(ctx context.Context, filter models.AttributeFilter) (*aponoapi.AttributeFilterTerraformV1, diag.Diagnostics) {
+	var attributeValues []string
+	if !filter.AttributeNames.IsNull() && !filter.AttributeNames.IsUnknown() {
+		attributeValues = make([]string, 0, len(filter.AttributeNames.Elements()))
+		diagnostics := filter.AttributeNames.ElementsAs(ctx, &attributeValues, false)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
 	}
 
 	var operator *string
@@ -543,13 +582,8 @@ func convertAttributeFiltersApiToTerraformModel(ctx context.Context, filter mode
 	}, nil
 }
 
-func convertAttributeFiltersTerraformModelToApi(ctx context.Context, filter aponoapi.AttributeFilterTerraformV1) (*models.AttributeFilter, diag.Diagnostics) {
-	apiFilterNames, err := utils.ConvertInterfaceToListOfString(filter.GetAttributeValue())
-	if err != nil {
-		diagnostics := diag.Diagnostics{}
-		diagnostics.AddError("Client Error", fmt.Sprintf("Failed to convert attribute names for attribute filter: %s", err.Error()))
-		return nil, diagnostics
-	}
+func convertAttributeFiltersApiToTerraformModel(ctx context.Context, filter aponoapi.AttributeFilterTerraformV1) (*models.AttributeFilter, diag.Diagnostics) {
+	apiFilterNames := filter.GetAttributeValue()
 	dataFilterNames, diagnostics := types.SetValueFrom(ctx, types.StringType, apiFilterNames)
 	if len(diagnostics) > 0 {
 		return nil, diagnostics
@@ -560,6 +594,104 @@ func convertAttributeFiltersTerraformModelToApi(ctx context.Context, filter apon
 		AttributeType:  types.StringValue(filter.AttributeTypeId),
 		AttributeNames: dataFilterNames,
 		IntegrationID:  types.StringPointerValue(filter.IntegrationId.Get()),
+	}, nil
+}
+
+func convertApproverPolicyApiToTerraformModel(ctx context.Context, approverPolicy *aponoapi.AccessFlowTerraformV1ApproverPolicy) (*models.ApproverPolicy, diag.Diagnostics) {
+	if approverPolicy == nil {
+		return nil, nil
+	}
+
+	approverGroupsModels := []models.ApproverGroup{}
+	for _, apiConditionGroup := range approverPolicy.GetConditionGroups() {
+		group, diagnostics := convertApproverGroupApiToTerraformModel(ctx, apiConditionGroup)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
+
+		approverGroupsModels = append(approverGroupsModels, *group)
+	}
+
+	approverGroupsState, diags := types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.ApproverPolicyGroupObject}, approverGroupsModels)
+	if len(diags) > 0 {
+		return nil, diags
+	}
+
+	return &models.ApproverPolicy{
+		GroupsRelationship: types.StringValue(string(approverPolicy.GetGroupsRelationship())),
+		Groups:             approverGroupsState,
+	}, nil
+}
+
+func convertApproverGroupApiToTerraformModel(ctx context.Context, approverGroup aponoapi.ApproverConditionGroupTerraformV1) (*models.ApproverGroup, diag.Diagnostics) {
+	var filtersModels []models.AttributeFilter
+	for _, apiFilter := range approverGroup.GetConditions() {
+		dataFilter, diagnostics := convertAttributeFiltersApiToTerraformModel(ctx, apiFilter)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
+
+		filtersModels = append(filtersModels, *dataFilter)
+	}
+
+	filtersState, diags := types.SetValueFrom(ctx, types.ObjectType{AttrTypes: models.AttributeFilterObject}, filtersModels)
+	if len(diags) > 0 {
+		return nil, diags
+	}
+
+	return &models.ApproverGroup{
+		Operator:   types.StringValue(string(approverGroup.GetConditionsLogicalOperator())),
+		Conditions: filtersState,
+	}, nil
+}
+
+func convertApproverPolicyTerraformModelToApi(ctx context.Context, approverPolicy *models.ApproverPolicy) (*aponoapi.AccessFlowTerraformV1ApproverPolicy, diag.Diagnostics) {
+	if approverPolicy == nil {
+		return nil, nil
+	}
+
+	approverGroups := make([]models.ApproverGroup, 0, len(approverPolicy.Groups.Elements()))
+	diagnostics := approverPolicy.Groups.ElementsAs(ctx, &approverGroups, false)
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
+	}
+
+	var apiGroups []aponoapi.ApproverConditionGroupTerraformV1
+	for _, group := range approverGroups {
+		apiGroup, diagnostics := convertApproverGroupTerraformModelToApi(ctx, group)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
+
+		apiGroups = append(apiGroups, *apiGroup)
+	}
+
+	return &aponoapi.AccessFlowTerraformV1ApproverPolicy{
+		GroupsRelationship: aponoapi.ApproverPolicyGroupsRelationshipTerraformV1(approverPolicy.GroupsRelationship.ValueString()),
+		ConditionGroups:    apiGroups,
+	}, nil
+}
+
+func convertApproverGroupTerraformModelToApi(ctx context.Context, approverGroup models.ApproverGroup) (*aponoapi.ApproverConditionGroupTerraformV1, diag.Diagnostics) {
+	var filters []models.AttributeFilter
+	diagnostics := approverGroup.Conditions.ElementsAs(ctx, &filters, false)
+	if len(diagnostics) > 0 {
+		return nil, diagnostics
+	}
+
+	var apiFilters []aponoapi.AttributeFilterTerraformV1
+	for _, filter := range filters {
+		apiFilter, diagnostics := convertAttributeFiltersFromTerraformToModelApi(ctx, filter)
+		if len(diagnostics) > 0 {
+			return nil, diagnostics
+		}
+
+		apiFilters = append(apiFilters, *apiFilter)
+	}
+
+	return &aponoapi.ApproverConditionGroupTerraformV1{
+		ConditionsLogicalOperator: aponoapi.ApproverConditionGroupOperatorTerraformV1(approverGroup.Operator.ValueString()),
+		Conditions:                apiFilters,
 	}, nil
 }
 
@@ -577,6 +709,22 @@ func isGranteeFilterGroupDefinedInState(state *models.AccessFlowModel) bool {
 	}
 
 	return !state.GranteesFilterGroup.IsNull() && !state.GranteesFilterGroup.IsUnknown()
+}
+
+func isApproversDefinedInState(state *models.AccessFlowModel) bool {
+	if state == nil {
+		return false
+	}
+
+	return !state.Approvers.IsNull() && !state.Approvers.IsUnknown()
+}
+
+func isApproverPolicyDefinedInState(state *models.AccessFlowModel) bool {
+	if state == nil {
+		return true
+	}
+
+	return !state.ApproverPolicy.IsNull() && !state.ApproverPolicy.IsUnknown()
 }
 
 func convertLabelsApiToTerraformModel(ctx context.Context, labels []aponoapi.AccessFlowLabelTerraformV1) (*basetypes.ListValue, diag.Diagnostics) {
