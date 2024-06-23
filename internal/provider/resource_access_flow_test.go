@@ -33,7 +33,7 @@ func TestAccAccessFlowResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Create and Read
 			{
-				Config: testAccAccessFlowResourceConfig("access-flow-name", true),
+				Config: testAccAccessFlowResourceConfig("access-flow-name", true, true),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("apono_access_flow.test_access_flow_resource", "id"),
 					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "name", "access-flow-name"),
@@ -61,12 +61,12 @@ func TestAccAccessFlowResource(t *testing.T) {
 			{
 				ResourceName: "apono_access_flow.test_access_flow_resource",
 				ImportState:  true,
-				// Need to apply this test after removing the old grantees from the config schema
+				//// Need to apply this test after removing the old grantees and old approvers from the config schema
 				// ImportStateVerify: true,
 			},
 			// Update and Read testing
 			{
-				Config: testAccAccessFlowResourceConfig("updated-name", false),
+				Config: testAccAccessFlowResourceConfig("updated-name", false, false),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "name", "updated-name"),
 					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "grantees_conditions_group.conditions_logical_operator", "AND"),
@@ -75,6 +75,16 @@ func TestAccAccessFlowResource(t *testing.T) {
 						"attribute_type": "group",
 						"operator":       "contains",
 					}),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "approver_policy.approver_groups_relationship", "ALL_OF"),
+					resource.TestCheckResourceAttr("apono_access_flow.test_access_flow_resource", "approver_policy.approver_groups.#", "2"),
+					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "approver_policy.approver_groups.0.attribute_conditions.*", map[string]string{
+						"attribute_type": "user",
+						"operator":       "is",
+					}),
+					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "approver_policy.approver_groups.1.attribute_conditions.*", map[string]string{
+						"attribute_type": "manager",
+						"integration_id": "123456789",
+					}),
 				),
 			},
 			// Delete testing automatically occurs in TestCase
@@ -82,7 +92,7 @@ func TestAccAccessFlowResource(t *testing.T) {
 	})
 }
 
-func testAccAccessFlowResourceConfig(accessFlowName string, useOldGrantees bool) string {
+func testAccAccessFlowResourceConfig(accessFlowName string, useOldGrantees bool, useOldApprovers bool) string {
 	var grantees string
 	if useOldGrantees {
 		grantees = `
@@ -117,6 +127,7 @@ grantees_conditions_group = {
 `
 	}
 
+	approvers := getConfigApprovers(useOldApprovers)
 	return fmt.Sprintf(`
 provider apono {
   endpoint = "http://api.apono.dev"
@@ -169,6 +180,20 @@ bundle_targets = [
 		name = "DB PROD"
 	}
   ]
+%s
+settings = {
+    approver_cannot_self_approve = true
+    require_all_approvers = true
+  }
+labels = ["label1","label2"]
+}
+`, accessFlowName, grantees, approvers)
+}
+
+func getConfigApprovers(useOldApprovers bool) string {
+	var approvers string
+	if useOldApprovers {
+		approvers = `
 approvers = [
     {
       name = "test2@example.com"
@@ -179,11 +204,40 @@ approvers = [
       type = "context_attribute"
     }
   ]
-settings = {
-    approver_cannot_self_approve = true
-    require_all_approvers = true
+`
+	} else {
+		approvers = `
+approver_policy = {
+    approver_groups_relationship = "ALL_OF"
+    approver_groups = [
+      {
+        conditions_logical_operator = "AND"
+        attribute_conditions = [
+          {
+            operator = "is" 
+            attribute_type = "user"
+            attribute_names = ["test2@example.com", "test1@example.com"]
+          },
+          {
+            operator = "is"
+            attribute_type = "group"
+            attribute_names = ["Product"]
+            integration_id = "123456789"
+          },
+        ]
+      },
+	{
+        attribute_conditions = [
+          {
+            attribute_type = "manager"
+            integration_id = "123456789"
+          },
+        ]
+      }
+    ]
   }
-labels = ["label1","label2"]
-}
-`, accessFlowName, grantees)
+`
+	}
+
+	return approvers
 }
