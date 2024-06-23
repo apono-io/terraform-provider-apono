@@ -135,6 +135,7 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 				NestedObject:        schemas.ResourceOwnerMapping,
 				Validators: []validator.Set{
 					setvalidator.SizeAtLeast(1),
+					setvalidator.AlsoRequires(path.Expressions{path.MatchRelative().AtParent().AtName("integration_owners")}...),
 				},
 			},
 			"integration_owners": schema.SetNestedAttribute{
@@ -459,13 +460,5 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 				metadataValueStr,
 			))
 		}
-	}
-
-	if model.ResourceOwnerMappings != nil && model.IntegrationOwners == nil {
-		resp.Diagnostics.AddAttributeError(
-			path.Root("resource_owner_mappings"),
-			"Invalid Configuration",
-			"`resource_owner_mappings` cannot be set unless `integration_owners` is also set.",
-		)
 	}
 }
