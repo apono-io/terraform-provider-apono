@@ -1,26 +1,23 @@
 package models
 
 import (
-	"context"
-	"fmt"
-	"github.com/apono-io/apono-sdk-go"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 // IntegrationModel describes the resource data model.
 type IntegrationModel struct {
-	ID                     types.String      `tfsdk:"id"`
-	Name                   types.String      `tfsdk:"name"`
-	Type                   types.String      `tfsdk:"type"`
-	ConnectorID            types.String      `tfsdk:"connector_id"`
-	ConnectedResourceTypes types.Set         `tfsdk:"connected_resource_types"`
-	Metadata               types.Map         `tfsdk:"metadata"`
-	CustomAccessDetails    types.String      `tfsdk:"custom_access_details"`
-	AwsSecret              *AwsSecret        `tfsdk:"aws_secret"`
-	GcpSecret              *GcpSecret        `tfsdk:"gcp_secret"`
-	KubernetesSecret       *KubernetesSecret `tfsdk:"kubernetes_secret"`
+	ID                     types.String           `tfsdk:"id"`
+	Name                   types.String           `tfsdk:"name"`
+	Type                   types.String           `tfsdk:"type"`
+	ConnectorID            types.String           `tfsdk:"connector_id"`
+	ConnectedResourceTypes types.Set              `tfsdk:"connected_resource_types"`
+	Metadata               types.Map              `tfsdk:"metadata"`
+	CustomAccessDetails    types.String           `tfsdk:"custom_access_details"`
+	AwsSecret              *AwsSecret             `tfsdk:"aws_secret"`
+	GcpSecret              *GcpSecret             `tfsdk:"gcp_secret"`
+	KubernetesSecret       *KubernetesSecret      `tfsdk:"kubernetes_secret"`
+	ResourceOwnerMappings  []ResourceOwnerMapping `tfsdk:"resource_owner_mappings"`
+	IntegrationOwners      []IntegrationOwner     `tfsdk:"integration_owners"`
 }
 
 type AwsSecret struct {
@@ -38,51 +35,14 @@ type KubernetesSecret struct {
 	Name      types.String `tfsdk:"name"`
 }
 
-func ConvertToIntegrationModel(ctx context.Context, integration *apono.Integration) (*IntegrationModel, diag.Diagnostics) {
-	metadataMapValue, diagnostics := types.MapValueFrom(ctx, types.StringType, integration.GetMetadata())
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
-	}
-
-	data := IntegrationModel{}
-	data.ID = types.StringValue(integration.GetId())
-	data.Name = types.StringValue(integration.GetName())
-	data.Type = types.StringValue(integration.GetType())
-	data.ConnectorID = types.StringValue(integration.GetProvisionerId())
-	data.Metadata = metadataMapValue
-
-	if integration.CustomAccessDetails.IsSet() {
-		data.CustomAccessDetails = types.StringValue(integration.GetCustomAccessDetails())
-	}
-
-	connectedResourceTypes, diagnostics := types.SetValueFrom(ctx, types.StringType, integration.GetConnectedResourceTypes())
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
-	}
-	data.ConnectedResourceTypes = connectedResourceTypes
-
-	secretConfig := integration.GetSecretConfig()
-	switch secretConfig["type"] {
-	case "AWS":
-		data.AwsSecret = &AwsSecret{
-			Region:   basetypes.NewStringValue(toString(secretConfig["region"])),
-			SecretID: basetypes.NewStringValue(toString(secretConfig["secret_id"])),
-		}
-	case "GCP":
-		data.GcpSecret = &GcpSecret{
-			Project:  basetypes.NewStringValue(toString(secretConfig["project"])),
-			SecretID: basetypes.NewStringValue(toString(secretConfig["secret_id"])),
-		}
-	case "KUBERNETES":
-		data.KubernetesSecret = &KubernetesSecret{
-			Namespace: basetypes.NewStringValue(toString(secretConfig["namespace"])),
-			Name:      basetypes.NewStringValue(toString(secretConfig["name"])),
-		}
-	}
-
-	return &data, nil
+type ResourceOwnerMapping struct {
+	TagName                types.String `tfsdk:"key_name"`
+	AttributeType          types.String `tfsdk:"attribute"`
+	AttributeIntegrationId types.String `tfsdk:"attribute_integration_id"`
 }
 
-func toString(val interface{}) string {
-	return fmt.Sprintf("%v", val)
+type IntegrationOwner struct {
+	IntegrationId  types.String   `tfsdk:"integration_id"`
+	AttributeType  types.String   `tfsdk:"attribute"`
+	AttributeValue []types.String `tfsdk:"value"`
 }

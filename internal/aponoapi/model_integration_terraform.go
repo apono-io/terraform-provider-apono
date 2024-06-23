@@ -30,8 +30,8 @@ type IntegrationTerraform struct {
 	SecretConfig           map[string]interface{}          `json:"secret_config,omitempty"`
 	ConnectedResourceTypes []string                        `json:"connected_resource_types"`
 	CustomAccessDetails    NullableString                  `json:"custom_access_details,omitempty"`
-	IntegrationOwners      IntegrationOwnersTerraform      `json:"integration_owners"`
-	ResourceOwnersMappings []ResourceOwnerMappingTerraform `json:"resource_owners_mappings"`
+	IntegrationOwners      []IntegrationOwnerTerraform     `json:"integration_owners,omitempty"`
+	ResourceOwnersMappings []ResourceOwnerMappingTerraform `json:"resource_owners_mappings,omitempty"`
 }
 
 type _IntegrationTerraform IntegrationTerraform
@@ -40,7 +40,7 @@ type _IntegrationTerraform IntegrationTerraform
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntegrationTerraform(id string, name string, type_ string, status IntegrationStatus, params map[string]interface{}, connectedResourceTypes []string, integrationOwners IntegrationOwnersTerraform, resourceOwnersMappings []ResourceOwnerMappingTerraform) *IntegrationTerraform {
+func NewIntegrationTerraform(id string, name string, type_ string, status IntegrationStatus, params map[string]interface{}, connectedResourceTypes []string) *IntegrationTerraform {
 	this := IntegrationTerraform{}
 	this.Id = id
 	this.Name = name
@@ -48,8 +48,6 @@ func NewIntegrationTerraform(id string, name string, type_ string, status Integr
 	this.Status = status
 	this.Params = params
 	this.ConnectedResourceTypes = connectedResourceTypes
-	this.IntegrationOwners = integrationOwners
-	this.ResourceOwnersMappings = resourceOwnersMappings
 	return &this
 }
 
@@ -367,50 +365,68 @@ func (o *IntegrationTerraform) UnsetCustomAccessDetails() {
 	o.CustomAccessDetails.Unset()
 }
 
-// GetIntegrationOwners returns the IntegrationOwners field value
-func (o *IntegrationTerraform) GetIntegrationOwners() IntegrationOwnersTerraform {
+// GetIntegrationOwners returns the IntegrationOwners field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *IntegrationTerraform) GetIntegrationOwners() []IntegrationOwnerTerraform {
 	if o == nil {
-		var ret IntegrationOwnersTerraform
+		var ret []IntegrationOwnerTerraform
 		return ret
 	}
-
 	return o.IntegrationOwners
 }
 
-// GetIntegrationOwnersOk returns a tuple with the IntegrationOwners field value
+// GetIntegrationOwnersOk returns a tuple with the IntegrationOwners field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *IntegrationTerraform) GetIntegrationOwnersOk() (*IntegrationOwnersTerraform, bool) {
-	if o == nil {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *IntegrationTerraform) GetIntegrationOwnersOk() ([]IntegrationOwnerTerraform, bool) {
+	if o == nil || IsNil(o.IntegrationOwners) {
 		return nil, false
 	}
-	return &o.IntegrationOwners, true
+	return o.IntegrationOwners, true
 }
 
-// SetIntegrationOwners sets field value
-func (o *IntegrationTerraform) SetIntegrationOwners(v IntegrationOwnersTerraform) {
+// HasIntegrationOwners returns a boolean if a field has been set.
+func (o *IntegrationTerraform) HasIntegrationOwners() bool {
+	if o != nil && IsNil(o.IntegrationOwners) {
+		return true
+	}
+
+	return false
+}
+
+// SetIntegrationOwners gets a reference to the given []IntegrationOwnerTerraform and assigns it to the IntegrationOwners field.
+func (o *IntegrationTerraform) SetIntegrationOwners(v []IntegrationOwnerTerraform) {
 	o.IntegrationOwners = v
 }
 
-// GetResourceOwnersMappings returns the ResourceOwnersMappings field value
+// GetResourceOwnersMappings returns the ResourceOwnersMappings field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *IntegrationTerraform) GetResourceOwnersMappings() []ResourceOwnerMappingTerraform {
 	if o == nil {
 		var ret []ResourceOwnerMappingTerraform
 		return ret
 	}
-
 	return o.ResourceOwnersMappings
 }
 
-// GetResourceOwnersMappingsOk returns a tuple with the ResourceOwnersMappings field value
+// GetResourceOwnersMappingsOk returns a tuple with the ResourceOwnersMappings field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *IntegrationTerraform) GetResourceOwnersMappingsOk() ([]ResourceOwnerMappingTerraform, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.ResourceOwnersMappings) {
 		return nil, false
 	}
 	return o.ResourceOwnersMappings, true
 }
 
-// SetResourceOwnersMappings sets field value
+// HasResourceOwnersMappings returns a boolean if a field has been set.
+func (o *IntegrationTerraform) HasResourceOwnersMappings() bool {
+	if o != nil && IsNil(o.ResourceOwnersMappings) {
+		return true
+	}
+
+	return false
+}
+
+// SetResourceOwnersMappings gets a reference to the given []ResourceOwnerMappingTerraform and assigns it to the ResourceOwnersMappings field.
 func (o *IntegrationTerraform) SetResourceOwnersMappings(v []ResourceOwnerMappingTerraform) {
 	o.ResourceOwnersMappings = v
 }
@@ -443,8 +459,12 @@ func (o IntegrationTerraform) ToMap() (map[string]interface{}, error) {
 	if o.CustomAccessDetails.IsSet() {
 		toSerialize["custom_access_details"] = o.CustomAccessDetails.Get()
 	}
-	toSerialize["integration_owners"] = o.IntegrationOwners
-	toSerialize["resource_owners_mappings"] = o.ResourceOwnersMappings
+	if o.IntegrationOwners != nil {
+		toSerialize["integration_owners"] = o.IntegrationOwners
+	}
+	if o.ResourceOwnersMappings != nil {
+		toSerialize["resource_owners_mappings"] = o.ResourceOwnersMappings
+	}
 	return toSerialize, nil
 }
 
@@ -459,8 +479,6 @@ func (o *IntegrationTerraform) UnmarshalJSON(bytes []byte) (err error) {
 		"status",
 		"params",
 		"connected_resource_types",
-		"integration_owners",
-		"resource_owners_mappings",
 	}
 
 	allProperties := make(map[string]interface{})

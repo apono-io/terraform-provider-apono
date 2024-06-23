@@ -23,7 +23,6 @@ model_grantee_filter_group_operator_terraform_v1.go
 model_grantee_terraform_v1.go
 model_grantee_terraform_v2.go
 model_integration_owner_terraform.go
-model_integration_owners_terraform.go
 model_integration_status.go
 model_integration_terraform.go
 model_message_response.go

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/apono-io/apono-sdk-go"
 	"github.com/apono-io/terraform-provider-apono/internal/models"
+	"github.com/apono-io/terraform-provider-apono/internal/schemas"
+	"github.com/apono-io/terraform-provider-apono/internal/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -77,7 +79,7 @@ func (d *integrationsDataSource) Read(ctx context.Context, req datasource.ReadRe
 	}
 
 	tflog.Debug(ctx, "Read integrations")
-	response, _, err := d.provider.client.IntegrationsApi.ListIntegrationsV2(ctx).
+	response, _, err := d.provider.terraformClient.IntegrationsAPI.TfListIntegrationsV1(ctx).
 		Execute()
 	if err != nil {
 		if apiError, ok := err.(*apono.GenericOpenAPIError); ok {
@@ -99,7 +101,7 @@ func (d *integrationsDataSource) Read(ctx context.Context, req datasource.ReadRe
 			continue
 		}
 
-		m, diagnostics := models.ConvertToIntegrationModel(ctx, &integration)
+		m, diagnostics := services.ConvertToIntegrationModel(ctx, &integration)
 		resp.Diagnostics.Append(diagnostics...)
 		if resp.Diagnostics.HasError() {
 			return
@@ -182,6 +184,16 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 					Required:            true,
 				},
 			},
+		},
+		"resource_owner_mappings": schema.SetNestedAttribute{
+			MarkdownDescription: "Let Apono know which tag represents owners and how to map it to a known attribute in Apono.",
+			Computed:            true,
+			NestedObject:        schemas.DataSourceResourceOwnerMapping,
+		},
+		"integration_owners": schema.SetNestedAttribute{
+			MarkdownDescription: "Enter one or more users, groups, shifts or attributes. This field is mandatory when using Resource Owners and serves as a fallback approver if no resource owner is found.",
+			Computed:            true,
+			NestedObject:        schemas.DataSourceIntegrationOwner,
 		},
 	}
 }

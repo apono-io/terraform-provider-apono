@@ -654,20 +654,6 @@
           }
         }
       },
-      "IntegrationOwnersTerraform": {
-        "required": [
-          "owners"
-        ],
-        "type": "object",
-        "properties": {
-          "owners": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IntegrationOwnerTerraform"
-            }
-          }
-        }
-      },
       "IntegrationStatus": {
         "enum": [
           "Initializing",
@@ -686,9 +672,7 @@
           "type",
           "status",
           "params",
-          "connected_resource_types",
-          "integration_owners",
-          "resource_owners_mappings"
+          "connected_resource_types"
         ],
         "type": "object",
         "properties": {
@@ -740,13 +724,18 @@
             "nullable": true
           },
           "integration_owners": {
-            "$ref": "#/components/schemas/IntegrationOwnersTerraform"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegrationOwnerTerraform"
+            },
+            "nullable": true
           },
           "resource_owners_mappings": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ResourceOwnerMappingTerraform"
-            }
+            },
+            "nullable": true
           }
         }
       },
@@ -974,12 +963,7 @@
         "required": [
           "name",
           "type",
-          "params",
-          "secret_config",
-          "connected_resource_types",
-          "custom_access_details",
-          "integration_owners",
-          "resource_owners_mappings"
+          "params"
         ],
         "type": "object",
         "properties": {
@@ -997,25 +981,38 @@
             "type": "object"
           },
           "secret_config": {
-            "$ref": "#/components/schemas/SecretConfig"
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SecretConfig"
+              }
+            ],
+            "nullable": true
           },
           "connected_resource_types": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "nullable": true
           },
           "custom_access_details": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "integration_owners": {
-            "$ref": "#/components/schemas/IntegrationOwnersTerraform"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegrationOwnerTerraform"
+            },
+            "nullable": true
           },
           "resource_owners_mappings": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ResourceOwnerMappingTerraform"
-            }
+            },
+            "nullable": true
           }
         }
       }
