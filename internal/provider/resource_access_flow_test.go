@@ -81,6 +81,8 @@ func TestAccAccessFlowResource(t *testing.T) {
 						"attribute_type": "user",
 						"operator":       "is",
 					}),
+					resource.TestCheckTypeSetElemAttr("apono_access_flow.test_access_flow_resource", "approver_policy.approver_groups.0.attribute_conditions.1.attribute_names.*", "test1@example.com"),
+					resource.TestCheckTypeSetElemAttr("apono_access_flow.test_access_flow_resource", "approver_policy.approver_groups.0.attribute_conditions.0.attribute_names.*", "Product"),
 					resource.TestCheckTypeSetElemNestedAttrs("apono_access_flow.test_access_flow_resource", "approver_policy.approver_groups.1.attribute_conditions.*", map[string]string{
 						"attribute_type": "manager",
 						"integration_id": "123456789",
