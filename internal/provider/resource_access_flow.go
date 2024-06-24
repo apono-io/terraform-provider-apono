@@ -165,17 +165,17 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				},
 			},
 			"approver_policy": schema.SingleNestedAttribute{
-				MarkdownDescription: "Approver policy", // TODO: Add more detailed description
+				MarkdownDescription: "this section defines the approval flow a request will undergo, if not defined, the request will be auto-approved",
 				Optional:            true,
 				Attributes: map[string]schema.Attribute{
 					"approver_groups_relationship": schema.StringAttribute{
-						MarkdownDescription: "Approver groups relationship", // TODO: Add more detailed description
+						MarkdownDescription: "Define if a single approver is required from just one of the specific groups, or if one approver from each group is required. **Possible Values**: `ALL_OF`, `ANY_OF` (Default `ANY_OF`)",
 						Optional:            true,
 						Computed:            true,
 						Default:             stringdefault.StaticString("ANY_OF"),
 					},
 					"approver_groups": schema.SetNestedAttribute{
-						MarkdownDescription: "Approver groups", // TODO: Add more detailed description
+						MarkdownDescription: "Each group represents an approver of the access flow, mixing attributes and operators, controlled by AND/OR. With OR, an approver can match any condition; with AND, an approver must match all conditions",
 						Required:            true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
