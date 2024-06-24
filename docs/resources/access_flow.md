@@ -71,7 +71,7 @@ resource "apono_access_flow" "postgresql_prod" {
 
 ### Optional
 
-- `approver_policy` (Attributes) Approver policy (see [below for nested schema](#nestedatt--approver_policy))
+- `approver_policy` (Attributes) this section defines the approval flow a request will undergo, if not defined, the request will be auto-approved (see [below for nested schema](#nestedatt--approver_policy))
 - `approvers` (Attributes Set, Deprecated) Represents which identities should approve this access (see [below for nested schema](#nestedatt--approvers))
 - `bundle_targets` (Attributes Set) Represents the number of resources from access bundle to which access is granted. (see [below for nested schema](#nestedatt--bundle_targets))
 - `grantees` (Attributes Set, Deprecated) Represents which identities should be granted access (see [below for nested schema](#nestedatt--grantees))
@@ -112,11 +112,11 @@ Required:
 
 Required:
 
-- `approver_groups` (Attributes Set) Approver groups (see [below for nested schema](#nestedatt--approver_policy--approver_groups))
+- `approver_groups` (Attributes Set) Each group represents an approver of the access flow, mixing attributes and operators, controlled by AND/OR. With OR, an approver can match any condition; with AND, an approver must match all conditions (see [below for nested schema](#nestedatt--approver_policy--approver_groups))
 
 Optional:
 
-- `approver_groups_relationship` (String) Approver groups relationship
+- `approver_groups_relationship` (String) Define if a single approver is required from just one of the specific groups, or if one approver from each group is required. **Possible Values**: `ALL_OF`, `ANY_OF` (Default `ANY_OF`)
 
 <a id="nestedatt--approver_policy--approver_groups"></a>
 ### Nested Schema for `approver_policy.approver_groups`
