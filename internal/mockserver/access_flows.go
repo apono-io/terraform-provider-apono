@@ -36,6 +36,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []aponoapi.Acc
 			IntegrationTargets: createReq.IntegrationTargets,
 			BundleTargets:      createReq.BundleTargets,
 			Approvers:          createReq.Approvers,
+			ApproverPolicy:     createReq.ApproverPolicy,
 			RevokeAfterInSec:   createReq.RevokeAfterInSec,
 			Settings:           createReq.Settings,
 			CreatedDate:        getTimeAsInstantFloat(),
@@ -90,6 +91,7 @@ func SetupMockHttpServerAccessFlowV1Endpoints(existingAccessFlows []aponoapi.Acc
 		accessFlow.IntegrationTargets = updateReq.IntegrationTargets
 		accessFlow.BundleTargets = updateReq.BundleTargets
 		accessFlow.Approvers = updateReq.Approvers
+		accessFlow.ApproverPolicy = updateReq.ApproverPolicy
 		accessFlow.RevokeAfterInSec = updateReq.RevokeAfterInSec
 		accessFlow.Settings = updateReq.Settings
 		accessFlow.Labels = updateReq.Labels

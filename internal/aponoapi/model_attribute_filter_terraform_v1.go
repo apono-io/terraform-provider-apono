@@ -22,7 +22,7 @@ var _ MappedNullable = &AttributeFilterTerraformV1{}
 type AttributeFilterTerraformV1 struct {
 	Operator        NullableString `json:"operator,omitempty"`
 	AttributeTypeId string         `json:"attribute_type_id"`
-	AttributeValue  interface{}    `json:"attribute_value"`
+	AttributeValue  []string       `json:"attribute_value,omitempty"`
 	IntegrationId   NullableString `json:"integration_id,omitempty"`
 }
 
@@ -32,10 +32,9 @@ type _AttributeFilterTerraformV1 AttributeFilterTerraformV1
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAttributeFilterTerraformV1(attributeTypeId string, attributeValue interface{}) *AttributeFilterTerraformV1 {
+func NewAttributeFilterTerraformV1(attributeTypeId string) *AttributeFilterTerraformV1 {
 	this := AttributeFilterTerraformV1{}
 	this.AttributeTypeId = attributeTypeId
-	this.AttributeValue = attributeValue
 	return &this
 }
 
@@ -114,29 +113,36 @@ func (o *AttributeFilterTerraformV1) SetAttributeTypeId(v string) {
 	o.AttributeTypeId = v
 }
 
-// GetAttributeValue returns the AttributeValue field value
-// If the value is explicit nil, the zero value for interface{} will be returned
-func (o *AttributeFilterTerraformV1) GetAttributeValue() interface{} {
+// GetAttributeValue returns the AttributeValue field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *AttributeFilterTerraformV1) GetAttributeValue() []string {
 	if o == nil {
-		var ret interface{}
+		var ret []string
 		return ret
 	}
-
 	return o.AttributeValue
 }
 
-// GetAttributeValueOk returns a tuple with the AttributeValue field value
+// GetAttributeValueOk returns a tuple with the AttributeValue field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *AttributeFilterTerraformV1) GetAttributeValueOk() (*interface{}, bool) {
+func (o *AttributeFilterTerraformV1) GetAttributeValueOk() ([]string, bool) {
 	if o == nil || IsNil(o.AttributeValue) {
 		return nil, false
 	}
-	return &o.AttributeValue, true
+	return o.AttributeValue, true
 }
 
-// SetAttributeValue sets field value
-func (o *AttributeFilterTerraformV1) SetAttributeValue(v interface{}) {
+// HasAttributeValue returns a boolean if a field has been set.
+func (o *AttributeFilterTerraformV1) HasAttributeValue() bool {
+	if o != nil && IsNil(o.AttributeValue) {
+		return true
+	}
+
+	return false
+}
+
+// SetAttributeValue gets a reference to the given []string and assigns it to the AttributeValue field.
+func (o *AttributeFilterTerraformV1) SetAttributeValue(v []string) {
 	o.AttributeValue = v
 }
 
@@ -212,7 +218,6 @@ func (o *AttributeFilterTerraformV1) UnmarshalJSON(bytes []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"attribute_type_id",
-		"attribute_value",
 	}
 
 	allProperties := make(map[string]interface{})

@@ -71,7 +71,8 @@ resource "apono_access_flow" "postgresql_prod" {
 
 ### Optional
 
-- `approvers` (Attributes Set) Represents which identities should approve this access (see [below for nested schema](#nestedatt--approvers))
+- `approver_policy` (Attributes) this section defines the approval flow a request will undergo, if not defined, the request will be auto-approved (see [below for nested schema](#nestedatt--approver_policy))
+- `approvers` (Attributes Set, Deprecated) Represents which identities should approve this access (see [below for nested schema](#nestedatt--approvers))
 - `bundle_targets` (Attributes Set) Represents the number of resources from access bundle to which access is granted. (see [below for nested schema](#nestedatt--bundle_targets))
 - `grantees` (Attributes Set, Deprecated) Represents which identities should be granted access (see [below for nested schema](#nestedatt--grantees))
 - `grantees_conditions_group` (Attributes) Create a conditions group based on different attribute types that represents who can request access. (see [below for nested schema](#nestedatt--grantees_conditions_group))
@@ -103,6 +104,44 @@ Required:
 - `end_time` (String) End of the timeframe in `HH:MM:SS` format.
 - `start_time` (String) Beginning of the timeframe in `HH:MM:SS` format.
 - `time_zone` (String) Timezone name for the timeframe, such as `Europe/Prague`. For all options, see  [Wiki Page](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List).
+
+
+
+<a id="nestedatt--approver_policy"></a>
+### Nested Schema for `approver_policy`
+
+Required:
+
+- `approver_groups` (Attributes Set) Each group represents an approver of the access flow, mixing attributes and operators, controlled by AND/OR. With OR, an approver can match any condition; with AND, an approver must match all conditions (see [below for nested schema](#nestedatt--approver_policy--approver_groups))
+
+Optional:
+
+- `approver_groups_relationship` (String) Define if a single approver is required from just one of the specific groups, or if one approver from each group is required. **Possible Values**: `ALL_OF`, `ANY_OF` (Default `ANY_OF`)
+
+<a id="nestedatt--approver_policy--approver_groups"></a>
+### Nested Schema for `approver_policy.approver_groups`
+
+Required:
+
+- `attribute_conditions` (Attributes Set) Array of conditions that each contain attribute type,operator, and attribute names. (see [below for nested schema](#nestedatt--approver_policy--approver_groups--attribute_conditions))
+
+Optional:
+
+- `conditions_logical_operator` (String) Logical operator to apply to the conditions. **Possible Values**: `AND`, `OR` (Default `OR`)
+
+<a id="nestedatt--approver_policy--approver_groups--attribute_conditions"></a>
+### Nested Schema for `approver_policy.approver_groups.attribute_conditions`
+
+Required:
+
+- `attribute_type` (String) Pick the user context type, for example `user`, `group`, `okta_city`, `pagerduty_shift`, etc.
+
+Optional:
+
+- `attribute_names` (Set of String) Insert the specific values you'd like to include or exclude from the Access Flow, for example the user email, group name, etc.
+- `integration_id` (String) Use the integration ID this attribute originates from. This can be any user context integration, for example PagerDuty, Okta, etc.
+- `operator` (String) Pick the operator that will be applied to the attribute names' values. Defaults to `is`. Supported operators: `is`, `is_not`, `contains`, `does_not_contain`, `starts_with`
+
 
 
 

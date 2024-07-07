@@ -556,8 +556,7 @@
       },
       "AttributeFilterTerraformV1": {
         "required": [
-          "attribute_type_id",
-          "attribute_value"
+          "attribute_type_id"
         ],
         "type": "object",
         "properties": {
@@ -568,7 +567,13 @@
           "attribute_type_id": {
             "type": "string"
           },
-          "attribute_value": {},
+          "attribute_value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
           "integration_id": {
             "type": "string",
             "nullable": true
