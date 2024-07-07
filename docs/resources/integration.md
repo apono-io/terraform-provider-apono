@@ -46,8 +46,10 @@ resource "apono_integration" "postgresql_prod" {
 - `connected_resource_types` (Set of String) Resource types to sync, if omitted all resources types will be synced.
 - `custom_access_details` (String) Custom access details message that will be displayed to end users when they access this integration.
 - `gcp_secret` (Attributes) (see [below for nested schema](#nestedatt--gcp_secret))
+- `integration_owners` (Attributes Set) Enter one or more users, groups, shifts or attributes. This field is mandatory when using Resource Owners and serves as a fallback approver if no resource owner is found. (see [below for nested schema](#nestedatt--integration_owners))
 - `kubernetes_secret` (Attributes) (see [below for nested schema](#nestedatt--kubernetes_secret))
 - `metadata` (Map of String) Integration metadata
+- `resource_owner_mappings` (Attributes Set) Let Apono know which tag represents owners and how to map it to a known attribute in Apono. (see [below for nested schema](#nestedatt--resource_owner_mappings))
 
 ### Read-Only
 
@@ -71,6 +73,19 @@ Required:
 - `secret_id` (String) GCP secret ID
 
 
+<a id="nestedatt--integration_owners"></a>
+### Nested Schema for `integration_owners`
+
+Required:
+
+- `attribute` (String) Insert the attribute type that the tag values will map into. For example: pagerduty_shift, okta_city, group, etc.
+- `value` (List of String) Provide the attribute value that will serve as the Integration Owner. For example, the user email, group name, etc.
+
+Optional:
+
+- `integration_id` (String) Provide the User Context integration ID the attribute originates from, for example Okta, Pagerduty, etc. You can find the ID in the Apono API Reference.
+
+
 <a id="nestedatt--kubernetes_secret"></a>
 ### Nested Schema for `kubernetes_secret`
 
@@ -78,3 +93,16 @@ Required:
 
 - `name` (String) Kubernetes secret name
 - `namespace` (String) Kubernetes secret namespace
+
+
+<a id="nestedatt--resource_owner_mappings"></a>
+### Nested Schema for `resource_owner_mappings`
+
+Required:
+
+- `attribute` (String) Insert the attribute type that the tag values will map into. For example: pagerduty_shift, okta_city, group, etc.
+- `key_name` (String) Insert the tag name (key) that represents owners in the cloud environment.
+
+Optional:
+
+- `attribute_integration_id` (String) Provide the User Context integration ID the attribute originates from, for example Okta, Pagerduty, etc. You can find the ID in the Apono API Reference.

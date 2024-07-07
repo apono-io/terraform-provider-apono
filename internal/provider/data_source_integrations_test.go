@@ -2,7 +2,7 @@ package provider
 
 import (
 	"fmt"
-	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/apono-io/terraform-provider-apono/internal/mockserver"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/jarcoal/httpmock"
@@ -14,8 +14,9 @@ func TestAccIntegrationsDataSource(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	integrations := mockserver.CreateMockIntegrations()
-	mockserver.SetupMockHttpServerIntegrationV2Endpoints(integrations)
+	integrations := mockserver.CreateTFIntegrations()
+	mockserver.SetupMockHttpServerIntegrationTFV1Endpoints(integrations)
+	mockserver.SetupMockHttpServerIntegrationCatalogEndpoints()
 
 	checks := createIntegrationsDataSourceChecks(integrations)
 
@@ -63,7 +64,7 @@ func TestAccIntegrationsDataSource(t *testing.T) {
 	})
 }
 
-func createIntegrationsDataSourceChecks(integrations []apono.Integration) []resource.TestCheckFunc {
+func createIntegrationsDataSourceChecks(integrations []aponoapi.IntegrationTerraform) []resource.TestCheckFunc {
 	allPath := "data.apono_integrations.all"
 	checks := []resource.TestCheckFunc{
 		resource.TestCheckResourceAttr(allPath, "integrations.#", strconv.Itoa(len(integrations))),
@@ -78,8 +79,8 @@ func createIntegrationsDataSourceChecks(integrations []apono.Integration) []reso
 			resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.connector_id", i), *integration.ProvisionerId.Get()),
 		)
 
-		if integration.Metadata != nil {
-			for key, val := range integration.Metadata {
+		if integration.Params != nil {
+			for key, val := range integration.Params {
 				checks = append(
 					checks,
 					resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.metadata.%s", i, key), fmt.Sprintf("%s", val)),

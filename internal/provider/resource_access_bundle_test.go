@@ -16,6 +16,7 @@ func TestAccAccessBundleResource(t *testing.T) {
 	integrations := mockserver.CreateMockIntegrations()
 	mockserver.SetupMockHttpServerIntegrationV2Endpoints(integrations)
 	mockserver.SetupMockHttpServerAccessBundleV1Endpoints(make([]apono.AccessBundleV1, 0))
+	mockserver.SetupMockHttpServerIntegrationCatalogEndpoints()
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },

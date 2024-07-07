@@ -2,7 +2,7 @@ package provider
 
 import (
 	"fmt"
-	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/apono-io/terraform-provider-apono/internal/mockserver"
 	"github.com/jarcoal/httpmock"
 	"testing"
@@ -13,7 +13,8 @@ import (
 func TestAccIntegrationResource(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
-	mockserver.SetupMockHttpServerIntegrationV2Endpoints(make([]apono.Integration, 0))
+	mockserver.SetupMockHttpServerIntegrationTFV1Endpoints(make([]aponoapi.IntegrationTerraform, 0))
+	mockserver.SetupMockHttpServerIntegrationCatalogEndpoints()
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -30,6 +31,11 @@ func TestAccIntegrationResource(t *testing.T) {
 					resource.TestCheckResourceAttr("apono_integration.test", "connected_resource_types.#", "1"),
 					resource.TestCheckTypeSetElemAttr("apono_integration.test", "connected_resource_types.*", "postgres-database"),
 					resource.TestCheckResourceAttr("apono_integration.test", "custom_access_details", "This is a custom access detail"),
+					resource.TestCheckResourceAttr("apono_integration.test", "resource_owner_mappings.#", "1"),
+					resource.TestCheckResourceAttr("apono_integration.test", "resource_owner_mappings.0.key_name", "__group"),
+					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.#", "1"),
+					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.0.integration_id", "123654"),
+					resource.TestCheckResourceAttr("apono_integration.test", "integration_owners.0.value.#", "1"),
 				),
 			},
 			// ImportState testing
@@ -73,6 +79,18 @@ resource "apono_integration" "test" {
     region = "us-east-1"
     secret_id = "my-secret"
   }
+  resource_owner_mappings = [
+  	{ 
+		key_name = "__group",
+		attribute = "group",
+		attribute_integration_id = ""
+  	}
+  ]
+  integration_owners = [{
+		integration_id = "123654"
+		attribute = "9871569"
+		value = ["444555"]
+	}]
 }
 `, integrationName)
 }

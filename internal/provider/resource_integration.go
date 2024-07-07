@@ -3,7 +3,12 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/apono-io/apono-sdk-go"
+	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
+	"github.com/apono-io/terraform-provider-apono/internal/schemas"
+	"github.com/apono-io/terraform-provider-apono/internal/services"
+	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+
 	"github.com/apono-io/terraform-provider-apono/internal/models"
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
 	"github.com/hashicorp/terraform-plugin-framework-validators/helpers/validatordiag"
@@ -124,6 +129,23 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 					},
 				},
 			},
+			"resource_owner_mappings": schema.SetNestedAttribute{
+				MarkdownDescription: "Let Apono know which tag represents owners and how to map it to a known attribute in Apono.",
+				Optional:            true,
+				NestedObject:        schemas.ResourceOwnerMapping,
+				Validators: []validator.Set{
+					setvalidator.SizeAtLeast(1),
+					setvalidator.AlsoRequires(path.Expressions{path.MatchRelative().AtParent().AtName("integration_owners")}...),
+				},
+			},
+			"integration_owners": schema.SetNestedAttribute{
+				MarkdownDescription: "Enter one or more users, groups, shifts or attributes. This field is mandatory when using Resource Owners and serves as a fallback approver if no resource owner is found.",
+				Optional:            true,
+				NestedObject:        schemas.IntegrationOwner,
+				Validators: []validator.Set{
+					setvalidator.SizeAtLeast(1),
+				},
+			},
 		},
 	}
 }
@@ -175,16 +197,17 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 		}
 	}
 
-	connectorID := data.ConnectorID.ValueString()
-	integration, _, err := r.provider.client.IntegrationsApi.CreateIntegrationV2(ctx).
-		CreateIntegration(apono.CreateIntegration{
+	integration, _, err := r.provider.terraformClient.IntegrationsAPI.TfCreateIntegrationV1(ctx).
+		UpsertIntegrationTerraform(aponoapi.UpsertIntegrationTerraform{
 			Name:                   data.Name.ValueString(),
 			Type:                   data.Type.ValueString(),
-			ProvisionerId:          *apono.NewNullableString(&connectorID),
-			Metadata:               metadata,
+			ProvisionerId:          *aponoapi.NewNullableString(data.ConnectorID.ValueStringPointer()),
+			Params:                 metadata,
 			SecretConfig:           secretConfig,
 			ConnectedResourceTypes: connectedResourceTypes,
-			CustomAccessDetails:    *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
+			CustomAccessDetails:    *aponoapi.NewNullableString(data.CustomAccessDetails.ValueStringPointer()),
+			IntegrationOwners:      services.IntegrationOwnersToModel(data.IntegrationOwners),
+			ResourceOwnersMappings: services.ConvertMappingsArrayToModel(data.ResourceOwnerMappings),
 		}).
 		Execute()
 	if err != nil {
@@ -194,7 +217,7 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
+	model, diagnostics := services.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -218,7 +241,7 @@ func (r *integrationResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	integration, _, err := r.provider.client.IntegrationsApi.GetIntegrationV2(ctx, data.ID.ValueString()).
+	integration, _, err := r.provider.terraformClient.IntegrationsAPI.TfGetIntegrationV1(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "integration", data.ID.ValueString())
@@ -226,7 +249,7 @@ func (r *integrationResource) Read(ctx context.Context, req resource.ReadRequest
 
 		return
 	}
-	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
+	model, diagnostics := services.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -279,15 +302,17 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 		}
 	}
 
-	connectorID := data.ConnectorID.ValueString()
-	integration, _, err := r.provider.client.IntegrationsApi.UpdateIntegrationV2(ctx, data.ID.ValueString()).
-		UpdateIntegration(apono.UpdateIntegration{
+	integration, _, err := r.provider.terraformClient.IntegrationsAPI.TfUpdateIntegrationV1(ctx, data.ID.ValueString()).
+		UpsertIntegrationTerraform(aponoapi.UpsertIntegrationTerraform{
 			Name:                   data.Name.ValueString(),
-			ProvisionerId:          *apono.NewNullableString(&connectorID),
-			Metadata:               metadata,
+			Type:                   data.Type.ValueString(),
+			ProvisionerId:          *aponoapi.NewNullableString(data.ConnectorID.ValueStringPointer()),
+			Params:                 metadata,
 			SecretConfig:           secretConfig,
 			ConnectedResourceTypes: connectedResourceTypes,
-			CustomAccessDetails:    *getCustomAccessDetailsFromData(data.CustomAccessDetails.ValueString()),
+			CustomAccessDetails:    *aponoapi.NewNullableString(data.CustomAccessDetails.ValueStringPointer()),
+			IntegrationOwners:      services.IntegrationOwnersToModel(data.IntegrationOwners),
+			ResourceOwnersMappings: services.ConvertMappingsArrayToModel(data.ResourceOwnerMappings),
 		}).
 		Execute()
 	if err != nil {
@@ -297,7 +322,7 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
+	model, diagnostics := services.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -342,7 +367,7 @@ func (r *integrationResource) ImportState(ctx context.Context, req resource.Impo
 		"id": integrationId,
 	})
 
-	integration, _, err := r.provider.client.IntegrationsApi.GetIntegrationV2(ctx, integrationId).
+	integration, _, err := r.provider.terraformClient.IntegrationsAPI.TfGetIntegrationV1(ctx, integrationId).
 		Execute()
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "integration", integrationId)
@@ -350,7 +375,7 @@ func (r *integrationResource) ImportState(ctx context.Context, req resource.Impo
 		return
 	}
 
-	model, diagnostics := models.ConvertToIntegrationModel(ctx, integration)
+	model, diagnostics := services.ConvertToIntegrationModel(ctx, integration)
 	if len(diagnostics) > 0 {
 		resp.Diagnostics.Append(diagnostics...)
 		return
@@ -436,11 +461,4 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 			))
 		}
 	}
-}
-
-func getCustomAccessDetailsFromData(msg string) *apono.NullableString {
-	if msg == "" {
-		return apono.NewNullableString(nil)
-	}
-	return apono.NewNullableString(&msg)
 }
