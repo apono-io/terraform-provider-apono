@@ -325,6 +325,10 @@
           "approver_cannot_approve_himself": {
             "type": "boolean",
             "nullable": true
+          },
+          "require_mfa": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },

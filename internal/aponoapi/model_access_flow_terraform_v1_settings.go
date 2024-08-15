@@ -23,6 +23,7 @@ type AccessFlowTerraformV1Settings struct {
 	RequireJustification               NullableBool `json:"require_justification,omitempty"`
 	RequireAllApprovers                NullableBool `json:"require_all_approvers,omitempty"`
 	ApproverCannotApproveHimself       NullableBool `json:"approver_cannot_approve_himself,omitempty"`
+	RequireMfa                         NullableBool `json:"require_mfa,omitempty"`
 }
 
 // NewAccessFlowTerraformV1Settings instantiates a new AccessFlowTerraformV1Settings object
@@ -214,6 +215,49 @@ func (o *AccessFlowTerraformV1Settings) UnsetApproverCannotApproveHimself() {
 	o.ApproverCannotApproveHimself.Unset()
 }
 
+// GetRequireMfa returns the RequireMfa field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *AccessFlowTerraformV1Settings) GetRequireMfa() bool {
+	if o == nil || IsNil(o.RequireMfa.Get()) {
+		var ret bool
+		return ret
+	}
+	return *o.RequireMfa.Get()
+}
+
+// GetRequireMfaOk returns a tuple with the RequireMfa field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *AccessFlowTerraformV1Settings) GetRequireMfaOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.RequireMfa.Get(), o.RequireMfa.IsSet()
+}
+
+// HasRequireMfa returns a boolean if a field has been set.
+func (o *AccessFlowTerraformV1Settings) HasRequireMfa() bool {
+	if o != nil && o.RequireMfa.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetRequireMfa gets a reference to the given NullableBool and assigns it to the RequireMfa field.
+func (o *AccessFlowTerraformV1Settings) SetRequireMfa(v bool) {
+	o.RequireMfa.Set(&v)
+}
+
+// SetRequireMfaNil sets the value for RequireMfa to be an explicit nil
+func (o *AccessFlowTerraformV1Settings) SetRequireMfaNil() {
+	o.RequireMfa.Set(nil)
+}
+
+// UnsetRequireMfa ensures that no value is present for RequireMfa, not even an explicit nil
+func (o *AccessFlowTerraformV1Settings) UnsetRequireMfa() {
+	o.RequireMfa.Unset()
+}
+
 func (o AccessFlowTerraformV1Settings) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -235,6 +279,9 @@ func (o AccessFlowTerraformV1Settings) ToMap() (map[string]interface{}, error) {
 	}
 	if o.ApproverCannotApproveHimself.IsSet() {
 		toSerialize["approver_cannot_approve_himself"] = o.ApproverCannotApproveHimself.Get()
+	}
+	if o.RequireMfa.IsSet() {
+		toSerialize["require_mfa"] = o.RequireMfa.Get()
 	}
 	return toSerialize, nil
 }
