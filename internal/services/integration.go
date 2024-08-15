@@ -51,6 +51,11 @@ func ConvertToIntegrationModel(ctx context.Context, integration *aponoapi.Integr
 			Namespace: basetypes.NewStringValue(toString(secretConfig["namespace"])),
 			Name:      basetypes.NewStringValue(toString(secretConfig["name"])),
 		}
+	case "HASHICORP_VAULT":
+		data.HashicorpVaultSecret = &models.HashicorpVaultSecret{
+			SecretEngine: basetypes.NewStringValue(toString(secretConfig["secret_engine"])),
+			Path:         basetypes.NewStringValue(toString(secretConfig["path"])),
+		}
 	}
 
 	data.ResourceOwnerMappings = ConvertResourceOwnersMappingToModel(integration.ResourceOwnersMappings)
