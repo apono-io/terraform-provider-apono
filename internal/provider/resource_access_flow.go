@@ -228,6 +228,14 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 							boolplanmodifier.UseStateForUnknown(),
 						},
 					},
+					"require_mfa": schema.BoolAttribute{
+						MarkdownDescription: "If enabled, users will be required to pass multi-factor authentication (MFA) when requesting access.",
+						Optional:            true,
+						Computed:            true,
+						PlanModifiers: []planmodifier.Bool{
+							boolplanmodifier.UseStateForUnknown(),
+						},
+					},
 				},
 			},
 			"labels": schema.ListAttribute{
