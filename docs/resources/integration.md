@@ -46,6 +46,7 @@ resource "apono_integration" "postgresql_prod" {
 - `connected_resource_types` (Set of String) Resource types to sync, if omitted all resources types will be synced.
 - `custom_access_details` (String) Custom access details message that will be displayed to end users when they access this integration.
 - `gcp_secret` (Attributes) (see [below for nested schema](#nestedatt--gcp_secret))
+- `hashicorp_vault_secret` (Attributes) (see [below for nested schema](#nestedatt--hashicorp_vault_secret))
 - `integration_owners` (Attributes Set) Enter one or more users, groups, shifts or attributes. This field is mandatory when using Resource Owners and serves as a fallback approver if no resource owner is found. (see [below for nested schema](#nestedatt--integration_owners))
 - `kubernetes_secret` (Attributes) (see [below for nested schema](#nestedatt--kubernetes_secret))
 - `metadata` (Map of String) Integration metadata
@@ -71,6 +72,15 @@ Required:
 
 - `project` (String) GCP secret project
 - `secret_id` (String) GCP secret ID
+
+
+<a id="nestedatt--hashicorp_vault_secret"></a>
+### Nested Schema for `hashicorp_vault_secret`
+
+Required:
+
+- `path` (String) Hashicorp Vault secret path
+- `secret_engine` (String) Hashicorp Vault Secret Engine
 
 
 <a id="nestedatt--integration_owners"></a>
