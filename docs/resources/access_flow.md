@@ -246,3 +246,4 @@ Optional:
 - `approver_cannot_self_approve` (Boolean) Approver cannot self-approve the request.
 - `require_all_approvers` (Boolean) All approvers must approver the request.
 - `require_justification_on_request_again` (Boolean) Require justification on request again.
+- `require_mfa` (Boolean) If enabled, users will be required to pass multi-factor authentication (MFA) when requesting access.

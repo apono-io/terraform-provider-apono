@@ -39,6 +39,7 @@ type Settings struct {
 	RequireJustificationOnRequestAgain types.Bool `tfsdk:"require_justification_on_request_again"`
 	RequireAllApprovers                types.Bool `tfsdk:"require_all_approvers"`
 	ApproverCannotSelfApprove          types.Bool `tfsdk:"approver_cannot_self_approve"`
+	RequireMFA                         types.Bool `tfsdk:"require_mfa"`
 }
 
 type Identity struct {

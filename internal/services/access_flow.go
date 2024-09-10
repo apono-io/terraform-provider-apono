@@ -143,6 +143,7 @@ func ConvertAccessFlowApiToTerraformModel(ctx context.Context, aponoClient *apon
 			RequireJustificationOnRequestAgain: types.BoolValue(existingSettings.GetRequireJustificationOnRequestAgain()),
 			RequireAllApprovers:                types.BoolValue(existingSettings.GetRequireAllApprovers()),
 			ApproverCannotSelfApprove:          types.BoolValue(existingSettings.GetApproverCannotApproveHimself()),
+			RequireMFA:                         types.BoolValue(existingSettings.GetRequireMfa()),
 		}
 	} else {
 		dataSettings = nil
@@ -278,6 +279,7 @@ func ConvertAccessFlowTerraformModelToApi(ctx context.Context, aponoClient *apon
 			RequireJustificationOnRequestAgain: *aponoapi.NewNullableBool(accessFlow.Settings.RequireJustificationOnRequestAgain.ValueBoolPointer()),
 			RequireAllApprovers:                *aponoapi.NewNullableBool(accessFlow.Settings.RequireAllApprovers.ValueBoolPointer()),
 			ApproverCannotApproveHimself:       *aponoapi.NewNullableBool(accessFlow.Settings.ApproverCannotSelfApprove.ValueBoolPointer()),
+			RequireMfa:                         *aponoapi.NewNullableBool(accessFlow.Settings.RequireMFA.ValueBoolPointer()),
 		}
 
 		setting.Set(&settings)
