@@ -10,6 +10,9 @@ description: |-
 
 Apono Access Bundle
 
+If you want to manage or duplicate Access Bundles created in the Apono UI in Terraform, you can import them into Terraform state files by initiating the Terraform import command.
+For more information see [Terraform Import Docs](https://developer.hashicorp.com/terraform/cli/import).
+
 ## Example Usage
 
 ```terraform
