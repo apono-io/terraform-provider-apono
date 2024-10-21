@@ -455,7 +455,7 @@ func (r *integrationResource) ValidateConfig(ctx context.Context, req resource.V
 
 		metadataValue, hasValue := metadataElements[paramName]
 		if !hasValue {
-			if paramIsOptional && paramDefaultValue == "" {
+			if paramIsOptional {
 				continue
 			}
 			if paramDefaultValue != "" {
