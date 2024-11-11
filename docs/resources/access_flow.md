@@ -134,11 +134,14 @@ Optional:
 
 Required:
 
-- `attribute_type` (String) Pick the user context type, for example `user`, `group`, `okta_city`, `pagerduty_shift`, etc.
+- `attribute_type` (String) Pick the user context type, for example `user`, `group`, `okta_city`, `pagerduty_shift`, `webhook`, etc.
 
 Optional:
 
-- `attribute_names` (Set of String) Insert the specific values you'd like to include or exclude from the Access Flow, for example the user email, group name, etc.
+- `attribute_names` (Set of String) Insert the specific values you'd like to include or exclude from the Access Flow:
+  - For user types: user email
+  - For group types: group name
+  - For webhook type: webhook name (e.g., "Jira Approve Process")
 - `integration_id` (String) Use the integration ID this attribute originates from. This can be any user context integration, for example PagerDuty, Okta, etc.
 - `operator` (String) Pick the operator that will be applied to the attribute names' values. Defaults to `is`. Supported operators: `is`, `is_not`, `contains`, `does_not_contain`, `starts_with`
 
