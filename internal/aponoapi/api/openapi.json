@@ -21,6 +21,9 @@
     },
     {
       "name": "Integrations"
+    },
+    {
+      "name": "Webhooks"
     }
   ],
   "paths": {
@@ -286,6 +289,132 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IntegrationTerraform"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/terraform/v1/webhooks/manual": {
+      "post": {
+        "tags": [
+          "Webhooks"
+        ],
+        "operationId": "terraformCreateWebhook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookManualTriggerUpsertTerraformModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookManualTriggerTerraformModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/terraform/v1/webhooks/manual/{id}": {
+      "get": {
+        "tags": [
+          "Webhooks"
+        ],
+        "operationId": "terraformGetWebhook",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookManualTriggerTerraformModel"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Webhooks"
+        ],
+        "operationId": "terraformUpdateWebhook",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookManualTriggerUpsertTerraformModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookManualTriggerTerraformModel"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Webhooks"
+        ],
+        "operationId": "terraformDeleteWebhook",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
                 }
               }
             }
@@ -1021,6 +1150,240 @@
             "items": {
               "$ref": "#/components/schemas/ResourceOwnerMappingTerraform"
             },
+            "nullable": true
+          }
+        }
+      },
+      "WebhookAuthenticationConfigTerraformModel": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "oauth": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WebhookOAuthConfigTerraformModel"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "WebhookHttpRequestTypeTerraformModel": {
+        "required": [
+          "url",
+          "method"
+        ],
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "method": {
+            "$ref": "#/components/schemas/WebhookMethodTerraformModel"
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "WebhookIntegrationTypeTerraformModel": {
+        "required": [
+          "integration_id",
+          "action_name"
+        ],
+        "type": "object",
+        "properties": {
+          "integration_id": {
+            "type": "string"
+          },
+          "action_name": {
+            "type": "string"
+          }
+        }
+      },
+      "WebhookManualTriggerTerraformModel": {
+        "required": [
+          "id",
+          "name",
+          "active",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "type": {
+            "$ref": "#/components/schemas/WebhookTypeTerraformModel"
+          },
+          "body_template": {
+            "type": "string",
+            "nullable": true
+          },
+          "response_validators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebhookResponseValidatorTerraformModel"
+            },
+            "nullable": true
+          },
+          "timeout_in_sec": {
+            "format": "int32",
+            "type": "integer",
+            "nullable": true
+          },
+          "authentication_config": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WebhookAuthenticationConfigTerraformModel"
+              }
+            ],
+            "nullable": true
+          },
+          "custom_validation_error_message": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "WebhookManualTriggerUpsertTerraformModel": {
+        "required": [
+          "name",
+          "active",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "type": {
+            "$ref": "#/components/schemas/WebhookTypeTerraformModel"
+          },
+          "body_template": {
+            "type": "string",
+            "nullable": true
+          },
+          "response_validators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebhookResponseValidatorTerraformModel"
+            },
+            "nullable": true
+          },
+          "timeout_in_sec": {
+            "format": "int32",
+            "type": "integer",
+            "nullable": true
+          },
+          "authentication_config": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WebhookAuthenticationConfigTerraformModel"
+              }
+            ],
+            "nullable": true
+          },
+          "custom_validation_error_message": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "WebhookMethodTerraformModel": {
+        "enum": [
+          "POST",
+          "PUT",
+          "DELETE",
+          "GET",
+          "PATCH"
+        ],
+        "type": "string"
+      },
+      "WebhookOAuthConfigTerraformModel": {
+        "required": [
+          "client_id",
+          "client_secret",
+          "token_endpoint_url",
+          "scopes"
+        ],
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "type": "string"
+          },
+          "client_secret": {
+            "type": "string"
+          },
+          "token_endpoint_url": {
+            "type": "string"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "WebhookResponseValidatorTerraformModel": {
+        "required": [
+          "json_path",
+          "expected_values"
+        ],
+        "type": "object",
+        "properties": {
+          "json_path": {
+            "type": "string"
+          },
+          "expected_values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "WebhookTypeTerraformModel": {
+        "type": "object",
+        "properties": {
+          "http_request": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WebhookHttpRequestTypeTerraformModel"
+              }
+            ],
+            "nullable": true
+          },
+          "integration": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WebhookIntegrationTypeTerraformModel"
+              }
+            ],
             "nullable": true
           }
         }
