@@ -21,23 +21,23 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &WebhookResource{}
-var _ resource.ResourceWithImportState = &WebhookResource{}
+var _ resource.Resource = &ManualWebhookResource{}
+var _ resource.ResourceWithImportState = &ManualWebhookResource{}
 
 func NewWebhookResource() resource.Resource {
-	return &WebhookResource{}
+	return &ManualWebhookResource{}
 }
 
-// WebhookResource defines the resource implementation.
-type WebhookResource struct {
+// ManualWebhookResource defines the resource implementation.
+type ManualWebhookResource struct {
 	provider *AponoProvider
 }
 
-func (w WebhookResource) Metadata(_ context.Context, request resource.MetadataRequest, response *resource.MetadataResponse) {
+func (w ManualWebhookResource) Metadata(_ context.Context, request resource.MetadataRequest, response *resource.MetadataResponse) {
 	response.TypeName = request.ProviderTypeName + "_manual_webhook"
 }
 
-func (w WebhookResource) Schema(_ context.Context, _ resource.SchemaRequest, response *resource.SchemaResponse) {
+func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaRequest, response *resource.SchemaResponse) {
 	var allowedHttpMethods []string
 	for _, method := range aponoapi.AllowedWebhookMethodTerraformModelEnumValues {
 		allowedHttpMethods = append(allowedHttpMethods, string(method))
@@ -68,7 +68,7 @@ func (w WebhookResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 				Attributes: map[string]schema.Attribute{
 					"http_request": schema.SingleNestedAttribute{
 						MarkdownDescription: "Manual Webhook HTTP Request",
-						Required:            false,
+						Optional:            true,
 						Attributes: map[string]schema.Attribute{
 							"url": schema.StringAttribute{
 								MarkdownDescription: "The endpoint URL to which the HTTP request is sent. This is the target server or service that the webhook interacts with",
@@ -83,14 +83,15 @@ func (w WebhookResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 							},
 							"headers": schema.MapAttribute{
 								MarkdownDescription: "Key-value pairs representing HTTP headers to include in the request. These headers can be used to pass metadata or authentication tokens",
-								Required:            false,
+								Optional:            true,
 								ElementType:         types.StringType,
+								Sensitive:           true,
 							},
 						},
 					},
 					"integration": schema.SingleNestedAttribute{
 						MarkdownDescription: "A unique identifier for the integration associated with the webhook assigned by Apono. This links the webhook to a specific integration within your system",
-						Required:            false,
+						Optional:            true,
 						Attributes: map[string]schema.Attribute{
 							"integration_id": schema.StringAttribute{
 								MarkdownDescription: "Manual Webhook Integration ID",
@@ -109,11 +110,11 @@ func (w WebhookResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 			},
 			"body_template": schema.StringAttribute{
 				MarkdownDescription: " A customizable template for the HTTP request body. Use this to format the payload sent by the webhook, allowing context-specific content",
-				Required:            false,
+				Optional:            true,
 			},
 			"response_validators": schema.SetNestedAttribute{
 				MarkdownDescription: "A collection of validators to verify the response received from the webhook endpoint. Each validator checks specific conditions to ensure the response meets the expected criteria. See the nested schema below for details",
-				Required:            false,
+				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"json_path": schema.StringAttribute{
@@ -130,11 +131,11 @@ func (w WebhookResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 			},
 			"timeout_in_sec": schema.NumberAttribute{
 				MarkdownDescription: "The maximum time, in seconds, that the webhook waits for a response from the endpoint before timing out",
-				Required:            false,
+				Optional:            true,
 			},
 			"authentication_config": schema.SingleNestedAttribute{
 				MarkdownDescription: "Configuration details for authenticating the webhook requests. See the nested schema below for details",
-				Required:            false,
+				Optional:            true,
 				Attributes: map[string]schema.Attribute{
 					"type": schema.StringAttribute{
 						MarkdownDescription: "The type of authentication used by the webhook, such as \"OAuth\" or \"None\". This defines how the webhook establishes trust with the endpoint",
@@ -142,7 +143,7 @@ func (w WebhookResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 					},
 					"oauth": schema.SingleNestedAttribute{
 						MarkdownDescription: "Contains OAuth-specific configuration details required for secure communication. See the nested schema below for more information",
-						Required:            false,
+						Optional:            true,
 						Attributes: map[string]schema.Attribute{
 							"client_id": schema.StringAttribute{
 								MarkdownDescription: "The client identifier issued by the OAuth provider. This is used to authenticate the webhook application",
@@ -151,6 +152,7 @@ func (w WebhookResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 							"client_secret": schema.StringAttribute{
 								MarkdownDescription: "The secret associated with the client identifier. Keep this value secure, as it is critical for establishing trusted communication",
 								Required:            true,
+								Sensitive:           true,
 							},
 							"token_endpoint_url": schema.StringAttribute{
 								MarkdownDescription: "The URL where the webhook can request OAuth tokens. This is part of the OAuth workflow to obtain access tokens for secure access",
@@ -170,17 +172,17 @@ func (w WebhookResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 			},
 			"custom_validation_error_message": schema.StringAttribute{
 				MarkdownDescription: "A custom error message to display when the webhook fails validation. This provides clear feedback to users in case of validation issues",
-				Required:            false,
+				Optional:            true,
 			},
 		},
 	}
 }
 
-func (w *WebhookResource) Configure(_ context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
+func (w *ManualWebhookResource) Configure(_ context.Context, request resource.ConfigureRequest, response *resource.ConfigureResponse) {
 	w.provider, response.Diagnostics = toProvider(request.ProviderData)
 }
 
-func (w WebhookResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
+func (w ManualWebhookResource) Read(ctx context.Context, request resource.ReadRequest, response *resource.ReadResponse) {
 	var data *models.ManualWebhookModel
 
 	// Read Terraform prior state data into the model
@@ -217,7 +219,7 @@ func (w WebhookResource) Read(ctx context.Context, request resource.ReadRequest,
 	})
 }
 
-func (w WebhookResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
+func (w ManualWebhookResource) Create(ctx context.Context, request resource.CreateRequest, response *resource.CreateResponse) {
 	var data *models.ManualWebhookModel
 
 	// Read Terraform plan data into the model
@@ -257,7 +259,7 @@ func (w WebhookResource) Create(ctx context.Context, request resource.CreateRequ
 	})
 }
 
-func (w WebhookResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
+func (w ManualWebhookResource) Update(ctx context.Context, request resource.UpdateRequest, response *resource.UpdateResponse) {
 	var data *models.ManualWebhookModel
 
 	// Read Terraform plan data into the model
@@ -301,7 +303,7 @@ func (w WebhookResource) Update(ctx context.Context, request resource.UpdateRequ
 	})
 }
 
-func (w WebhookResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
+func (w ManualWebhookResource) Delete(ctx context.Context, request resource.DeleteRequest, response *resource.DeleteResponse) {
 	var data *models.ManualWebhookModel
 
 	// Read Terraform prior state data into the model
@@ -330,7 +332,7 @@ func (w WebhookResource) Delete(ctx context.Context, request resource.DeleteRequ
 	})
 }
 
-func (w WebhookResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
+func (w ManualWebhookResource) ImportState(ctx context.Context, request resource.ImportStateRequest, response *resource.ImportStateResponse) {
 	ManualWebhookId := request.ID
 	tflog.Debug(ctx, "Importing manual webhook", map[string]interface{}{
 		"id": ManualWebhookId,
