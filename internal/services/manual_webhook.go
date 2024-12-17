@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"math/big"
 )
 
 func ConvertManualWebhookApiToTerraformModel(ctx context.Context, manualWebhook *aponoapi.WebhookManualTriggerTerraformModel) (*models.ManualWebhookModel, diag.Diagnostics) {
@@ -32,7 +31,7 @@ func ConvertManualWebhookApiToTerraformModel(ctx context.Context, manualWebhook 
 	}
 
 	if manualWebhook.TimeoutInSec.IsSet() {
-		manualWebhookModel.TimeoutInSec = types.NumberValue(big.NewFloat(float64(manualWebhook.GetTimeoutInSec())))
+		manualWebhookModel.TimeoutInSec = types.Int64Value(int64(manualWebhook.GetTimeoutInSec()))
 	}
 
 	if manualWebhook.AuthenticationConfig.IsSet() {
@@ -120,7 +119,6 @@ func authenticationConfigToModel(ctx context.Context, authenticationConfig apono
 	}
 
 	return &models.ManualWebhookAuthenticationConfigModel{
-		Type:  types.StringValue(authenticationConfig.GetType()),
 		Oauth: oauth,
 	}, nil
 }
@@ -162,7 +160,7 @@ func ConvertManualWebhookTerraformModelToUpsertApi(ctx context.Context, manualWe
 	data.Type = *manualWebhookType
 
 	if !manualWebhook.TimeoutInSec.IsNull() {
-		timeoutInSec, _ := manualWebhook.TimeoutInSec.ValueBigFloat().Int64()
+		timeoutInSec := manualWebhook.TimeoutInSec.ValueInt64()
 		timeoutInSecInt32 := int32(timeoutInSec)
 		data.TimeoutInSec = *aponoapi.NewNullableInt32(&timeoutInSecInt32)
 	}
@@ -264,7 +262,6 @@ func authenticationConfigToApi(authenticationConfig *models.ManualWebhookAuthent
 	}
 
 	return &aponoapi.WebhookManualTriggerTerraformModelAuthenticationConfig{
-		Type:  authenticationConfig.Type.ValueString(),
 		Oauth: *aponoapi.NewNullableWebhookAuthenticationConfigTerraformModelOauth(webhookOAuthConfigToApi(authenticationConfig.Oauth)),
 	}
 }

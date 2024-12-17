@@ -10,7 +10,7 @@ type ManualWebhookModel struct {
 	Type                         ManualWebhookTypeModel                  `tfsdk:"type"`
 	BodyTemplate                 types.String                            `tfsdk:"body_template"`
 	ResponseValidators           []ManualWebhookResponseValidatorModel   `tfsdk:"response_validators"`
-	TimeoutInSec                 types.Number                            `tfsdk:"timeout_in_sec"`
+	TimeoutInSec                 types.Int64                             `tfsdk:"timeout_in_sec"`
 	AuthenticationConfig         *ManualWebhookAuthenticationConfigModel `tfsdk:"authentication_config"`
 	CustomValidationErrorMessage types.String                            `tfsdk:"custom_validation_error_message"`
 }
@@ -37,7 +37,6 @@ type ManualWebhookResponseValidatorModel struct {
 }
 
 type ManualWebhookAuthenticationConfigModel struct {
-	Type  types.String             `tfsdk:"type"`
 	Oauth *WebhookOAuthConfigModel `tfsdk:"oauth"`
 }
 

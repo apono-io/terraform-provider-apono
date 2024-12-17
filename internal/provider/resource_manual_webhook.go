@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -59,7 +58,6 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 			"active": schema.BoolAttribute{
 				MarkdownDescription: "Indicates whether the trigger is active. Set to true to enable the webhook or false to disable it",
 				Required:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 			"type": schema.SingleNestedAttribute{
 				MarkdownDescription: "Defines the kind of webhook being configured. The type determines whether the webhook operates as an HTTP request or performs an integration action. See the nested schema below for further details.",
@@ -128,7 +126,7 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 					},
 				},
 			},
-			"timeout_in_sec": schema.NumberAttribute{
+			"timeout_in_sec": schema.Int64Attribute{
 				MarkdownDescription: "The maximum time, in seconds, that the webhook waits for a response from the endpoint before timing out",
 				Optional:            true,
 			},
@@ -136,10 +134,6 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 				MarkdownDescription: "Configuration details for authenticating the webhook requests. See the nested schema below for details",
 				Optional:            true,
 				Attributes: map[string]schema.Attribute{
-					"type": schema.StringAttribute{
-						MarkdownDescription: "The type of authentication used by the webhook, such as \"OAuth\". This defines how the webhook establishes trust with the endpoint",
-						Required:            true,
-					},
 					"oauth": schema.SingleNestedAttribute{
 						MarkdownDescription: "Contains OAuth-specific configuration details required for secure communication. See the nested schema below for more information",
 						Optional:            true,
@@ -161,9 +155,6 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 								MarkdownDescription: "A list of permissions or access levels the webhook requests from the OAuth provider. Defaults to an empty list if no specific scopes are needed",
 								Required:            true,
 								ElementType:         types.StringType,
-								Validators: []validator.Set{
-									setvalidator.SizeAtLeast(1),
-								},
 							},
 						},
 					},
@@ -371,13 +362,16 @@ func (w ManualWebhookResource) ValidateConfig(ctx context.Context, req resource.
 	}
 
 	attributePath := path.Root("timeout_in_sec")
-	timeoutInSec, _ := model.TimeoutInSec.ValueBigFloat().Int64()
-	if timeoutInSec != -1 && timeoutInSec <= 0 {
-		resp.Diagnostics.AddAttributeError(
-			attributePath,
-			"Invalid timeout_in_sec value",
-			"must be a positive number",
-		)
+	timeoutInSecDefined := !model.TimeoutInSec.IsNull() && !model.TimeoutInSec.IsUnknown()
+	if timeoutInSecDefined {
+		timeoutInSec := model.TimeoutInSec.ValueInt64()
+		if timeoutInSec <= 0 {
+			resp.Diagnostics.AddAttributeError(
+				attributePath,
+				"Invalid timeout_in_sec value",
+				"must be a positive number",
+			)
+		}
 	}
 
 	isTypeHttpRequestDefined := model.Type.HttpRequest != nil
