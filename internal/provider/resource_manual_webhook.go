@@ -6,8 +6,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/models"
 	"github.com/apono-io/terraform-provider-apono/internal/services"
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -75,7 +74,7 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 								Required:            true,
 							},
 							"method": schema.StringAttribute{
-								MarkdownDescription: "The HTTP method used for the request, such as GET, POST, or DELETE. The method determines the type of operation the webhook performs on the target resource. See the allowed values below",
+								MarkdownDescription: "The HTTP method used for the request, such as GET, POST, PUT, PATCH or DELETE. The method determines the type of operation the webhook performs on the target resource",
 								Required:            true,
 								Validators: []validator.String{
 									stringvalidator.OneOf(allowedHttpMethods...),
@@ -90,11 +89,11 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 						},
 					},
 					"integration": schema.SingleNestedAttribute{
-						MarkdownDescription: "A unique identifier for the integration associated with the webhook assigned by Apono. This links the webhook to a specific integration within your system",
+						MarkdownDescription: "Manual Webhook Integration",
 						Optional:            true,
 						Attributes: map[string]schema.Attribute{
 							"integration_id": schema.StringAttribute{
-								MarkdownDescription: "Manual Webhook Integration ID",
+								MarkdownDescription: "A unique identifier for the integration associated with the webhook assigned by Apono. This links the webhook to a specific integration within your system",
 								Required:            true,
 							},
 							"action_name": schema.StringAttribute{
@@ -104,12 +103,9 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 						},
 					},
 				},
-				Validators: []validator.Object{
-					objectvalidator.ExactlyOneOf(path.MatchRoot("type")),
-				},
 			},
 			"body_template": schema.StringAttribute{
-				MarkdownDescription: " A customizable template for the HTTP request body. Use this to format the payload sent by the webhook, allowing context-specific content",
+				MarkdownDescription: "A customizable template for the request body. Use this to format the payload sent by the webhook, allowing context-specific content",
 				Optional:            true,
 			},
 			"response_validators": schema.SetNestedAttribute{
@@ -125,6 +121,9 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 							MarkdownDescription: "A list of values the response data must match at the specified json_path to pass validation",
 							Required:            true,
 							ElementType:         types.StringType,
+							Validators: []validator.Set{
+								setvalidator.SizeAtLeast(1),
+							},
 						},
 					},
 				},
@@ -138,7 +137,7 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 				Optional:            true,
 				Attributes: map[string]schema.Attribute{
 					"type": schema.StringAttribute{
-						MarkdownDescription: "The type of authentication used by the webhook, such as \"OAuth\" or \"None\". This defines how the webhook establishes trust with the endpoint",
+						MarkdownDescription: "The type of authentication used by the webhook, such as \"OAuth\". This defines how the webhook establishes trust with the endpoint",
 						Required:            true,
 					},
 					"oauth": schema.SingleNestedAttribute{
@@ -158,12 +157,12 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 								MarkdownDescription: "The URL where the webhook can request OAuth tokens. This is part of the OAuth workflow to obtain access tokens for secure access",
 								Required:            true,
 							},
-							"scopes": schema.ListAttribute{
-								MarkdownDescription: " A list of permissions or access levels the webhook requests from the OAuth provider. Defaults to an empty list if no specific scopes are needed",
+							"scopes": schema.SetAttribute{
+								MarkdownDescription: "A list of permissions or access levels the webhook requests from the OAuth provider. Defaults to an empty list if no specific scopes are needed",
 								Required:            true,
 								ElementType:         types.StringType,
-								Validators: []validator.List{
-									listvalidator.SizeAtLeast(1),
+								Validators: []validator.Set{
+									setvalidator.SizeAtLeast(1),
 								},
 							},
 						},
@@ -358,4 +357,43 @@ func (w ManualWebhookResource) ImportState(ctx context.Context, request resource
 	tflog.Debug(ctx, "Successfully imported manual webhook", map[string]interface{}{
 		"id": ManualWebhookId,
 	})
+}
+
+func (w ManualWebhookResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	if w.provider == nil {
+		return
+	}
+
+	var model models.ManualWebhookModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &model)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	attributePath := path.Root("timeout_in_sec")
+	timeoutInSec, _ := model.TimeoutInSec.ValueBigFloat().Int64()
+	if timeoutInSec != -1 && timeoutInSec <= 0 {
+		resp.Diagnostics.AddAttributeError(
+			attributePath,
+			"Invalid timeout_in_sec value",
+			"must be a positive number",
+		)
+	}
+
+	isTypeHttpRequestDefined := model.Type.HttpRequest != nil
+	isTypeIntegrationDefined := model.Type.Integration != nil
+
+	if !isTypeHttpRequestDefined && !isTypeIntegrationDefined {
+		resp.Diagnostics.AddError(
+			"Invalid manual webhook configuration",
+			"either type.http_request or type.integration must be specified",
+		)
+	}
+
+	if isTypeHttpRequestDefined && isTypeIntegrationDefined {
+		resp.Diagnostics.AddError(
+			"Invalid manual webhook configuration",
+			"only one of type.http_request or type.integration must be specified",
+		)
+	}
 }
