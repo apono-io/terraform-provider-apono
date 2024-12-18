@@ -41,8 +41,8 @@ type ManualWebhookAuthenticationConfigModel struct {
 }
 
 type WebhookOAuthConfigModel struct {
-	ClientId         types.String `tfsdk:"client_id"`
-	ClientSecret     types.String `tfsdk:"client_secret"`
-	TokenEndpointUrl types.String `tfsdk:"token_endpoint_url"`
-	Scopes           types.List   `tfsdk:"scopes"`
+	ClientId         types.String   `tfsdk:"client_id"`
+	ClientSecret     types.String   `tfsdk:"client_secret"`
+	TokenEndpointUrl types.String   `tfsdk:"token_endpoint_url"`
+	Scopes           []types.String `tfsdk:"scopes"`
 }

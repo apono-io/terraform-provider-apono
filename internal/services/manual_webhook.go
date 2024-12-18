@@ -36,10 +36,7 @@ func ConvertManualWebhookApiToTerraformModel(ctx context.Context, manualWebhook 
 	}
 
 	if manualWebhook.AuthenticationConfig.IsSet() {
-		authenticationConfig, diagnostics := authenticationConfigToModel(ctx, manualWebhook.GetAuthenticationConfig())
-		if diagnostics != nil {
-			return nil, diagnostics
-		}
+		authenticationConfig := authenticationConfigToModel(manualWebhook.GetAuthenticationConfig())
 		manualWebhookModel.AuthenticationConfig = authenticationConfig
 	}
 
@@ -118,25 +115,21 @@ func manualWebhookIntegrationTypeToModel(integrationType aponoapi.WebhookTypeTer
 	}
 }
 
-func authenticationConfigToModel(ctx context.Context, authenticationConfig aponoapi.WebhookManualTriggerTerraformModelAuthenticationConfig) (*models.ManualWebhookAuthenticationConfigModel, diag.Diagnostics) {
+func authenticationConfigToModel(authenticationConfig aponoapi.WebhookManualTriggerTerraformModelAuthenticationConfig) *models.ManualWebhookAuthenticationConfigModel {
 	if !authenticationConfig.Oauth.IsSet() {
-		return nil, nil
+		return nil
 	}
 
-	oauth, diagnostics := webhookOAuthConfigToModel(ctx, authenticationConfig.GetOauth())
-	if diagnostics != nil {
-		return nil, diagnostics
-	}
-
+	oauth := webhookOAuthConfigToModel(authenticationConfig.GetOauth())
 	return &models.ManualWebhookAuthenticationConfigModel{
 		Oauth: oauth,
-	}, nil
+	}
 }
 
-func webhookOAuthConfigToModel(ctx context.Context, oauthConfig aponoapi.WebhookAuthenticationConfigTerraformModelOauth) (*models.WebhookOAuthConfigModel, diag.Diagnostics) {
-	scopes, diagnostics := types.ListValueFrom(ctx, types.StringType, oauthConfig.GetScopes())
-	if len(diagnostics) > 0 {
-		return nil, diagnostics
+func webhookOAuthConfigToModel(oauthConfig aponoapi.WebhookAuthenticationConfigTerraformModelOauth) *models.WebhookOAuthConfigModel {
+	var scopes []types.String
+	for _, scope := range oauthConfig.GetScopes() {
+		scopes = append(scopes, types.StringValue(scope))
 	}
 
 	return &models.WebhookOAuthConfigModel{
@@ -144,7 +137,7 @@ func webhookOAuthConfigToModel(ctx context.Context, oauthConfig aponoapi.Webhook
 		ClientSecret:     types.StringValue(oauthConfig.GetClientSecret()),
 		TokenEndpointUrl: types.StringValue(oauthConfig.GetTokenEndpointUrl()),
 		Scopes:           scopes,
-	}, nil
+	}
 }
 
 func ConvertManualWebhookTerraformModelToUpsertApi(manualWebhook *models.ManualWebhookModel) (*aponoapi.WebhookManualTriggerUpsertTerraformModel, diag.Diagnostics) {
@@ -282,7 +275,7 @@ func authenticationConfigToApi(authenticationConfig *models.ManualWebhookAuthent
 
 func webhookOAuthConfigToApi(oauthConfig *models.WebhookOAuthConfigModel) *aponoapi.WebhookAuthenticationConfigTerraformModelOauth {
 	var scopes []string
-	for _, scope := range oauthConfig.Scopes.Elements() {
+	for _, scope := range oauthConfig.Scopes {
 		scopes = append(scopes, scope.String())
 	}
 
