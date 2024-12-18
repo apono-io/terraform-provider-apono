@@ -127,7 +127,7 @@ func authenticationConfigToModel(authenticationConfig aponoapi.WebhookManualTrig
 }
 
 func webhookOAuthConfigToModel(oauthConfig aponoapi.WebhookAuthenticationConfigTerraformModelOauth) *models.WebhookOAuthConfigModel {
-	var scopes []types.String
+	scopes := []types.String{}
 	for _, scope := range oauthConfig.GetScopes() {
 		scopes = append(scopes, types.StringValue(scope))
 	}
@@ -203,7 +203,7 @@ func manualWebhookHttpRequestTypeToApi(httpRequestType models.ManualWebhookHttpR
 	}
 
 	if !httpRequestType.Headers.IsNull() && !httpRequestType.Headers.IsUnknown() {
-		headers, diagnostics := ConvertTypesMapToStringMap(httpRequestType.Headers)
+		headers, diagnostics := convertTypesMapToStringMap(httpRequestType.Headers)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics
 		}
@@ -213,24 +213,20 @@ func manualWebhookHttpRequestTypeToApi(httpRequestType models.ManualWebhookHttpR
 	return &data, nil
 }
 
-func ConvertTypesMapToStringMap(input types.Map) (map[string]string, diag.Diagnostics) {
-	// Prepare the map for conversion
+func convertTypesMapToStringMap(input types.Map) (map[string]string, diag.Diagnostics) {
 	output := make(map[string]string)
 	diagnostics := diag.Diagnostics{}
-	// Convert the map
+
 	for key, value := range input.Elements() {
-		// Ensure each value is a types.String
 		strValue, ok := value.(types.String)
 		if !ok {
 			diagnostics.AddError("Client Error", fmt.Sprintf("value for key %s is not a string", key))
 			return nil, diagnostics
 		}
-		// Check if the value is null or unknown
 		if strValue.IsNull() || strValue.IsUnknown() {
 			diagnostics.AddError("Client Error", fmt.Sprintf("value for key %s is null or unknown", key))
 			return nil, diagnostics
 		}
-		// Assign the value to the output map
 		output[key] = strValue.ValueString()
 	}
 
@@ -274,9 +270,9 @@ func authenticationConfigToApi(authenticationConfig *models.ManualWebhookAuthent
 }
 
 func webhookOAuthConfigToApi(oauthConfig *models.WebhookOAuthConfigModel) *aponoapi.WebhookAuthenticationConfigTerraformModelOauth {
-	var scopes []string
+	scopes := []string{}
 	for _, scope := range oauthConfig.Scopes {
-		scopes = append(scopes, scope.String())
+		scopes = append(scopes, scope.ValueString())
 	}
 
 	return &aponoapi.WebhookAuthenticationConfigTerraformModelOauth{

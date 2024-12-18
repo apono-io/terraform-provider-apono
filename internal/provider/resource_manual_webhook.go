@@ -225,7 +225,7 @@ func (w ManualWebhookResource) Create(ctx context.Context, request resource.Crea
 		return
 	}
 
-	ManualWebhook, _, err := w.provider.terraformClient.WebhooksAPI.TerraformCreateWebhook(ctx).
+	manualWebhook, _, err := w.provider.terraformClient.WebhooksAPI.TerraformCreateWebhook(ctx).
 		WebhookManualTriggerUpsertTerraformModel(*newManualWebhookRequest).
 		Execute()
 	if err != nil {
@@ -234,7 +234,7 @@ func (w ManualWebhookResource) Create(ctx context.Context, request resource.Crea
 		return
 	}
 
-	model, diagnostics := services.ConvertManualWebhookApiToTerraformModel(ctx, ManualWebhook)
+	model, diagnostics := services.ConvertManualWebhookApiToTerraformModel(ctx, manualWebhook)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
