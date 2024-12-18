@@ -44,6 +44,7 @@ func SetupMockHttpServerManualWebhookEndpoints(existingManualWebhooks []aponoapi
 			Id:                           id.String(),
 			Name:                         createReq.Name,
 			Active:                       createReq.Active,
+			Type:                         createReq.Type,
 			BodyTemplate:                 createReq.BodyTemplate,
 			ResponseValidators:           createReq.ResponseValidators,
 			TimeoutInSec:                 createReq.TimeoutInSec,
@@ -74,11 +75,14 @@ func SetupMockHttpServerManualWebhookEndpoints(existingManualWebhooks []aponoapi
 
 		manualWebhook.Name = updateReq.Name
 		manualWebhook.Active = updateReq.Active
+		manualWebhook.Type = updateReq.Type
 		manualWebhook.BodyTemplate = updateReq.BodyTemplate
 		manualWebhook.ResponseValidators = updateReq.ResponseValidators
 		manualWebhook.TimeoutInSec = updateReq.TimeoutInSec
 		manualWebhook.AuthenticationConfig = updateReq.AuthenticationConfig
 		manualWebhook.CustomValidationErrorMessage = updateReq.CustomValidationErrorMessage
+
+		manualWebhooks[id] = manualWebhook
 
 		resp, err := httpmock.NewJsonResponse(200, manualWebhook)
 		if err != nil {

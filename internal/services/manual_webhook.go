@@ -23,7 +23,7 @@ func ConvertManualWebhookApiToTerraformModel(ctx context.Context, manualWebhook 
 	manualWebhookModel.Type = *manualWebhookType
 
 	if manualWebhook.BodyTemplate.IsSet() {
-		manualWebhookModel.BodyTemplate = types.StringValue(manualWebhook.GetBodyTemplate())
+		manualWebhookModel.BodyTemplate = types.StringPointerValue(manualWebhook.BodyTemplate.Get())
 	}
 
 	if manualWebhook.ResponseValidators != nil {
@@ -31,7 +31,8 @@ func ConvertManualWebhookApiToTerraformModel(ctx context.Context, manualWebhook 
 	}
 
 	if manualWebhook.TimeoutInSec.IsSet() {
-		manualWebhookModel.TimeoutInSec = types.Int64Value(int64(manualWebhook.GetTimeoutInSec()))
+		ptr := convertInt32PtrToInt64Ptr(manualWebhook.TimeoutInSec.Get())
+		manualWebhookModel.TimeoutInSec = types.Int64PointerValue(ptr)
 	}
 
 	if manualWebhook.AuthenticationConfig.IsSet() {
@@ -43,10 +44,19 @@ func ConvertManualWebhookApiToTerraformModel(ctx context.Context, manualWebhook 
 	}
 
 	if manualWebhook.CustomValidationErrorMessage.IsSet() {
-		manualWebhookModel.CustomValidationErrorMessage = types.StringValue(manualWebhook.GetCustomValidationErrorMessage())
+		manualWebhookModel.CustomValidationErrorMessage = types.StringPointerValue(manualWebhook.CustomValidationErrorMessage.Get())
 	}
 
 	return &manualWebhookModel, nil
+}
+
+func convertInt32PtrToInt64Ptr(ptr *int32) *int64 {
+	if ptr == nil {
+		return nil
+	}
+
+	val := int64(*ptr)
+	return &val
 }
 
 func responseValidatorsToModel(responseValidators []aponoapi.WebhookResponseValidatorTerraformModel) []models.ManualWebhookResponseValidatorModel {
@@ -137,32 +147,36 @@ func webhookOAuthConfigToModel(ctx context.Context, oauthConfig aponoapi.Webhook
 	}, nil
 }
 
-func ConvertManualWebhookTerraformModelToUpsertApi(ctx context.Context, manualWebhook *models.ManualWebhookModel) (*aponoapi.WebhookManualTriggerUpsertTerraformModel, diag.Diagnostics) {
-	//dataIntegrationTargets, diagnostics := convertIntegrationTargetsTerraformModelToApi(ctx, manualWebhook)
-	//if len(diagnostics) > 0 {
-	//	return nil, diagnostics
-	//}
+func ConvertManualWebhookTerraformModelToUpsertApi(manualWebhook *models.ManualWebhookModel) (*aponoapi.WebhookManualTriggerUpsertTerraformModel, diag.Diagnostics) {
 	manualWebhookType, diagnostics := manualWebhookTypeToApi(manualWebhook.Type)
 	if diagnostics != nil {
 		return nil, diagnostics
 	}
 
-	data := aponoapi.WebhookManualTriggerUpsertTerraformModel{
-		Name:   manualWebhook.Name.ValueString(),
-		Active: manualWebhook.Active.ValueBool(),
-		//	AuthenticationConfig         NullableWebhookManualTriggerTerraformModelAuthenticationConfig `json:"authentication_config,omitempty"`
-		BodyTemplate:                 *aponoapi.NewNullableString(manualWebhook.BodyTemplate.ValueStringPointer()),
-		CustomValidationErrorMessage: *aponoapi.NewNullableString(manualWebhook.CustomValidationErrorMessage.ValueStringPointer()),
-		ResponseValidators:           responseValidatorsToApi(manualWebhook.ResponseValidators),
-		AuthenticationConfig:         *aponoapi.NewNullableWebhookManualTriggerTerraformModelAuthenticationConfig(authenticationConfigToApi(manualWebhook.AuthenticationConfig)),
+	var bodyTemplate *string
+	if !manualWebhook.BodyTemplate.IsNull() && !manualWebhook.BodyTemplate.IsUnknown() {
+		bodyTemplate = manualWebhook.BodyTemplate.ValueStringPointer()
+	}
+	var customValidationErrorMessage *string
+	if !manualWebhook.CustomValidationErrorMessage.IsNull() && !manualWebhook.CustomValidationErrorMessage.IsUnknown() {
+		customValidationErrorMessage = manualWebhook.CustomValidationErrorMessage.ValueStringPointer()
 	}
 
-	data.Type = *manualWebhookType
+	var timeoutInSec *int32
+	if !manualWebhook.TimeoutInSec.IsNull() && !manualWebhook.TimeoutInSec.IsUnknown() {
+		timeoutInSecInt32 := int32(manualWebhook.TimeoutInSec.ValueInt64())
+		timeoutInSec = &timeoutInSecInt32
+	}
 
-	if !manualWebhook.TimeoutInSec.IsNull() {
-		timeoutInSec := manualWebhook.TimeoutInSec.ValueInt64()
-		timeoutInSecInt32 := int32(timeoutInSec)
-		data.TimeoutInSec = *aponoapi.NewNullableInt32(&timeoutInSecInt32)
+	data := aponoapi.WebhookManualTriggerUpsertTerraformModel{
+		Name:                         manualWebhook.Name.ValueString(),
+		Active:                       manualWebhook.Active.ValueBool(),
+		Type:                         *manualWebhookType,
+		BodyTemplate:                 *aponoapi.NewNullableString(bodyTemplate),
+		ResponseValidators:           responseValidatorsToApi(manualWebhook.ResponseValidators),
+		TimeoutInSec:                 *aponoapi.NewNullableInt32(timeoutInSec),
+		AuthenticationConfig:         *aponoapi.NewNullableWebhookManualTriggerTerraformModelAuthenticationConfig(authenticationConfigToApi(manualWebhook.AuthenticationConfig)),
+		CustomValidationErrorMessage: *aponoapi.NewNullableString(customValidationErrorMessage),
 	}
 
 	return &data, nil
@@ -195,7 +209,7 @@ func manualWebhookHttpRequestTypeToApi(httpRequestType models.ManualWebhookHttpR
 		Method: aponoapi.WebhookMethodTerraformModel(httpRequestType.Method.ValueString()),
 	}
 
-	if !httpRequestType.Headers.IsNull() {
+	if !httpRequestType.Headers.IsNull() && !httpRequestType.Headers.IsUnknown() {
 		headers, diagnostics := ConvertTypesMapToStringMap(httpRequestType.Headers)
 		if len(diagnostics) > 0 {
 			return nil, diagnostics

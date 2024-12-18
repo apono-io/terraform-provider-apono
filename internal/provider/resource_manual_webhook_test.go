@@ -25,9 +25,9 @@ func TestManualWebhookResource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("apono_manual_webhook.test", "id"),
 					resource.TestCheckResourceAttr("apono_manual_webhook.test", "name", manualWebhookName),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "type.0.http_request.0.url", "https://my-webhook.com"),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "type.0.http_request.0.method", "GET"),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "type.0.http_request.0.headers.Content-Type", "application/json"),
+					resource.TestCheckResourceAttr("apono_manual_webhook.test", "type.http_request.url", "https://www.example.com"),
+					resource.TestCheckResourceAttr("apono_manual_webhook.test", "type.http_request.method", "GET"),
+					resource.TestCheckResourceAttr("apono_manual_webhook.test", "type.http_request.headers.X-Or-King", "true"),
 					resource.TestCheckResourceAttr("apono_manual_webhook.test", "response_validators.0.json_path", "$.key"),
 					resource.TestCheckResourceAttr("apono_manual_webhook.test", "response_validators.0.expected_values.#", "1"),
 					resource.TestCheckResourceAttr("apono_manual_webhook.test", "response_validators.0.expected_values.0", "value"),
@@ -43,20 +43,13 @@ func TestManualWebhookResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testManualWebhookResourceConfig(manualWebhookName),
+				Config: testManualWebhookResourceConfig("updated-name"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttrSet("apono_manual_webhook.test", "id"),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "name", manualWebhookName),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "type.0.http_request.0.url", "https://my-webhook.com"),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "type.0.http_request.0.method", "GET"),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "type.0.http_request.0.headers.Content-Type", "application/json"),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "response_validators.0.json_path", "$.key"),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "response_validators.0.expected_values.#", "1"),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "response_validators.0.expected_values.0", "value"),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "timeout_in_sec", "10"),
-					resource.TestCheckResourceAttr("apono_manual_webhook.test", "custom_validation_error_message", "This is a custom validation error message"),
+					resource.TestCheckResourceAttr("apono_manual_webhook.test", "name", "updated-name"),
+					resource.TestCheckResourceAttr("apono_manual_webhook.test", "type.http_request.url", "https://www.example.com"),
 				),
 			},
+			// Delete testing automatically occurs in TestCase
 		},
 	})
 }
@@ -68,25 +61,25 @@ provider apono {
   personal_token = "1234567890abcdefg"
 }
 
-resource "apono_manual_webhook" "test_webhook" {
+resource "apono_manual_webhook" "test" {
   name = "%[1]s"
   active = true
   type = {
-	http_request = {
-	  url = "https://www.example.com"
-	  method = "GET"
-	  headers = {
-	    "X-Rr-King-Header" = "true"
-	  }
-	}
+    http_request = {
+      url    = "https://www.example.com"
+      method = "GET"
+      headers = {
+        "X-Or-King" = "true"
+      }
+    }
   }
   response_validators = [
-	{
-	  json_path = "$.key"
-	  expected_values = ["value"]
-	}
+    {
+      json_path = "$.key"
+      expected_values = ["value"]
+    }
   ]
-  timeout_in_sec = 10
+  timeout_in_sec                  = 10
   custom_validation_error_message = "This is a custom validation error message"
 }
 `, manualWebhookName)

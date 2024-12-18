@@ -219,7 +219,7 @@ func (w ManualWebhookResource) Create(ctx context.Context, request resource.Crea
 		return
 	}
 
-	newManualWebhookRequest, diagnostics := services.ConvertManualWebhookTerraformModelToUpsertApi(ctx, data)
+	newManualWebhookRequest, diagnostics := services.ConvertManualWebhookTerraformModelToUpsertApi(data)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
@@ -231,7 +231,6 @@ func (w ManualWebhookResource) Create(ctx context.Context, request resource.Crea
 	if err != nil {
 		diagnostics := utils.GetDiagnosticsForApiError(err, "create", "manual webhook", "")
 		response.Diagnostics.Append(diagnostics...)
-
 		return
 	}
 
@@ -263,7 +262,7 @@ func (w ManualWebhookResource) Update(ctx context.Context, request resource.Upda
 		"id": data.ID.ValueString(),
 	})
 
-	updateManualWebhookRequest, diagnostics := services.ConvertManualWebhookTerraformModelToUpsertApi(ctx, data)
+	updateManualWebhookRequest, diagnostics := services.ConvertManualWebhookTerraformModelToUpsertApi(data)
 	if len(diagnostics) > 0 {
 		response.Diagnostics.Append(diagnostics...)
 		return
