@@ -12,7 +12,6 @@ package aponoapi
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 // checks if the WebhookManualTriggerTerraformModelAuthenticationConfig type satisfies the MappedNullable interface at compile time
@@ -20,19 +19,15 @@ var _ MappedNullable = &WebhookManualTriggerTerraformModelAuthenticationConfig{}
 
 // WebhookManualTriggerTerraformModelAuthenticationConfig struct for WebhookManualTriggerTerraformModelAuthenticationConfig
 type WebhookManualTriggerTerraformModelAuthenticationConfig struct {
-	Type  string                                                 `json:"type"`
 	Oauth NullableWebhookAuthenticationConfigTerraformModelOauth `json:"oauth,omitempty"`
 }
-
-type _WebhookManualTriggerTerraformModelAuthenticationConfig WebhookManualTriggerTerraformModelAuthenticationConfig
 
 // NewWebhookManualTriggerTerraformModelAuthenticationConfig instantiates a new WebhookManualTriggerTerraformModelAuthenticationConfig object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWebhookManualTriggerTerraformModelAuthenticationConfig(type_ string) *WebhookManualTriggerTerraformModelAuthenticationConfig {
+func NewWebhookManualTriggerTerraformModelAuthenticationConfig() *WebhookManualTriggerTerraformModelAuthenticationConfig {
 	this := WebhookManualTriggerTerraformModelAuthenticationConfig{}
-	this.Type = type_
 	return &this
 }
 
@@ -42,30 +37,6 @@ func NewWebhookManualTriggerTerraformModelAuthenticationConfig(type_ string) *We
 func NewWebhookManualTriggerTerraformModelAuthenticationConfigWithDefaults() *WebhookManualTriggerTerraformModelAuthenticationConfig {
 	this := WebhookManualTriggerTerraformModelAuthenticationConfig{}
 	return &this
-}
-
-// GetType returns the Type field value
-func (o *WebhookManualTriggerTerraformModelAuthenticationConfig) GetType() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Type
-}
-
-// GetTypeOk returns a tuple with the Type field value
-// and a boolean to check if the value has been set.
-func (o *WebhookManualTriggerTerraformModelAuthenticationConfig) GetTypeOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Type, true
-}
-
-// SetType sets field value
-func (o *WebhookManualTriggerTerraformModelAuthenticationConfig) SetType(v string) {
-	o.Type = v
 }
 
 // GetOauth returns the Oauth field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -121,46 +92,10 @@ func (o WebhookManualTriggerTerraformModelAuthenticationConfig) MarshalJSON() ([
 
 func (o WebhookManualTriggerTerraformModelAuthenticationConfig) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["type"] = o.Type
 	if o.Oauth.IsSet() {
 		toSerialize["oauth"] = o.Oauth.Get()
 	}
 	return toSerialize, nil
-}
-
-func (o *WebhookManualTriggerTerraformModelAuthenticationConfig) UnmarshalJSON(bytes []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"type",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(bytes, &allProperties)
-
-	if err != nil {
-		return err
-	}
-
-	for _, requiredProperty := range requiredProperties {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
-		}
-	}
-
-	varWebhookManualTriggerTerraformModelAuthenticationConfig := _WebhookManualTriggerTerraformModelAuthenticationConfig{}
-
-	err = json.Unmarshal(bytes, &varWebhookManualTriggerTerraformModelAuthenticationConfig)
-
-	if err != nil {
-		return err
-	}
-
-	*o = WebhookManualTriggerTerraformModelAuthenticationConfig(varWebhookManualTriggerTerraformModelAuthenticationConfig)
-
-	return err
 }
 
 type NullableWebhookManualTriggerTerraformModelAuthenticationConfig struct {

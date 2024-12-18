@@ -22,7 +22,7 @@ var _ MappedNullable = &WebhookTypeTerraformModelHttpRequest{}
 type WebhookTypeTerraformModelHttpRequest struct {
 	Url     string                      `json:"url"`
 	Method  WebhookMethodTerraformModel `json:"method"`
-	Headers map[string]string           `json:"headers,omitempty"`
+	Headers map[string]string           `json:"headers"`
 }
 
 type _WebhookTypeTerraformModelHttpRequest WebhookTypeTerraformModelHttpRequest
@@ -31,10 +31,11 @@ type _WebhookTypeTerraformModelHttpRequest WebhookTypeTerraformModelHttpRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWebhookTypeTerraformModelHttpRequest(url string, method WebhookMethodTerraformModel) *WebhookTypeTerraformModelHttpRequest {
+func NewWebhookTypeTerraformModelHttpRequest(url string, method WebhookMethodTerraformModel, headers map[string]string) *WebhookTypeTerraformModelHttpRequest {
 	this := WebhookTypeTerraformModelHttpRequest{}
 	this.Url = url
 	this.Method = method
+	this.Headers = headers
 	return &this
 }
 
@@ -94,35 +95,26 @@ func (o *WebhookTypeTerraformModelHttpRequest) SetMethod(v WebhookMethodTerrafor
 	o.Method = v
 }
 
-// GetHeaders returns the Headers field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetHeaders returns the Headers field value
 func (o *WebhookTypeTerraformModelHttpRequest) GetHeaders() map[string]string {
 	if o == nil {
 		var ret map[string]string
 		return ret
 	}
+
 	return o.Headers
 }
 
-// GetHeadersOk returns a tuple with the Headers field value if set, nil otherwise
+// GetHeadersOk returns a tuple with the Headers field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *WebhookTypeTerraformModelHttpRequest) GetHeadersOk() (*map[string]string, bool) {
-	if o == nil || IsNil(o.Headers) {
+	if o == nil {
 		return nil, false
 	}
 	return &o.Headers, true
 }
 
-// HasHeaders returns a boolean if a field has been set.
-func (o *WebhookTypeTerraformModelHttpRequest) HasHeaders() bool {
-	if o != nil && IsNil(o.Headers) {
-		return true
-	}
-
-	return false
-}
-
-// SetHeaders gets a reference to the given map[string]string and assigns it to the Headers field.
+// SetHeaders sets field value
 func (o *WebhookTypeTerraformModelHttpRequest) SetHeaders(v map[string]string) {
 	o.Headers = v
 }
@@ -139,9 +131,7 @@ func (o WebhookTypeTerraformModelHttpRequest) ToMap() (map[string]interface{}, e
 	toSerialize := map[string]interface{}{}
 	toSerialize["url"] = o.Url
 	toSerialize["method"] = o.Method
-	if o.Headers != nil {
-		toSerialize["headers"] = o.Headers
-	}
+	toSerialize["headers"] = o.Headers
 	return toSerialize, nil
 }
 
@@ -152,6 +142,7 @@ func (o *WebhookTypeTerraformModelHttpRequest) UnmarshalJSON(bytes []byte) (err 
 	requiredProperties := []string{
 		"url",
 		"method",
+		"headers",
 	}
 
 	allProperties := make(map[string]interface{})
