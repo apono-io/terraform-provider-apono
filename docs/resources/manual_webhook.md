@@ -34,10 +34,12 @@ resource "apono_manual_webhook" "webhook_prod" {
       token_endpoint_url = "https://example.com/token"
     }
   }
-  response_validators = {
-    expected_values = ["value1", "value2"]
-    json_path       = "json_path"
-  }
+  response_validators = [
+    {
+      expected_values = ["value1", "value2"]
+      json_path       = "json_path"
+    }
+  ]
   timeout_in_sec                  = 60
   custom_validation_error_message = "This is a custom validation error message"
 }
