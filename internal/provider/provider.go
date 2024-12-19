@@ -130,6 +130,7 @@ func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewIntegrationResource,
 		NewAccessFlowResource,
 		NewAccessBundleResource,
+		NewWebhookResource,
 	}
 }
 
