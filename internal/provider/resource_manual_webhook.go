@@ -80,7 +80,7 @@ func (w ManualWebhookResource) Schema(_ context.Context, _ resource.SchemaReques
 							},
 							"headers": schema.MapAttribute{
 								MarkdownDescription: "Key-value pairs representing HTTP headers to include in the request. These headers can be used to pass metadata or authentication tokens",
-								Optional:            true,
+								Required:            true,
 								ElementType:         types.StringType,
 								Sensitive:           true,
 							},
