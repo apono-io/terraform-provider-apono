@@ -273,7 +273,8 @@ func (a accessFlowResource) Read(ctx context.Context, request resource.ReadReque
 	if err != nil {
 		if utils.IsAponoApiNotFoundError(getAccessFlowResponse) {
 			tflog.Debug(ctx, "Access flow is deleted, removing from state", map[string]interface{}{
-				"id": data.ID.ValueString(),
+				"id":       data.ID.ValueString(),
+				"response": getAccessFlowResponse.Body,
 			})
 			response.State.RemoveResource(ctx)
 			return
