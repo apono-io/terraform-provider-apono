@@ -186,9 +186,17 @@ func (w ManualWebhookResource) Read(ctx context.Context, request resource.ReadRe
 		"id": data.ID.ValueString(),
 	})
 
-	manualWebhook, _, err := w.provider.terraformClient.WebhooksAPI.TerraformGetWebhook(ctx, data.ID.ValueString()).
+	manualWebhook, getWebhookResponse, err := w.provider.terraformClient.WebhooksAPI.TerraformGetWebhook(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
+		if utils.IsAponoApiNotFoundError(getWebhookResponse) {
+			response.State.RemoveResource(ctx)
+			tflog.Debug(ctx, "Webhook is deleted, removing from state", map[string]interface{}{
+				"id": data.ID.ValueString(),
+			})
+			return
+		}
+
 		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "manual_webhook", data.ID.ValueString())
 		response.Diagnostics.Append(diagnostics...)
 
@@ -306,9 +314,16 @@ func (w ManualWebhookResource) Delete(ctx context.Context, request resource.Dele
 		"id": data.ID.ValueString(),
 	})
 
-	messageResponse, _, err := w.provider.terraformClient.WebhooksAPI.TerraformDeleteWebhook(ctx, data.ID.ValueString()).
+	messageResponse, deleteResp, err := w.provider.terraformClient.WebhooksAPI.TerraformDeleteWebhook(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
+		if utils.IsAponoApiNotFoundError(deleteResp) {
+			tflog.Debug(ctx, "Manual webhook was already deleted", map[string]interface{}{
+				"id":       data.ID.ValueString(),
+				"response": messageResponse.GetMessage(),
+			})
+			return
+		}
 		diagnostics := utils.GetDiagnosticsForApiError(err, "delete", "manual webhook", data.ID.ValueString())
 		response.Diagnostics.Append(diagnostics...)
 
