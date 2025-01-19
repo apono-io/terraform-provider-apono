@@ -5,6 +5,7 @@ import (
 	"github.com/apono-io/apono-sdk-go"
 	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"net/http"
 )
 
 func GetDiagnosticsForApiError(err error, actionType string, objectName string, objectId string) diag.Diagnostics {
@@ -26,4 +27,8 @@ func GetDiagnosticsForApiError(err error, actionType string, objectName string, 
 	}
 
 	return diagnostics
+}
+
+func IsAponoApiNotFoundError(resp *http.Response) bool {
+	return resp != nil && resp.StatusCode == http.StatusNotFound
 }

@@ -387,9 +387,16 @@ func (a accessFlowResource) Delete(ctx context.Context, request resource.DeleteR
 		"id": data.ID.ValueString(),
 	})
 
-	messageResponse, _, err := a.provider.terraformClient.AccessFlowsAPI.DeleteAccessFlowV1(ctx, data.ID.ValueString()).
+	messageResponse, deleteResp, err := a.provider.terraformClient.AccessFlowsAPI.DeleteAccessFlowV1(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
+		if utils.IsAponoApiNotFoundError(deleteResp) {
+			tflog.Debug(ctx, "Access flow was already deleted", map[string]interface{}{
+				"id":       data.ID.ValueString(),
+				"response": messageResponse.GetMessage(),
+			})
+			return
+		}
 		diagnostics := utils.GetDiagnosticsForApiError(err, "delete", "access flow", data.ID.ValueString())
 		response.Diagnostics.Append(diagnostics...)
 

@@ -187,9 +187,16 @@ func (a accessBundleResource) Delete(ctx context.Context, request resource.Delet
 		"id": data.ID.ValueString(),
 	})
 
-	messageResponse, _, err := a.provider.client.AccessBundlesApi.DeleteAccessBundle(ctx, data.ID.ValueString()).
+	messageResponse, deleteResp, err := a.provider.client.AccessBundlesApi.DeleteAccessBundle(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
+		if utils.IsAponoApiNotFoundError(deleteResp) {
+			tflog.Debug(ctx, "Bundle was already deleted", map[string]interface{}{
+				"id":       data.ID.ValueString(),
+				"response": messageResponse.GetMessage(),
+			})
+			return
+		}
 		diagnostics := utils.GetDiagnosticsForApiError(err, "delete", "access bundle", data.ID.ValueString())
 		response.Diagnostics.Append(diagnostics...)
 

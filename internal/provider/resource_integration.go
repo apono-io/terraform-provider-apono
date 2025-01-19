@@ -372,9 +372,16 @@ func (r *integrationResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
-	messageResponse, _, err := r.provider.client.IntegrationsApi.DeleteIntegrationV2(ctx, data.ID.ValueString()).
+	messageResponse, deleteResp, err := r.provider.client.IntegrationsApi.DeleteIntegrationV2(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
+		if utils.IsAponoApiNotFoundError(deleteResp) {
+			tflog.Debug(ctx, "Integration was already deleted", map[string]interface{}{
+				"id":       data.ID.ValueString(),
+				"response": messageResponse.GetMessage(),
+			})
+			return
+		}
 		diagnostics := utils.GetDiagnosticsForApiError(err, "delete", "integration", data.ID.ValueString())
 		resp.Diagnostics.Append(diagnostics...)
 
