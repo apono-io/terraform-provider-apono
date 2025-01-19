@@ -268,9 +268,17 @@ func (a accessFlowResource) Read(ctx context.Context, request resource.ReadReque
 		"id": data.ID.ValueString(),
 	})
 
-	accessFlow, _, err := a.provider.terraformClient.AccessFlowsAPI.GetAccessFlowV1(ctx, data.ID.ValueString()).
+	accessFlow, getAccessFlowResponse, err := a.provider.terraformClient.AccessFlowsAPI.GetAccessFlowV1(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
+		if utils.IsAponoApiNotFoundError(getAccessFlowResponse) {
+			tflog.Debug(ctx, "Access flow is deleted, removing from state", map[string]interface{}{
+				"id": data.ID.ValueString(),
+			})
+			response.State.RemoveResource(ctx)
+			return
+		}
+
 		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "access_flow", data.ID.ValueString())
 		response.Diagnostics.Append(diagnostics...)
 

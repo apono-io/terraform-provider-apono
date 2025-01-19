@@ -68,9 +68,17 @@ func (a accessBundleResource) Read(ctx context.Context, request resource.ReadReq
 		"id": data.ID.ValueString(),
 	})
 
-	accessBundle, _, err := a.provider.client.AccessBundlesApi.GetAccessBundle(ctx, data.ID.ValueString()).
+	accessBundle, getBundleResponse, err := a.provider.client.AccessBundlesApi.GetAccessBundle(ctx, data.ID.ValueString()).
 		Execute()
 	if err != nil {
+		if utils.IsAponoApiNotFoundError(getBundleResponse) {
+			tflog.Debug(ctx, "Bundle is deleted, removing from state", map[string]interface{}{
+				"id": data.ID.ValueString(),
+			})
+			response.State.RemoveResource(ctx)
+			return
+		}
+
 		diagnostics := utils.GetDiagnosticsForApiError(err, "get", "access_bundle", data.ID.ValueString())
 		response.Diagnostics.Append(diagnostics...)
 
