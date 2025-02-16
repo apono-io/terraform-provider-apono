@@ -97,8 +97,13 @@ func (d *integrationsDataSource) Read(ctx context.Context, req datasource.ReadRe
 			continue
 		}
 
-		if !model.ConnectorID.IsNull() && *integration.ProvisionerId.Get() != model.ConnectorID.ValueString() {
-			continue
+		if !model.ConnectorID.IsNull() {
+			if !integration.ProvisionerId.IsSet() {
+				continue
+			}
+			if *integration.ProvisionerId.Get() != model.ConnectorID.ValueString() {
+				continue
+			}
 		}
 
 		m, diagnostics := services.ConvertToIntegrationModel(ctx, &integration)
