@@ -98,11 +98,10 @@ func (d *integrationsDataSource) Read(ctx context.Context, req datasource.ReadRe
 		}
 
 		if !model.ConnectorID.IsNull() {
-			provisionerId := integration.ProvisionerId.Get()
-			if provisionerId == nil {
+			if !integration.ProvisionerId.IsSet() {
 				continue
 			}
-			if *provisionerId != model.ConnectorID.ValueString() {
+			if *integration.ProvisionerId.Get() != model.ConnectorID.ValueString() {
 				continue
 			}
 		}
