@@ -71,12 +71,20 @@ func createIntegrationsDataSourceChecks(integrations []aponoapi.IntegrationTerra
 	}
 
 	for i, integration := range integrations {
+		provisionerIdPtr := integration.ProvisionerId.Get()
+		var provisionerIdVal string
+		if provisionerIdPtr != nil {
+			provisionerIdVal = *provisionerIdPtr
+		} else {
+			provisionerIdVal = ""
+		}
+
 		checks = append(
 			checks,
 			resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.id", i), integration.Id),
 			resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.name", i), integration.Name),
 			resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.type", i), integration.Type),
-			resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.connector_id", i), *integration.ProvisionerId.Get()),
+			resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.connector_id", i), provisionerIdVal),
 		)
 
 		if integration.Params != nil {

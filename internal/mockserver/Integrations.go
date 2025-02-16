@@ -15,6 +15,7 @@ var (
 	ProdConnectorId = "prod-connector"
 	MysqlType       = "mysql"
 	PostgresqlType  = "postgresql"
+	GoogleIdPType   = "google-idp"
 )
 
 func SetupMockHttpServerIntegrationTFV1Endpoints(existingIntegrations []aponoapi.IntegrationTerraform) {
@@ -475,6 +476,16 @@ func CreateTFIntegrations() []aponoapi.IntegrationTerraform {
 				"path":          "postgres-credentials",
 			},
 			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-database"},
+		},
+		{
+			Id:                     "6",
+			Name:                   "Google Oauth",
+			Type:                   GoogleIdPType,
+			Status:                 "Active",
+			ProvisionerId:          aponoapi.NullableString{},
+			Params:                 nil,
+			SecretConfig:           nil,
+			ConnectedResourceTypes: []string{},
 		},
 	}
 }
