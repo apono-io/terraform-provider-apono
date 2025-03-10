@@ -184,7 +184,11 @@ func bytesOfJsonToStringMap(data []byte) (map[string]string, error) {
 		case string:
 			result[key] = value
 		case map[string]interface{}:
-			result[key] = value["value"].(string)
+			if valueString, ok := value["value"].(string); ok {
+				result[key] = valueString
+			} else {
+				log.Println("Expected value in map for key", key, " to be string but found", value)
+			}
 		}
 	}
 
