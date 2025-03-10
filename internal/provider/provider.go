@@ -44,12 +44,13 @@ func (p *AponoProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
-				Description: "Override API endpoint",
+				Description: "Override API endpoint. This can also be set via the APONO_ENDPOINT environment variable, and is usually used for testing purposes.",
 				Optional:    true,
 			},
 			"personal_token": schema.StringAttribute{
-				Description: "Personal API token",
-				Required:    true,
+				Description: "[Personal API token](https://docs.apono.io/api-reference/api-overview/api-authentication). This field can be removed from the provider block; instead of the field, you can set the value via the `APONO_PERSONAL_TOKEN` environment variable.",
+				Optional:    true,
+				Sensitive:   true,
 			},
 		},
 	}
