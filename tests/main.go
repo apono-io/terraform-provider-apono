@@ -17,7 +17,7 @@ import (
 
 const (
 	TestsFolder       = "tests/cases"
-	TestsFolderPrefix = "test_"
+	TestsFolderPrefix = "apono_"
 )
 
 func main() {
@@ -74,7 +74,7 @@ func compileProvider() error {
 }
 func runTest(testName string, destroy bool) (bool, error) {
 	testDir := TestsFolder + "/" + testName
-	toDelete := []string{
+	filesToRemove := []string{
 		".terraform",
 		".terraform.lock.hcl",
 		"terraform.tfstate",
@@ -82,8 +82,8 @@ func runTest(testName string, destroy bool) (bool, error) {
 		"terraform.rc",
 	}
 
-	for _, oneToDelete := range toDelete {
-		os.RemoveAll(path.Join(testDir, oneToDelete))
+	for _, file := range filesToRemove {
+		os.RemoveAll(path.Join(testDir, file))
 	}
 
 	log.Println("Running test ", testName)

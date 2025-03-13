@@ -9,7 +9,15 @@ resource "apono_integration" "benchmark_integration" {
   type         = "benchmark"
   connector_id = var.connector_id
   metadata = {
-    resource_count   = 5
+    resource_count   = var.second_run ? 5 : 10
     permission_count = 6
   }
+}
+
+output "integration_type" {
+  value = apono_integration.benchmark_integration.type
+}
+
+output "integration_name" {
+  value = replace(apono_integration.benchmark_integration.name, random_string.random.result, "")
 }
