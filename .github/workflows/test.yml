@@ -99,4 +99,4 @@ jobs:
       - name: Run tests
         run: go run tests/main.go
         env:
-          APONO_PERSONAL_TOKEN: ${{ secrets.APONO_PERSONAL_TOKEN }}
+          APONO_PERSONAL_TOKEN: ${{ secrets.TERRAFORM_TEST_ACCOUNT_PERSONAL_TOKEN }}
