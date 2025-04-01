@@ -5,7 +5,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type IntegrationTarget struct {
 	Name                   types.String     `tfsdk:"name"`
 	ResourceType           types.String     `tfsdk:"resource_type"`
-	ResourceIncludeFilters []ResourceFilter `tfsdk:"resource_include_filters"`
+	ResourceIncludeFilters []ResourceFilter `	:"resource_include_filters"`
 	ResourceExcludeFilters []ResourceFilter `tfsdk:"resource_exclude_filters"`
 	Permissions            types.Set        `tfsdk:"permissions"`
 }
