@@ -4,19 +4,15 @@ issues:
   max-per-linter: 0
   max-same-issues: 0
 
-run:
-  version: 2 
+version: 2 
 
 linters:
-  disable-all: true
   enable:
     - durationcheck
     - errcheck
     - copyloopvar
     - forcetypeassert
     - godot
-    - gofmt
-    - gosimple
     - ineffassign
     - makezero
     - misspell
@@ -28,3 +24,7 @@ linters:
     - unparam
     - unused
     - govet
+  exclusions:
+    paths:
+      - "tests/main.go"
+

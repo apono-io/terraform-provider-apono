@@ -1,7 +1,6 @@
 package api_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
@@ -26,7 +25,7 @@ func TestClientMock(t *testing.T) {
 	}, nil)
 
 	// Call the method
-	result, err := mockClient.ListIntegrationsV2(context.Background())
+	result, err := mockClient.ListIntegrationsV2(t.Context())
 
 	// Assert expectations
 	assert.NoError(t, err)
