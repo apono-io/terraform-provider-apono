@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v5.4.0
         with:
           go-version-file: 'go.mod'
           cache: true
@@ -40,7 +40,7 @@ jobs:
         with:
           terraform_version: "1.1.5"
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v5.4.0
         with:
           go-version-file: 'go.mod'
           cache: true
@@ -75,7 +75,7 @@ jobs:
         with:
           terraform_version: "1.1.5"
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v5.4.0
         with:
           go-version-file: 'go.mod'
           cache: true
@@ -94,7 +94,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v5.4.0
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ matrix.terraform }}
