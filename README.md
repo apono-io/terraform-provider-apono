@@ -25,3 +25,11 @@ Copyright (c) 2023 Apono.
 Apache 2.0 licensed, see [LICENSE][LICENSE] file.
 
 [LICENSE]: ./LICENSE
+
+## V2
+
+### Generate API Client and Mocks
+
+```
+go generate ./internal/v2/api/...
+```

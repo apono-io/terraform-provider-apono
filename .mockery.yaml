@@ -1,0 +1,14 @@
+with-expecter: true
+dir: "./mocks"
+mockname: "{{.InterfaceName}}"
+outpkg: "mocks"
+filename: "{{.InterfaceName}}_mock.go"
+disable-version-string: True
+resolve-type-alias: False
+issue-845-fix: True
+packages:
+  github.com/apono-io/terraform-provider-apono/internal/v2/api/client:
+    interfaces:
+      Invoker:
+        config:
+          filename: "client_mock.go"
