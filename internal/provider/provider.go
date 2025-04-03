@@ -3,8 +3,14 @@ package provider
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+
 	"github.com/apono-io/apono-sdk-go"
 	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
+	v2client "github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	v2resources "github.com/apono-io/terraform-provider-apono/internal/v2/resources"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -12,12 +18,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"net/url"
-	"os"
 )
 
 // Ensure AponoProvider satisfies various provider interfaces.
 var _ provider.Provider = &AponoProvider{}
+var _ v2client.ClientProvider = &AponoProvider{}
 
 // AponoProvider defines the provider implementation.
 type AponoProvider struct {
@@ -27,6 +32,7 @@ type AponoProvider struct {
 	version         string
 	client          *apono.APIClient
 	terraformClient *aponoapi.APIClient
+	v2Client        *v2client.Client // Direct reference to v2 client
 }
 
 // AponoProviderConfig describes the provider data model.
@@ -102,6 +108,7 @@ func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		return
 	}
 
+	// Configure v1 SDK client
 	cfg := apono.NewConfiguration()
 	cfg.Scheme = endpointUrl.Scheme
 	cfg.Host = endpointUrl.Host
@@ -110,6 +117,7 @@ func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureReq
 
 	p.client = apono.NewAPIClient(cfg)
 
+	// Configure terraform API client
 	terraformApiCfg := aponoapi.NewConfiguration()
 	terraformApiCfg.Scheme = cfg.Scheme
 	terraformApiCfg.Host = cfg.Host
@@ -118,12 +126,67 @@ func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureReq
 
 	p.terraformClient = aponoapi.NewAPIClient(terraformApiCfg)
 
-	tflog.Debug(ctx, "Provider configuration", map[string]interface{}{
-		"provider": fmt.Sprintf("%+v", p),
+	// Initialize the v2 Client
+
+	v2Client, err := p.initializeV2Client(endpointUrl, personalToken)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Unable to Create Apono V2 API Client",
+			"An unexpected error occurred when creating the Apono V2 API client. "+
+				"If the error is not clear, please contact the provider developers.\n\n"+
+				"Apono V2 Client Error: "+err.Error(),
+		)
+		return
+	}
+
+	p.v2Client = v2Client
+
+	tflog.Debug(ctx, "Provider configuration complete", map[string]interface{}{
+		"endpoint": endpoint,
 	})
 
 	resp.DataSourceData = p
 	resp.ResourceData = p
+}
+
+// initializeV2Client creates a new v2 API client with bearer token authentication.
+func (p *AponoProvider) initializeV2Client(endpointUrl *url.URL, token string) (*v2client.Client, error) {
+	baseURL := fmt.Sprintf("%s://%s", endpointUrl.Scheme, endpointUrl.Host)
+
+	// Create a transport chain:
+	// 1. User agent transport for setting User-Agent
+	// 2. Debug transport for logging error responses
+	transport := &v2client.DebugTransport{
+		Transport: &UserAgentTransport{
+			UserAgent: fmt.Sprintf("terraform-provider-apono/%s", p.version),
+			Transport: http.DefaultTransport,
+		},
+	}
+
+	// Create HTTP client with our transport chain
+	httpClient := &http.Client{
+		Transport: transport,
+	}
+
+	// Create security source with the token
+	securitySource := v2client.NewTokenSecuritySource(token)
+
+	return v2client.NewClient(
+		baseURL,
+		securitySource,
+		v2client.WithClient(httpClient),
+	)
+}
+
+// UserAgentTransport adds User-Agent header to requests.
+type UserAgentTransport struct {
+	UserAgent string
+	Transport http.RoundTripper
+}
+
+func (t *UserAgentTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	req.Header.Set("User-Agent", t.UserAgent)
+	return t.Transport.RoundTrip(req)
 }
 
 func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource {
@@ -132,6 +195,7 @@ func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewAccessFlowResource,
 		NewAccessBundleResource,
 		NewWebhookResource,
+		v2resources.NewAponoAccessScopeResource,
 	}
 }
 
@@ -172,4 +236,9 @@ func toProvider(in any) (*AponoProvider, diag.Diagnostics) {
 	}
 
 	return p, diags
+}
+
+// V2Client implements the ClientProvider interface.
+func (p *AponoProvider) V2Client() *v2client.Client {
+	return p.v2Client
 }
