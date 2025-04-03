@@ -33,3 +33,24 @@ Apache 2.0 licensed, see [LICENSE][LICENSE] file.
 ```
 go generate ./internal/v2/api/...
 ```
+
+### Running Acceptance Tests Locally
+
+Configure environment variables:
+
+```
+TF_ACC=1
+APONO_ENDPOINT=https://api.apono.io
+APONO_PERSONAL_TOKEN=secret
+```
+  
+In Visual Studio Code you may add test environment variables in `settings.json`:
+```
+{
+    "go.testEnvVars": {
+        "TF_ACC": "1",
+        "APONO_ENDPOINT": "https://api.apono.io",
+        "APONO_PERSONAL_TOKEN": "secret"
+    }
+}
+```
