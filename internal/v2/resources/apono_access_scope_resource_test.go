@@ -14,7 +14,7 @@ func TestAccAponoAccessScope_basic(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-test")
 	resourceName := "apono_access_scope.test"
 
-	query := `integration = "5161d0f2-242d-42ee-92cb-8afd30caa0cm" and resource_type = "mock-duck"`
+	query := `integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"`
 	queryUpdate := `resource_type = "mock-duck"`
 
 	resource.Test(t, resource.TestCase{
@@ -26,7 +26,7 @@ func TestAccAponoAccessScope_basic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
-					resource.TestMatchResourceAttr(resourceName, "query", regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0cm" and resource_type = "mock-duck"\s*$`)),
+					resource.TestMatchResourceAttr(resourceName, "query", regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"\s*$`)),
 					resource.TestMatchResourceAttr(resourceName, "creation_date", regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`)),
 					resource.TestMatchResourceAttr(resourceName, "update_date", regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`)),
 				),
