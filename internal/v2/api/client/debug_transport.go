@@ -49,7 +49,7 @@ func (t *DebugTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 				fmt.Fprintf(os.Stderr, "\n[DEBUG] %s\n", logMessage)
 			}
 
-			return resp, err
+			return resp, readErr
 		}
 
 		// Close the original body

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"errors"
+
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -259,8 +261,45 @@ func (r *AponoAccessScopeResource) Delete(ctx context.Context, req resource.Dele
 
 // ImportState imports an existing resource into Terraform.
 func (r *AponoAccessScopeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// Import by ID
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp) // TODO import by name
+	// Try import by ID first
+	diags := resp.State.SetAttribute(ctx, path.Root("id"), req.ID)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	_, err := r.client.GetAccessScopesV1(ctx, client.GetAccessScopesV1Params{
+		ID: req.ID,
+	})
+
+	if err == nil {
+		return // Successfully imported by ID
+	}
+
+	// If import by ID fails, attempt import by name
+	accessScope, err := common.GetAccessScopeByName(ctx, r.client, req.ID)
+
+	if err != nil {
+		if errors.Is(err, common.ErrNotFoundByName) {
+			resp.Diagnostics.AddError(
+				"Resource Not Found",
+				fmt.Sprintf("Could not find Apono Access Scope with name: %q", req.ID),
+			)
+		} else {
+			resp.Diagnostics.AddError(
+				"Import Error",
+				fmt.Sprintf("Failed to import Apono Access Scope with name: %q, error: %v", req.ID, err),
+			)
+		}
+		return
+	}
+
+	// Set the ID in the resource state
+	diags = resp.State.SetAttribute(ctx, path.Root("id"), accessScope.ID)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 // Helper function to convert API response to model.
