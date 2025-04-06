@@ -17,7 +17,7 @@ var TestAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServe
 	"apono": providerserver.NewProtocol6WithError(provider.New("test")()),
 }
 
-// TestAccPreCheck validates the required environment variables are set
+// TestAccPreCheck validates the required environment variables are set.
 func TestAccPreCheck(t *testing.T) {
 	// Check for required environment variables
 	if v := os.Getenv("APONO_ENDPOINT"); v == "" {
