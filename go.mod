@@ -16,7 +16,7 @@ require (
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.36.1
 	github.com/hashicorp/terraform-plugin-testing v1.5.1
-	github.com/jarcoal/httpmock v1.3.1
+	github.com/jarcoal/httpmock v1.4.0
 	github.com/ogen-go/ogen v1.10.1
 	github.com/stretchr/testify v1.10.0
 	go.opentelemetry.io/otel v1.35.0
