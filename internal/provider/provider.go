@@ -147,7 +147,6 @@ func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	resp.ResourceData = p
 }
 
-// initializeV2Client creates a new v2 API client with bearer token authentication.
 func (p *AponoProvider) initializeV2Client(endpointUrl *url.URL, token string) (*v2client.Client, error) {
 	baseURL := fmt.Sprintf("%s://%s", endpointUrl.Scheme, endpointUrl.Host)
 
