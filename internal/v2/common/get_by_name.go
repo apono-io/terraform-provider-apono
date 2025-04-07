@@ -17,9 +17,9 @@ func GetAccessScopeByName(ctx context.Context, apiClient client.Invoker, name st
 
 		if pageToken != "" {
 			params.PageToken.SetTo(pageToken)
-		} else {
-			params.Name.SetTo(name)
 		}
+
+		params.Name.SetTo(name)
 
 		// Call the API to list access scopes with the name filter
 		response, err := apiClient.ListAccessScopesV1(ctx, params)
