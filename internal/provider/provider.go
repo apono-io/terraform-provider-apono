@@ -32,7 +32,7 @@ type AponoProvider struct {
 	version         string
 	client          *apono.APIClient
 	terraformClient *aponoapi.APIClient
-	v2Client        *v2client.Client // Direct reference to v2 client
+	publicClient    *v2client.Client
 }
 
 // AponoProviderConfig describes the provider data model.
@@ -126,8 +126,6 @@ func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureReq
 
 	p.terraformClient = aponoapi.NewAPIClient(terraformApiCfg)
 
-	// Initialize the v2 Client
-
 	v2Client, err := p.initializeV2Client(endpointUrl, personalToken)
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -139,7 +137,7 @@ func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		return
 	}
 
-	p.v2Client = v2Client
+	p.publicClient = v2Client
 
 	tflog.Debug(ctx, "Provider configuration complete", map[string]interface{}{
 		"endpoint": endpoint,
@@ -153,9 +151,6 @@ func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureReq
 func (p *AponoProvider) initializeV2Client(endpointUrl *url.URL, token string) (*v2client.Client, error) {
 	baseURL := fmt.Sprintf("%s://%s", endpointUrl.Scheme, endpointUrl.Host)
 
-	// Create a transport chain:
-	// 1. User agent transport for setting User-Agent
-	// 2. Debug transport for logging error responses
 	transport := &v2client.DebugTransport{
 		Transport: &UserAgentTransport{
 			UserAgent: fmt.Sprintf("terraform-provider-apono/%s", p.version),
@@ -163,12 +158,10 @@ func (p *AponoProvider) initializeV2Client(endpointUrl *url.URL, token string) (
 		},
 	}
 
-	// Create HTTP client with our transport chain
 	httpClient := &http.Client{
 		Transport: transport,
 	}
 
-	// Create security source with the token
 	securitySource := v2client.NewTokenSecuritySource(token)
 
 	return v2client.NewClient(
@@ -238,7 +231,7 @@ func toProvider(in any) (*AponoProvider, diag.Diagnostics) {
 	return p, diags
 }
 
-// V2Client implements the ClientProvider interface.
-func (p *AponoProvider) V2Client() *v2client.Client {
-	return p.v2Client
+// PublicClient implements the ClientProvider interface.
+func (p *AponoProvider) PublicClient() *v2client.Client {
+	return p.publicClient
 }

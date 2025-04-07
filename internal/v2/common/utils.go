@@ -24,5 +24,5 @@ func ConfigureClientInvoker(ctx context.Context, req resource.ConfigureRequest, 
 		return
 	}
 
-	*target = clientProvider.V2Client()
+	*target = clientProvider.PublicClient()
 }

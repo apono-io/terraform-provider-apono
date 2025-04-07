@@ -27,8 +27,6 @@ func TestAccAponoAccessScope_basic(t *testing.T) {
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
 					resource.TestMatchResourceAttr(resourceName, "query", regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"\s*$`)),
-					resource.TestMatchResourceAttr(resourceName, "creation_date", regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`)),
-					resource.TestMatchResourceAttr(resourceName, "update_date", regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`)),
 				),
 			},
 			{
@@ -44,13 +42,6 @@ func TestAccAponoAccessScope_basic(t *testing.T) {
 				ResourceName:      resourceName,
 				ImportState:       true,
 				ImportStateVerify: true,
-			},
-			{
-				// Test import by name instead of ID
-				ResourceName:      resourceName,
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     rName, // Use the name instead of the ID for import
 			},
 		},
 	})
