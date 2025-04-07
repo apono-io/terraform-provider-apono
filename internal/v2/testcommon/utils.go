@@ -20,9 +20,6 @@ var TestAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServe
 // TestAccPreCheck validates the required environment variables are set.
 func TestAccPreCheck(t *testing.T) {
 	// Check for required environment variables
-	if v := os.Getenv("APONO_ENDPOINT"); v == "" {
-		t.Fatal("APONO_ENDPOINT must be set for acceptance tests")
-	}
 	if v := os.Getenv("APONO_PERSONAL_TOKEN"); v == "" {
 		t.Fatal("APONO_PERSONAL_TOKEN must be set for acceptance tests")
 	}
