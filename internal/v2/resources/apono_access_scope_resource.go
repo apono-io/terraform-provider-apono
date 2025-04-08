@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -83,7 +82,7 @@ func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	result := accessScopeApiToModel(accessScope)
+	result := common.AccessScopeToModel(accessScope)
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -111,7 +110,7 @@ func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	result := accessScopeApiToModel(accessScope)
+	result := common.AccessScopeToModel(accessScope)
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -152,7 +151,7 @@ func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	result := accessScopeApiToModel(accessScope)
+	result := common.AccessScopeToModel(accessScope)
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -184,12 +183,4 @@ func (r *AponoAccessScopeResource) Delete(ctx context.Context, req resource.Dele
 
 func (r *AponoAccessScopeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-func accessScopeApiToModel(accessScope *client.AccessScopeV1) *common.AccessScopeModel {
-	return &common.AccessScopeModel{
-		ID:    types.StringValue(accessScope.ID),
-		Name:  types.StringValue(accessScope.Name),
-		Query: types.StringValue(accessScope.Query),
-	}
 }

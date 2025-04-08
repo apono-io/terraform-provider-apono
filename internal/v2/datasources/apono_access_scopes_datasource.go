@@ -90,16 +90,7 @@ func (d *AponoAccessScopesDataSource) Read(ctx context.Context, req datasource.R
 		return
 	}
 
-	accessScopesList := make([]common.AccessScopeModel, 0, len(accessScopes))
-	for _, scope := range accessScopes {
-		accessScopesList = append(accessScopesList, common.AccessScopeModel{
-			ID:    types.StringValue(scope.ID),
-			Name:  types.StringValue(scope.Name),
-			Query: types.StringValue(scope.Query),
-		})
-	}
-
-	config.AccessScopes = accessScopesList
+	config.AccessScopes = common.AccessScopesToModels(accessScopes)
 
 	diags = resp.State.Set(ctx, config)
 	resp.Diagnostics.Append(diags...)
@@ -108,6 +99,6 @@ func (d *AponoAccessScopesDataSource) Read(ctx context.Context, req datasource.R
 	}
 
 	tflog.Info(ctx, "Access scopes retrieved successfully", map[string]any{
-		"count": len(accessScopesList),
+		"count": len(config.AccessScopes),
 	})
 }

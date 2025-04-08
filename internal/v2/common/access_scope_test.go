@@ -38,8 +38,8 @@ func TestGetAccessScopeByName(t *testing.T) {
 				}, nil)
 			},
 			expectedScopes: []client.AccessScopeV1{
-				{ID: "1", Name: "test-scope"},
 				{ID: "2", Name: "other-scope"},
+				{ID: "1", Name: "test-scope"},
 			},
 		},
 		{
@@ -74,7 +74,7 @@ func TestGetAccessScopeByName(t *testing.T) {
 
 				m.On("ListAccessScopesV1", ctx, secondParams).Return(&client.PublicApiListResponseAccessScopePublicV1Model{
 					Items: []client.AccessScopeV1{
-						{ID: "2", Name: "paginated-scope"},
+						{ID: "2", Name: "paginated-scope2"},
 						{ID: "4", Name: "other-scope-page2"},
 					},
 					Pagination: client.PublicApiPaginationInfoModel{
@@ -83,10 +83,10 @@ func TestGetAccessScopeByName(t *testing.T) {
 				}, nil)
 			},
 			expectedScopes: []client.AccessScopeV1{
-				{ID: "1", Name: "paginated-scope"},
 				{ID: "3", Name: "other-scope-page1"},
-				{ID: "2", Name: "paginated-scope"},
 				{ID: "4", Name: "other-scope-page2"},
+				{ID: "1", Name: "paginated-scope"},
+				{ID: "2", Name: "paginated-scope2"},
 			},
 		},
 		{
