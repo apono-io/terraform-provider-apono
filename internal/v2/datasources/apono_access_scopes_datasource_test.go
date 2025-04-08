@@ -18,24 +18,26 @@ func TestAccAponoAccessScopesDataSource(t *testing.T) {
 
 	query := `integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"`
 
+	randomPrefix := acctest.RandomWithPrefix("tf-acc-test-prefix")
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testcommon.TestAccPreCheck(t) },
 		ProtoV6ProviderFactories: testcommon.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAponoAccessScopesDataSourceConfig(rName1, rName2, query),
+				Config: testAccAponoAccessScopesDataSourceConfig(rName1, rName2, query, randomPrefix),
 				Check: resource.ComposeTestCheckFunc(
 					// Test exact match data source (should return 1 scope)
 					resource.TestCheckResourceAttr(dataSourceNameExact, "access_scopes.#", "1"),
-					resource.TestCheckResourceAttr(dataSourceNameExact, "access_scopes.0.name", rName1),
+					resource.TestCheckResourceAttr(dataSourceNameExact, "access_scopes.0.name", randomPrefix+"-"+rName1),
 					resource.TestMatchResourceAttr(dataSourceNameExact, "access_scopes.0.query",
 						regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"\s*$`)),
 					resource.TestCheckResourceAttrSet(dataSourceNameExact, "access_scopes.0.id"),
 
 					// Test wildcard data source (should return 2 scopes, sorted by name)
 					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.#", "2"),
-					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.0.name", rName1), // Since alphabetically sorted, rName1 comes first
-					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.1.name", rName2),
+					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.0.name", randomPrefix+"-"+rName1), // Since alphabetically sorted, rName1 comes first
+					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.1.name", randomPrefix+"-"+rName2),
 					resource.TestMatchResourceAttr(dataSourceNameWildcard, "access_scopes.0.query",
 						regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"\s*$`)),
 					resource.TestMatchResourceAttr(dataSourceNameWildcard, "access_scopes.1.query",
@@ -46,17 +48,20 @@ func TestAccAponoAccessScopesDataSource(t *testing.T) {
 	})
 }
 
-func testAccAponoAccessScopesDataSourceConfig(name1, name2, query string) string {
+func testAccAponoAccessScopesDataSourceConfig(name1, name2, query, randomPrefix string) string {
+	prefixedName1 := randomPrefix + "-" + name1
+	prefixedName2 := randomPrefix + "-" + name2
+
 	return `
 resource "apono_access_scope" "test1" {
-  name  = "` + name1 + `"
+  name  = "` + prefixedName1 + `"
   query = <<EOT
   ` + query + `
   EOT
 }
 
 resource "apono_access_scope" "test2" {
-  name  = "` + name2 + `"
+  name  = "` + prefixedName2 + `"
   query = <<EOT
   ` + query + `
   EOT
@@ -64,7 +69,7 @@ resource "apono_access_scope" "test2" {
 
 # Use depends_on to ensure resources are created before data sources are queried
 data "apono_access_scopes" "exact" {
-  name = "` + name1 + `"
+  name = "` + prefixedName1 + `"
   depends_on = [
     apono_access_scope.test1,
     apono_access_scope.test2
@@ -72,7 +77,7 @@ data "apono_access_scopes" "exact" {
 }
 
 data "apono_access_scopes" "wildcard" {
-  name = "tf-acc-test*"
+  name = "` + randomPrefix + `*"
   depends_on = [
     apono_access_scope.test1,
     apono_access_scope.test2
