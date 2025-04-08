@@ -2,27 +2,45 @@ package common
 
 import (
 	"context"
-	"fmt"
+	"sort"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 )
 
-// GetAccessScopeByName retrieves an access scope by its name.
-func GetAccessScopeByName(ctx context.Context, apiClient client.Invoker, name string) (*client.AccessScopeV1, error) {
-	params := client.ListAccessScopesV1Params{}
-	params.Name.SetTo(name)
+// GetAccessScopeByName retrieves all access scopes matching the given name.
+func GetAccessScopeByName(ctx context.Context, apiClient client.Invoker, name string) ([]client.AccessScopeV1, error) {
+	results := []client.AccessScopeV1{}
+	pageToken := ""
 
-	response, err := apiClient.ListAccessScopesV1(ctx, params)
-	if err != nil {
-		return nil, fmt.Errorf("failed to list access scopes: %w", err)
-	}
+	for {
+		params := client.ListAccessScopesV1Params{}
 
-	if response != nil && len(response.Items) > 0 {
-		if len(response.Items) > 1 {
-			return nil, fmt.Errorf("multiple access scopes found with name: %s", name)
+		if name != "" {
+			params.Name.SetTo(name)
 		}
-		return &response.Items[0], nil
+
+		if pageToken != "" {
+			params.PageToken.SetTo(pageToken)
+		}
+
+		resp, err := apiClient.ListAccessScopesV1(ctx, params)
+		if err != nil {
+			return nil, err
+		}
+
+		results = append(results, resp.Items...)
+
+		if resp.Pagination.NextPageToken.Value == "" {
+			break
+		}
+
+		pageToken = resp.Pagination.NextPageToken.Value
 	}
 
-	return nil, NewNotFoundByNameError("access scope", name)
+	// Sort results by name before returning
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].Name < results[j].Name
+	})
+
+	return results, nil
 }

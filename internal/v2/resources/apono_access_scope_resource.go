@@ -28,12 +28,6 @@ type AponoAccessScopeResource struct {
 	client client.Invoker
 }
 
-type accessScopeResourceModel struct {
-	ID    types.String `tfsdk:"id"`
-	Name  types.String `tfsdk:"name"`
-	Query types.String `tfsdk:"query"`
-}
-
 func (r *AponoAccessScopeResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_access_scope"
 }
@@ -66,7 +60,7 @@ func (r *AponoAccessScopeResource) Configure(ctx context.Context, req resource.C
 }
 
 func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan accessScopeResourceModel
+	var plan common.AccessScopeModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -100,7 +94,7 @@ func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.Crea
 }
 
 func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state accessScopeResourceModel
+	var state common.AccessScopeModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -126,14 +120,14 @@ func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRe
 }
 
 func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var state accessScopeResourceModel
+	var state common.AccessScopeModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	var plan accessScopeResourceModel
+	var plan common.AccessScopeModel
 	diags = req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -169,7 +163,7 @@ func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.Upda
 }
 
 func (r *AponoAccessScopeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state accessScopeResourceModel
+	var state common.AccessScopeModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -192,8 +186,8 @@ func (r *AponoAccessScopeResource) ImportState(ctx context.Context, req resource
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-func accessScopeApiToModel(accessScope *client.AccessScopeV1) *accessScopeResourceModel {
-	return &accessScopeResourceModel{
+func accessScopeApiToModel(accessScope *client.AccessScopeV1) *common.AccessScopeModel {
+	return &common.AccessScopeModel{
 		ID:    types.StringValue(accessScope.ID),
 		Name:  types.StringValue(accessScope.Name),
 		Query: types.StringValue(accessScope.Query),
