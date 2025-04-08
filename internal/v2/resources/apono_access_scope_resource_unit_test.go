@@ -16,16 +16,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func getStateType() tftypes.Object {
-	return tftypes.Object{
-		AttributeTypes: map[string]tftypes.Type{
-			"id":    tftypes.String,
-			"name":  tftypes.String,
-			"query": tftypes.String,
-		},
-	}
-}
-
 func TestAponoAccessScopeResource_Unit(t *testing.T) {
 	mockInvoker := mocks.NewInvoker(t)
 	r := &AponoAccessScopeResource{client: mockInvoker}
@@ -180,4 +170,14 @@ func (r *AponoAccessScopeResource) getTestSchema(ctx context.Context) schema.Sch
 	var resp resource.SchemaResponse
 	r.Schema(ctx, resource.SchemaRequest{}, &resp)
 	return resp.Schema
+}
+
+func getStateType() tftypes.Object {
+	return tftypes.Object{
+		AttributeTypes: map[string]tftypes.Type{
+			"id":    tftypes.String,
+			"name":  tftypes.String,
+			"query": tftypes.String,
+		},
+	}
 }
