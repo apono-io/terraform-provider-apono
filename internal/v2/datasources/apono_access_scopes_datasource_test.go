@@ -18,6 +18,7 @@ func TestAccAponoAccessScopesDataSource(t *testing.T) {
 
 	query := `integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"`
 
+	// Create random prefix for wildcard match.
 	randomPrefix := acctest.RandomWithPrefix("tf-acc-test-prefix")
 
 	resource.Test(t, resource.TestCase{
