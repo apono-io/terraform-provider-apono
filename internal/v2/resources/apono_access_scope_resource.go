@@ -55,7 +55,7 @@ func (r *AponoAccessScopeResource) Schema(_ context.Context, _ resource.SchemaRe
 }
 
 func (r *AponoAccessScopeResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	common.ConfigureClientInvoker(ctx, req, resp, &r.client)
+	common.ConfigureResourceClientInvoker(ctx, req, resp, &r.client)
 }
 
 func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {

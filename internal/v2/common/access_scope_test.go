@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetAccessScopeByName(t *testing.T) {
+func TestListAccessScopesByName(t *testing.T) {
 	ctx := t.Context()
 
 	tests := []struct {
@@ -127,7 +127,7 @@ func TestGetAccessScopeByName(t *testing.T) {
 			mockClient := new(mocks.Invoker)
 			tc.setupMock(mockClient)
 
-			scopes, err := GetAccessScopeByName(ctx, mockClient, tc.scopeName)
+			scopes, err := ListAccessScopesByName(ctx, mockClient, tc.scopeName)
 
 			if tc.expectError {
 				assert.Error(t, err)

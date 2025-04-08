@@ -64,7 +64,7 @@ func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.Sch
 }
 
 func (d *AponoAccessScopesDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
-	common.ConfigureClientInvoker(ctx, req, resp, &d.client)
+	common.ConfigureDataSourceClientInvoker(ctx, req, resp, &d.client)
 }
 
 func (d *AponoAccessScopesDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -84,7 +84,7 @@ func (d *AponoAccessScopesDataSource) Read(ctx context.Context, req datasource.R
 		"name_filter": name,
 	})
 
-	accessScopes, err := common.GetAccessScopeByName(ctx, d.client, name)
+	accessScopes, err := common.ListAccessScopesByName(ctx, d.client, name)
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving access scopes", fmt.Sprintf("Could not retrieve access scopes: %v", err))
 		return

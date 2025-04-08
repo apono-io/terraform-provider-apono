@@ -30,8 +30,8 @@ func AccessScopesToModels(apiScopes []client.AccessScopeV1) []AccessScopeModel {
 	return result
 }
 
-// GetAccessScopeByName retrieves all access scopes matching the given name.
-func GetAccessScopeByName(ctx context.Context, apiClient client.Invoker, name string) ([]client.AccessScopeV1, error) {
+// ListAccessScopesByName retrieves all access scopes matching the given name.
+func ListAccessScopesByName(ctx context.Context, apiClient client.Invoker, name string) ([]client.AccessScopeV1, error) {
 	results := []client.AccessScopeV1{}
 	pageToken := ""
 
