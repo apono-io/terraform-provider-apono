@@ -86,6 +86,7 @@ jobs:
       - run: go mod download
       - env:
           TF_ACC: "1"
+          APONO_PERSONAL_TOKEN: ${{ secrets.TERRAFORM_TEST_ACCOUNT_PERSONAL_TOKEN }}
         run: go test -v -cover ./...
         timeout-minutes: 10
   e2e-tests:
