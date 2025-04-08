@@ -1,7 +1,6 @@
 package common
 
 import (
-	"context"
 	"testing"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
@@ -10,7 +9,7 @@ import (
 )
 
 func TestGetAccessScopeByName(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 
 	tests := []struct {
 		name           string

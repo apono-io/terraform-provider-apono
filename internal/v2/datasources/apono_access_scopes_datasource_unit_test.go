@@ -50,7 +50,8 @@ func TestAponoAccessScopesDataSource_Unit(t *testing.T) {
 		ctx := t.Context()
 		configType := getConfigType()
 		accessScopesAttr := d.getTestSchema(ctx).Attributes["access_scopes"]
-		accessScopesType := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
+		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
+		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
 			"name":          tftypes.NewValue(tftypes.String, nil),
@@ -111,7 +112,8 @@ func TestAponoAccessScopesDataSource_Unit(t *testing.T) {
 		ctx := t.Context()
 		configType := getConfigType()
 		accessScopesAttr := d.getTestSchema(ctx).Attributes["access_scopes"]
-		accessScopesType := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
+		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
+		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
 			"name":          tftypes.NewValue(tftypes.String, "filtered*"),
@@ -150,7 +152,8 @@ func TestAponoAccessScopesDataSource_Unit(t *testing.T) {
 		ctx := t.Context()
 		configType := getConfigType()
 		accessScopesAttr := d.getTestSchema(ctx).Attributes["access_scopes"]
-		accessScopesType := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
+		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
+		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
 			"name":          tftypes.NewValue(tftypes.String, nil),
