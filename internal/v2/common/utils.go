@@ -5,21 +5,43 @@ import (
 	"fmt"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 )
 
-// ConfigureClientInvoker sets up the client.Invoker from the provider data.
-// It's a common utility function to be used in ResourceWithConfigure  DataSourceWithConfigure implementations.
-func ConfigureClientInvoker(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse, target *client.Invoker) {
-	if req.ProviderData == nil {
+// ConfigureResourceClientInvoker sets up the client.Invoker from the provider data for resources.
+func ConfigureResourceClientInvoker(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse, target *client.Invoker) {
+	providerData := req.ProviderData
+
+	if providerData == nil {
 		return
 	}
 
-	clientProvider, ok := req.ProviderData.(client.ClientProvider)
+	clientProvider, ok := providerData.(client.ClientProvider)
 	if !ok {
 		resp.Diagnostics.AddError(
-			"Unexpected Resource or Datasource Configure Type",
-			fmt.Sprintf("Expected client.ClientProvider, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			"Unexpected Configure Type",
+			fmt.Sprintf("Expected client.ClientProvider, got: %T. Please report this issue to the provider developers.", providerData),
+		)
+		return
+	}
+
+	*target = clientProvider.PublicClient()
+}
+
+// ConfigureDataSourceClientInvoker sets up the client.Invoker from the provider data for data sources.
+func ConfigureDataSourceClientInvoker(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse, target *client.Invoker) {
+	providerData := req.ProviderData
+
+	if providerData == nil {
+		return
+	}
+
+	clientProvider, ok := providerData.(client.ClientProvider)
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Configure Type",
+			fmt.Sprintf("Expected client.ClientProvider, got: %T. Please report this issue to the provider developers.", providerData),
 		)
 		return
 	}

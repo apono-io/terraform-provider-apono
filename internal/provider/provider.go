@@ -10,6 +10,7 @@ import (
 	"github.com/apono-io/apono-sdk-go"
 	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	v2client "github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	v2datasources "github.com/apono-io/terraform-provider-apono/internal/v2/datasources"
 	v2resources "github.com/apono-io/terraform-provider-apono/internal/v2/resources"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -195,6 +196,7 @@ func (p *AponoProvider) DataSources(_ context.Context) []func() datasource.DataS
 	return []func() datasource.DataSource{
 		NewConnectorDataSource,
 		NewIntegrationsDataSource,
+		v2datasources.NewAponoAccessScopesDataSource,
 	}
 }
 

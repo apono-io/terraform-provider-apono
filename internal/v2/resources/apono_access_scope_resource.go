@@ -5,13 +5,13 @@ import (
 	"fmt"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/api/services"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -26,12 +26,6 @@ func NewAponoAccessScopeResource() resource.Resource {
 
 type AponoAccessScopeResource struct {
 	client client.Invoker
-}
-
-type accessScopeResourceModel struct {
-	ID    types.String `tfsdk:"id"`
-	Name  types.String `tfsdk:"name"`
-	Query types.String `tfsdk:"query"`
 }
 
 func (r *AponoAccessScopeResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,11 +56,11 @@ func (r *AponoAccessScopeResource) Schema(_ context.Context, _ resource.SchemaRe
 }
 
 func (r *AponoAccessScopeResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
-	common.ConfigureClientInvoker(ctx, req, resp, &r.client)
+	common.ConfigureResourceClientInvoker(ctx, req, resp, &r.client)
 }
 
 func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan accessScopeResourceModel
+	var plan services.AccessScopeModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -89,7 +83,7 @@ func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	result := accessScopeApiToModel(accessScope)
+	result := services.AccessScopeToModel(accessScope)
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -100,7 +94,7 @@ func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.Crea
 }
 
 func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state accessScopeResourceModel
+	var state services.AccessScopeModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -117,7 +111,7 @@ func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	result := accessScopeApiToModel(accessScope)
+	result := services.AccessScopeToModel(accessScope)
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -126,14 +120,14 @@ func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRe
 }
 
 func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var state accessScopeResourceModel
+	var state services.AccessScopeModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	var plan accessScopeResourceModel
+	var plan services.AccessScopeModel
 	diags = req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -158,7 +152,7 @@ func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	result := accessScopeApiToModel(accessScope)
+	result := services.AccessScopeToModel(accessScope)
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -169,7 +163,7 @@ func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.Upda
 }
 
 func (r *AponoAccessScopeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state accessScopeResourceModel
+	var state services.AccessScopeModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -190,12 +184,4 @@ func (r *AponoAccessScopeResource) Delete(ctx context.Context, req resource.Dele
 
 func (r *AponoAccessScopeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-func accessScopeApiToModel(accessScope *client.AccessScopeV1) *accessScopeResourceModel {
-	return &accessScopeResourceModel{
-		ID:    types.StringValue(accessScope.ID),
-		Name:  types.StringValue(accessScope.Name),
-		Query: types.StringValue(accessScope.Query),
-	}
 }
