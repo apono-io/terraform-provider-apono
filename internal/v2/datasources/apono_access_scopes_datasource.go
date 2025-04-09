@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/api/services"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -23,8 +24,8 @@ type AponoAccessScopesDataSource struct {
 }
 
 type accessScopesDataSourceModel struct {
-	Name         types.String              `tfsdk:"name"`
-	AccessScopes []common.AccessScopeModel `tfsdk:"access_scopes"`
+	Name         types.String                `tfsdk:"name"`
+	AccessScopes []services.AccessScopeModel `tfsdk:"access_scopes"`
 }
 
 func (d *AponoAccessScopesDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -84,13 +85,13 @@ func (d *AponoAccessScopesDataSource) Read(ctx context.Context, req datasource.R
 		"name_filter": name,
 	})
 
-	accessScopes, err := common.ListAccessScopesByName(ctx, d.client, name)
+	accessScopes, err := services.ListAccessScopesByName(ctx, d.client, name)
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving access scopes", fmt.Sprintf("Could not retrieve access scopes: %v", err))
 		return
 	}
 
-	config.AccessScopes = common.AccessScopesToModels(accessScopes)
+	config.AccessScopes = services.AccessScopesToModels(accessScopes)
 
 	diags = resp.State.Set(ctx, config)
 	resp.Diagnostics.Append(diags...)

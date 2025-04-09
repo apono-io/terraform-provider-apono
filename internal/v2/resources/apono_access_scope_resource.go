@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/api/services"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -59,7 +60,7 @@ func (r *AponoAccessScopeResource) Configure(ctx context.Context, req resource.C
 }
 
 func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan common.AccessScopeModel
+	var plan services.AccessScopeModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -82,7 +83,7 @@ func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	result := common.AccessScopeToModel(accessScope)
+	result := services.AccessScopeToModel(accessScope)
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -93,7 +94,7 @@ func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.Crea
 }
 
 func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state common.AccessScopeModel
+	var state services.AccessScopeModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -110,7 +111,7 @@ func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	result := common.AccessScopeToModel(accessScope)
+	result := services.AccessScopeToModel(accessScope)
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -119,14 +120,14 @@ func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRe
 }
 
 func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var state common.AccessScopeModel
+	var state services.AccessScopeModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	var plan common.AccessScopeModel
+	var plan services.AccessScopeModel
 	diags = req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -151,7 +152,7 @@ func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	result := common.AccessScopeToModel(accessScope)
+	result := services.AccessScopeToModel(accessScope)
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -162,7 +163,7 @@ func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.Upda
 }
 
 func (r *AponoAccessScopeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state common.AccessScopeModel
+	var state services.AccessScopeModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

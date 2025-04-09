@@ -6,7 +6,7 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/mocks"
-	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/api/services"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
@@ -51,7 +51,7 @@ func TestAponoAccessScopeResource_Unit(t *testing.T) {
 		r.Create(ctx, req, &resp)
 
 		require.False(t, resp.Diagnostics.HasError())
-		var stateVal common.AccessScopeModel
+		var stateVal services.AccessScopeModel
 		diags := resp.State.Get(ctx, &stateVal)
 		require.False(t, diags.HasError())
 
@@ -89,7 +89,7 @@ func TestAponoAccessScopeResource_Unit(t *testing.T) {
 		r.Read(ctx, req, &resp)
 
 		require.False(t, resp.Diagnostics.HasError())
-		var stateModel common.AccessScopeModel
+		var stateModel services.AccessScopeModel
 		diags := resp.State.Get(ctx, &stateModel)
 		require.False(t, diags.HasError())
 
@@ -157,7 +157,7 @@ func TestAponoAccessScopeResource_Unit(t *testing.T) {
 		r.Read(ctx, readReq, &readResp)
 
 		require.False(t, readResp.Diagnostics.HasError())
-		var stateModel common.AccessScopeModel
+		var stateModel services.AccessScopeModel
 		diags := readResp.State.Get(ctx, &stateModel)
 		require.False(t, diags.HasError())
 
