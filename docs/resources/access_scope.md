@@ -16,9 +16,7 @@ Manages an Apono Access Scope.
 resource "apono_access_scope" "production_databases" {
   name  = "production-databases"
   query = <<EOT
-  integration = "aws-integration-id" and 
-  resource_type = "rds-instance" and 
-  tag:Environment = "production"
+integration_id = "aws-integration-id" AND resource_type = "rds-instance" AND tags.Environment = "production"
   EOT
 }
 ```
