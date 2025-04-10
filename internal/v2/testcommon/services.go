@@ -9,7 +9,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 )
 
-// Helper function to get test users from the API
+// Helper function to get test users from the API.
 func GetUsers(t *testing.T) ([]client.UserModel, error) {
 	// Create a client using the provider's configuration
 	c := GetTestClient(t)

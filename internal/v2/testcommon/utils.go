@@ -1,7 +1,6 @@
 package testcommon
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"testing"
@@ -28,13 +27,13 @@ func TestAccPreCheck(t *testing.T) {
 	}
 }
 
-// GetTestClient creates a new (real) Apono API client for acceptence testing.
+// GetTestClient creates a new (real) Apono API client for acceptance testing.
 func GetTestClient(t *testing.T) *v2client.Client {
 	baseURL := "https://api.apono.io"
 
 	transport := &v2client.DebugTransport{
 		Transport: &v2client.UserAgentTransport{
-			UserAgent: fmt.Sprintf("terraform-provider-apono/test"),
+			UserAgent: "terraform-provider-apono/test",
 			Transport: http.DefaultTransport,
 		},
 	}

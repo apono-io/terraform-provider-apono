@@ -13,7 +13,6 @@ func TestAccAponoGroup_basic(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-test")
 	resourceName := "apono_group.test"
 
-	// Get real users from the system for testing
 	users, err := testcommon.GetUsers(t)
 	if err != nil {
 		t.Errorf("Error getting test users: %v", err)
@@ -25,10 +24,8 @@ func TestAccAponoGroup_basic(t *testing.T) {
 		return
 	}
 
-	// Updated name for second step
 	updatedName := rName + "-updated"
 
-	// Creates the initial Terraform configuration for a group
 	testAccAponoGroupConfig := func(name string, members []string) string {
 		membersStr := ""
 		for _, member := range members {
@@ -44,7 +41,6 @@ resource "apono_group" "test" {
 `, name, membersStr)
 	}
 
-	// Creates the updated Terraform configuration for a group
 	testAccAponoGroupConfigUpdated := func(name string, members []string) string {
 		membersStr := ""
 		for _, member := range members {
@@ -65,7 +61,6 @@ resource "apono_group" "test" {
 		ProtoV6ProviderFactories: testcommon.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				// Initial creation with one user
 				Config: testAccAponoGroupConfig(rName, []string{users[0].Email}),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
@@ -75,7 +70,6 @@ resource "apono_group" "test" {
 				),
 			},
 			{
-				// Update name and add second user
 				Config: testAccAponoGroupConfigUpdated(updatedName, []string{users[0].Email, users[1].Email}),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
@@ -86,7 +80,6 @@ resource "apono_group" "test" {
 				),
 			},
 			{
-				// Test import by ID
 				ResourceName:      resourceName,
 				ImportState:       true,
 				ImportStateVerify: true,
