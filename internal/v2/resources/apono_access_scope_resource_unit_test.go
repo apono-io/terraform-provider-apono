@@ -17,7 +17,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAponoAccessScopeResource_Unit(t *testing.T) {
+func TestAponoAccessScopeResource(t *testing.T) {
 	mockInvoker := mocks.NewInvoker(t)
 	r := &AponoAccessScopeResource{client: mockInvoker}
 
