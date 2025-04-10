@@ -1,12 +1,16 @@
 package testcommon
 
 import (
+	"fmt"
+	"net/http"
 	"os"
 	"testing"
 
 	"github.com/apono-io/terraform-provider-apono/internal/provider"
+	v2client "github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+	"github.com/stretchr/testify/require"
 )
 
 // TestAccProtoV6ProviderFactories are used to instantiate a provider during
@@ -22,4 +26,34 @@ func TestAccPreCheck(t *testing.T) {
 	if v := os.Getenv("APONO_PERSONAL_TOKEN"); v == "" {
 		t.Fatal("APONO_PERSONAL_TOKEN must be set for acceptance tests")
 	}
+}
+
+// GetTestClient creates a new (real) Apono API client for acceptence testing.
+func GetTestClient(t *testing.T) *v2client.Client {
+	baseURL := "https://api.apono.io"
+
+	transport := &v2client.DebugTransport{
+		Transport: &v2client.UserAgentTransport{
+			UserAgent: fmt.Sprintf("terraform-provider-apono/test"),
+			Transport: http.DefaultTransport,
+		},
+	}
+
+	httpClient := &http.Client{
+		Transport: transport,
+	}
+
+	token := os.Getenv("APONO_PERSONAL_TOKEN")
+	require.NotEmpty(t, token, "APONO_PERSONAL_TOKEN must be set for acceptance tests")
+
+	securitySource := v2client.NewTokenSecuritySource(token)
+
+	client, err := v2client.NewClient(
+		baseURL,
+		securitySource,
+		v2client.WithClient(httpClient),
+	)
+	require.NoError(t, err, "Failed to create client")
+
+	return client
 }

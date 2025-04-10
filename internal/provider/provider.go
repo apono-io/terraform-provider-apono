@@ -140,7 +140,7 @@ func (p *AponoProvider) Configure(ctx context.Context, req provider.ConfigureReq
 
 	p.publicClient = v2Client
 
-	tflog.Debug(ctx, "Provider configuration complete", map[string]interface{}{
+	tflog.Debug(ctx, "Provider configuration complete", map[string]any{
 		"endpoint": endpoint,
 	})
 
@@ -152,7 +152,7 @@ func (p *AponoProvider) initializeV2Client(endpointUrl *url.URL, token string) (
 	baseURL := fmt.Sprintf("%s://%s", endpointUrl.Scheme, endpointUrl.Host)
 
 	transport := &v2client.DebugTransport{
-		Transport: &UserAgentTransport{
+		Transport: &v2client.UserAgentTransport{
 			UserAgent: fmt.Sprintf("terraform-provider-apono/%s", p.version),
 			Transport: http.DefaultTransport,
 		},
@@ -171,17 +171,6 @@ func (p *AponoProvider) initializeV2Client(endpointUrl *url.URL, token string) (
 	)
 }
 
-// UserAgentTransport adds User-Agent header to requests.
-type UserAgentTransport struct {
-	UserAgent string
-	Transport http.RoundTripper
-}
-
-func (t *UserAgentTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.Header.Set("User-Agent", t.UserAgent)
-	return t.Transport.RoundTrip(req)
-}
-
 func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewIntegrationResource,
@@ -189,6 +178,7 @@ func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewAccessBundleResource,
 		NewWebhookResource,
 		v2resources.NewAponoAccessScopeResource,
+		v2resources.NewAponoGroupResource,
 	}
 }
 
