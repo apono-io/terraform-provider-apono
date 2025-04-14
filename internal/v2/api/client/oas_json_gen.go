@@ -7380,6 +7380,351 @@ func (s *Connector) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
+func (s *ConnectorActionParamsModel) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *ConnectorActionParamsModel) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("integration_type")
+		e.Str(s.IntegrationType)
+	}
+	{
+		if s.IntegrationMetadata.Set {
+			e.FieldStart("integration_metadata")
+			s.IntegrationMetadata.Encode(e)
+		}
+	}
+	{
+		if s.SecretConfig.Set {
+			e.FieldStart("secret_config")
+			s.SecretConfig.Encode(e)
+		}
+	}
+	{
+		if s.ProviderName.Set {
+			e.FieldStart("provider_name")
+			s.ProviderName.Encode(e)
+		}
+	}
+	{
+		e.FieldStart("action")
+		e.Str(s.Action)
+	}
+	{
+		e.FieldStart("params")
+		s.Params.Encode(e)
+	}
+	{
+		e.FieldStart("force_reload_secret_cache")
+		e.Bool(s.ForceReloadSecretCache)
+	}
+	{
+		e.FieldStart("timeout")
+		e.Int64(s.Timeout)
+	}
+}
+
+var jsonFieldsNameOfConnectorActionParamsModel = [8]string{
+	0: "integration_type",
+	1: "integration_metadata",
+	2: "secret_config",
+	3: "provider_name",
+	4: "action",
+	5: "params",
+	6: "force_reload_secret_cache",
+	7: "timeout",
+}
+
+// Decode decodes ConnectorActionParamsModel from json.
+func (s *ConnectorActionParamsModel) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ConnectorActionParamsModel to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "integration_type":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.IntegrationType = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"integration_type\"")
+			}
+		case "integration_metadata":
+			if err := func() error {
+				s.IntegrationMetadata.Reset()
+				if err := s.IntegrationMetadata.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"integration_metadata\"")
+			}
+		case "secret_config":
+			if err := func() error {
+				s.SecretConfig.Reset()
+				if err := s.SecretConfig.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"secret_config\"")
+			}
+		case "provider_name":
+			if err := func() error {
+				s.ProviderName.Reset()
+				if err := s.ProviderName.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"provider_name\"")
+			}
+		case "action":
+			requiredBitSet[0] |= 1 << 4
+			if err := func() error {
+				v, err := d.Str()
+				s.Action = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"action\"")
+			}
+		case "params":
+			requiredBitSet[0] |= 1 << 5
+			if err := func() error {
+				if err := s.Params.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"params\"")
+			}
+		case "force_reload_secret_cache":
+			requiredBitSet[0] |= 1 << 6
+			if err := func() error {
+				v, err := d.Bool()
+				s.ForceReloadSecretCache = bool(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"force_reload_secret_cache\"")
+			}
+		case "timeout":
+			requiredBitSet[0] |= 1 << 7
+			if err := func() error {
+				v, err := d.Int64()
+				s.Timeout = int64(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"timeout\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode ConnectorActionParamsModel")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b11110001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfConnectorActionParamsModel) {
+					name = jsonFieldsNameOfConnectorActionParamsModel[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *ConnectorActionParamsModel) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ConnectorActionParamsModel) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *ConnectorActionParamsModelIntegrationMetadata) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *ConnectorActionParamsModelIntegrationMetadata) encodeFields(e *jx.Encoder) {
+}
+
+var jsonFieldsNameOfConnectorActionParamsModelIntegrationMetadata = [0]string{}
+
+// Decode decodes ConnectorActionParamsModelIntegrationMetadata from json.
+func (s *ConnectorActionParamsModelIntegrationMetadata) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ConnectorActionParamsModelIntegrationMetadata to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		default:
+			return d.Skip()
+		}
+	}); err != nil {
+		return errors.Wrap(err, "decode ConnectorActionParamsModelIntegrationMetadata")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *ConnectorActionParamsModelIntegrationMetadata) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ConnectorActionParamsModelIntegrationMetadata) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *ConnectorActionParamsModelParams) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *ConnectorActionParamsModelParams) encodeFields(e *jx.Encoder) {
+}
+
+var jsonFieldsNameOfConnectorActionParamsModelParams = [0]string{}
+
+// Decode decodes ConnectorActionParamsModelParams from json.
+func (s *ConnectorActionParamsModelParams) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ConnectorActionParamsModelParams to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		default:
+			return d.Skip()
+		}
+	}); err != nil {
+		return errors.Wrap(err, "decode ConnectorActionParamsModelParams")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *ConnectorActionParamsModelParams) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ConnectorActionParamsModelParams) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *ConnectorActionParamsModelSecretConfig) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *ConnectorActionParamsModelSecretConfig) encodeFields(e *jx.Encoder) {
+}
+
+var jsonFieldsNameOfConnectorActionParamsModelSecretConfig = [0]string{}
+
+// Decode decodes ConnectorActionParamsModelSecretConfig from json.
+func (s *ConnectorActionParamsModelSecretConfig) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ConnectorActionParamsModelSecretConfig to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		default:
+			return d.Skip()
+		}
+	}); err != nil {
+		return errors.Wrap(err, "decode ConnectorActionParamsModelSecretConfig")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *ConnectorActionParamsModelSecretConfig) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ConnectorActionParamsModelSecretConfig) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *ConnectorV3) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -9923,14 +10268,19 @@ func (s *EntitlementPermissionV4) encodeFields(e *jx.Encoder) {
 		e.Str(s.ID)
 	}
 	{
+		e.FieldStart("source_id")
+		e.Str(s.SourceID)
+	}
+	{
 		e.FieldStart("name")
 		e.Str(s.Name)
 	}
 }
 
-var jsonFieldsNameOfEntitlementPermissionV4 = [2]string{
+var jsonFieldsNameOfEntitlementPermissionV4 = [3]string{
 	0: "id",
-	1: "name",
+	1: "source_id",
+	2: "name",
 }
 
 // Decode decodes EntitlementPermissionV4 from json.
@@ -9954,8 +10304,20 @@ func (s *EntitlementPermissionV4) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"id\"")
 			}
-		case "name":
+		case "source_id":
 			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.SourceID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"source_id\"")
+			}
+		case "name":
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Str()
 				s.Name = string(v)
@@ -9976,7 +10338,7 @@ func (s *EntitlementPermissionV4) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000011,
+		0b00000111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -10163,6 +10525,216 @@ func (s *EntitlementResourceV4) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *EntitlementResourceV4) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("request_id")
+		e.Str(s.RequestID)
+	}
+	{
+		e.FieldStart("friendly_request_id")
+		e.Str(s.FriendlyRequestID)
+	}
+	{
+		e.FieldStart("username")
+		e.Str(s.Username)
+	}
+	{
+		e.FieldStart("integration_id")
+		e.Str(s.IntegrationID)
+	}
+	{
+		e.FieldStart("resource_type")
+		e.Str(s.ResourceType)
+	}
+	{
+		e.FieldStart("resource_source_ids")
+		e.ArrStart()
+		for _, elem := range s.ResourceSourceIds {
+			e.Str(elem)
+		}
+		e.ArrEnd()
+	}
+	{
+		e.FieldStart("permission_source_id")
+		e.Str(s.PermissionSourceID)
+	}
+}
+
+var jsonFieldsNameOfGetGrantRevokeAccessConnectorActionParamsModel = [7]string{
+	0: "request_id",
+	1: "friendly_request_id",
+	2: "username",
+	3: "integration_id",
+	4: "resource_type",
+	5: "resource_source_ids",
+	6: "permission_source_id",
+}
+
+// Decode decodes GetGrantRevokeAccessConnectorActionParamsModel from json.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode GetGrantRevokeAccessConnectorActionParamsModel to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "request_id":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.RequestID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"request_id\"")
+			}
+		case "friendly_request_id":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.FriendlyRequestID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"friendly_request_id\"")
+			}
+		case "username":
+			requiredBitSet[0] |= 1 << 2
+			if err := func() error {
+				v, err := d.Str()
+				s.Username = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"username\"")
+			}
+		case "integration_id":
+			requiredBitSet[0] |= 1 << 3
+			if err := func() error {
+				v, err := d.Str()
+				s.IntegrationID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"integration_id\"")
+			}
+		case "resource_type":
+			requiredBitSet[0] |= 1 << 4
+			if err := func() error {
+				v, err := d.Str()
+				s.ResourceType = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"resource_type\"")
+			}
+		case "resource_source_ids":
+			requiredBitSet[0] |= 1 << 5
+			if err := func() error {
+				s.ResourceSourceIds = make([]string, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem string
+					v, err := d.Str()
+					elem = string(v)
+					if err != nil {
+						return err
+					}
+					s.ResourceSourceIds = append(s.ResourceSourceIds, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"resource_source_ids\"")
+			}
+		case "permission_source_id":
+			requiredBitSet[0] |= 1 << 6
+			if err := func() error {
+				v, err := d.Str()
+				s.PermissionSourceID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"permission_source_id\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode GetGrantRevokeAccessConnectorActionParamsModel")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b01111111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfGetGrantRevokeAccessConnectorActionParamsModel) {
+					name = jsonFieldsNameOfGetGrantRevokeAccessConnectorActionParamsModel[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -12625,6 +13197,10 @@ func (s *IntegrationV4) encodeFields(e *jx.Encoder) {
 		e.Str(s.Type)
 	}
 	{
+		e.FieldStart("category")
+		e.Str(s.Category)
+	}
+	{
 		if s.ConnectorID.Set {
 			e.FieldStart("connector_id")
 			s.ConnectorID.Encode(e)
@@ -12688,21 +13264,22 @@ func (s *IntegrationV4) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfIntegrationV4 = [14]string{
+var jsonFieldsNameOfIntegrationV4 = [15]string{
 	0:  "id",
 	1:  "name",
 	2:  "type",
-	3:  "connector_id",
-	4:  "status",
-	5:  "last_sync_time",
-	6:  "integration_config",
-	7:  "secret_store_config",
-	8:  "connected_resource_types",
-	9:  "custom_access_details",
-	10: "user_cleanup_period_in_days",
-	11: "credentials_rotation_period_in_days",
-	12: "owner",
-	13: "owners_mapping",
+	3:  "category",
+	4:  "connector_id",
+	5:  "status",
+	6:  "last_sync_time",
+	7:  "integration_config",
+	8:  "secret_store_config",
+	9:  "connected_resource_types",
+	10: "custom_access_details",
+	11: "user_cleanup_period_in_days",
+	12: "credentials_rotation_period_in_days",
+	13: "owner",
+	14: "owners_mapping",
 }
 
 // Decode decodes IntegrationV4 from json.
@@ -12750,6 +13327,18 @@ func (s *IntegrationV4) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"type\"")
 			}
+		case "category":
+			requiredBitSet[0] |= 1 << 3
+			if err := func() error {
+				v, err := d.Str()
+				s.Category = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"category\"")
+			}
 		case "connector_id":
 			if err := func() error {
 				s.ConnectorID.Reset()
@@ -12761,7 +13350,7 @@ func (s *IntegrationV4) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"connector_id\"")
 			}
 		case "status":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				v, err := d.Str()
 				s.Status = string(v)
@@ -12783,7 +13372,7 @@ func (s *IntegrationV4) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"last_sync_time\"")
 			}
 		case "integration_config":
-			requiredBitSet[0] |= 1 << 6
+			requiredBitSet[0] |= 1 << 7
 			if err := func() error {
 				if err := s.IntegrationConfig.Decode(d); err != nil {
 					return err
@@ -12872,7 +13461,7 @@ func (s *IntegrationV4) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [2]uint8{
-		0b01010111,
+		0b10101111,
 		0b00000000,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
@@ -14224,6 +14813,74 @@ func (s *MessageResponse) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *MessageResponse) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes *ConnectorActionParamsModelIntegrationMetadata as json.
+func (o OptConnectorActionParamsModelIntegrationMetadata) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes *ConnectorActionParamsModelIntegrationMetadata from json.
+func (o *OptConnectorActionParamsModelIntegrationMetadata) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptConnectorActionParamsModelIntegrationMetadata to nil")
+	}
+	o.Set = true
+	o.Value = new(ConnectorActionParamsModelIntegrationMetadata)
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptConnectorActionParamsModelIntegrationMetadata) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptConnectorActionParamsModelIntegrationMetadata) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes *ConnectorActionParamsModelSecretConfig as json.
+func (o OptConnectorActionParamsModelSecretConfig) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes *ConnectorActionParamsModelSecretConfig from json.
+func (o *OptConnectorActionParamsModelSecretConfig) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptConnectorActionParamsModelSecretConfig to nil")
+	}
+	o.Set = true
+	o.Value = new(ConnectorActionParamsModelSecretConfig)
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptConnectorActionParamsModelSecretConfig) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptConnectorActionParamsModelSecretConfig) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

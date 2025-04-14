@@ -1945,6 +1945,65 @@ func (_c *Invoker_GetConnectorV3_Call) RunAndReturn(run func(context.Context, cl
 	return _c
 }
 
+// GetGrantAccessConnectorActionParams provides a mock function with given fields: ctx, request
+func (_m *Invoker) GetGrantAccessConnectorActionParams(ctx context.Context, request *client.GetGrantRevokeAccessConnectorActionParamsModel) (*client.ConnectorActionParamsModel, error) {
+	ret := _m.Called(ctx, request)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetGrantAccessConnectorActionParams")
+	}
+
+	var r0 *client.ConnectorActionParamsModel
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *client.GetGrantRevokeAccessConnectorActionParamsModel) (*client.ConnectorActionParamsModel, error)); ok {
+		return rf(ctx, request)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *client.GetGrantRevokeAccessConnectorActionParamsModel) *client.ConnectorActionParamsModel); ok {
+		r0 = rf(ctx, request)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.ConnectorActionParamsModel)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *client.GetGrantRevokeAccessConnectorActionParamsModel) error); ok {
+		r1 = rf(ctx, request)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_GetGrantAccessConnectorActionParams_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetGrantAccessConnectorActionParams'
+type Invoker_GetGrantAccessConnectorActionParams_Call struct {
+	*mock.Call
+}
+
+// GetGrantAccessConnectorActionParams is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *client.GetGrantRevokeAccessConnectorActionParamsModel
+func (_e *Invoker_Expecter) GetGrantAccessConnectorActionParams(ctx interface{}, request interface{}) *Invoker_GetGrantAccessConnectorActionParams_Call {
+	return &Invoker_GetGrantAccessConnectorActionParams_Call{Call: _e.mock.On("GetGrantAccessConnectorActionParams", ctx, request)}
+}
+
+func (_c *Invoker_GetGrantAccessConnectorActionParams_Call) Run(run func(ctx context.Context, request *client.GetGrantRevokeAccessConnectorActionParamsModel)) *Invoker_GetGrantAccessConnectorActionParams_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*client.GetGrantRevokeAccessConnectorActionParamsModel))
+	})
+	return _c
+}
+
+func (_c *Invoker_GetGrantAccessConnectorActionParams_Call) Return(_a0 *client.ConnectorActionParamsModel, _a1 error) *Invoker_GetGrantAccessConnectorActionParams_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_GetGrantAccessConnectorActionParams_Call) RunAndReturn(run func(context.Context, *client.GetGrantRevokeAccessConnectorActionParamsModel) (*client.ConnectorActionParamsModel, error)) *Invoker_GetGrantAccessConnectorActionParams_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetGroupV1 provides a mock function with given fields: ctx, params
 func (_m *Invoker) GetGroupV1(ctx context.Context, params client.GetGroupV1Params) (*client.GroupV1, error) {
 	ret := _m.Called(ctx, params)
@@ -2354,6 +2413,65 @@ func (_c *Invoker_GetResourceUserTags_Call) Return(_a0 *client.ResourceUserTagsR
 }
 
 func (_c *Invoker_GetResourceUserTags_Call) RunAndReturn(run func(context.Context, client.GetResourceUserTagsParams) (*client.ResourceUserTagsResponse, error)) *Invoker_GetResourceUserTags_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetRevokeAccessConnectorActionParams provides a mock function with given fields: ctx, request
+func (_m *Invoker) GetRevokeAccessConnectorActionParams(ctx context.Context, request *client.GetGrantRevokeAccessConnectorActionParamsModel) (*client.ConnectorActionParamsModel, error) {
+	ret := _m.Called(ctx, request)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetRevokeAccessConnectorActionParams")
+	}
+
+	var r0 *client.ConnectorActionParamsModel
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *client.GetGrantRevokeAccessConnectorActionParamsModel) (*client.ConnectorActionParamsModel, error)); ok {
+		return rf(ctx, request)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *client.GetGrantRevokeAccessConnectorActionParamsModel) *client.ConnectorActionParamsModel); ok {
+		r0 = rf(ctx, request)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.ConnectorActionParamsModel)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *client.GetGrantRevokeAccessConnectorActionParamsModel) error); ok {
+		r1 = rf(ctx, request)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_GetRevokeAccessConnectorActionParams_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetRevokeAccessConnectorActionParams'
+type Invoker_GetRevokeAccessConnectorActionParams_Call struct {
+	*mock.Call
+}
+
+// GetRevokeAccessConnectorActionParams is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *client.GetGrantRevokeAccessConnectorActionParamsModel
+func (_e *Invoker_Expecter) GetRevokeAccessConnectorActionParams(ctx interface{}, request interface{}) *Invoker_GetRevokeAccessConnectorActionParams_Call {
+	return &Invoker_GetRevokeAccessConnectorActionParams_Call{Call: _e.mock.On("GetRevokeAccessConnectorActionParams", ctx, request)}
+}
+
+func (_c *Invoker_GetRevokeAccessConnectorActionParams_Call) Run(run func(ctx context.Context, request *client.GetGrantRevokeAccessConnectorActionParamsModel)) *Invoker_GetRevokeAccessConnectorActionParams_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*client.GetGrantRevokeAccessConnectorActionParamsModel))
+	})
+	return _c
+}
+
+func (_c *Invoker_GetRevokeAccessConnectorActionParams_Call) Return(_a0 *client.ConnectorActionParamsModel, _a1 error) *Invoker_GetRevokeAccessConnectorActionParams_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_GetRevokeAccessConnectorActionParams_Call) RunAndReturn(run func(context.Context, *client.GetGrantRevokeAccessConnectorActionParamsModel) (*client.ConnectorActionParamsModel, error)) *Invoker_GetRevokeAccessConnectorActionParams_Call {
 	_c.Call.Return(run)
 	return _c
 }

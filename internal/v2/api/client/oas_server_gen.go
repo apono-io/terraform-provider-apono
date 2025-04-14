@@ -212,6 +212,12 @@ type Handler interface {
 	//
 	// GET /api/admin/v3/connectors/{id}
 	GetConnectorV3(ctx context.Context, params GetConnectorV3Params) (*ConnectorV3, error)
+	// GetGrantAccessConnectorActionParams implements getGrantAccessConnectorActionParams operation.
+	//
+	// Get grant-access connector action params.
+	//
+	// POST /api/v1/connector-action-params/grant-access
+	GetGrantAccessConnectorActionParams(ctx context.Context, req *GetGrantRevokeAccessConnectorActionParamsModel) (*ConnectorActionParamsModel, error)
 	// GetGroupV1 implements getGroupV1 operation.
 	//
 	// Get Group.
@@ -254,6 +260,12 @@ type Handler interface {
 	//
 	// GET /api/v3/integrations/resources/{resource_id}/user-tags
 	GetResourceUserTags(ctx context.Context, params GetResourceUserTagsParams) (*ResourceUserTagsResponse, error)
+	// GetRevokeAccessConnectorActionParams implements getRevokeAccessConnectorActionParams operation.
+	//
+	// Get revoke-access connector action params.
+	//
+	// POST /api/v1/connector-action-params/revoke-access
+	GetRevokeAccessConnectorActionParams(ctx context.Context, req *GetGrantRevokeAccessConnectorActionParamsModel) (*ConnectorActionParamsModel, error)
 	// GetSelectableIntegrations implements getSelectableIntegrations operation.
 	//
 	// Get selectable integrations.

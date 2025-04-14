@@ -2420,6 +2420,104 @@ func (s *Connector) SetStatus(val string) {
 	s.Status = val
 }
 
+// Ref: #/components/schemas/ConnectorActionParamsModel
+type ConnectorActionParamsModel struct {
+	IntegrationType        string                                           `json:"integration_type"`
+	IntegrationMetadata    OptConnectorActionParamsModelIntegrationMetadata `json:"integration_metadata"`
+	SecretConfig           OptConnectorActionParamsModelSecretConfig        `json:"secret_config"`
+	ProviderName           OptNilString                                     `json:"provider_name"`
+	Action                 string                                           `json:"action"`
+	Params                 ConnectorActionParamsModelParams                 `json:"params"`
+	ForceReloadSecretCache bool                                             `json:"force_reload_secret_cache"`
+	Timeout                int64                                            `json:"timeout"`
+}
+
+// GetIntegrationType returns the value of IntegrationType.
+func (s *ConnectorActionParamsModel) GetIntegrationType() string {
+	return s.IntegrationType
+}
+
+// GetIntegrationMetadata returns the value of IntegrationMetadata.
+func (s *ConnectorActionParamsModel) GetIntegrationMetadata() OptConnectorActionParamsModelIntegrationMetadata {
+	return s.IntegrationMetadata
+}
+
+// GetSecretConfig returns the value of SecretConfig.
+func (s *ConnectorActionParamsModel) GetSecretConfig() OptConnectorActionParamsModelSecretConfig {
+	return s.SecretConfig
+}
+
+// GetProviderName returns the value of ProviderName.
+func (s *ConnectorActionParamsModel) GetProviderName() OptNilString {
+	return s.ProviderName
+}
+
+// GetAction returns the value of Action.
+func (s *ConnectorActionParamsModel) GetAction() string {
+	return s.Action
+}
+
+// GetParams returns the value of Params.
+func (s *ConnectorActionParamsModel) GetParams() ConnectorActionParamsModelParams {
+	return s.Params
+}
+
+// GetForceReloadSecretCache returns the value of ForceReloadSecretCache.
+func (s *ConnectorActionParamsModel) GetForceReloadSecretCache() bool {
+	return s.ForceReloadSecretCache
+}
+
+// GetTimeout returns the value of Timeout.
+func (s *ConnectorActionParamsModel) GetTimeout() int64 {
+	return s.Timeout
+}
+
+// SetIntegrationType sets the value of IntegrationType.
+func (s *ConnectorActionParamsModel) SetIntegrationType(val string) {
+	s.IntegrationType = val
+}
+
+// SetIntegrationMetadata sets the value of IntegrationMetadata.
+func (s *ConnectorActionParamsModel) SetIntegrationMetadata(val OptConnectorActionParamsModelIntegrationMetadata) {
+	s.IntegrationMetadata = val
+}
+
+// SetSecretConfig sets the value of SecretConfig.
+func (s *ConnectorActionParamsModel) SetSecretConfig(val OptConnectorActionParamsModelSecretConfig) {
+	s.SecretConfig = val
+}
+
+// SetProviderName sets the value of ProviderName.
+func (s *ConnectorActionParamsModel) SetProviderName(val OptNilString) {
+	s.ProviderName = val
+}
+
+// SetAction sets the value of Action.
+func (s *ConnectorActionParamsModel) SetAction(val string) {
+	s.Action = val
+}
+
+// SetParams sets the value of Params.
+func (s *ConnectorActionParamsModel) SetParams(val ConnectorActionParamsModelParams) {
+	s.Params = val
+}
+
+// SetForceReloadSecretCache sets the value of ForceReloadSecretCache.
+func (s *ConnectorActionParamsModel) SetForceReloadSecretCache(val bool) {
+	s.ForceReloadSecretCache = val
+}
+
+// SetTimeout sets the value of Timeout.
+func (s *ConnectorActionParamsModel) SetTimeout(val int64) {
+	s.Timeout = val
+}
+
+type ConnectorActionParamsModelIntegrationMetadata struct{}
+
+type ConnectorActionParamsModelParams struct{}
+
+type ConnectorActionParamsModelSecretConfig struct{}
+
 // Ref: #/components/schemas/ConnectorV3
 type ConnectorV3 struct {
 	ID                string         `json:"id"`
@@ -3335,13 +3433,19 @@ type DeleteIntegrationV4NoContent struct{}
 
 // Ref: #/components/schemas/EntitlementPermissionV4
 type EntitlementPermissionV4 struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID       string `json:"id"`
+	SourceID string `json:"source_id"`
+	Name     string `json:"name"`
 }
 
 // GetID returns the value of ID.
 func (s *EntitlementPermissionV4) GetID() string {
 	return s.ID
+}
+
+// GetSourceID returns the value of SourceID.
+func (s *EntitlementPermissionV4) GetSourceID() string {
+	return s.SourceID
 }
 
 // GetName returns the value of Name.
@@ -3352,6 +3456,11 @@ func (s *EntitlementPermissionV4) GetName() string {
 // SetID sets the value of ID.
 func (s *EntitlementPermissionV4) SetID(val string) {
 	s.ID = val
+}
+
+// SetSourceID sets the value of SourceID.
+func (s *EntitlementPermissionV4) SetSourceID(val string) {
+	s.SourceID = val
 }
 
 // SetName sets the value of Name.
@@ -3405,6 +3514,87 @@ func (s *EntitlementResourceV4) SetType(val ResourceTypeV4) {
 // SetName sets the value of Name.
 func (s *EntitlementResourceV4) SetName(val string) {
 	s.Name = val
+}
+
+// Ref: #/components/schemas/GetGrantRevokeAccessConnectorActionParamsModel
+type GetGrantRevokeAccessConnectorActionParamsModel struct {
+	RequestID          string   `json:"request_id"`
+	FriendlyRequestID  string   `json:"friendly_request_id"`
+	Username           string   `json:"username"`
+	IntegrationID      string   `json:"integration_id"`
+	ResourceType       string   `json:"resource_type"`
+	ResourceSourceIds  []string `json:"resource_source_ids"`
+	PermissionSourceID string   `json:"permission_source_id"`
+}
+
+// GetRequestID returns the value of RequestID.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) GetRequestID() string {
+	return s.RequestID
+}
+
+// GetFriendlyRequestID returns the value of FriendlyRequestID.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) GetFriendlyRequestID() string {
+	return s.FriendlyRequestID
+}
+
+// GetUsername returns the value of Username.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) GetUsername() string {
+	return s.Username
+}
+
+// GetIntegrationID returns the value of IntegrationID.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) GetIntegrationID() string {
+	return s.IntegrationID
+}
+
+// GetResourceType returns the value of ResourceType.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) GetResourceType() string {
+	return s.ResourceType
+}
+
+// GetResourceSourceIds returns the value of ResourceSourceIds.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) GetResourceSourceIds() []string {
+	return s.ResourceSourceIds
+}
+
+// GetPermissionSourceID returns the value of PermissionSourceID.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) GetPermissionSourceID() string {
+	return s.PermissionSourceID
+}
+
+// SetRequestID sets the value of RequestID.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) SetRequestID(val string) {
+	s.RequestID = val
+}
+
+// SetFriendlyRequestID sets the value of FriendlyRequestID.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) SetFriendlyRequestID(val string) {
+	s.FriendlyRequestID = val
+}
+
+// SetUsername sets the value of Username.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) SetUsername(val string) {
+	s.Username = val
+}
+
+// SetIntegrationID sets the value of IntegrationID.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) SetIntegrationID(val string) {
+	s.IntegrationID = val
+}
+
+// SetResourceType sets the value of ResourceType.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) SetResourceType(val string) {
+	s.ResourceType = val
+}
+
+// SetResourceSourceIds sets the value of ResourceSourceIds.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) SetResourceSourceIds(val []string) {
+	s.ResourceSourceIds = val
+}
+
+// SetPermissionSourceID sets the value of PermissionSourceID.
+func (s *GetGrantRevokeAccessConnectorActionParamsModel) SetPermissionSourceID(val string) {
+	s.PermissionSourceID = val
 }
 
 // Ref: #/components/schemas/GranteeV1
@@ -4135,6 +4325,7 @@ type IntegrationV4 struct {
 	ID                              string                               `json:"id"`
 	Name                            string                               `json:"name"`
 	Type                            string                               `json:"type"`
+	Category                        string                               `json:"category"`
 	ConnectorID                     OptNilString                         `json:"connector_id"`
 	Status                          string                               `json:"status"`
 	LastSyncTime                    OptNilDateTime                       `json:"last_sync_time"`
@@ -4161,6 +4352,11 @@ func (s *IntegrationV4) GetName() string {
 // GetType returns the value of Type.
 func (s *IntegrationV4) GetType() string {
 	return s.Type
+}
+
+// GetCategory returns the value of Category.
+func (s *IntegrationV4) GetCategory() string {
+	return s.Category
 }
 
 // GetConnectorID returns the value of ConnectorID.
@@ -4231,6 +4427,11 @@ func (s *IntegrationV4) SetName(val string) {
 // SetType sets the value of Type.
 func (s *IntegrationV4) SetType(val string) {
 	s.Type = val
+}
+
+// SetCategory sets the value of Category.
+func (s *IntegrationV4) SetCategory(val string) {
+	s.Category = val
 }
 
 // SetConnectorID sets the value of ConnectorID.
@@ -4657,6 +4858,98 @@ func (o NilString) Get() (v string, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o NilString) Or(d string) string {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptConnectorActionParamsModelIntegrationMetadata returns new OptConnectorActionParamsModelIntegrationMetadata with value set to v.
+func NewOptConnectorActionParamsModelIntegrationMetadata(v *ConnectorActionParamsModelIntegrationMetadata) OptConnectorActionParamsModelIntegrationMetadata {
+	return OptConnectorActionParamsModelIntegrationMetadata{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptConnectorActionParamsModelIntegrationMetadata is optional *ConnectorActionParamsModelIntegrationMetadata.
+type OptConnectorActionParamsModelIntegrationMetadata struct {
+	Value *ConnectorActionParamsModelIntegrationMetadata
+	Set   bool
+}
+
+// IsSet returns true if OptConnectorActionParamsModelIntegrationMetadata was set.
+func (o OptConnectorActionParamsModelIntegrationMetadata) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptConnectorActionParamsModelIntegrationMetadata) Reset() {
+	var v *ConnectorActionParamsModelIntegrationMetadata
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptConnectorActionParamsModelIntegrationMetadata) SetTo(v *ConnectorActionParamsModelIntegrationMetadata) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptConnectorActionParamsModelIntegrationMetadata) Get() (v *ConnectorActionParamsModelIntegrationMetadata, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptConnectorActionParamsModelIntegrationMetadata) Or(d *ConnectorActionParamsModelIntegrationMetadata) *ConnectorActionParamsModelIntegrationMetadata {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptConnectorActionParamsModelSecretConfig returns new OptConnectorActionParamsModelSecretConfig with value set to v.
+func NewOptConnectorActionParamsModelSecretConfig(v *ConnectorActionParamsModelSecretConfig) OptConnectorActionParamsModelSecretConfig {
+	return OptConnectorActionParamsModelSecretConfig{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptConnectorActionParamsModelSecretConfig is optional *ConnectorActionParamsModelSecretConfig.
+type OptConnectorActionParamsModelSecretConfig struct {
+	Value *ConnectorActionParamsModelSecretConfig
+	Set   bool
+}
+
+// IsSet returns true if OptConnectorActionParamsModelSecretConfig was set.
+func (o OptConnectorActionParamsModelSecretConfig) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptConnectorActionParamsModelSecretConfig) Reset() {
+	var v *ConnectorActionParamsModelSecretConfig
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptConnectorActionParamsModelSecretConfig) SetTo(v *ConnectorActionParamsModelSecretConfig) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptConnectorActionParamsModelSecretConfig) Get() (v *ConnectorActionParamsModelSecretConfig, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptConnectorActionParamsModelSecretConfig) Or(d *ConnectorActionParamsModelSecretConfig) *ConnectorActionParamsModelSecretConfig {
 	if v, ok := o.Get(); ok {
 		return v
 	}

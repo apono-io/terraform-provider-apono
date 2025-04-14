@@ -442,6 +442,20 @@ func encodeGetConnectorV3Response(response *ConnectorV3, w http.ResponseWriter, 
 	return nil
 }
 
+func encodeGetGrantAccessConnectorActionParamsResponse(response *ConnectorActionParamsModel, w http.ResponseWriter, span trace.Span) error {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(200)
+	span.SetStatus(codes.Ok, http.StatusText(200))
+
+	e := new(jx.Encoder)
+	response.Encode(e)
+	if _, err := e.WriteTo(w); err != nil {
+		return errors.Wrap(err, "write")
+	}
+
+	return nil
+}
+
 func encodeGetGroupV1Response(response *GroupV1, w http.ResponseWriter, span trace.Span) error {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(200)
@@ -527,6 +541,20 @@ func encodeGetIntegrationsByIdV4Response(response *IntegrationV4, w http.Respons
 }
 
 func encodeGetResourceUserTagsResponse(response *ResourceUserTagsResponse, w http.ResponseWriter, span trace.Span) error {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(200)
+	span.SetStatus(codes.Ok, http.StatusText(200))
+
+	e := new(jx.Encoder)
+	response.Encode(e)
+	if _, err := e.WriteTo(w); err != nil {
+		return errors.Wrap(err, "write")
+	}
+
+	return nil
+}
+
+func encodeGetRevokeAccessConnectorActionParamsResponse(response *ConnectorActionParamsModel, w http.ResponseWriter, span trace.Span) error {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(200)
 	span.SetStatus(codes.Ok, http.StatusText(200))

@@ -233,6 +233,12 @@ type Invoker interface {
 	//
 	// GET /api/admin/v3/connectors/{id}
 	GetConnectorV3(ctx context.Context, params GetConnectorV3Params) (*ConnectorV3, error)
+	// GetGrantAccessConnectorActionParams invokes getGrantAccessConnectorActionParams operation.
+	//
+	// Get grant-access connector action params.
+	//
+	// POST /api/v1/connector-action-params/grant-access
+	GetGrantAccessConnectorActionParams(ctx context.Context, request *GetGrantRevokeAccessConnectorActionParamsModel) (*ConnectorActionParamsModel, error)
 	// GetGroupV1 invokes getGroupV1 operation.
 	//
 	// Get Group.
@@ -275,6 +281,12 @@ type Invoker interface {
 	//
 	// GET /api/v3/integrations/resources/{resource_id}/user-tags
 	GetResourceUserTags(ctx context.Context, params GetResourceUserTagsParams) (*ResourceUserTagsResponse, error)
+	// GetRevokeAccessConnectorActionParams invokes getRevokeAccessConnectorActionParams operation.
+	//
+	// Get revoke-access connector action params.
+	//
+	// POST /api/v1/connector-action-params/revoke-access
+	GetRevokeAccessConnectorActionParams(ctx context.Context, request *GetGrantRevokeAccessConnectorActionParamsModel) (*ConnectorActionParamsModel, error)
 	// GetSelectableIntegrations invokes getSelectableIntegrations operation.
 	//
 	// Get selectable integrations.
@@ -4692,6 +4704,114 @@ func (c *Client) sendGetConnectorV3(ctx context.Context, params GetConnectorV3Pa
 	return result, nil
 }
 
+// GetGrantAccessConnectorActionParams invokes getGrantAccessConnectorActionParams operation.
+//
+// Get grant-access connector action params.
+//
+// POST /api/v1/connector-action-params/grant-access
+func (c *Client) GetGrantAccessConnectorActionParams(ctx context.Context, request *GetGrantRevokeAccessConnectorActionParamsModel) (*ConnectorActionParamsModel, error) {
+	res, err := c.sendGetGrantAccessConnectorActionParams(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendGetGrantAccessConnectorActionParams(ctx context.Context, request *GetGrantRevokeAccessConnectorActionParamsModel) (res *ConnectorActionParamsModel, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("getGrantAccessConnectorActionParams"),
+		semconv.HTTPRequestMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/api/v1/connector-action-params/grant-access"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, GetGrantAccessConnectorActionParamsOperation,
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v1/connector-action-params/grant-access"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeGetGrantAccessConnectorActionParamsRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:Authorization"
+			switch err := c.securityAuthorization(ctx, GetGrantAccessConnectorActionParamsOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeGetGrantAccessConnectorActionParamsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // GetGroupV1 invokes getGroupV1 operation.
 //
 // Get Group.
@@ -5591,6 +5711,114 @@ func (c *Client) sendGetResourceUserTags(ctx context.Context, params GetResource
 
 	stage = "DecodeResponse"
 	result, err := decodeGetResourceUserTagsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetRevokeAccessConnectorActionParams invokes getRevokeAccessConnectorActionParams operation.
+//
+// Get revoke-access connector action params.
+//
+// POST /api/v1/connector-action-params/revoke-access
+func (c *Client) GetRevokeAccessConnectorActionParams(ctx context.Context, request *GetGrantRevokeAccessConnectorActionParamsModel) (*ConnectorActionParamsModel, error) {
+	res, err := c.sendGetRevokeAccessConnectorActionParams(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendGetRevokeAccessConnectorActionParams(ctx context.Context, request *GetGrantRevokeAccessConnectorActionParamsModel) (res *ConnectorActionParamsModel, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("getRevokeAccessConnectorActionParams"),
+		semconv.HTTPRequestMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/api/v1/connector-action-params/revoke-access"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, GetRevokeAccessConnectorActionParamsOperation,
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v1/connector-action-params/revoke-access"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeGetRevokeAccessConnectorActionParamsRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:Authorization"
+			switch err := c.securityAuthorization(ctx, GetRevokeAccessConnectorActionParamsOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeGetRevokeAccessConnectorActionParamsResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -8788,6 +9016,44 @@ func (c *Client) sendListGroupMembersV1(ctx context.Context, params ListGroupMem
 	pathParts[2] = "/members"
 	uri.AddPathParts(u, pathParts[:]...)
 
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "limit" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "limit",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Limit.Get(); ok {
+				return e.EncodeValue(conv.Int32ToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "page_token" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page_token",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PageToken.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
 	stage = "EncodeRequest"
 	r, err := ht.NewRequest(ctx, "GET", u)
 	if err != nil {
@@ -9370,6 +9636,32 @@ func (c *Client) sendListIntegrationsV4(ctx context.Context, params ListIntegrat
 
 	stage = "EncodeQueryParams"
 	q := uri.NewQueryEncoder()
+	{
+		// Encode "category" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "category",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Category.Get(); ok {
+				return e.EncodeArray(func(e uri.Encoder) error {
+					for i, item := range val {
+						if err := func() error {
+							return e.EncodeValue(conv.StringToString(item))
+						}(); err != nil {
+							return errors.Wrapf(err, "[%d]", i)
+						}
+					}
+					return nil
+				})
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
 	{
 		// Encode "connector_id" parameter.
 		cfg := uri.QueryParameterEncodingConfig{

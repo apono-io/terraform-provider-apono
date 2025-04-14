@@ -924,9 +924,9 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					break
 				}
 				switch elem[0] {
-				case '1': // Prefix: "1/access-"
+				case '1': // Prefix: "1/"
 
-					if l := len("1/access-"); len(elem) >= l && elem[0:l] == "1/access-" {
+					if l := len("1/"); len(elem) >= l && elem[0:l] == "1/" {
 						elem = elem[l:]
 					} else {
 						break
@@ -936,123 +936,191 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 						break
 					}
 					switch elem[0] {
-					case 'b': // Prefix: "bundles"
+					case 'a': // Prefix: "access-"
 
-						if l := len("bundles"); len(elem) >= l && elem[0:l] == "bundles" {
+						if l := len("access-"); len(elem) >= l && elem[0:l] == "access-" {
 							elem = elem[l:]
 						} else {
 							break
 						}
 
 						if len(elem) == 0 {
-							switch r.Method {
-							case "GET":
-								s.handleListAccessBundlesRequest([0]string{}, elemIsEscaped, w, r)
-							case "POST":
-								s.handleCreateAccessBundleRequest([0]string{}, elemIsEscaped, w, r)
-							default:
-								s.notAllowed(w, r, "GET,POST")
-							}
-
-							return
+							break
 						}
 						switch elem[0] {
-						case '/': // Prefix: "/"
+						case 'b': // Prefix: "bundles"
 
-							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+							if l := len("bundles"); len(elem) >= l && elem[0:l] == "bundles" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
-							// Param: "id"
-							// Leaf parameter, slashes are prohibited
-							idx := strings.IndexByte(elem, '/')
-							if idx >= 0 {
+							if len(elem) == 0 {
+								switch r.Method {
+								case "GET":
+									s.handleListAccessBundlesRequest([0]string{}, elemIsEscaped, w, r)
+								case "POST":
+									s.handleCreateAccessBundleRequest([0]string{}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET,POST")
+								}
+
+								return
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/"
+
+								if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								// Param: "id"
+								// Leaf parameter, slashes are prohibited
+								idx := strings.IndexByte(elem, '/')
+								if idx >= 0 {
+									break
+								}
+								args[0] = elem
+								elem = ""
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "DELETE":
+										s.handleDeleteAccessBundleRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									case "GET":
+										s.handleGetAccessBundleRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									case "PATCH":
+										s.handleUpdateAccessBundleRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "DELETE,GET,PATCH")
+									}
+
+									return
+								}
+
+							}
+
+						case 'f': // Prefix: "flows"
+
+							if l := len("flows"); len(elem) >= l && elem[0:l] == "flows" {
+								elem = elem[l:]
+							} else {
 								break
 							}
-							args[0] = elem
-							elem = ""
+
+							if len(elem) == 0 {
+								switch r.Method {
+								case "GET":
+									s.handleListAccessFlowsV1Request([0]string{}, elemIsEscaped, w, r)
+								case "POST":
+									s.handleCreateAccessFlowV1Request([0]string{}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET,POST")
+								}
+
+								return
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/"
+
+								if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								// Param: "id"
+								// Leaf parameter, slashes are prohibited
+								idx := strings.IndexByte(elem, '/')
+								if idx >= 0 {
+									break
+								}
+								args[0] = elem
+								elem = ""
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "DELETE":
+										s.handleDeleteAccessFlowV1Request([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									case "GET":
+										s.handleGetAccessFlowV1Request([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									case "PATCH":
+										s.handleUpdateAccessFlowV1Request([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "DELETE,GET,PATCH")
+									}
+
+									return
+								}
+
+							}
+
+						}
+
+					case 'c': // Prefix: "connector-action-params/"
+
+						if l := len("connector-action-params/"); len(elem) >= l && elem[0:l] == "connector-action-params/" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							break
+						}
+						switch elem[0] {
+						case 'g': // Prefix: "grant-access"
+
+							if l := len("grant-access"); len(elem) >= l && elem[0:l] == "grant-access" {
+								elem = elem[l:]
+							} else {
+								break
+							}
 
 							if len(elem) == 0 {
 								// Leaf node.
 								switch r.Method {
-								case "DELETE":
-									s.handleDeleteAccessBundleRequest([1]string{
-										args[0],
-									}, elemIsEscaped, w, r)
-								case "GET":
-									s.handleGetAccessBundleRequest([1]string{
-										args[0],
-									}, elemIsEscaped, w, r)
-								case "PATCH":
-									s.handleUpdateAccessBundleRequest([1]string{
-										args[0],
-									}, elemIsEscaped, w, r)
+								case "POST":
+									s.handleGetGrantAccessConnectorActionParamsRequest([0]string{}, elemIsEscaped, w, r)
 								default:
-									s.notAllowed(w, r, "DELETE,GET,PATCH")
+									s.notAllowed(w, r, "POST")
 								}
 
 								return
 							}
 
-						}
+						case 'r': // Prefix: "revoke-access"
 
-					case 'f': // Prefix: "flows"
-
-						if l := len("flows"); len(elem) >= l && elem[0:l] == "flows" {
-							elem = elem[l:]
-						} else {
-							break
-						}
-
-						if len(elem) == 0 {
-							switch r.Method {
-							case "GET":
-								s.handleListAccessFlowsV1Request([0]string{}, elemIsEscaped, w, r)
-							case "POST":
-								s.handleCreateAccessFlowV1Request([0]string{}, elemIsEscaped, w, r)
-							default:
-								s.notAllowed(w, r, "GET,POST")
-							}
-
-							return
-						}
-						switch elem[0] {
-						case '/': // Prefix: "/"
-
-							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+							if l := len("revoke-access"); len(elem) >= l && elem[0:l] == "revoke-access" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
-							// Param: "id"
-							// Leaf parameter, slashes are prohibited
-							idx := strings.IndexByte(elem, '/')
-							if idx >= 0 {
-								break
-							}
-							args[0] = elem
-							elem = ""
-
 							if len(elem) == 0 {
 								// Leaf node.
 								switch r.Method {
-								case "DELETE":
-									s.handleDeleteAccessFlowV1Request([1]string{
-										args[0],
-									}, elemIsEscaped, w, r)
-								case "GET":
-									s.handleGetAccessFlowV1Request([1]string{
-										args[0],
-									}, elemIsEscaped, w, r)
-								case "PATCH":
-									s.handleUpdateAccessFlowV1Request([1]string{
-										args[0],
-									}, elemIsEscaped, w, r)
+								case "POST":
+									s.handleGetRevokeAccessConnectorActionParamsRequest([0]string{}, elemIsEscaped, w, r)
 								default:
-									s.notAllowed(w, r, "DELETE,GET,PATCH")
+									s.notAllowed(w, r, "POST")
 								}
 
 								return
@@ -2932,9 +3000,9 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					break
 				}
 				switch elem[0] {
-				case '1': // Prefix: "1/access-"
+				case '1': // Prefix: "1/"
 
-					if l := len("1/access-"); len(elem) >= l && elem[0:l] == "1/access-" {
+					if l := len("1/"); len(elem) >= l && elem[0:l] == "1/" {
 						elem = elem[l:]
 					} else {
 						break
@@ -2944,162 +3012,238 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						break
 					}
 					switch elem[0] {
-					case 'b': // Prefix: "bundles"
+					case 'a': // Prefix: "access-"
 
-						if l := len("bundles"); len(elem) >= l && elem[0:l] == "bundles" {
+						if l := len("access-"); len(elem) >= l && elem[0:l] == "access-" {
 							elem = elem[l:]
 						} else {
 							break
 						}
 
 						if len(elem) == 0 {
-							switch method {
-							case "GET":
-								r.name = ListAccessBundlesOperation
-								r.summary = "List Access Bundles"
-								r.operationID = "listAccessBundles"
-								r.pathPattern = "/api/v1/access-bundles"
-								r.args = args
-								r.count = 0
-								return r, true
-							case "POST":
-								r.name = CreateAccessBundleOperation
-								r.summary = "Create Access Bundle"
-								r.operationID = "createAccessBundle"
-								r.pathPattern = "/api/v1/access-bundles"
-								r.args = args
-								r.count = 0
-								return r, true
-							default:
-								return
-							}
+							break
 						}
 						switch elem[0] {
-						case '/': // Prefix: "/"
+						case 'b': // Prefix: "bundles"
 
-							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+							if l := len("bundles"); len(elem) >= l && elem[0:l] == "bundles" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
-							// Param: "id"
-							// Leaf parameter, slashes are prohibited
-							idx := strings.IndexByte(elem, '/')
-							if idx >= 0 {
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									r.name = ListAccessBundlesOperation
+									r.summary = "List Access Bundles"
+									r.operationID = "listAccessBundles"
+									r.pathPattern = "/api/v1/access-bundles"
+									r.args = args
+									r.count = 0
+									return r, true
+								case "POST":
+									r.name = CreateAccessBundleOperation
+									r.summary = "Create Access Bundle"
+									r.operationID = "createAccessBundle"
+									r.pathPattern = "/api/v1/access-bundles"
+									r.args = args
+									r.count = 0
+									return r, true
+								default:
+									return
+								}
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/"
+
+								if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								// Param: "id"
+								// Leaf parameter, slashes are prohibited
+								idx := strings.IndexByte(elem, '/')
+								if idx >= 0 {
+									break
+								}
+								args[0] = elem
+								elem = ""
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch method {
+									case "DELETE":
+										r.name = DeleteAccessBundleOperation
+										r.summary = "Delete Access Bundle"
+										r.operationID = "deleteAccessBundle"
+										r.pathPattern = "/api/v1/access-bundles/{id}"
+										r.args = args
+										r.count = 1
+										return r, true
+									case "GET":
+										r.name = GetAccessBundleOperation
+										r.summary = "Get Access Bundle"
+										r.operationID = "getAccessBundle"
+										r.pathPattern = "/api/v1/access-bundles/{id}"
+										r.args = args
+										r.count = 1
+										return r, true
+									case "PATCH":
+										r.name = UpdateAccessBundleOperation
+										r.summary = "Update Access Bundle"
+										r.operationID = "updateAccessBundle"
+										r.pathPattern = "/api/v1/access-bundles/{id}"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+
+							}
+
+						case 'f': // Prefix: "flows"
+
+							if l := len("flows"); len(elem) >= l && elem[0:l] == "flows" {
+								elem = elem[l:]
+							} else {
 								break
 							}
-							args[0] = elem
-							elem = ""
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									r.name = ListAccessFlowsV1Operation
+									r.summary = "List Access Flows"
+									r.operationID = "listAccessFlowsV1"
+									r.pathPattern = "/api/v1/access-flows"
+									r.args = args
+									r.count = 0
+									return r, true
+								case "POST":
+									r.name = CreateAccessFlowV1Operation
+									r.summary = "Create Access Flow"
+									r.operationID = "createAccessFlowV1"
+									r.pathPattern = "/api/v1/access-flows"
+									r.args = args
+									r.count = 0
+									return r, true
+								default:
+									return
+								}
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/"
+
+								if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								// Param: "id"
+								// Leaf parameter, slashes are prohibited
+								idx := strings.IndexByte(elem, '/')
+								if idx >= 0 {
+									break
+								}
+								args[0] = elem
+								elem = ""
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch method {
+									case "DELETE":
+										r.name = DeleteAccessFlowV1Operation
+										r.summary = "Delete Access Flow"
+										r.operationID = "deleteAccessFlowV1"
+										r.pathPattern = "/api/v1/access-flows/{id}"
+										r.args = args
+										r.count = 1
+										return r, true
+									case "GET":
+										r.name = GetAccessFlowV1Operation
+										r.summary = "Get Access Flow"
+										r.operationID = "getAccessFlowV1"
+										r.pathPattern = "/api/v1/access-flows/{id}"
+										r.args = args
+										r.count = 1
+										return r, true
+									case "PATCH":
+										r.name = UpdateAccessFlowV1Operation
+										r.summary = "Update Access Flow"
+										r.operationID = "updateAccessFlowV1"
+										r.pathPattern = "/api/v1/access-flows/{id}"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+
+							}
+
+						}
+
+					case 'c': // Prefix: "connector-action-params/"
+
+						if l := len("connector-action-params/"); len(elem) >= l && elem[0:l] == "connector-action-params/" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							break
+						}
+						switch elem[0] {
+						case 'g': // Prefix: "grant-access"
+
+							if l := len("grant-access"); len(elem) >= l && elem[0:l] == "grant-access" {
+								elem = elem[l:]
+							} else {
+								break
+							}
 
 							if len(elem) == 0 {
 								// Leaf node.
 								switch method {
-								case "DELETE":
-									r.name = DeleteAccessBundleOperation
-									r.summary = "Delete Access Bundle"
-									r.operationID = "deleteAccessBundle"
-									r.pathPattern = "/api/v1/access-bundles/{id}"
+								case "POST":
+									r.name = GetGrantAccessConnectorActionParamsOperation
+									r.summary = "get grant-access connector action params"
+									r.operationID = "getGrantAccessConnectorActionParams"
+									r.pathPattern = "/api/v1/connector-action-params/grant-access"
 									r.args = args
-									r.count = 1
-									return r, true
-								case "GET":
-									r.name = GetAccessBundleOperation
-									r.summary = "Get Access Bundle"
-									r.operationID = "getAccessBundle"
-									r.pathPattern = "/api/v1/access-bundles/{id}"
-									r.args = args
-									r.count = 1
-									return r, true
-								case "PATCH":
-									r.name = UpdateAccessBundleOperation
-									r.summary = "Update Access Bundle"
-									r.operationID = "updateAccessBundle"
-									r.pathPattern = "/api/v1/access-bundles/{id}"
-									r.args = args
-									r.count = 1
+									r.count = 0
 									return r, true
 								default:
 									return
 								}
 							}
 
-						}
+						case 'r': // Prefix: "revoke-access"
 
-					case 'f': // Prefix: "flows"
-
-						if l := len("flows"); len(elem) >= l && elem[0:l] == "flows" {
-							elem = elem[l:]
-						} else {
-							break
-						}
-
-						if len(elem) == 0 {
-							switch method {
-							case "GET":
-								r.name = ListAccessFlowsV1Operation
-								r.summary = "List Access Flows"
-								r.operationID = "listAccessFlowsV1"
-								r.pathPattern = "/api/v1/access-flows"
-								r.args = args
-								r.count = 0
-								return r, true
-							case "POST":
-								r.name = CreateAccessFlowV1Operation
-								r.summary = "Create Access Flow"
-								r.operationID = "createAccessFlowV1"
-								r.pathPattern = "/api/v1/access-flows"
-								r.args = args
-								r.count = 0
-								return r, true
-							default:
-								return
-							}
-						}
-						switch elem[0] {
-						case '/': // Prefix: "/"
-
-							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+							if l := len("revoke-access"); len(elem) >= l && elem[0:l] == "revoke-access" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
-							// Param: "id"
-							// Leaf parameter, slashes are prohibited
-							idx := strings.IndexByte(elem, '/')
-							if idx >= 0 {
-								break
-							}
-							args[0] = elem
-							elem = ""
-
 							if len(elem) == 0 {
 								// Leaf node.
 								switch method {
-								case "DELETE":
-									r.name = DeleteAccessFlowV1Operation
-									r.summary = "Delete Access Flow"
-									r.operationID = "deleteAccessFlowV1"
-									r.pathPattern = "/api/v1/access-flows/{id}"
+								case "POST":
+									r.name = GetRevokeAccessConnectorActionParamsOperation
+									r.summary = "get revoke-access connector action params"
+									r.operationID = "getRevokeAccessConnectorActionParams"
+									r.pathPattern = "/api/v1/connector-action-params/revoke-access"
 									r.args = args
-									r.count = 1
-									return r, true
-								case "GET":
-									r.name = GetAccessFlowV1Operation
-									r.summary = "Get Access Flow"
-									r.operationID = "getAccessFlowV1"
-									r.pathPattern = "/api/v1/access-flows/{id}"
-									r.args = args
-									r.count = 1
-									return r, true
-								case "PATCH":
-									r.name = UpdateAccessFlowV1Operation
-									r.summary = "Update Access Flow"
-									r.operationID = "updateAccessFlowV1"
-									r.pathPattern = "/api/v1/access-flows/{id}"
-									r.args = args
-									r.count = 1
+									r.count = 0
 									return r, true
 								default:
 									return
