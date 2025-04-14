@@ -24,7 +24,6 @@ func NewAponoAccessScopeResource() resource.Resource {
 	return &AponoAccessScopeResource{}
 }
 
-// AponoAccessScopeResource manages Apono Access Scope resources.
 type AponoAccessScopeResource struct {
 	client client.Invoker
 }

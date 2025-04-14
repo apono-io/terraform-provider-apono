@@ -29,7 +29,10 @@ func TestAccPreCheck(t *testing.T) {
 
 // GetTestClient creates a new (real) Apono API client for acceptance testing.
 func GetTestClient(t *testing.T) *v2client.Client {
-	baseURL := "https://api.apono.io"
+	endpoint := os.Getenv("APONO_ENDPOINT")
+	if endpoint == "" {
+		endpoint = "https://api.apono.io"
+	}
 
 	transport := &v2client.DebugTransport{
 		Transport: &v2client.UserAgentTransport{
@@ -48,7 +51,7 @@ func GetTestClient(t *testing.T) *v2client.Client {
 	securitySource := v2client.NewTokenSecuritySource(token)
 
 	client, err := v2client.NewClient(
-		baseURL,
+		endpoint,
 		securitySource,
 		v2client.WithClient(httpClient),
 	)
