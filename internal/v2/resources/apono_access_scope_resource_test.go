@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccAponoAccessScope_basic(t *testing.T) {
+func TestAccAponoAccessScopeResource(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-test")
 	resourceName := "apono_access_scope.test"
 
