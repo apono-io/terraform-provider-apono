@@ -319,6 +319,15 @@ func (UnimplementedHandler) GetConnectorV3(ctx context.Context, params GetConnec
 	return r, ht.ErrNotImplemented
 }
 
+// GetGrantAccessConnectorActionParams implements getGrantAccessConnectorActionParams operation.
+//
+// Get grant-access connector action params.
+//
+// POST /api/v1/connector-action-params/grant-access
+func (UnimplementedHandler) GetGrantAccessConnectorActionParams(ctx context.Context, req *GetGrantRevokeAccessConnectorActionParamsModel) (r *ConnectorActionParamsModel, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // GetGroupV1 implements getGroupV1 operation.
 //
 // Get Group.
@@ -379,6 +388,15 @@ func (UnimplementedHandler) GetIntegrationsByIdV4(ctx context.Context, params Ge
 //
 // GET /api/v3/integrations/resources/{resource_id}/user-tags
 func (UnimplementedHandler) GetResourceUserTags(ctx context.Context, params GetResourceUserTagsParams) (r *ResourceUserTagsResponse, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// GetRevokeAccessConnectorActionParams implements getRevokeAccessConnectorActionParams operation.
+//
+// Get revoke-access connector action params.
+//
+// POST /api/v1/connector-action-params/revoke-access
+func (UnimplementedHandler) GetRevokeAccessConnectorActionParams(ctx context.Context, req *GetGrantRevokeAccessConnectorActionParamsModel) (r *ConnectorActionParamsModel, _ error) {
 	return r, ht.ErrNotImplemented
 }
 

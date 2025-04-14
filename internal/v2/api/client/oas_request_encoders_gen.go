@@ -187,6 +187,34 @@ func encodeCreateIntegrationV4Request(
 	return nil
 }
 
+func encodeGetGrantAccessConnectorActionParamsRequest(
+	req *GetGrantRevokeAccessConnectorActionParamsModel,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeGetRevokeAccessConnectorActionParamsRequest(
+	req *GetGrantRevokeAccessConnectorActionParamsModel,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
 func encodeRequestAccessAgainV4Request(
 	req *RequestAgainV4,
 	r *http.Request,

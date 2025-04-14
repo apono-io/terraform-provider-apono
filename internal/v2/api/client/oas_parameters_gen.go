@@ -5677,7 +5677,9 @@ func decodeListConnectorsV3Params(args [0]string, argsEscaped bool, r *http.Requ
 
 // ListGroupMembersV1Params is parameters of listGroupMembersV1 operation.
 type ListGroupMembersV1Params struct {
-	ID string
+	ID        string
+	Limit     OptInt32
+	PageToken OptNilString
 }
 
 func unpackListGroupMembersV1Params(packed middleware.Parameters) (params ListGroupMembersV1Params) {
@@ -5688,10 +5690,29 @@ func unpackListGroupMembersV1Params(packed middleware.Parameters) (params ListGr
 		}
 		params.ID = packed[key].(string)
 	}
+	{
+		key := middleware.ParameterKey{
+			Name: "limit",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Limit = v.(OptInt32)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "page_token",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.PageToken = v.(OptNilString)
+		}
+	}
 	return params
 }
 
 func decodeListGroupMembersV1Params(args [1]string, argsEscaped bool, r *http.Request) (params ListGroupMembersV1Params, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
 	// Decode path: id.
 	if err := func() error {
 		param := args[0]
@@ -5734,6 +5755,93 @@ func decodeListGroupMembersV1Params(args [1]string, argsEscaped bool, r *http.Re
 		return params, &ogenerrors.DecodeParamError{
 			Name: "id",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	// Set default value for query: limit.
+	{
+		val := int32(100)
+		params.Limit.SetTo(val)
+	}
+	// Decode query: limit.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "limit",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotLimitVal int32
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToInt32(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotLimitVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Limit.SetTo(paramsDotLimitVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "limit",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: page_token.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "page_token",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotPageTokenVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotPageTokenVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.PageToken.SetTo(paramsDotPageTokenVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "page_token",
+			In:   "query",
 			Err:  err,
 		}
 	}
@@ -5913,6 +6021,7 @@ func decodeListGroupsV1Params(args [0]string, argsEscaped bool, r *http.Request)
 
 // ListIntegrationsV4Params is parameters of listIntegrationsV4 operation.
 type ListIntegrationsV4Params struct {
+	Category    OptNilStringArray
 	ConnectorID OptNilStringArray
 	Limit       OptInt32
 	Name        OptNilString
@@ -5922,6 +6031,15 @@ type ListIntegrationsV4Params struct {
 }
 
 func unpackListIntegrationsV4Params(packed middleware.Parameters) (params ListIntegrationsV4Params) {
+	{
+		key := middleware.ParameterKey{
+			Name: "category",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Category = v.(OptNilStringArray)
+		}
+	}
 	{
 		key := middleware.ParameterKey{
 			Name: "connector_id",
@@ -5981,6 +6099,71 @@ func unpackListIntegrationsV4Params(packed middleware.Parameters) (params ListIn
 
 func decodeListIntegrationsV4Params(args [0]string, argsEscaped bool, r *http.Request) (params ListIntegrationsV4Params, _ error) {
 	q := uri.NewQueryDecoder(r.URL.Query())
+	// Decode query: category.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "category",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotCategoryVal []string
+				if err := func() error {
+					return d.DecodeArray(func(d uri.Decoder) error {
+						var paramsDotCategoryValVal string
+						if err := func() error {
+							val, err := d.DecodeValue()
+							if err != nil {
+								return err
+							}
+
+							c, err := conv.ToString(val)
+							if err != nil {
+								return err
+							}
+
+							paramsDotCategoryValVal = c
+							return nil
+						}(); err != nil {
+							return err
+						}
+						paramsDotCategoryVal = append(paramsDotCategoryVal, paramsDotCategoryValVal)
+						return nil
+					})
+				}(); err != nil {
+					return err
+				}
+				params.Category.SetTo(paramsDotCategoryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Category.Get(); ok {
+					if err := func() error {
+						if value == nil {
+							return errors.New("nil is invalid value")
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "category",
+			In:   "query",
+			Err:  err,
+		}
+	}
 	// Decode query: connector_id.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
