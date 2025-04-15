@@ -35,12 +35,15 @@ func TestAccAponoAccessScopesDataSource(t *testing.T) {
 					resource.TestCheckResourceAttrSet(dataSourceNameExact, "access_scopes.0.id"),
 
 					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.#", "2"),
-					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.*.name", testcommon.PrefixedName(randomPrefix, rName1)), // Since alphabetically sorted, rName1 comes first
-					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.*.name", testcommon.PrefixedName(randomPrefix, rName2)),
-					resource.TestMatchResourceAttr(dataSourceNameWildcard, "access_scopes.0.query",
-						regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"\s*$`)),
-					resource.TestMatchResourceAttr(dataSourceNameWildcard, "access_scopes.1.query",
-						regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"\s*$`)),
+					resource.TestCheckTypeSetElemNestedAttrs(dataSourceNameWildcard, "access_scopes.*", map[string]string{
+						"name": testcommon.PrefixedName(randomPrefix, rName1),
+					}),
+					resource.TestCheckTypeSetElemNestedAttrs(dataSourceNameWildcard, "access_scopes.*", map[string]string{
+						"name": testcommon.PrefixedName(randomPrefix, rName2),
+					}),
+					resource.TestMatchTypeSetElemNestedAttrs(dataSourceNameWildcard, "access_scopes.*", map[string]*regexp.Regexp{
+						"query": regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"\s*$`),
+					}),
 				),
 			},
 		},

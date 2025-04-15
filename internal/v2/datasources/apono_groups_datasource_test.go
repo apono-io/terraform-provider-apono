@@ -28,8 +28,12 @@ func TestAccAponoGroupsDataSource(t *testing.T) {
 					resource.TestCheckResourceAttrSet(dataSourceNameExact, "groups.0.id"),
 
 					resource.TestCheckResourceAttr(dataSourceNameWildcard, "groups.#", "2"),
-					resource.TestCheckResourceAttr(dataSourceNameWildcard, "groups.*.name", testcommon.PrefixedName(randomPrefix, rName1)),
-					resource.TestCheckResourceAttr(dataSourceNameWildcard, "groups.*.name", testcommon.PrefixedName(randomPrefix, rName2)),
+					resource.TestCheckTypeSetElemNestedAttrs(dataSourceNameWildcard, "groups.*", map[string]string{
+						"name": testcommon.PrefixedName(randomPrefix, rName1),
+					}),
+					resource.TestCheckTypeSetElemNestedAttrs(dataSourceNameWildcard, "groups.*", map[string]string{
+						"name": testcommon.PrefixedName(randomPrefix, rName2),
+					}),
 					resource.TestCheckResourceAttrSet(dataSourceNameWildcard, "groups.0.id"),
 					resource.TestCheckResourceAttrSet(dataSourceNameWildcard, "groups.1.id"),
 				),
