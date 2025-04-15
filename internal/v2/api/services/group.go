@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// GroupModel represents an Apono group for resource management.
+// GroupModel represents the Terraform model for an Apono group.
 type GroupModel struct {
 	ID      types.String `tfsdk:"id"`
 	Name    types.String `tfsdk:"name"`
