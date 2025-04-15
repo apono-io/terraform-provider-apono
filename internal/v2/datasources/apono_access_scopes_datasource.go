@@ -40,7 +40,7 @@ func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.Sch
 				Description: "Filter access scopes by name, supports wildcards.",
 				Optional:    true,
 			},
-			"access_scopes": schema.ListNestedAttribute{
+			"access_scopes": schema.SetNestedAttribute{
 				Description: "The list of access scopes.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{

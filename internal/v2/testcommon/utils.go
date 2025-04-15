@@ -59,3 +59,7 @@ func GetTestClient(t *testing.T) *v2client.Client {
 
 	return client
 }
+
+func PrefixedName(prefix, name string) string {
+	return prefix + "-" + name
+}

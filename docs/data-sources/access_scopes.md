@@ -47,7 +47,7 @@ output "production_scopes_count" {
 
 ### Read-Only
 
-- `access_scopes` (Attributes List) The list of access scopes. (see [below for nested schema](#nestedatt--access_scopes))
+- `access_scopes` (Attributes Set) The list of access scopes. (see [below for nested schema](#nestedatt--access_scopes))
 
 <a id="nestedatt--access_scopes"></a>
 ### Nested Schema for `access_scopes`
