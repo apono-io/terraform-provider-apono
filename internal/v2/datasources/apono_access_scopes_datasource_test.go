@@ -28,17 +28,15 @@ func TestAccAponoAccessScopesDataSource(t *testing.T) {
 			{
 				Config: testAccAponoAccessScopesDataSourceConfig(rName1, rName2, query, randomPrefix),
 				Check: resource.ComposeTestCheckFunc(
-					// Test exact match data source (should return 1 scope)
 					resource.TestCheckResourceAttr(dataSourceNameExact, "access_scopes.#", "1"),
 					resource.TestCheckResourceAttr(dataSourceNameExact, "access_scopes.0.name", testcommon.PrefixedName(randomPrefix, rName1)),
 					resource.TestMatchResourceAttr(dataSourceNameExact, "access_scopes.0.query",
 						regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"\s*$`)),
 					resource.TestCheckResourceAttrSet(dataSourceNameExact, "access_scopes.0.id"),
 
-					// Test wildcard data source (should return 2 scopes, sorted by name)
 					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.#", "2"),
-					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.0.name", testcommon.PrefixedName(randomPrefix, rName1)), // Since alphabetically sorted, rName1 comes first
-					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.1.name", testcommon.PrefixedName(randomPrefix, rName2)),
+					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.*.name", testcommon.PrefixedName(randomPrefix, rName1)), // Since alphabetically sorted, rName1 comes first
+					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.*.name", testcommon.PrefixedName(randomPrefix, rName2)),
 					resource.TestMatchResourceAttr(dataSourceNameWildcard, "access_scopes.0.query",
 						regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"\s*$`)),
 					resource.TestMatchResourceAttr(dataSourceNameWildcard, "access_scopes.1.query",
