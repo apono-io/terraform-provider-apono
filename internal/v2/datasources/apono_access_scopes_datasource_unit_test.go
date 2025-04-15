@@ -21,6 +21,27 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 	mockInvoker := mocks.NewInvoker(t)
 	d := &AponoAccessScopesDataSource{client: mockInvoker}
 
+	getAccessScopesSetType := func() tftypes.Set {
+		return tftypes.Set{
+			ElementType: tftypes.Object{
+				AttributeTypes: map[string]tftypes.Type{
+					"id":    tftypes.String,
+					"name":  tftypes.String,
+					"query": tftypes.String,
+				},
+			},
+		}
+	}
+
+	getConfigType := func() tftypes.Object {
+		return tftypes.Object{
+			AttributeTypes: map[string]tftypes.Type{
+				"name":          tftypes.String,
+				"access_scopes": getAccessScopesSetType(),
+			},
+		}
+	}
+
 	t.Run("Read_AllScopes", func(t *testing.T) {
 		mockListResponse := &client.PublicApiListResponseAccessScopePublicV1Model{
 			Items: []client.AccessScopeV1{
@@ -50,7 +71,7 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		ctx := t.Context()
 		configType := getConfigType()
 		accessScopesAttr := d.getTestSchema(ctx).Attributes["access_scopes"]
-		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
+		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.Set)
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
@@ -112,7 +133,7 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		ctx := t.Context()
 		configType := getConfigType()
 		accessScopesAttr := d.getTestSchema(ctx).Attributes["access_scopes"]
-		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
+		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.Set)
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
@@ -152,7 +173,7 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		ctx := t.Context()
 		configType := getConfigType()
 		accessScopesAttr := d.getTestSchema(ctx).Attributes["access_scopes"]
-		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
+		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.Set)
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
@@ -178,25 +199,4 @@ func (d *AponoAccessScopesDataSource) getTestSchema(ctx context.Context) schema.
 	var resp datasource.SchemaResponse
 	d.Schema(ctx, datasource.SchemaRequest{}, &resp)
 	return resp.Schema
-}
-
-func getConfigType() tftypes.Object {
-	return tftypes.Object{
-		AttributeTypes: map[string]tftypes.Type{
-			"name":          tftypes.String,
-			"access_scopes": getAccessScopesListType(),
-		},
-	}
-}
-
-func getAccessScopesListType() tftypes.List {
-	return tftypes.List{
-		ElementType: tftypes.Object{
-			AttributeTypes: map[string]tftypes.Type{
-				"id":    tftypes.String,
-				"name":  tftypes.String,
-				"query": tftypes.String,
-			},
-		},
-	}
 }
