@@ -118,6 +118,7 @@ func ListGroups(ctx context.Context, apiClient client.Invoker, name string) ([]c
 	return allGroups, nil
 }
 
+// TODO: remove this function when the API supports filtering by source integration.
 func FilterGroupsBySourceIntegration(groups []client.GroupV1, sourceIntegration string) []client.GroupV1 {
 	if sourceIntegration == "" {
 		return groups
