@@ -4621,7 +4621,10 @@
             "nullable": true
           },
           "integration_config": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           },
           "secret_store_config": {
             "type": "object",
@@ -5291,7 +5294,10 @@
             "nullable": true
           },
           "integration_config": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           },
           "secret_store_config": {
             "type": "object",
@@ -6421,7 +6427,10 @@
             "type": "string"
           },
           "integration_config": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           },
           "secret_store_config": {
             "type": "object",

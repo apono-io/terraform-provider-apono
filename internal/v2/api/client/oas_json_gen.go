@@ -9143,29 +9143,41 @@ func (s *CreateIntegrationV4) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
-func (s *CreateIntegrationV4IntegrationConfig) Encode(e *jx.Encoder) {
+func (s CreateIntegrationV4IntegrationConfig) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
-// encodeFields encodes fields.
-func (s *CreateIntegrationV4IntegrationConfig) encodeFields(e *jx.Encoder) {
-}
+// encodeFields implements json.Marshaler.
+func (s CreateIntegrationV4IntegrationConfig) encodeFields(e *jx.Encoder) {
+	for k, elem := range s {
+		e.FieldStart(k)
 
-var jsonFieldsNameOfCreateIntegrationV4IntegrationConfig = [0]string{}
+		e.Str(elem)
+	}
+}
 
 // Decode decodes CreateIntegrationV4IntegrationConfig from json.
 func (s *CreateIntegrationV4IntegrationConfig) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode CreateIntegrationV4IntegrationConfig to nil")
 	}
-
+	m := s.init()
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		switch string(k) {
-		default:
-			return d.Skip()
+		var elem string
+		if err := func() error {
+			v, err := d.Str()
+			elem = string(v)
+			if err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrapf(err, "decode field %q", k)
 		}
+		m[string(k)] = elem
+		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode CreateIntegrationV4IntegrationConfig")
 	}
@@ -9174,7 +9186,7 @@ func (s *CreateIntegrationV4IntegrationConfig) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *CreateIntegrationV4IntegrationConfig) MarshalJSON() ([]byte, error) {
+func (s CreateIntegrationV4IntegrationConfig) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
@@ -13509,29 +13521,41 @@ func (s *IntegrationV4) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
-func (s *IntegrationV4IntegrationConfig) Encode(e *jx.Encoder) {
+func (s IntegrationV4IntegrationConfig) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
-// encodeFields encodes fields.
-func (s *IntegrationV4IntegrationConfig) encodeFields(e *jx.Encoder) {
-}
+// encodeFields implements json.Marshaler.
+func (s IntegrationV4IntegrationConfig) encodeFields(e *jx.Encoder) {
+	for k, elem := range s {
+		e.FieldStart(k)
 
-var jsonFieldsNameOfIntegrationV4IntegrationConfig = [0]string{}
+		e.Str(elem)
+	}
+}
 
 // Decode decodes IntegrationV4IntegrationConfig from json.
 func (s *IntegrationV4IntegrationConfig) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode IntegrationV4IntegrationConfig to nil")
 	}
-
+	m := s.init()
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		switch string(k) {
-		default:
-			return d.Skip()
+		var elem string
+		if err := func() error {
+			v, err := d.Str()
+			elem = string(v)
+			if err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrapf(err, "decode field %q", k)
 		}
+		m[string(k)] = elem
+		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode IntegrationV4IntegrationConfig")
 	}
@@ -13540,7 +13564,7 @@ func (s *IntegrationV4IntegrationConfig) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *IntegrationV4IntegrationConfig) MarshalJSON() ([]byte, error) {
+func (s IntegrationV4IntegrationConfig) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
@@ -24494,29 +24518,41 @@ func (s *UpdateIntegrationV4) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
-func (s *UpdateIntegrationV4IntegrationConfig) Encode(e *jx.Encoder) {
+func (s UpdateIntegrationV4IntegrationConfig) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
 	e.ObjEnd()
 }
 
-// encodeFields encodes fields.
-func (s *UpdateIntegrationV4IntegrationConfig) encodeFields(e *jx.Encoder) {
-}
+// encodeFields implements json.Marshaler.
+func (s UpdateIntegrationV4IntegrationConfig) encodeFields(e *jx.Encoder) {
+	for k, elem := range s {
+		e.FieldStart(k)
 
-var jsonFieldsNameOfUpdateIntegrationV4IntegrationConfig = [0]string{}
+		e.Str(elem)
+	}
+}
 
 // Decode decodes UpdateIntegrationV4IntegrationConfig from json.
 func (s *UpdateIntegrationV4IntegrationConfig) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode UpdateIntegrationV4IntegrationConfig to nil")
 	}
-
+	m := s.init()
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		switch string(k) {
-		default:
-			return d.Skip()
+		var elem string
+		if err := func() error {
+			v, err := d.Str()
+			elem = string(v)
+			if err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrapf(err, "decode field %q", k)
 		}
+		m[string(k)] = elem
+		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode UpdateIntegrationV4IntegrationConfig")
 	}
@@ -24525,7 +24561,7 @@ func (s *UpdateIntegrationV4IntegrationConfig) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s *UpdateIntegrationV4IntegrationConfig) MarshalJSON() ([]byte, error) {
+func (s UpdateIntegrationV4IntegrationConfig) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil

@@ -3001,7 +3001,16 @@ func (s *CreateIntegrationV4) SetOwnersMapping(val OptNilCreateIntegrationV4Owne
 	s.OwnersMapping = val
 }
 
-type CreateIntegrationV4IntegrationConfig struct{}
+type CreateIntegrationV4IntegrationConfig map[string]string
+
+func (s *CreateIntegrationV4IntegrationConfig) init() CreateIntegrationV4IntegrationConfig {
+	m := *s
+	if m == nil {
+		m = map[string]string{}
+		*s = m
+	}
+	return m
+}
 
 type CreateIntegrationV4Owner struct {
 	AttributeType              string       `json:"attribute_type"`
@@ -4489,7 +4498,16 @@ func (s *IntegrationV4) SetOwnersMapping(val OptNilIntegrationV4OwnersMapping) {
 	s.OwnersMapping = val
 }
 
-type IntegrationV4IntegrationConfig struct{}
+type IntegrationV4IntegrationConfig map[string]string
+
+func (s *IntegrationV4IntegrationConfig) init() IntegrationV4IntegrationConfig {
+	m := *s
+	if m == nil {
+		m = map[string]string{}
+		*s = m
+	}
+	return m
+}
 
 type IntegrationV4Owner struct {
 	AttributeType         string       `json:"attribute_type"`
@@ -10914,7 +10932,16 @@ func (s *UpdateIntegrationV4) SetOwnersMapping(val OptNilUpdateIntegrationV4Owne
 	s.OwnersMapping = val
 }
 
-type UpdateIntegrationV4IntegrationConfig struct{}
+type UpdateIntegrationV4IntegrationConfig map[string]string
+
+func (s *UpdateIntegrationV4IntegrationConfig) init() UpdateIntegrationV4IntegrationConfig {
+	m := *s
+	if m == nil {
+		m = map[string]string{}
+		*s = m
+	}
+	return m
+}
 
 type UpdateIntegrationV4Owner struct {
 	AttributeType              string       `json:"attribute_type"`
