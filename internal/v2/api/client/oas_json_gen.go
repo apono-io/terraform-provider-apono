@@ -237,9 +237,9 @@ func (s *AccessBundleAccessTargetPublicV2ModelIntegration) encodeFields(e *jx.En
 		e.ArrEnd()
 	}
 	{
-		if s.ResourceScopes.Set {
-			e.FieldStart("resource_scopes")
-			s.ResourceScopes.Encode(e)
+		if s.ResourcesScopes.Set {
+			e.FieldStart("resources_scopes")
+			s.ResourcesScopes.Encode(e)
 		}
 	}
 }
@@ -249,7 +249,7 @@ var jsonFieldsNameOfAccessBundleAccessTargetPublicV2ModelIntegration = [5]string
 	1: "integration_name",
 	2: "resource_type",
 	3: "permissions",
-	4: "resource_scopes",
+	4: "resources_scopes",
 }
 
 // Decode decodes AccessBundleAccessTargetPublicV2ModelIntegration from json.
@@ -317,15 +317,15 @@ func (s *AccessBundleAccessTargetPublicV2ModelIntegration) Decode(d *jx.Decoder)
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"permissions\"")
 			}
-		case "resource_scopes":
+		case "resources_scopes":
 			if err := func() error {
-				s.ResourceScopes.Reset()
-				if err := s.ResourceScopes.Decode(d); err != nil {
+				s.ResourcesScopes.Reset()
+				if err := s.ResourcesScopes.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"resource_scopes\"")
+				return errors.Wrap(err, "decode field \"resources_scopes\"")
 			}
 		default:
 			return d.Skip()
@@ -4328,14 +4328,6 @@ func (s *AccessSessionV1) encodeFields(e *jx.Encoder) {
 		s.Integration.Encode(e)
 	}
 	{
-		e.FieldStart("supported_connection_methods")
-		e.ArrStart()
-		for _, elem := range s.SupportedConnectionMethods {
-			e.Str(elem)
-		}
-		e.ArrEnd()
-	}
-	{
 		e.FieldStart("credentials_status")
 		e.Str(s.CredentialsStatus)
 	}
@@ -4345,13 +4337,12 @@ func (s *AccessSessionV1) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfAccessSessionV1 = [6]string{
+var jsonFieldsNameOfAccessSessionV1 = [5]string{
 	0: "id",
 	1: "name",
 	2: "integration",
-	3: "supported_connection_methods",
-	4: "credentials_status",
-	5: "can_reset_credentials",
+	3: "credentials_status",
+	4: "can_reset_credentials",
 }
 
 // Decode decodes AccessSessionV1 from json.
@@ -4397,28 +4388,8 @@ func (s *AccessSessionV1) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"integration\"")
 			}
-		case "supported_connection_methods":
-			requiredBitSet[0] |= 1 << 3
-			if err := func() error {
-				s.SupportedConnectionMethods = make([]string, 0)
-				if err := d.Arr(func(d *jx.Decoder) error {
-					var elem string
-					v, err := d.Str()
-					elem = string(v)
-					if err != nil {
-						return err
-					}
-					s.SupportedConnectionMethods = append(s.SupportedConnectionMethods, elem)
-					return nil
-				}); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"supported_connection_methods\"")
-			}
 		case "credentials_status":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
 				v, err := d.Str()
 				s.CredentialsStatus = string(v)
@@ -4430,7 +4401,7 @@ func (s *AccessSessionV1) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"credentials_status\"")
 			}
 		case "can_reset_credentials":
-			requiredBitSet[0] |= 1 << 5
+			requiredBitSet[0] |= 1 << 4
 			if err := func() error {
 				v, err := d.Bool()
 				s.CanResetCredentials = bool(v)
@@ -4451,7 +4422,7 @@ func (s *AccessSessionV1) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00111111,
+		0b00011111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -5192,9 +5163,9 @@ func (s *AccessTargetPublicV2ModelIntegration) encodeFields(e *jx.Encoder) {
 		e.ArrEnd()
 	}
 	{
-		if s.ResourceScopes.Set {
-			e.FieldStart("resource_scopes")
-			s.ResourceScopes.Encode(e)
+		if s.ResourcesScopes.Set {
+			e.FieldStart("resources_scopes")
+			s.ResourcesScopes.Encode(e)
 		}
 	}
 }
@@ -5204,7 +5175,7 @@ var jsonFieldsNameOfAccessTargetPublicV2ModelIntegration = [5]string{
 	1: "integration_name",
 	2: "resource_type",
 	3: "permissions",
-	4: "resource_scopes",
+	4: "resources_scopes",
 }
 
 // Decode decodes AccessTargetPublicV2ModelIntegration from json.
@@ -5272,15 +5243,15 @@ func (s *AccessTargetPublicV2ModelIntegration) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"permissions\"")
 			}
-		case "resource_scopes":
+		case "resources_scopes":
 			if err := func() error {
-				s.ResourceScopes.Reset()
-				if err := s.ResourceScopes.Decode(d); err != nil {
+				s.ResourcesScopes.Reset()
+				if err := s.ResourcesScopes.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"resource_scopes\"")
+				return errors.Wrap(err, "decode field \"resources_scopes\"")
 			}
 		default:
 			return d.Skip()
@@ -7725,6 +7696,609 @@ func (s *ConnectorActionParamsModelSecretConfig) UnmarshalJSON(data []byte) erro
 }
 
 // Encode implements json.Marshaler.
+func (s *ConnectorSessionMetadataV3) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *ConnectorSessionMetadataV3) encodeFields(e *jx.Encoder) {
+	{
+		if s.CloudProviderMetadata.Set {
+			e.FieldStart("cloud_provider_metadata")
+			s.CloudProviderMetadata.Encode(e)
+		}
+	}
+	{
+		if s.ConnectorVersion.Set {
+			e.FieldStart("connector_version")
+			s.ConnectorVersion.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfConnectorSessionMetadataV3 = [2]string{
+	0: "cloud_provider_metadata",
+	1: "connector_version",
+}
+
+// Decode decodes ConnectorSessionMetadataV3 from json.
+func (s *ConnectorSessionMetadataV3) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ConnectorSessionMetadataV3 to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "cloud_provider_metadata":
+			if err := func() error {
+				s.CloudProviderMetadata.Reset()
+				if err := s.CloudProviderMetadata.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"cloud_provider_metadata\"")
+			}
+		case "connector_version":
+			if err := func() error {
+				s.ConnectorVersion.Reset()
+				if err := s.ConnectorVersion.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"connector_version\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode ConnectorSessionMetadataV3")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *ConnectorSessionMetadataV3) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ConnectorSessionMetadataV3) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *ConnectorSessionMetadataV3CloudProviderMetadata) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *ConnectorSessionMetadataV3CloudProviderMetadata) encodeFields(e *jx.Encoder) {
+	{
+		if s.KubernetesType.Set {
+			e.FieldStart("kubernetes_type")
+			s.KubernetesType.Encode(e)
+		}
+	}
+	{
+		if s.KubernetesVersion.Set {
+			e.FieldStart("kubernetes_version")
+			s.KubernetesVersion.Encode(e)
+		}
+	}
+	{
+		if s.IsKubernetesAdmin.Set {
+			e.FieldStart("is_kubernetes_admin")
+			s.IsKubernetesAdmin.Encode(e)
+		}
+	}
+	{
+		if s.LocalDeploy.Set {
+			e.FieldStart("local_deploy")
+			s.LocalDeploy.Encode(e)
+		}
+	}
+	{
+		if s.AWSAccountID.Set {
+			e.FieldStart("aws_account_id")
+			s.AWSAccountID.Encode(e)
+		}
+	}
+	{
+		if s.Region.Set {
+			e.FieldStart("region")
+			s.Region.Encode(e)
+		}
+	}
+	{
+		if s.AvailabilityZone.Set {
+			e.FieldStart("availability_zone")
+			s.AvailabilityZone.Encode(e)
+		}
+	}
+	{
+		if s.ProjectID.Set {
+			e.FieldStart("project_id")
+			s.ProjectID.Encode(e)
+		}
+	}
+	{
+		if s.OrganizationID.Set {
+			e.FieldStart("organization_id")
+			s.OrganizationID.Encode(e)
+		}
+	}
+	{
+		if s.Zone.Set {
+			e.FieldStart("zone")
+			s.Zone.Encode(e)
+		}
+	}
+	{
+		if s.SubscriptionID.Set {
+			e.FieldStart("subscription_id")
+			s.SubscriptionID.Encode(e)
+		}
+	}
+	{
+		if s.ResourceGroup.Set {
+			e.FieldStart("resource_group")
+			s.ResourceGroup.Encode(e)
+		}
+	}
+	{
+		if s.IsAzureAdmin.Set {
+			e.FieldStart("is_azure_admin")
+			s.IsAzureAdmin.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfConnectorSessionMetadataV3CloudProviderMetadata = [13]string{
+	0:  "kubernetes_type",
+	1:  "kubernetes_version",
+	2:  "is_kubernetes_admin",
+	3:  "local_deploy",
+	4:  "aws_account_id",
+	5:  "region",
+	6:  "availability_zone",
+	7:  "project_id",
+	8:  "organization_id",
+	9:  "zone",
+	10: "subscription_id",
+	11: "resource_group",
+	12: "is_azure_admin",
+}
+
+// Decode decodes ConnectorSessionMetadataV3CloudProviderMetadata from json.
+func (s *ConnectorSessionMetadataV3CloudProviderMetadata) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ConnectorSessionMetadataV3CloudProviderMetadata to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "kubernetes_type":
+			if err := func() error {
+				s.KubernetesType.Reset()
+				if err := s.KubernetesType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"kubernetes_type\"")
+			}
+		case "kubernetes_version":
+			if err := func() error {
+				s.KubernetesVersion.Reset()
+				if err := s.KubernetesVersion.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"kubernetes_version\"")
+			}
+		case "is_kubernetes_admin":
+			if err := func() error {
+				s.IsKubernetesAdmin.Reset()
+				if err := s.IsKubernetesAdmin.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"is_kubernetes_admin\"")
+			}
+		case "local_deploy":
+			if err := func() error {
+				s.LocalDeploy.Reset()
+				if err := s.LocalDeploy.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"local_deploy\"")
+			}
+		case "aws_account_id":
+			if err := func() error {
+				s.AWSAccountID.Reset()
+				if err := s.AWSAccountID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"aws_account_id\"")
+			}
+		case "region":
+			if err := func() error {
+				s.Region.Reset()
+				if err := s.Region.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"region\"")
+			}
+		case "availability_zone":
+			if err := func() error {
+				s.AvailabilityZone.Reset()
+				if err := s.AvailabilityZone.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"availability_zone\"")
+			}
+		case "project_id":
+			if err := func() error {
+				s.ProjectID.Reset()
+				if err := s.ProjectID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"project_id\"")
+			}
+		case "organization_id":
+			if err := func() error {
+				s.OrganizationID.Reset()
+				if err := s.OrganizationID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"organization_id\"")
+			}
+		case "zone":
+			if err := func() error {
+				s.Zone.Reset()
+				if err := s.Zone.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"zone\"")
+			}
+		case "subscription_id":
+			if err := func() error {
+				s.SubscriptionID.Reset()
+				if err := s.SubscriptionID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"subscription_id\"")
+			}
+		case "resource_group":
+			if err := func() error {
+				s.ResourceGroup.Reset()
+				if err := s.ResourceGroup.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"resource_group\"")
+			}
+		case "is_azure_admin":
+			if err := func() error {
+				s.IsAzureAdmin.Reset()
+				if err := s.IsAzureAdmin.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"is_azure_admin\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode ConnectorSessionMetadataV3CloudProviderMetadata")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *ConnectorSessionMetadataV3CloudProviderMetadata) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ConnectorSessionMetadataV3CloudProviderMetadata) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *ConnectorSessionMetadataV3ConnectorVersion) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *ConnectorSessionMetadataV3ConnectorVersion) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("version")
+		e.Str(s.Version)
+	}
+	{
+		if s.Commit.Set {
+			e.FieldStart("commit")
+			s.Commit.Encode(e)
+		}
+	}
+	{
+		if s.BuildDate.Set {
+			e.FieldStart("build_date")
+			s.BuildDate.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfConnectorSessionMetadataV3ConnectorVersion = [3]string{
+	0: "version",
+	1: "commit",
+	2: "build_date",
+}
+
+// Decode decodes ConnectorSessionMetadataV3ConnectorVersion from json.
+func (s *ConnectorSessionMetadataV3ConnectorVersion) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ConnectorSessionMetadataV3ConnectorVersion to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "version":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.Version = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"version\"")
+			}
+		case "commit":
+			if err := func() error {
+				s.Commit.Reset()
+				if err := s.Commit.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"commit\"")
+			}
+		case "build_date":
+			if err := func() error {
+				s.BuildDate.Reset()
+				if err := s.BuildDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"build_date\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode ConnectorSessionMetadataV3ConnectorVersion")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfConnectorSessionMetadataV3ConnectorVersion) {
+					name = jsonFieldsNameOfConnectorSessionMetadataV3ConnectorVersion[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *ConnectorSessionMetadataV3ConnectorVersion) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ConnectorSessionMetadataV3ConnectorVersion) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *ConnectorSessionV3) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *ConnectorSessionV3) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("id")
+		e.Str(s.ID)
+	}
+	{
+		e.FieldStart("metadata")
+		s.Metadata.Encode(e)
+	}
+	{
+		e.FieldStart("last_connected_time")
+		s.LastConnectedTime.Encode(e)
+	}
+}
+
+var jsonFieldsNameOfConnectorSessionV3 = [3]string{
+	0: "id",
+	1: "metadata",
+	2: "last_connected_time",
+}
+
+// Decode decodes ConnectorSessionV3 from json.
+func (s *ConnectorSessionV3) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ConnectorSessionV3 to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "id":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.ID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"id\"")
+			}
+		case "metadata":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				if err := s.Metadata.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"metadata\"")
+			}
+		case "last_connected_time":
+			requiredBitSet[0] |= 1 << 2
+			if err := func() error {
+				if err := s.LastConnectedTime.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"last_connected_time\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode ConnectorSessionV3")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfConnectorSessionV3) {
+					name = jsonFieldsNameOfConnectorSessionV3[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *ConnectorSessionV3) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ConnectorSessionV3) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *ConnectorV3) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -7763,9 +8337,17 @@ func (s *ConnectorV3) encodeFields(e *jx.Encoder) {
 		e.FieldStart("cloud_provider_type")
 		e.Str(s.CloudProviderType)
 	}
+	{
+		e.FieldStart("sessions")
+		e.ArrStart()
+		for _, elem := range s.Sessions {
+			elem.Encode(e)
+		}
+		e.ArrEnd()
+	}
 }
 
-var jsonFieldsNameOfConnectorV3 = [7]string{
+var jsonFieldsNameOfConnectorV3 = [8]string{
 	0: "id",
 	1: "name",
 	2: "status",
@@ -7773,6 +8355,7 @@ var jsonFieldsNameOfConnectorV3 = [7]string{
 	4: "last_connected",
 	5: "is_latest_version",
 	6: "cloud_provider_type",
+	7: "sessions",
 }
 
 // Decode decodes ConnectorV3 from json.
@@ -7866,6 +8449,24 @@ func (s *ConnectorV3) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"cloud_provider_type\"")
 			}
+		case "sessions":
+			requiredBitSet[0] |= 1 << 7
+			if err := func() error {
+				s.Sessions = make([]ConnectorSessionV3, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem ConnectorSessionV3
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.Sessions = append(s.Sessions, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"sessions\"")
+			}
 		default:
 			return d.Skip()
 		}
@@ -7876,7 +8477,7 @@ func (s *ConnectorV3) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b01101111,
+		0b11101111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -9138,62 +9739,6 @@ func (s *CreateIntegrationV4) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *CreateIntegrationV4) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
-func (s CreateIntegrationV4IntegrationConfig) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields implements json.Marshaler.
-func (s CreateIntegrationV4IntegrationConfig) encodeFields(e *jx.Encoder) {
-	for k, elem := range s {
-		e.FieldStart(k)
-
-		e.Str(elem)
-	}
-}
-
-// Decode decodes CreateIntegrationV4IntegrationConfig from json.
-func (s *CreateIntegrationV4IntegrationConfig) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode CreateIntegrationV4IntegrationConfig to nil")
-	}
-	m := s.init()
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		var elem string
-		if err := func() error {
-			v, err := d.Str()
-			elem = string(v)
-			if err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrapf(err, "decode field %q", k)
-		}
-		m[string(k)] = elem
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode CreateIntegrationV4IntegrationConfig")
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s CreateIntegrationV4IntegrationConfig) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *CreateIntegrationV4IntegrationConfig) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -13521,62 +14066,6 @@ func (s *IntegrationV4) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
-func (s IntegrationV4IntegrationConfig) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields implements json.Marshaler.
-func (s IntegrationV4IntegrationConfig) encodeFields(e *jx.Encoder) {
-	for k, elem := range s {
-		e.FieldStart(k)
-
-		e.Str(elem)
-	}
-}
-
-// Decode decodes IntegrationV4IntegrationConfig from json.
-func (s *IntegrationV4IntegrationConfig) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode IntegrationV4IntegrationConfig to nil")
-	}
-	m := s.init()
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		var elem string
-		if err := func() error {
-			v, err := d.Str()
-			elem = string(v)
-			if err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrapf(err, "decode field %q", k)
-		}
-		m[string(k)] = elem
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode IntegrationV4IntegrationConfig")
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s IntegrationV4IntegrationConfig) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *IntegrationV4IntegrationConfig) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
 func (s *IntegrationV4Owner) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -14741,6 +15230,64 @@ func (s *IntegrationV4SecretStoreConfigKubernetes) MarshalJSON() ([]byte, error)
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *IntegrationV4SecretStoreConfigKubernetes) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s JsonMapModel) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields implements json.Marshaler.
+func (s JsonMapModel) encodeFields(e *jx.Encoder) {
+	for k, elem := range s {
+		e.FieldStart(k)
+
+		if len(elem) != 0 {
+			e.Raw(elem)
+		}
+	}
+}
+
+// Decode decodes JsonMapModel from json.
+func (s *JsonMapModel) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode JsonMapModel to nil")
+	}
+	m := s.init()
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		var elem jx.Raw
+		if err := func() error {
+			v, err := d.RawAppend(nil)
+			elem = jx.Raw(v)
+			if err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return errors.Wrapf(err, "decode field %q", k)
+		}
+		m[string(k)] = elem
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode JsonMapModel")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s JsonMapModel) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *JsonMapModel) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -16177,6 +16724,104 @@ func (s *OptNilBool) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes ConnectorSessionMetadataV3CloudProviderMetadata as json.
+func (o OptNilConnectorSessionMetadataV3CloudProviderMetadata) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes ConnectorSessionMetadataV3CloudProviderMetadata from json.
+func (o *OptNilConnectorSessionMetadataV3CloudProviderMetadata) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilConnectorSessionMetadataV3CloudProviderMetadata to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v ConnectorSessionMetadataV3CloudProviderMetadata
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilConnectorSessionMetadataV3CloudProviderMetadata) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilConnectorSessionMetadataV3CloudProviderMetadata) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes ConnectorSessionMetadataV3ConnectorVersion as json.
+func (o OptNilConnectorSessionMetadataV3ConnectorVersion) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes ConnectorSessionMetadataV3ConnectorVersion from json.
+func (o *OptNilConnectorSessionMetadataV3ConnectorVersion) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilConnectorSessionMetadataV3ConnectorVersion to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v ConnectorSessionMetadataV3ConnectorVersion
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilConnectorSessionMetadataV3ConnectorVersion) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilConnectorSessionMetadataV3ConnectorVersion) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes CreateIntegrationV4Owner as json.
 func (o OptNilCreateIntegrationV4Owner) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -17275,58 +17920,8 @@ func (s *OptNilIntegrationV4SecretStoreConfigKubernetes) UnmarshalJSON(data []by
 	return s.Decode(d)
 }
 
-// Encode encodes RequestAgainV4CustomFields as json.
-func (o OptNilRequestAgainV4CustomFields) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	if o.Null {
-		e.Null()
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes RequestAgainV4CustomFields from json.
-func (o *OptNilRequestAgainV4CustomFields) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptNilRequestAgainV4CustomFields to nil")
-	}
-	if d.Next() == jx.Null {
-		if err := d.Null(); err != nil {
-			return err
-		}
-
-		var v RequestAgainV4CustomFields
-		o.Value = v
-		o.Set = true
-		o.Null = true
-		return nil
-	}
-	o.Set = true
-	o.Null = false
-	o.Value = make(RequestAgainV4CustomFields)
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptNilRequestAgainV4CustomFields) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptNilRequestAgainV4CustomFields) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes []ResourceScopeIntegrationAccessTargetPublicV2Model as json.
-func (o OptNilResourceScopeIntegrationAccessTargetPublicV2ModelArray) Encode(e *jx.Encoder) {
+// Encode encodes []ResourcesScopeIntegrationAccessTargetPublicV2Model as json.
+func (o OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) Encode(e *jx.Encoder) {
 	if !o.Set {
 		return
 	}
@@ -17341,17 +17936,17 @@ func (o OptNilResourceScopeIntegrationAccessTargetPublicV2ModelArray) Encode(e *
 	e.ArrEnd()
 }
 
-// Decode decodes []ResourceScopeIntegrationAccessTargetPublicV2Model from json.
-func (o *OptNilResourceScopeIntegrationAccessTargetPublicV2ModelArray) Decode(d *jx.Decoder) error {
+// Decode decodes []ResourcesScopeIntegrationAccessTargetPublicV2Model from json.
+func (o *OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) Decode(d *jx.Decoder) error {
 	if o == nil {
-		return errors.New("invalid: unable to decode OptNilResourceScopeIntegrationAccessTargetPublicV2ModelArray to nil")
+		return errors.New("invalid: unable to decode OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray to nil")
 	}
 	if d.Next() == jx.Null {
 		if err := d.Null(); err != nil {
 			return err
 		}
 
-		var v []ResourceScopeIntegrationAccessTargetPublicV2Model
+		var v []ResourcesScopeIntegrationAccessTargetPublicV2Model
 		o.Value = v
 		o.Set = true
 		o.Null = true
@@ -17359,9 +17954,9 @@ func (o *OptNilResourceScopeIntegrationAccessTargetPublicV2ModelArray) Decode(d 
 	}
 	o.Set = true
 	o.Null = false
-	o.Value = make([]ResourceScopeIntegrationAccessTargetPublicV2Model, 0)
+	o.Value = make([]ResourcesScopeIntegrationAccessTargetPublicV2Model, 0)
 	if err := d.Arr(func(d *jx.Decoder) error {
-		var elem ResourceScopeIntegrationAccessTargetPublicV2Model
+		var elem ResourcesScopeIntegrationAccessTargetPublicV2Model
 		if err := elem.Decode(d); err != nil {
 			return err
 		}
@@ -17374,14 +17969,14 @@ func (o *OptNilResourceScopeIntegrationAccessTargetPublicV2ModelArray) Decode(d 
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s OptNilResourceScopeIntegrationAccessTargetPublicV2ModelArray) MarshalJSON() ([]byte, error) {
+func (s OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptNilResourceScopeIntegrationAccessTargetPublicV2ModelArray) UnmarshalJSON(data []byte) error {
+func (s *OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -21703,10 +22298,8 @@ func (s *RequestAgainV4) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.CustomFields.Set {
-			e.FieldStart("custom_fields")
-			s.CustomFields.Encode(e)
-		}
+		e.FieldStart("custom_fields")
+		s.CustomFields.Encode(e)
 	}
 }
 
@@ -21720,6 +22313,7 @@ func (s *RequestAgainV4) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode RequestAgainV4 to nil")
 	}
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -21734,8 +22328,8 @@ func (s *RequestAgainV4) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"justification\"")
 			}
 		case "custom_fields":
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				s.CustomFields.Reset()
 				if err := s.CustomFields.Decode(d); err != nil {
 					return err
 				}
@@ -21749,6 +22343,38 @@ func (s *RequestAgainV4) Decode(d *jx.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode RequestAgainV4")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000010,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfRequestAgainV4) {
+					name = jsonFieldsNameOfRequestAgainV4[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -21819,6 +22445,102 @@ func (s RequestAgainV4CustomFields) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *RequestAgainV4CustomFields) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *RequestEntitlementPermissionV4) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *RequestEntitlementPermissionV4) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("name")
+		e.Str(s.Name)
+	}
+}
+
+var jsonFieldsNameOfRequestEntitlementPermissionV4 = [1]string{
+	0: "name",
+}
+
+// Decode decodes RequestEntitlementPermissionV4 from json.
+func (s *RequestEntitlementPermissionV4) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode RequestEntitlementPermissionV4 to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "name":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.Name = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"name\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode RequestEntitlementPermissionV4")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfRequestEntitlementPermissionV4) {
+					name = jsonFieldsNameOfRequestEntitlementPermissionV4[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *RequestEntitlementPermissionV4) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *RequestEntitlementPermissionV4) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -21964,165 +22686,6 @@ func (s *ResourceResponse) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *ResourceResponse) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
-func (s *ResourceScopeIntegrationAccessTargetPublicV2Model) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields encodes fields.
-func (s *ResourceScopeIntegrationAccessTargetPublicV2Model) encodeFields(e *jx.Encoder) {
-	{
-		e.FieldStart("scope_mode")
-		e.Str(s.ScopeMode)
-	}
-	{
-		e.FieldStart("type")
-		e.Str(s.Type)
-	}
-	{
-		if s.Key.Set {
-			e.FieldStart("key")
-			s.Key.Encode(e)
-		}
-	}
-	{
-		e.FieldStart("values")
-		e.ArrStart()
-		for _, elem := range s.Values {
-			e.Str(elem)
-		}
-		e.ArrEnd()
-	}
-}
-
-var jsonFieldsNameOfResourceScopeIntegrationAccessTargetPublicV2Model = [4]string{
-	0: "scope_mode",
-	1: "type",
-	2: "key",
-	3: "values",
-}
-
-// Decode decodes ResourceScopeIntegrationAccessTargetPublicV2Model from json.
-func (s *ResourceScopeIntegrationAccessTargetPublicV2Model) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode ResourceScopeIntegrationAccessTargetPublicV2Model to nil")
-	}
-	var requiredBitSet [1]uint8
-
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		switch string(k) {
-		case "scope_mode":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.ScopeMode = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"scope_mode\"")
-			}
-		case "type":
-			requiredBitSet[0] |= 1 << 1
-			if err := func() error {
-				v, err := d.Str()
-				s.Type = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"type\"")
-			}
-		case "key":
-			if err := func() error {
-				s.Key.Reset()
-				if err := s.Key.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"key\"")
-			}
-		case "values":
-			requiredBitSet[0] |= 1 << 3
-			if err := func() error {
-				s.Values = make([]string, 0)
-				if err := d.Arr(func(d *jx.Decoder) error {
-					var elem string
-					v, err := d.Str()
-					elem = string(v)
-					if err != nil {
-						return err
-					}
-					s.Values = append(s.Values, elem)
-					return nil
-				}); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"values\"")
-			}
-		default:
-			return d.Skip()
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode ResourceScopeIntegrationAccessTargetPublicV2Model")
-	}
-	// Validate required fields.
-	var failures []validate.FieldError
-	for i, mask := range [1]uint8{
-		0b00001011,
-	} {
-		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
-			// Mask only required fields and check equality to mask using XOR.
-			//
-			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
-			// Bits of fields which would be set are actually bits of missed fields.
-			missed := bits.OnesCount8(result)
-			for bitN := 0; bitN < missed; bitN++ {
-				bitIdx := bits.TrailingZeros8(result)
-				fieldIdx := i*8 + bitIdx
-				var name string
-				if fieldIdx < len(jsonFieldsNameOfResourceScopeIntegrationAccessTargetPublicV2Model) {
-					name = jsonFieldsNameOfResourceScopeIntegrationAccessTargetPublicV2Model[fieldIdx]
-				} else {
-					name = strconv.Itoa(fieldIdx)
-				}
-				failures = append(failures, validate.FieldError{
-					Name:  name,
-					Error: validate.ErrFieldRequired,
-				})
-				// Reset bit.
-				result &^= 1 << bitIdx
-			}
-		}
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s *ResourceScopeIntegrationAccessTargetPublicV2Model) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *ResourceScopeIntegrationAccessTargetPublicV2Model) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -22556,6 +23119,165 @@ func (s ResourceUserTagsResponseTags) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *ResourceUserTagsResponseTags) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *ResourcesScopeIntegrationAccessTargetPublicV2Model) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *ResourcesScopeIntegrationAccessTargetPublicV2Model) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("scope_mode")
+		e.Str(s.ScopeMode)
+	}
+	{
+		e.FieldStart("type")
+		e.Str(s.Type)
+	}
+	{
+		if s.Key.Set {
+			e.FieldStart("key")
+			s.Key.Encode(e)
+		}
+	}
+	{
+		e.FieldStart("values")
+		e.ArrStart()
+		for _, elem := range s.Values {
+			e.Str(elem)
+		}
+		e.ArrEnd()
+	}
+}
+
+var jsonFieldsNameOfResourcesScopeIntegrationAccessTargetPublicV2Model = [4]string{
+	0: "scope_mode",
+	1: "type",
+	2: "key",
+	3: "values",
+}
+
+// Decode decodes ResourcesScopeIntegrationAccessTargetPublicV2Model from json.
+func (s *ResourcesScopeIntegrationAccessTargetPublicV2Model) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ResourcesScopeIntegrationAccessTargetPublicV2Model to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "scope_mode":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.ScopeMode = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"scope_mode\"")
+			}
+		case "type":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.Type = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"type\"")
+			}
+		case "key":
+			if err := func() error {
+				s.Key.Reset()
+				if err := s.Key.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"key\"")
+			}
+		case "values":
+			requiredBitSet[0] |= 1 << 3
+			if err := func() error {
+				s.Values = make([]string, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem string
+					v, err := d.Str()
+					elem = string(v)
+					if err != nil {
+						return err
+					}
+					s.Values = append(s.Values, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"values\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode ResourcesScopeIntegrationAccessTargetPublicV2Model")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00001011,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfResourcesScopeIntegrationAccessTargetPublicV2Model) {
+					name = jsonFieldsNameOfResourcesScopeIntegrationAccessTargetPublicV2Model[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *ResourcesScopeIntegrationAccessTargetPublicV2Model) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ResourcesScopeIntegrationAccessTargetPublicV2Model) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -24513,62 +25235,6 @@ func (s *UpdateIntegrationV4) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *UpdateIntegrationV4) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
-func (s UpdateIntegrationV4IntegrationConfig) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields implements json.Marshaler.
-func (s UpdateIntegrationV4IntegrationConfig) encodeFields(e *jx.Encoder) {
-	for k, elem := range s {
-		e.FieldStart(k)
-
-		e.Str(elem)
-	}
-}
-
-// Decode decodes UpdateIntegrationV4IntegrationConfig from json.
-func (s *UpdateIntegrationV4IntegrationConfig) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode UpdateIntegrationV4IntegrationConfig to nil")
-	}
-	m := s.init()
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		var elem string
-		if err := func() error {
-			v, err := d.Str()
-			elem = string(v)
-			if err != nil {
-				return err
-			}
-			return nil
-		}(); err != nil {
-			return errors.Wrapf(err, "decode field %q", k)
-		}
-		m[string(k)] = elem
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode UpdateIntegrationV4IntegrationConfig")
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s UpdateIntegrationV4IntegrationConfig) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *UpdateIntegrationV4IntegrationConfig) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

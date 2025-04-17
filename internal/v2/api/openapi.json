@@ -1488,6 +1488,23 @@
             }
           },
           {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "default": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "resource_types",
             "in": "query",
             "schema": {
@@ -3663,7 +3680,7 @@
             "$ref": "#/components/schemas/EntitlementResourceV4"
           },
           "permission": {
-            "$ref": "#/components/schemas/EntitlementPermissionV4"
+            "$ref": "#/components/schemas/RequestEntitlementPermissionV4"
           },
           "status": {
             "type": "string"
@@ -3812,7 +3829,6 @@
           "id",
           "name",
           "integration",
-          "supported_connection_methods",
           "credentials_status",
           "can_reset_credentials"
         ],
@@ -3826,12 +3842,6 @@
           },
           "integration": {
             "$ref": "#/components/schemas/IntegrationPartialV4"
-          },
-          "supported_connection_methods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           },
           "credentials_status": {
             "type": "string"
@@ -4414,6 +4424,124 @@
           }
         }
       },
+      "ConnectorSessionMetadataV3": {
+        "type": "object",
+        "properties": {
+          "cloud_provider_metadata": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConnectorSessionsCloudProviderMetadataV3"
+              }
+            ],
+            "nullable": true
+          },
+          "connector_version": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConnectorSessionVersionMetadataV3"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "ConnectorSessionV3": {
+        "required": [
+          "id",
+          "metadata",
+          "last_connected_time"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ConnectorSessionMetadataV3"
+          },
+          "last_connected_time": {
+            "$ref": "#/components/schemas/ApiInstant"
+          }
+        }
+      },
+      "ConnectorSessionVersionMetadataV3": {
+        "required": [
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "commit": {
+            "type": "string",
+            "nullable": true
+          },
+          "build_date": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ConnectorSessionsCloudProviderMetadataV3": {
+        "type": "object",
+        "properties": {
+          "kubernetes_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "kubernetes_version": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_kubernetes_admin": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "local_deploy": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "aws_account_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "region": {
+            "type": "string",
+            "nullable": true
+          },
+          "availability_zone": {
+            "type": "string",
+            "nullable": true
+          },
+          "project_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "organization_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "zone": {
+            "type": "string",
+            "nullable": true
+          },
+          "subscription_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "resource_group": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_azure_admin": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "ConnectorV3": {
         "required": [
           "id",
@@ -4421,7 +4549,8 @@
           "status",
           "version",
           "is_latest_version",
-          "cloud_provider_type"
+          "cloud_provider_type",
+          "sessions"
         ],
         "type": "object",
         "properties": {
@@ -4451,6 +4580,12 @@
           },
           "cloud_provider_type": {
             "type": "string"
+          },
+          "sessions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConnectorSessionV3"
+            }
           }
         }
       },
@@ -4621,10 +4756,7 @@
             "nullable": true
           },
           "integration_config": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
+            "$ref": "#/components/schemas/JsonMapModel"
           },
           "secret_store_config": {
             "type": "object",
@@ -5122,10 +5254,10 @@
               "type": "string"
             }
           },
-          "resource_scopes": {
+          "resources_scopes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ResourceScopeIntegrationAccessTargetPublicV2Model"
+              "$ref": "#/components/schemas/ResourcesScopeIntegrationAccessTargetPublicV2Model"
             },
             "nullable": true
           }
@@ -5155,7 +5287,7 @@
           "resource_scopes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ResourceScopeIntegrationAccessTargetPublicV2Model"
+              "$ref": "#/components/schemas/ResourcesScopeIntegrationAccessTargetPublicV2Model"
             },
             "nullable": true
           }
@@ -5294,10 +5426,7 @@
             "nullable": true
           },
           "integration_config": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
+            "$ref": "#/components/schemas/JsonMapModel"
           },
           "secret_store_config": {
             "type": "object",
@@ -5348,6 +5477,10 @@
             "nullable": true
           }
         }
+      },
+      "JsonMapModel": {
+        "type": "object",
+        "additionalProperties": {}
       },
       "KubernetesSecretConfigV4": {
         "required": [
@@ -5976,6 +6109,9 @@
         "type": "string"
       },
       "RequestAgainV4": {
+        "required": [
+          "custom_fields"
+        ],
         "type": "object",
         "properties": {
           "justification": {
@@ -5986,8 +6122,18 @@
             "type": "object",
             "additionalProperties": {
               "type": "string"
-            },
-            "nullable": true
+            }
+          }
+        }
+      },
+      "RequestEntitlementPermissionV4": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
           }
         }
       },
@@ -6011,33 +6157,6 @@
           },
           "status": {
             "$ref": "#/components/schemas/ResourceStatusResponse"
-          }
-        }
-      },
-      "ResourceScopeIntegrationAccessTargetPublicV2Model": {
-        "required": [
-          "scope_mode",
-          "type",
-          "values"
-        ],
-        "description": "ResourceScopeIntegrationAccessTargetV2",
-        "type": "object",
-        "properties": {
-          "scope_mode": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "key": {
-            "type": "string",
-            "nullable": true
-          },
-          "values": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
@@ -6092,6 +6211,33 @@
           "tags": {
             "type": "object",
             "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ResourcesScopeIntegrationAccessTargetPublicV2Model": {
+        "required": [
+          "scope_mode",
+          "type",
+          "values"
+        ],
+        "description": "ResourcesScopeIntegrationAccessTargetV2",
+        "type": "object",
+        "properties": {
+          "scope_mode": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "values": {
+            "type": "array",
+            "items": {
               "type": "string"
             }
           }
@@ -6427,10 +6573,7 @@
             "type": "string"
           },
           "integration_config": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
+            "$ref": "#/components/schemas/JsonMapModel"
           },
           "secret_store_config": {
             "type": "object",

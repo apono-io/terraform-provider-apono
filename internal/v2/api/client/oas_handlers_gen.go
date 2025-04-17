@@ -5095,6 +5095,14 @@ func (s *Server) handleGetAccessRequestEntitlementsV4Request(args [1]string, arg
 					In:   "query",
 				}: params.IntegrationIds,
 				{
+					Name: "limit",
+					In:   "query",
+				}: params.Limit,
+				{
+					Name: "page_token",
+					In:   "query",
+				}: params.PageToken,
+				{
 					Name: "resource_types",
 					In:   "query",
 				}: params.ResourceTypes,
