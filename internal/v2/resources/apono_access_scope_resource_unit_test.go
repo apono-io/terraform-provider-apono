@@ -6,7 +6,7 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/mocks"
-	"github.com/apono-io/terraform-provider-apono/internal/v2/api/services"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"

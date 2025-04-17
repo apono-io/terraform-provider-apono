@@ -179,6 +179,7 @@ func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewWebhookResource,
 		v2resources.NewAponoAccessScopeResource,
 		v2resources.NewAponoGroupResource,
+		v2resources.NewAponoResourceIntegrationResource,
 	}
 }
 
