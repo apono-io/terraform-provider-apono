@@ -220,9 +220,19 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		for k, v := range stateVal.IntegrationConfig.Elements() {
 			configMap[k] = v
 		}
-		hostVal, exists := configMap["host"]
-		require.True(t, exists)
-		assert.Equal(t, "db.example.com", hostVal.(types.String).ValueString())
+		value, ok := configMap["host"]
+		require.True(t, ok)
+
+		hostVal, isString := value.(types.String)
+		require.True(t, isString)
+		assert.Equal(t, "db.example.com", hostVal.ValueString())
+
+		value, ok = configMap["database"]
+		require.True(t, ok)
+
+		dbVal, isString := value.(types.String)
+		require.True(t, isString)
+		assert.Equal(t, "test_db", dbVal.ValueString())
 	})
 
 	t.Run("Create_WithMinimalConfig", func(t *testing.T) {
@@ -407,13 +417,19 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		for k, v := range updatedState.IntegrationConfig.Elements() {
 			configMap[k] = v
 		}
-		hostVal, exists := configMap["host"]
-		require.True(t, exists)
-		assert.Equal(t, "new-db.example.com", hostVal.(types.String).ValueString())
+		value, ok := configMap["host"]
+		require.True(t, ok)
 
-		dbVal, exists := configMap["database"]
-		require.True(t, exists)
-		assert.Equal(t, "prod_db", dbVal.(types.String).ValueString())
+		hostVal, isString := value.(types.String)
+		require.True(t, isString)
+		assert.Equal(t, "new-db.example.com", hostVal.ValueString())
+
+		value, ok = configMap["database"]
+		require.True(t, ok)
+
+		dbVal, isString := value.(types.String)
+		require.True(t, isString)
+		assert.Equal(t, "prod_db", dbVal.ValueString())
 
 		assert.Equal(t, "Updated access details", updatedState.CustomAccessDetails.ValueString())
 		assert.Equal(t, int64(45), updatedState.UserCleanupPeriodInDays.ValueInt64())
@@ -650,13 +666,19 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		for k, v := range updatedState.IntegrationConfig.Elements() {
 			configMap[k] = v
 		}
-		hostVal, exists := configMap["host"]
-		require.True(t, exists)
-		assert.Equal(t, "new-db.example.com", hostVal.(types.String).ValueString())
+		value, ok := configMap["host"]
+		require.True(t, ok)
 
-		portVal, exists := configMap["port"]
-		require.True(t, exists)
-		assert.Equal(t, "5433", portVal.(types.String).ValueString())
+		hostVal, isString := value.(types.String)
+		require.True(t, isString)
+		assert.Equal(t, "new-db.example.com", hostVal.ValueString())
+
+		value, ok = configMap["port"]
+		require.True(t, ok)
+
+		portVal, isString := value.(types.String)
+		require.True(t, isString)
+		assert.Equal(t, "5433", portVal.ValueString())
 
 		assert.Equal(t, "Updated access details", updatedState.CustomAccessDetails.ValueString())
 		assert.Equal(t, int64(45), updatedState.UserCleanupPeriodInDays.ValueInt64())
@@ -813,9 +835,12 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 
 		configMap := make(map[string]attr.Value)
 		maps.Copy(configMap, stateModel.IntegrationConfig.Elements())
-		hostVal, exists := configMap["host"]
-		require.True(t, exists)
-		assert.Equal(t, "imported-db.example.com", hostVal.(types.String).ValueString())
+		value, ok := configMap["host"]
+		require.True(t, ok)
+
+		hostVal, isString := value.(types.String)
+		require.True(t, isString)
+		assert.Equal(t, "imported-db.example.com", hostVal.ValueString())
 	})
 
 }

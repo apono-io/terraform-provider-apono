@@ -84,9 +84,11 @@ func CreateIntegrationRequest(ctx context.Context, model ResourceIntegrationMode
 	if !model.IntegrationConfig.IsNull() {
 		integrationConfig := make(map[string]jx.Raw)
 		for k, v := range model.IntegrationConfig.Elements() {
-			strVal := v.(types.String).ValueString()
-
-			integrationConfig[k] = jx.Raw(strVal)
+			strVal, ok := v.(types.String)
+			if !ok {
+				return nil, fmt.Errorf("failed to assert type for integration config value")
+			}
+			integrationConfig[k] = jx.Raw(strVal.ValueString())
 		}
 		req.IntegrationConfig = integrationConfig
 	}
@@ -180,8 +182,11 @@ func UpdateIntegrationRequest(ctx context.Context, model ResourceIntegrationMode
 	if !model.IntegrationConfig.IsNull() {
 		integrationConfig := make(map[string]jx.Raw)
 		for k, v := range model.IntegrationConfig.Elements() {
-			strVal := v.(types.String).ValueString()
-			integrationConfig[k] = jx.Raw(strVal)
+			strVal, ok := v.(types.String)
+			if !ok {
+				return nil, fmt.Errorf("failed to assert type for integration config value")
+			}
+			integrationConfig[k] = jx.Raw(strVal.ValueString())
 		}
 		req.IntegrationConfig = integrationConfig
 	}
@@ -287,9 +292,7 @@ func ResourceIntegrationToModel(ctx context.Context, integration *client.Integra
 		connectedResourceTypes := integration.ConnectedResourceTypes.Value
 
 		stringSlice := make([]string, len(connectedResourceTypes))
-		for i, rt := range connectedResourceTypes {
-			stringSlice[i] = rt
-		}
+		copy(stringSlice, connectedResourceTypes)
 
 		resourceTypes, diags := types.ListValueFrom(ctx, types.StringType, stringSlice)
 		if diags.HasError() {

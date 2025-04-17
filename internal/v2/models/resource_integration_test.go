@@ -1,7 +1,6 @@
 package models
 
 import (
-	"context"
 	"testing"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
@@ -14,7 +13,7 @@ import (
 )
 
 func TestCreateIntegrationRequest(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 
 	t.Run("minimal fields", func(t *testing.T) {
 		// Create a model with only required fields
@@ -91,9 +90,13 @@ func TestCreateIntegrationRequest(t *testing.T) {
 		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.NotNil(t, req.IntegrationConfig)
-		assert.Equal(t, jx.Raw("localhost"), req.IntegrationConfig["host"])
-		assert.Equal(t, jx.Raw("5432"), req.IntegrationConfig["port"])
-		assert.Equal(t, jx.Raw("postgres"), req.IntegrationConfig["database"])
+		hostVal, isHostString := model.IntegrationConfig.Elements()["host"].(types.String)
+		require.True(t, isHostString)
+		assert.Equal(t, "localhost", hostVal.ValueString())
+
+		dbVal, isDbString := model.IntegrationConfig.Elements()["database"].(types.String)
+		require.True(t, isDbString)
+		assert.Equal(t, "postgres", dbVal.ValueString())
 	})
 
 	t.Run("with AWS secret store config", func(t *testing.T) {
@@ -285,7 +288,7 @@ func TestCreateIntegrationRequest(t *testing.T) {
 }
 
 func TestResourceIntegrationToModel(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 
 	t.Run("minimal fields", func(t *testing.T) {
 		// Create a minimal integration response
@@ -380,7 +383,11 @@ func TestResourceIntegrationToModel(t *testing.T) {
 		for key, expectedValue := range expectedConfig {
 			value, ok := model.IntegrationConfig.Elements()[key]
 			require.True(t, ok)
-			assert.Equal(t, expectedValue, value.(types.String).ValueString())
+
+			strValue, isString := value.(types.String)
+			require.True(t, isString)
+
+			assert.Equal(t, expectedValue, strValue.ValueString())
 		}
 	})
 
@@ -565,7 +572,7 @@ func TestResourceIntegrationToModel(t *testing.T) {
 }
 
 func TestUpdateIntegrationRequest(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 
 	t.Run("minimal fields", func(t *testing.T) {
 		// Create a model with only name
@@ -599,9 +606,18 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.NotNil(t, req.IntegrationConfig)
-		assert.Equal(t, jx.Raw("new-host"), req.IntegrationConfig["host"])
-		assert.Equal(t, jx.Raw("5433"), req.IntegrationConfig["port"])
-		assert.Equal(t, jx.Raw("test-db"), req.IntegrationConfig["database"])
+
+		hostVal, isHostString := model.IntegrationConfig.Elements()["host"].(types.String)
+		require.True(t, isHostString)
+		assert.Equal(t, "new-host", hostVal.ValueString())
+
+		portVal, isPortString := model.IntegrationConfig.Elements()["port"].(types.String)
+		require.True(t, isPortString)
+		assert.Equal(t, "5433", portVal.ValueString())
+
+		dbVal, isDbString := model.IntegrationConfig.Elements()["database"].(types.String)
+		require.True(t, isDbString)
+		assert.Equal(t, "test-db", dbVal.ValueString())
 	})
 
 	t.Run("with connected resource types", func(t *testing.T) {
