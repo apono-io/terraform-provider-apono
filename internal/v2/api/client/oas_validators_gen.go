@@ -58,7 +58,7 @@ func (s *AccessBundleAccessTargetPublicV2ModelIntegration) Validate() error {
 		})
 	}
 	if err := func() error {
-		if value, ok := s.ResourceScopes.Get(); ok {
+		if value, ok := s.ResourcesScopes.Get(); ok {
 			if err := func() error {
 				if value == nil {
 					return errors.New("nil is invalid value")
@@ -88,7 +88,7 @@ func (s *AccessBundleAccessTargetPublicV2ModelIntegration) Validate() error {
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "resource_scopes",
+			Name:  "resources_scopes",
 			Error: err,
 		})
 	}
@@ -908,29 +908,6 @@ func (s *AccessRequestsBulkRevokeRequestV3) Validate() error {
 	return nil
 }
 
-func (s *AccessSessionV1) Validate() error {
-	if s == nil {
-		return validate.ErrNilPointer
-	}
-
-	var failures []validate.FieldError
-	if err := func() error {
-		if s.SupportedConnectionMethods == nil {
-			return errors.New("nil is invalid value")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "supported_connection_methods",
-			Error: err,
-		})
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-	return nil
-}
-
 func (s AccessStatusModel) Validate() error {
 	switch s {
 	case "PENDING":
@@ -1045,7 +1022,7 @@ func (s *AccessTargetPublicV2ModelIntegration) Validate() error {
 		})
 	}
 	if err := func() error {
-		if value, ok := s.ResourceScopes.Get(); ok {
+		if value, ok := s.ResourcesScopes.Get(); ok {
 			if err := func() error {
 				if value == nil {
 					return errors.New("nil is invalid value")
@@ -1075,7 +1052,7 @@ func (s *AccessTargetPublicV2ModelIntegration) Validate() error {
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "resource_scopes",
+			Name:  "resources_scopes",
 			Error: err,
 		})
 	}
@@ -1422,6 +1399,29 @@ func (s *Connector) Validate() error {
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
 			Name:  "last_connected",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *ConnectorV3) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if s.Sessions == nil {
+			return errors.New("nil is invalid value")
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "sessions",
 			Error: err,
 		})
 	}
@@ -2644,23 +2644,6 @@ func (s *PublicApiListResponseAccessSessionPublicV1Model) Validate() error {
 		if s.Items == nil {
 			return errors.New("nil is invalid value")
 		}
-		var failures []validate.FieldError
-		for i, elem := range s.Items {
-			if err := func() error {
-				if err := elem.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				failures = append(failures, validate.FieldError{
-					Name:  fmt.Sprintf("[%d]", i),
-					Error: err,
-				})
-			}
-		}
-		if len(failures) > 0 {
-			return &validate.Error{Fields: failures}
-		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
@@ -2769,6 +2752,23 @@ func (s *PublicApiListResponseConnectorPublicV3Model) Validate() error {
 	if err := func() error {
 		if s.Items == nil {
 			return errors.New("nil is invalid value")
+		}
+		var failures []validate.FieldError
+		for i, elem := range s.Items {
+			if err := func() error {
+				if err := elem.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				failures = append(failures, validate.FieldError{
+					Name:  fmt.Sprintf("[%d]", i),
+					Error: err,
+				})
+			}
+		}
+		if len(failures) > 0 {
+			return &validate.Error{Fields: failures}
 		}
 		return nil
 	}(); err != nil {
@@ -2939,29 +2939,6 @@ func (s *ResourceResponse) Validate() error {
 	return nil
 }
 
-func (s *ResourceScopeIntegrationAccessTargetPublicV2Model) Validate() error {
-	if s == nil {
-		return validate.ErrNilPointer
-	}
-
-	var failures []validate.FieldError
-	if err := func() error {
-		if s.Values == nil {
-			return errors.New("nil is invalid value")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "values",
-			Error: err,
-		})
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-	return nil
-}
-
 func (s *ResourceStatusResponse) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -2996,6 +2973,29 @@ func (s ResourceStatusV1) Validate() error {
 	default:
 		return errors.Errorf("invalid value: %v", s)
 	}
+}
+
+func (s *ResourcesScopeIntegrationAccessTargetPublicV2Model) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if s.Values == nil {
+			return errors.New("nil is invalid value")
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "values",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
 }
 
 func (s *SelectablePermissionsResponse) Validate() error {
