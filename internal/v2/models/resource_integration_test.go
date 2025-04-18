@@ -361,9 +361,9 @@ func TestResourceIntegrationToModel(t *testing.T) {
 				Set:   true,
 			},
 			IntegrationConfig: map[string]jx.Raw{
-				"host":     jx.Raw("localhost"),
-				"port":     jx.Raw("5432"),
-				"database": jx.Raw("postgres"),
+				"host":     jx.Raw("\"" + "localhost" + "\""),
+				"port":     jx.Raw("\"" + "5432" + "\""),
+				"database": jx.Raw("\"" + "postgres" + "\""),
 			},
 		}
 

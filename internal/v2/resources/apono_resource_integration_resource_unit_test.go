@@ -8,6 +8,7 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/mocks"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/go-faster/jx"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -190,9 +191,9 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 					Set:   true,
 				},
 				IntegrationConfig: map[string]jx.Raw{
-					"host":     jx.Raw("db.example.com"),
-					"database": jx.Raw("test_db"),
-					"port":     jx.Raw("5432"),
+					"host":     common.StringToJx("db.example.com"),
+					"database": common.StringToJx("test_db"),
+					"port":     common.StringToJx("5432"),
 				},
 			}, nil).
 			Once()
@@ -311,7 +312,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 					Set:   true,
 				},
 				IntegrationConfig: map[string]jx.Raw{
-					"host": jx.Raw("minimal-db.example.com"),
+					"host": common.StringToJx("minimal-db.example.com"),
 				},
 			}, nil).
 			Once()
@@ -370,8 +371,8 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 				Set:   true,
 			},
 			IntegrationConfig: map[string]jx.Raw{
-				"host":     jx.Raw("new-db.example.com"),
-				"database": jx.Raw("prod_db"),
+				"host":     common.StringToJx("new-db.example.com"),
+				"database": common.StringToJx("prod_db"),
 			},
 			CustomAccessDetails: client.OptNilString{
 				Value: "Updated access details",
@@ -588,9 +589,9 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 					Set:   true,
 				},
 				IntegrationConfig: map[string]jx.Raw{
-					"host":     jx.Raw("new-db.example.com"),
-					"port":     jx.Raw("5433"),
-					"database": jx.Raw("new_db"),
+					"host":     common.StringToJx("new-db.example.com"),
+					"port":     common.StringToJx("5433"),
+					"database": common.StringToJx("new_db"),
 				},
 				CustomAccessDetails: client.OptNilString{
 					Value: "Updated access details",
@@ -794,7 +795,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 					Set:   true,
 				},
 				IntegrationConfig: map[string]jx.Raw{
-					"host": jx.Raw("imported-db.example.com"),
+					"host": common.StringToJx("imported-db.example.com"),
 				},
 			}, nil).
 			Once()

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/go-faster/jx"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -88,8 +89,9 @@ func CreateIntegrationRequest(ctx context.Context, model ResourceIntegrationMode
 			if !ok {
 				return nil, fmt.Errorf("failed to assert type for integration config value")
 			}
-			integrationConfig[k] = jx.Raw(strVal.ValueString())
+			integrationConfig[k] = common.StringToJx(strVal.ValueString())
 		}
+
 		req.IntegrationConfig = integrationConfig
 	}
 
@@ -186,7 +188,7 @@ func UpdateIntegrationRequest(ctx context.Context, model ResourceIntegrationMode
 			if !ok {
 				return nil, fmt.Errorf("failed to assert type for integration config value")
 			}
-			integrationConfig[k] = jx.Raw(strVal.ValueString())
+			integrationConfig[k] = common.StringToJx(strVal.ValueString())
 		}
 		req.IntegrationConfig = integrationConfig
 	}
@@ -305,13 +307,20 @@ func ResourceIntegrationToModel(ctx context.Context, integration *client.Integra
 
 	if integration.IntegrationConfig != nil {
 		configMap := make(map[string]attr.Value)
+
 		for k, v := range integration.IntegrationConfig {
-			configMap[k] = types.StringValue(v.String())
+			vstr, err := common.JxToString(v)
+			if err != nil {
+				return nil, fmt.Errorf("failed to decode integration config value: %v", err)
+			}
+			configMap[k] = types.StringValue(vstr)
 		}
+
 		integrationConfig, diags := types.MapValueFrom(ctx, types.StringType, configMap)
 		if diags.HasError() {
 			return nil, fmt.Errorf("failed to parse integration config: %v", diags)
 		}
+
 		model.IntegrationConfig = integrationConfig
 	}
 

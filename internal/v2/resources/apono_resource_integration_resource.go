@@ -7,13 +7,11 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -70,14 +68,6 @@ func (r *AponoResourceIntegrationResource) Schema(_ context.Context, _ resource.
 			"secret_store_config": schema.SingleNestedAttribute{
 				Description: "Configuration for secret store.",
 				Optional:    true,
-				Validators: []validator.Object{
-					objectvalidator.ExactlyOneOf(
-						path.Root("aws").Expression(),
-						path.Root("gcp").Expression(),
-						path.Root("azure").Expression(),
-						path.Root("hashicorp_vault").Expression(),
-					),
-				},
 				Attributes: map[string]schema.Attribute{
 					"aws": schema.SingleNestedAttribute{
 						Description: "AWS secret store configuration.",
