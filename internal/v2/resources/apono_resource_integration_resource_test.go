@@ -23,6 +23,21 @@ func TestAccAponoResourceIntegrationResource(t *testing.T) {
 	customAccessDetails := "Example access instructions"
 	updatedCustomAccessDetails := "Updated access instructions"
 
+	testAccAponoResourceIntegrationConfig := func(name, integrationType, connectorID, resourceType, customAccessDetails string) string {
+		return fmt.Sprintf(`
+resource "apono_resource_integration" "test" {
+  name                    = "%s"
+  type                    = "%s"
+  connector_id            = "%s"
+  connected_resource_types = ["%s"]
+  integration_config = {
+    key = "value"
+  }
+  custom_access_details = "%s"
+}
+`, name, integrationType, connectorID, resourceType, customAccessDetails)
+	}
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testcommon.TestAccPreCheck(t) },
 		ProtoV6ProviderFactories: testcommon.TestAccProtoV6ProviderFactories,
@@ -54,19 +69,4 @@ func TestAccAponoResourceIntegrationResource(t *testing.T) {
 			},
 		},
 	})
-}
-
-func testAccAponoResourceIntegrationConfig(name, integrationType, connectorID, resourceType, customAccessDetails string) string {
-	return fmt.Sprintf(`
-resource "apono_resource_integration" "test" {
-  name                    = "%s"
-  type                    = "%s"
-  connector_id            = "%s"
-  connected_resource_types = ["%s"]
-  integration_config = {
-    key = "value"
-  }
-  custom_access_details = "%s"
-}
-`, name, integrationType, connectorID, resourceType, customAccessDetails)
 }
