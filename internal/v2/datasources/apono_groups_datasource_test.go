@@ -1,7 +1,6 @@
 package datasources_test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/testcommon"
@@ -45,7 +44,7 @@ func TestAccAponoGroupsDataSource(t *testing.T) {
 
 func TestAccAponoGroupsDataSourceWithSourceIntegration(t *testing.T) {
 	// Skip if not running against test account
-	if os.Getenv("IS_TEST_ACCOUNT") == "" {
+	if !testcommon.IsTestAccount(t) {
 		t.Skip("Skipping test as IS_TEST_ACCOUNT is not set")
 	}
 
