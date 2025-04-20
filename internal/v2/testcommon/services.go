@@ -34,3 +34,21 @@ func GetUsers(t *testing.T) ([]client.UserModel, error) {
 
 	return activeUsers, nil
 }
+
+// Helper function to list connectors and return the first one.
+func GetFirstConnectorV3(t *testing.T) (*client.ConnectorV3, error) {
+	c := GetTestClient(t)
+
+	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+	defer cancel()
+
+	params := client.ListConnectorsV3Params{}
+	resp, err := c.ListConnectorsV3(ctx, params)
+	if err != nil {
+		return nil, fmt.Errorf("error listing connectors: %v", err)
+	}
+	if len(resp.Items) == 0 {
+		return nil, fmt.Errorf("no connectors found")
+	}
+	return &resp.Items[0], nil
+}

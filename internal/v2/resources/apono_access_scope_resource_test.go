@@ -38,7 +38,6 @@ func TestAccAponoAccessScopeResource(t *testing.T) {
 				),
 			},
 			{
-				// Test import by ID
 				ResourceName:      resourceName,
 				ImportState:       true,
 				ImportStateVerify: true,

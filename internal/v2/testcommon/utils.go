@@ -63,3 +63,7 @@ func GetTestClient(t *testing.T) *v2client.Client {
 func PrefixedName(prefix, name string) string {
 	return prefix + "-" + name
 }
+
+func IsTestAccount(t *testing.T) bool {
+	return os.Getenv("IS_TEST_ACCOUNT") != ""
+}

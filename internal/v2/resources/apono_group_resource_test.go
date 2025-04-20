@@ -15,13 +15,11 @@ func TestAccAponoGroupResource(t *testing.T) {
 
 	users, err := testcommon.GetUsers(t)
 	if err != nil {
-		t.Errorf("Error getting test users: %v", err)
-		return
+		t.Fatalf("Error getting test users: %v", err)
 	}
 
 	if len(users) < 2 {
-		t.Errorf("Not enough users available for testing, need at least 2, got %d", len(users))
-		return
+		t.Fatalf("Not enough users available for testing, need at least 2, got %d", len(users))
 	}
 
 	updatedName := rName + "-updated"

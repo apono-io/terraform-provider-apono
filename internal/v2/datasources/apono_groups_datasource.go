@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
-	"github.com/apono-io/terraform-provider-apono/internal/v2/api/services"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
