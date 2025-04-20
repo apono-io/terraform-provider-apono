@@ -65,7 +65,7 @@ type OwnersMappingConfig struct {
 	AttributeType         types.String `tfsdk:"attribute_type"`
 }
 
-func CreateIntegrationRequest(ctx context.Context, model ResourceIntegrationModel) (*client.CreateIntegrationV4, error) {
+func ResourceIntegrationModelToCreateRequest(ctx context.Context, model ResourceIntegrationModel) (*client.CreateIntegrationV4, error) {
 	req := &client.CreateIntegrationV4{
 		Name: model.Name.ValueString(),
 		Type: model.Type.ValueString(),
@@ -73,14 +73,12 @@ func CreateIntegrationRequest(ctx context.Context, model ResourceIntegrationMode
 
 	req.ConnectorID.SetTo(model.ConnectorID.ValueString())
 
-	if !model.ConnectedResourceTypes.IsNull() {
-		var connectedResourceTypes []string
-		diags := model.ConnectedResourceTypes.ElementsAs(ctx, &connectedResourceTypes, false)
-		if diags.HasError() {
-			return nil, fmt.Errorf("failed to parse connected resource types: %v", diags)
-		}
-		req.ConnectedResourceTypes.SetTo(connectedResourceTypes)
+	var connectedResourceTypes []string
+	diags := model.ConnectedResourceTypes.ElementsAs(ctx, &connectedResourceTypes, false)
+	if diags.HasError() {
+		return nil, fmt.Errorf("failed to parse connected resource types: %v", diags)
 	}
+	req.ConnectedResourceTypes.SetTo(connectedResourceTypes)
 
 	if !model.IntegrationConfig.IsNull() {
 		integrationConfig := make(map[string]jx.Raw)
@@ -96,35 +94,7 @@ func CreateIntegrationRequest(ctx context.Context, model ResourceIntegrationMode
 	}
 
 	if model.SecretStoreConfig != nil {
-		secretConfig := client.CreateIntegrationV4SecretStoreConfig{}
-
-		if model.SecretStoreConfig.AWS != nil {
-			awsConfig := model.SecretStoreConfig.AWS
-			secretConfig.AWS = client.NewOptNilCreateIntegrationV4SecretStoreConfigAWS(client.CreateIntegrationV4SecretStoreConfigAWS{
-				Region:   awsConfig.Region.ValueString(),
-				SecretID: awsConfig.SecretID.ValueString(),
-			})
-		} else if model.SecretStoreConfig.GCP != nil {
-			gcpConfig := model.SecretStoreConfig.GCP
-			secretConfig.Gcp = client.NewOptNilCreateIntegrationV4SecretStoreConfigGcp(client.CreateIntegrationV4SecretStoreConfigGcp{
-				Project:  gcpConfig.Project.ValueString(),
-				SecretID: gcpConfig.SecretID.ValueString(),
-			})
-		} else if model.SecretStoreConfig.Azure != nil {
-			azureConfig := model.SecretStoreConfig.Azure
-			secretConfig.Azure = client.NewOptNilCreateIntegrationV4SecretStoreConfigAzure(client.CreateIntegrationV4SecretStoreConfigAzure{
-				VaultURL: azureConfig.VaultURL.ValueString(),
-				Name:     azureConfig.Name.ValueString(),
-			})
-		} else if model.SecretStoreConfig.HashicorpVault != nil {
-			vaultConfig := model.SecretStoreConfig.HashicorpVault
-			secretConfig.HashicorpVault = client.NewOptNilCreateIntegrationV4SecretStoreConfigHashicorpVault(client.CreateIntegrationV4SecretStoreConfigHashicorpVault{
-				SecretEngine: vaultConfig.SecretEngine.ValueString(),
-				Path:         vaultConfig.Path.ValueString(),
-			})
-		}
-
-		req.SecretStoreConfig.SetTo(secretConfig)
+		req.SecretStoreConfig.SetTo(createSecretStoreConfig(model.SecretStoreConfig))
 	}
 
 	if !model.CustomAccessDetails.IsNull() {
@@ -176,7 +146,7 @@ func CreateIntegrationRequest(ctx context.Context, model ResourceIntegrationMode
 	return req, nil
 }
 
-func UpdateIntegrationRequest(ctx context.Context, model ResourceIntegrationModel) (*client.UpdateIntegrationV4, error) {
+func ResourceIntegrationModelToUpdateRequest(ctx context.Context, model ResourceIntegrationModel) (*client.UpdateIntegrationV4, error) {
 	req := &client.UpdateIntegrationV4{
 		Name: model.Name.ValueString(),
 	}
@@ -193,45 +163,15 @@ func UpdateIntegrationRequest(ctx context.Context, model ResourceIntegrationMode
 		req.IntegrationConfig = integrationConfig
 	}
 
-	if !model.ConnectedResourceTypes.IsNull() {
-		var connectedResourceTypes []string
-		diags := model.ConnectedResourceTypes.ElementsAs(ctx, &connectedResourceTypes, false)
-		if diags.HasError() {
-			return nil, fmt.Errorf("failed to parse connected resource types: %v", diags)
-		}
-		req.ConnectedResourceTypes.SetTo(connectedResourceTypes)
+	var connectedResourceTypes []string
+	diags := model.ConnectedResourceTypes.ElementsAs(ctx, &connectedResourceTypes, false)
+	if diags.HasError() {
+		return nil, fmt.Errorf("failed to parse connected resource types: %v", diags)
 	}
+	req.ConnectedResourceTypes.SetTo(connectedResourceTypes)
 
 	if model.SecretStoreConfig != nil {
-		secretConfig := client.UpdateIntegrationV4SecretStoreConfig{}
-
-		if model.SecretStoreConfig.AWS != nil {
-			awsConfig := model.SecretStoreConfig.AWS
-			secretConfig.AWS = client.NewOptNilUpdateIntegrationV4SecretStoreConfigAWS(client.UpdateIntegrationV4SecretStoreConfigAWS{
-				Region:   awsConfig.Region.ValueString(),
-				SecretID: awsConfig.SecretID.ValueString(),
-			})
-		} else if model.SecretStoreConfig.GCP != nil {
-			gcpConfig := model.SecretStoreConfig.GCP
-			secretConfig.Gcp = client.NewOptNilUpdateIntegrationV4SecretStoreConfigGcp(client.UpdateIntegrationV4SecretStoreConfigGcp{
-				Project:  gcpConfig.Project.ValueString(),
-				SecretID: gcpConfig.SecretID.ValueString(),
-			})
-		} else if model.SecretStoreConfig.Azure != nil {
-			azureConfig := model.SecretStoreConfig.Azure
-			secretConfig.Azure = client.NewOptNilUpdateIntegrationV4SecretStoreConfigAzure(client.UpdateIntegrationV4SecretStoreConfigAzure{
-				VaultURL: azureConfig.VaultURL.ValueString(),
-				Name:     azureConfig.Name.ValueString(),
-			})
-		} else if model.SecretStoreConfig.HashicorpVault != nil {
-			vaultConfig := model.SecretStoreConfig.HashicorpVault
-			secretConfig.HashicorpVault = client.NewOptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault(client.UpdateIntegrationV4SecretStoreConfigHashicorpVault{
-				SecretEngine: vaultConfig.SecretEngine.ValueString(),
-				Path:         vaultConfig.Path.ValueString(),
-			})
-		}
-
-		req.SecretStoreConfig.SetTo(secretConfig)
+		req.SecretStoreConfig.SetTo(updateSecretStoreConfig(model.SecretStoreConfig))
 	}
 
 	if !model.CustomAccessDetails.IsNull() {
@@ -404,4 +344,68 @@ func ResourceIntegrationToModel(ctx context.Context, integration *client.Integra
 	}
 
 	return model, nil
+}
+
+func createSecretStoreConfig(config *SecretStoreConfig) client.CreateIntegrationV4SecretStoreConfig {
+	secretConfig := client.CreateIntegrationV4SecretStoreConfig{}
+
+	if config.AWS != nil {
+		awsConfig := config.AWS
+		secretConfig.AWS = client.NewOptNilCreateIntegrationV4SecretStoreConfigAWS(client.CreateIntegrationV4SecretStoreConfigAWS{
+			Region:   awsConfig.Region.ValueString(),
+			SecretID: awsConfig.SecretID.ValueString(),
+		})
+	} else if config.GCP != nil {
+		gcpConfig := config.GCP
+		secretConfig.Gcp = client.NewOptNilCreateIntegrationV4SecretStoreConfigGcp(client.CreateIntegrationV4SecretStoreConfigGcp{
+			Project:  gcpConfig.Project.ValueString(),
+			SecretID: gcpConfig.SecretID.ValueString(),
+		})
+	} else if config.Azure != nil {
+		azureConfig := config.Azure
+		secretConfig.Azure = client.NewOptNilCreateIntegrationV4SecretStoreConfigAzure(client.CreateIntegrationV4SecretStoreConfigAzure{
+			VaultURL: azureConfig.VaultURL.ValueString(),
+			Name:     azureConfig.Name.ValueString(),
+		})
+	} else if config.HashicorpVault != nil {
+		vaultConfig := config.HashicorpVault
+		secretConfig.HashicorpVault = client.NewOptNilCreateIntegrationV4SecretStoreConfigHashicorpVault(client.CreateIntegrationV4SecretStoreConfigHashicorpVault{
+			SecretEngine: vaultConfig.SecretEngine.ValueString(),
+			Path:         vaultConfig.Path.ValueString(),
+		})
+	}
+
+	return secretConfig
+}
+
+func updateSecretStoreConfig(config *SecretStoreConfig) client.UpdateIntegrationV4SecretStoreConfig {
+	secretConfig := client.UpdateIntegrationV4SecretStoreConfig{}
+
+	if config.AWS != nil {
+		awsConfig := config.AWS
+		secretConfig.AWS = client.NewOptNilUpdateIntegrationV4SecretStoreConfigAWS(client.UpdateIntegrationV4SecretStoreConfigAWS{
+			Region:   awsConfig.Region.ValueString(),
+			SecretID: awsConfig.SecretID.ValueString(),
+		})
+	} else if config.GCP != nil {
+		gcpConfig := config.GCP
+		secretConfig.Gcp = client.NewOptNilUpdateIntegrationV4SecretStoreConfigGcp(client.UpdateIntegrationV4SecretStoreConfigGcp{
+			Project:  gcpConfig.Project.ValueString(),
+			SecretID: gcpConfig.SecretID.ValueString(),
+		})
+	} else if config.Azure != nil {
+		azureConfig := config.Azure
+		secretConfig.Azure = client.NewOptNilUpdateIntegrationV4SecretStoreConfigAzure(client.UpdateIntegrationV4SecretStoreConfigAzure{
+			VaultURL: azureConfig.VaultURL.ValueString(),
+			Name:     azureConfig.Name.ValueString(),
+		})
+	} else if config.HashicorpVault != nil {
+		vaultConfig := config.HashicorpVault
+		secretConfig.HashicorpVault = client.NewOptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault(client.UpdateIntegrationV4SecretStoreConfigHashicorpVault{
+			SecretEngine: vaultConfig.SecretEngine.ValueString(),
+			Path:         vaultConfig.Path.ValueString(),
+		})
+	}
+
+	return secretConfig
 }

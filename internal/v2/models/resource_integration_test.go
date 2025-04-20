@@ -12,46 +12,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCreateIntegrationRequest(t *testing.T) {
+func TestResourceIntegrationModelToCreateRequest(t *testing.T) {
 	ctx := t.Context()
 
-	t.Run("minimal fields", func(t *testing.T) {
-		// Create a model with only required fields
-		model := ResourceIntegrationModel{
-			Name: types.StringValue("test-integration"),
-			Type: types.StringValue("postgres"),
-		}
-
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
-
-		// Assert no errors and check basic fields
-		require.NoError(t, err)
-		assert.Equal(t, "test-integration", req.Name)
-		assert.Equal(t, "postgres", req.Type)
-	})
-
-	t.Run("with connector_id", func(t *testing.T) {
-		// Create a model with connector_id
-		model := ResourceIntegrationModel{
-			Name:        types.StringValue("test-integration"),
-			Type:        types.StringValue("postgres"),
-			ConnectorID: types.StringValue("test-connector-id"),
-		}
-
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
-
-		// Assert no errors and check fields
-		require.NoError(t, err)
-		assert.Equal(t, "test-integration", req.Name)
-		assert.Equal(t, "postgres", req.Type)
-		assert.True(t, req.ConnectorID.IsSet())
-		assert.Equal(t, "test-connector-id", req.ConnectorID.Value)
-	})
-
-	t.Run("with connected resource types", func(t *testing.T) {
-		// Create a model with connected resource types
+	t.Run("with connector_id and connected resource types", func(t *testing.T) {
 		resourceTypes := []attr.Value{
 			types.StringValue("database"),
 			types.StringValue("schema"),
@@ -59,35 +23,38 @@ func TestCreateIntegrationRequest(t *testing.T) {
 		model := ResourceIntegrationModel{
 			Name:                   types.StringValue("test-integration"),
 			Type:                   types.StringValue("postgres"),
+			ConnectorID:            types.StringValue("test-connector-id"),
 			ConnectedResourceTypes: types.ListValueMust(types.StringType, resourceTypes),
 		}
 
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
+		assert.Equal(t, "test-integration", req.Name)
+		assert.Equal(t, "postgres", req.Type)
+		assert.True(t, req.ConnectorID.IsSet())
+		assert.Equal(t, "test-connector-id", req.ConnectorID.Value)
 		assert.True(t, req.ConnectedResourceTypes.IsSet())
 		assert.Equal(t, []string{"database", "schema"}, req.ConnectedResourceTypes.Value)
 	})
 
 	t.Run("with integration config", func(t *testing.T) {
-		// Create a model with integration config
 		configMap := map[string]attr.Value{
 			"host":     types.StringValue("localhost"),
 			"port":     types.StringValue("5432"),
 			"database": types.StringValue("postgres"),
 		}
 		model := ResourceIntegrationModel{
-			Name:              types.StringValue("test-integration"),
-			Type:              types.StringValue("postgres"),
+			Name: types.StringValue("test-integration"),
+			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			IntegrationConfig: types.MapValueMust(types.StringType, configMap),
 		}
 
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.NotNil(t, req.IntegrationConfig)
 		hostVal, isHostString := model.IntegrationConfig.Elements()["host"].(types.String)
@@ -100,10 +67,12 @@ func TestCreateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with AWS secret store config", func(t *testing.T) {
-		// Create a model with AWS secret store config
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("test-integration"),
 			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			SecretStoreConfig: &SecretStoreConfig{
 				AWS: &AWSSecretConfig{
 					Region:   types.StringValue("us-east-1"),
@@ -112,10 +81,8 @@ func TestCreateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.SecretStoreConfig.IsSet())
 		secretConfig := req.SecretStoreConfig.Value
@@ -125,10 +92,12 @@ func TestCreateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with GCP secret store config", func(t *testing.T) {
-		// Create a model with GCP secret store config
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("test-integration"),
 			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			SecretStoreConfig: &SecretStoreConfig{
 				GCP: &GCPSecretConfig{
 					Project:  types.StringValue("my-project"),
@@ -137,10 +106,8 @@ func TestCreateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.SecretStoreConfig.IsSet())
 		secretConfig := req.SecretStoreConfig.Value
@@ -150,10 +117,12 @@ func TestCreateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with Azure secret store config", func(t *testing.T) {
-		// Create a model with Azure secret store config
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("test-integration"),
 			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			SecretStoreConfig: &SecretStoreConfig{
 				Azure: &AzureSecretConfig{
 					VaultURL: types.StringValue("https://myvault.vault.azure.net"),
@@ -162,10 +131,8 @@ func TestCreateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.SecretStoreConfig.IsSet())
 		secretConfig := req.SecretStoreConfig.Value
@@ -175,10 +142,12 @@ func TestCreateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with HashiCorp Vault secret store config", func(t *testing.T) {
-		// Create a model with HashiCorp Vault secret store config
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("test-integration"),
 			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			SecretStoreConfig: &SecretStoreConfig{
 				HashicorpVault: &HashicorpVaultConfig{
 					SecretEngine: types.StringValue("kv"),
@@ -187,10 +156,8 @@ func TestCreateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.SecretStoreConfig.IsSet())
 		secretConfig := req.SecretStoreConfig.Value
@@ -200,35 +167,35 @@ func TestCreateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with custom access details", func(t *testing.T) {
-		// Create a model with custom access details
 		model := ResourceIntegrationModel{
-			Name:                types.StringValue("test-integration"),
-			Type:                types.StringValue("postgres"),
+			Name: types.StringValue("test-integration"),
+			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			CustomAccessDetails: types.StringValue("Use your SSO credentials to login"),
 		}
 
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.CustomAccessDetails.IsSet())
 		assert.Equal(t, "Use your SSO credentials to login", req.CustomAccessDetails.Value)
 	})
 
 	t.Run("with cleanup periods", func(t *testing.T) {
-		// Create a model with cleanup periods
 		model := ResourceIntegrationModel{
-			Name:                            types.StringValue("test-integration"),
-			Type:                            types.StringValue("postgres"),
+			Name: types.StringValue("test-integration"),
+			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			UserCleanupPeriodInDays:         types.Int64Value(30),
 			CredentialsRotationPeriodInDays: types.Int64Value(90),
 		}
 
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.UserCleanupPeriodInDays.IsSet())
 		assert.Equal(t, int64(30), req.UserCleanupPeriodInDays.Value)
@@ -237,10 +204,12 @@ func TestCreateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with owner config", func(t *testing.T) {
-		// Create a model with owner config
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("test-integration"),
 			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			Owner: &OwnerConfig{
 				SourceIntegrationName: types.StringValue("source-integration"),
 				Type:                  types.StringValue("user"),
@@ -248,10 +217,8 @@ func TestCreateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.Owner.IsSet())
 		owner := req.Owner.Value
@@ -262,10 +229,12 @@ func TestCreateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with owners mapping", func(t *testing.T) {
-		// Create a model with owners mapping
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("test-integration"),
 			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			OwnersMapping: &OwnersMappingConfig{
 				SourceIntegrationName: types.StringValue("source-integration"),
 				KeyName:               types.StringValue("owner"),
@@ -273,10 +242,8 @@ func TestCreateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := CreateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.OwnersMapping.IsSet())
 		mapping := req.OwnersMapping.Value
@@ -291,7 +258,6 @@ func TestResourceIntegrationToModel(t *testing.T) {
 	ctx := t.Context()
 
 	t.Run("minimal fields", func(t *testing.T) {
-		// Create a minimal integration response
 		integration := &client.IntegrationV4{
 			ID:   "integration-id",
 			Name: "test-integration",
@@ -300,18 +266,20 @@ func TestResourceIntegrationToModel(t *testing.T) {
 				Value: "connector-id",
 				Set:   true,
 			},
+			ConnectedResourceTypes: client.OptNilStringArray{
+				Value: []string{"database"},
+				Set:   true,
+			},
 		}
 
-		// Call the function
 		model, err := ResourceIntegrationToModel(ctx, integration)
 
-		// Assert no errors and check basic fields
 		require.NoError(t, err)
 		assert.Equal(t, "integration-id", model.ID.ValueString())
 		assert.Equal(t, "test-integration", model.Name.ValueString())
 		assert.Equal(t, "postgres", model.Type.ValueString())
 		assert.Equal(t, "connector-id", model.ConnectorID.ValueString())
-		assert.True(t, model.ConnectedResourceTypes.IsNull())
+		assert.False(t, model.ConnectedResourceTypes.IsNull())
 		assert.True(t, model.IntegrationConfig.IsNull())
 		assert.Nil(t, model.SecretStoreConfig)
 		assert.True(t, model.CustomAccessDetails.IsNull())
@@ -322,7 +290,6 @@ func TestResourceIntegrationToModel(t *testing.T) {
 	})
 
 	t.Run("with connected resource types", func(t *testing.T) {
-		// Create an integration with connected resource types
 		integration := &client.IntegrationV4{
 			ID:   "integration-id",
 			Name: "test-integration",
@@ -337,10 +304,8 @@ func TestResourceIntegrationToModel(t *testing.T) {
 			},
 		}
 
-		// Call the function
 		model, err := ResourceIntegrationToModel(ctx, integration)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.False(t, model.ConnectedResourceTypes.IsNull())
 
@@ -351,13 +316,16 @@ func TestResourceIntegrationToModel(t *testing.T) {
 	})
 
 	t.Run("with integration config", func(t *testing.T) {
-		// Create an integration with config
 		integration := &client.IntegrationV4{
 			ID:   "integration-id",
 			Name: "test-integration",
 			Type: "postgres",
 			ConnectorID: client.OptNilString{
 				Value: "connector-id",
+				Set:   true,
+			},
+			ConnectedResourceTypes: client.OptNilStringArray{
+				Value: []string{"database"},
 				Set:   true,
 			},
 			IntegrationConfig: map[string]jx.Raw{
@@ -367,10 +335,8 @@ func TestResourceIntegrationToModel(t *testing.T) {
 			},
 		}
 
-		// Call the function
 		model, err := ResourceIntegrationToModel(ctx, integration)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.False(t, model.IntegrationConfig.IsNull())
 
@@ -392,13 +358,16 @@ func TestResourceIntegrationToModel(t *testing.T) {
 	})
 
 	t.Run("with AWS secret store config", func(t *testing.T) {
-		// Create an integration with AWS secret store
 		integration := &client.IntegrationV4{
 			ID:   "integration-id",
 			Name: "test-integration",
 			Type: "postgres",
 			ConnectorID: client.OptNilString{
 				Value: "connector-id",
+				Set:   true,
+			},
+			ConnectedResourceTypes: client.OptNilStringArray{
+				Value: []string{"database"},
 				Set:   true,
 			},
 			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
@@ -415,10 +384,8 @@ func TestResourceIntegrationToModel(t *testing.T) {
 			},
 		}
 
-		// Call the function
 		model, err := ResourceIntegrationToModel(ctx, integration)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		require.NotNil(t, model.SecretStoreConfig)
 		require.NotNil(t, model.SecretStoreConfig.AWS)
@@ -430,13 +397,16 @@ func TestResourceIntegrationToModel(t *testing.T) {
 	})
 
 	t.Run("with GCP secret store config", func(t *testing.T) {
-		// Create an integration with GCP secret store
 		integration := &client.IntegrationV4{
 			ID:   "integration-id",
 			Name: "test-integration",
 			Type: "postgres",
 			ConnectorID: client.OptNilString{
 				Value: "connector-id",
+				Set:   true,
+			},
+			ConnectedResourceTypes: client.OptNilStringArray{
+				Value: []string{"database"},
 				Set:   true,
 			},
 			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
@@ -453,10 +423,8 @@ func TestResourceIntegrationToModel(t *testing.T) {
 			},
 		}
 
-		// Call the function
 		model, err := ResourceIntegrationToModel(ctx, integration)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		require.NotNil(t, model.SecretStoreConfig)
 		require.NotNil(t, model.SecretStoreConfig.GCP)
@@ -464,14 +432,95 @@ func TestResourceIntegrationToModel(t *testing.T) {
 		assert.Equal(t, "secret-id", model.SecretStoreConfig.GCP.SecretID.ValueString())
 	})
 
-	t.Run("with custom access details and cleanup periods", func(t *testing.T) {
-		// Create an integration with custom access details and cleanup periods
+	t.Run("with Azure secret store config", func(t *testing.T) {
 		integration := &client.IntegrationV4{
 			ID:   "integration-id",
 			Name: "test-integration",
 			Type: "postgres",
 			ConnectorID: client.OptNilString{
 				Value: "connector-id",
+				Set:   true,
+			},
+			ConnectedResourceTypes: client.OptNilStringArray{
+				Value: []string{"database"},
+				Set:   true,
+			},
+			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
+				Value: client.IntegrationV4SecretStoreConfig{
+					Azure: client.OptNilIntegrationV4SecretStoreConfigAzure{
+						Value: client.IntegrationV4SecretStoreConfigAzure{
+							VaultURL: "https://myvault.vault.azure.net",
+							Name:     "secret-name",
+						},
+						Set: true,
+					},
+				},
+				Set: true,
+			},
+		}
+
+		model, err := ResourceIntegrationToModel(ctx, integration)
+
+		require.NoError(t, err)
+		require.NotNil(t, model.SecretStoreConfig)
+		require.NotNil(t, model.SecretStoreConfig.Azure)
+		assert.Equal(t, "https://myvault.vault.azure.net", model.SecretStoreConfig.Azure.VaultURL.ValueString())
+		assert.Equal(t, "secret-name", model.SecretStoreConfig.Azure.Name.ValueString())
+		assert.Nil(t, model.SecretStoreConfig.AWS)
+		assert.Nil(t, model.SecretStoreConfig.GCP)
+		assert.Nil(t, model.SecretStoreConfig.HashicorpVault)
+	})
+
+	t.Run("with HashiCorp Vault secret store config", func(t *testing.T) {
+		integration := &client.IntegrationV4{
+			ID:   "integration-id",
+			Name: "test-integration",
+			Type: "postgres",
+			ConnectorID: client.OptNilString{
+				Value: "connector-id",
+				Set:   true,
+			},
+			ConnectedResourceTypes: client.OptNilStringArray{
+				Value: []string{"database"},
+				Set:   true,
+			},
+			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
+				Value: client.IntegrationV4SecretStoreConfig{
+					HashicorpVault: client.OptNilIntegrationV4SecretStoreConfigHashicorpVault{
+						Value: client.IntegrationV4SecretStoreConfigHashicorpVault{
+							SecretEngine: "kv",
+							Path:         "secret/data/postgres",
+						},
+						Set: true,
+					},
+				},
+				Set: true,
+			},
+		}
+
+		model, err := ResourceIntegrationToModel(ctx, integration)
+
+		require.NoError(t, err)
+		require.NotNil(t, model.SecretStoreConfig)
+		require.NotNil(t, model.SecretStoreConfig.HashicorpVault)
+		assert.Equal(t, "kv", model.SecretStoreConfig.HashicorpVault.SecretEngine.ValueString())
+		assert.Equal(t, "secret/data/postgres", model.SecretStoreConfig.HashicorpVault.Path.ValueString())
+		assert.Nil(t, model.SecretStoreConfig.AWS)
+		assert.Nil(t, model.SecretStoreConfig.GCP)
+		assert.Nil(t, model.SecretStoreConfig.Azure)
+	})
+
+	t.Run("with custom access details and cleanup periods", func(t *testing.T) {
+		integration := &client.IntegrationV4{
+			ID:   "integration-id",
+			Name: "test-integration",
+			Type: "postgres",
+			ConnectorID: client.OptNilString{
+				Value: "connector-id",
+				Set:   true,
+			},
+			ConnectedResourceTypes: client.OptNilStringArray{
+				Value: []string{"database"},
 				Set:   true,
 			},
 			CustomAccessDetails: client.OptNilString{
@@ -488,10 +537,8 @@ func TestResourceIntegrationToModel(t *testing.T) {
 			},
 		}
 
-		// Call the function
 		model, err := ResourceIntegrationToModel(ctx, integration)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.Equal(t, "Use your SSO credentials to login", model.CustomAccessDetails.ValueString())
 		assert.Equal(t, int64(30), model.UserCleanupPeriodInDays.ValueInt64())
@@ -499,13 +546,16 @@ func TestResourceIntegrationToModel(t *testing.T) {
 	})
 
 	t.Run("with owner config", func(t *testing.T) {
-		// Create an integration with owner config
 		integration := &client.IntegrationV4{
 			ID:   "integration-id",
 			Name: "test-integration",
 			Type: "postgres",
 			ConnectorID: client.OptNilString{
 				Value: "connector-id",
+				Set:   true,
+			},
+			ConnectedResourceTypes: client.OptNilStringArray{
+				Value: []string{"database"},
 				Set:   true,
 			},
 			Owner: client.OptNilIntegrationV4Owner{
@@ -521,10 +571,8 @@ func TestResourceIntegrationToModel(t *testing.T) {
 			},
 		}
 
-		// Call the function
 		model, err := ResourceIntegrationToModel(ctx, integration)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		require.NotNil(t, model.Owner)
 		assert.Equal(t, "user", model.Owner.Type.ValueString())
@@ -537,13 +585,16 @@ func TestResourceIntegrationToModel(t *testing.T) {
 	})
 
 	t.Run("with owners mapping", func(t *testing.T) {
-		// Create an integration with owners mapping
 		integration := &client.IntegrationV4{
 			ID:   "integration-id",
 			Name: "test-integration",
 			Type: "postgres",
 			ConnectorID: client.OptNilString{
 				Value: "connector-id",
+				Set:   true,
+			},
+			ConnectedResourceTypes: client.OptNilStringArray{
+				Value: []string{"database"},
 				Set:   true,
 			},
 			OwnersMapping: client.OptNilIntegrationV4OwnersMapping{
@@ -559,10 +610,8 @@ func TestResourceIntegrationToModel(t *testing.T) {
 			},
 		}
 
-		// Call the function
 		model, err := ResourceIntegrationToModel(ctx, integration)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		require.NotNil(t, model.OwnersMapping)
 		assert.Equal(t, "owner", model.OwnersMapping.KeyName.ValueString())
@@ -571,39 +620,39 @@ func TestResourceIntegrationToModel(t *testing.T) {
 	})
 }
 
-func TestUpdateIntegrationRequest(t *testing.T) {
+func TestResourceIntegrationModelToUpdateRequest(t *testing.T) {
 	ctx := t.Context()
 
 	t.Run("minimal fields", func(t *testing.T) {
-		// Create a model with only name
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check basic fields
 		require.NoError(t, err)
 		assert.Equal(t, "updated-integration", req.Name)
 	})
 
 	t.Run("with integration config", func(t *testing.T) {
-		// Create a model with integration config
 		configMap := map[string]attr.Value{
 			"host":     types.StringValue("new-host"),
 			"port":     types.StringValue("5433"),
 			"database": types.StringValue("test-db"),
 		}
 		model := ResourceIntegrationModel{
-			Name:              types.StringValue("updated-integration"),
+			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			IntegrationConfig: types.MapValueMust(types.StringType, configMap),
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.NotNil(t, req.IntegrationConfig)
 
@@ -621,7 +670,6 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with connected resource types", func(t *testing.T) {
-		// Create a model with connected resource types
 		resourceTypes := []attr.Value{
 			types.StringValue("table"),
 			types.StringValue("view"),
@@ -631,19 +679,19 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 			ConnectedResourceTypes: types.ListValueMust(types.StringType, resourceTypes),
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.ConnectedResourceTypes.IsSet())
 		assert.Equal(t, []string{"table", "view"}, req.ConnectedResourceTypes.Value)
 	})
 
 	t.Run("with AWS secret store config", func(t *testing.T) {
-		// Create a model with AWS secret store config
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			SecretStoreConfig: &SecretStoreConfig{
 				AWS: &AWSSecretConfig{
 					Region:   types.StringValue("us-west-2"),
@@ -652,10 +700,8 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.SecretStoreConfig.IsSet())
 		secretConfig := req.SecretStoreConfig.Value
@@ -665,9 +711,11 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with GCP secret store config", func(t *testing.T) {
-		// Create a model with GCP secret store config
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			SecretStoreConfig: &SecretStoreConfig{
 				GCP: &GCPSecretConfig{
 					Project:  types.StringValue("new-project"),
@@ -676,10 +724,8 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.SecretStoreConfig.IsSet())
 		secretConfig := req.SecretStoreConfig.Value
@@ -689,9 +735,11 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with Azure secret store config", func(t *testing.T) {
-		// Create a model with Azure secret store config
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			SecretStoreConfig: &SecretStoreConfig{
 				Azure: &AzureSecretConfig{
 					VaultURL: types.StringValue("https://newvault.vault.azure.net"),
@@ -700,10 +748,8 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.SecretStoreConfig.IsSet())
 		secretConfig := req.SecretStoreConfig.Value
@@ -713,9 +759,11 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with HashiCorp Vault secret store config", func(t *testing.T) {
-		// Create a model with HashiCorp Vault secret store config
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			SecretStoreConfig: &SecretStoreConfig{
 				HashicorpVault: &HashicorpVaultConfig{
 					SecretEngine: types.StringValue("kv2"),
@@ -724,10 +772,8 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.SecretStoreConfig.IsSet())
 		secretConfig := req.SecretStoreConfig.Value
@@ -737,33 +783,33 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with custom access details", func(t *testing.T) {
-		// Create a model with custom access details
 		model := ResourceIntegrationModel{
-			Name:                types.StringValue("updated-integration"),
+			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			CustomAccessDetails: types.StringValue("Updated access instructions"),
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.CustomAccessDetails.IsSet())
 		assert.Equal(t, "Updated access instructions", req.CustomAccessDetails.Value)
 	})
 
 	t.Run("with cleanup periods", func(t *testing.T) {
-		// Create a model with cleanup periods
 		model := ResourceIntegrationModel{
-			Name:                            types.StringValue("updated-integration"),
+			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			UserCleanupPeriodInDays:         types.Int64Value(45),
 			CredentialsRotationPeriodInDays: types.Int64Value(120),
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.UserCleanupPeriodInDays.IsSet())
 		assert.Equal(t, int64(45), req.UserCleanupPeriodInDays.Value)
@@ -772,9 +818,11 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with owner config", func(t *testing.T) {
-		// Create a model with owner config
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			Owner: &OwnerConfig{
 				SourceIntegrationName: types.StringValue("new-source-integration"),
 				Type:                  types.StringValue("group"),
@@ -782,10 +830,8 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.Owner.IsSet())
 		owner := req.Owner.Value
@@ -796,9 +842,11 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 	})
 
 	t.Run("with owners mapping", func(t *testing.T) {
-		// Create a model with owners mapping
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
 			OwnersMapping: &OwnersMappingConfig{
 				SourceIntegrationName: types.StringValue("new-source-integration"),
 				KeyName:               types.StringValue("new-owner"),
@@ -806,10 +854,8 @@ func TestUpdateIntegrationRequest(t *testing.T) {
 			},
 		}
 
-		// Call the function
-		req, err := UpdateIntegrationRequest(ctx, model)
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
 
-		// Assert no errors and check fields
 		require.NoError(t, err)
 		assert.True(t, req.OwnersMapping.IsSet())
 		mapping := req.OwnersMapping.Value

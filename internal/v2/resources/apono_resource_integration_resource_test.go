@@ -34,6 +34,13 @@ resource "apono_resource_integration" "test" {
     key = "value"
   }
   custom_access_details = "%s"
+  
+  secret_store_config = {
+    aws = {
+      region = "us-east-1"
+      secret_id = "test-secret-id"
+    }
+  }
 }
 `, name, integrationType, connectorID, resourceType, customAccessDetails)
 	}

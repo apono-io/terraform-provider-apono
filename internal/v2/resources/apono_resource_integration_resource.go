@@ -7,17 +7,21 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var (
-	_ resource.Resource                = &AponoResourceIntegrationResource{}
-	_ resource.ResourceWithImportState = &AponoResourceIntegrationResource{}
+	_ resource.Resource                     = &AponoResourceIntegrationResource{}
+	_ resource.ResourceWithImportState      = &AponoResourceIntegrationResource{}
+	_ resource.ResourceWithConfigValidators = &AponoResourceIntegrationResource{}
 )
 
 func NewAponoResourceIntegrationResource() resource.Resource {
@@ -30,6 +34,17 @@ type AponoResourceIntegrationResource struct {
 
 func (r *AponoResourceIntegrationResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_resource_integration"
+}
+
+func (r *AponoResourceIntegrationResource) ConfigValidators(_ context.Context) []resource.ConfigValidator {
+	return []resource.ConfigValidator{
+		resourcevalidator.Conflicting(
+			path.MatchRelative().AtName("secret_store_config").AtName("aws"),
+			path.MatchRelative().AtName("secret_store_config").AtName("gcp"),
+			path.MatchRelative().AtName("secret_store_config").AtName("azure"),
+			path.MatchRelative().AtName("secret_store_config").AtName("hashicorp_vault"),
+		),
+	}
 }
 
 func (r *AponoResourceIntegrationResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -59,6 +74,9 @@ func (r *AponoResourceIntegrationResource) Schema(_ context.Context, _ resource.
 				Description: "List of resource types connected through this integration.",
 				ElementType: types.StringType,
 				Required:    true,
+				Validators: []validator.List{
+					listvalidator.SizeAtLeast(1),
+				},
 			},
 			"integration_config": schema.MapAttribute{
 				Description: "Configuration for the integration as key-value pairs.",
@@ -192,7 +210,7 @@ func (r *AponoResourceIntegrationResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	createReq, err := models.CreateIntegrationRequest(ctx, plan)
+	createReq, err := models.ResourceIntegrationModelToCreateRequest(ctx, plan)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating resource integration request",
@@ -247,6 +265,14 @@ func (r *AponoResourceIntegrationResource) Read(ctx context.Context, req resourc
 		return
 	}
 
+	if integration.Category != common.ResourceCategory {
+		resp.Diagnostics.AddError(
+			"Invalid resource integration type",
+			fmt.Sprintf("Expected resource integration, got %s", integration.Category),
+		)
+		return
+	}
+
 	result, err := models.ResourceIntegrationToModel(ctx, integration)
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -277,7 +303,7 @@ func (r *AponoResourceIntegrationResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	updateReq, err := models.UpdateIntegrationRequest(ctx, plan)
+	updateReq, err := models.ResourceIntegrationModelToUpdateRequest(ctx, plan)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating resource integration update request",

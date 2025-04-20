@@ -382,6 +382,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 				Value: 45,
 				Set:   true,
 			},
+			Category: common.ResourceCategory,
 		}
 
 		mockInvoker.EXPECT().
@@ -797,6 +798,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 				IntegrationConfig: map[string]jx.Raw{
 					"host": common.StringToJx("imported-db.example.com"),
 				},
+				Category: common.ResourceCategory,
 			}, nil).
 			Once()
 
@@ -842,6 +844,46 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		hostVal, isString := value.(types.String)
 		require.True(t, isString)
 		assert.Equal(t, "imported-db.example.com", hostVal.ValueString())
+	})
+
+	t.Run("ImportState_WrongCategory", func(t *testing.T) {
+		mockInvoker.EXPECT().
+			GetIntegrationsByIdV4(mock.Anything, client.GetIntegrationsByIdV4Params{ID: "integration-wrong-category"}).
+			Return(&client.IntegrationV4{
+				ID:   "integration-wrong-category",
+				Name: "wrong-category-integration",
+				Type: "postgresql",
+				ConnectorID: client.OptNilString{
+					Value: "connector-123",
+					Set:   true,
+				},
+				IntegrationConfig: map[string]jx.Raw{
+					"host": common.StringToJx("wrong-category.example.com"),
+				},
+				Category: "IDENTITY",
+			}, nil).
+			Once()
+
+		ctx := t.Context()
+		req := resource.ImportStateRequest{ID: "integration-wrong-category"}
+
+		stateType := getStateType()
+		schema := r.getTestSchema(ctx)
+		importResp := resource.ImportStateResponse{
+			State: tfsdk.State{Schema: schema, Raw: tftypes.NewValue(stateType, nil)},
+		}
+
+		r.ImportState(ctx, req, &importResp)
+		require.False(t, importResp.Diagnostics.HasError())
+
+		readReq := resource.ReadRequest{State: importResp.State}
+		readResp := resource.ReadResponse{State: importResp.State}
+		r.Read(ctx, readReq, &readResp)
+
+		require.True(t, readResp.Diagnostics.HasError())
+		errorDiagnostic := readResp.Diagnostics.Errors()[0]
+		assert.Contains(t, errorDiagnostic.Summary(), "Invalid resource integration type")
+		assert.Contains(t, errorDiagnostic.Detail(), "Expected resource integration, got IDENTITY")
 	})
 
 }
