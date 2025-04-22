@@ -41,6 +41,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				Description: "Whether the access flow is active. Defaults to true.",
 				Optional:    true,
 				Default:     booldefault.StaticBool(true),
+				Computed:    true,
 			},
 			"trigger": schema.StringAttribute{
 				Description: `The trigger type for the access flow. Can be "SELF_SERVE" or "AUTOMATIC".`,
@@ -107,6 +108,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 												Description: `The match operator. Defaults to "is".`,
 												Optional:    true,
 												Default:     stringdefault.StaticString("is"),
+												Computed:    true,
 											},
 											"values": schema.SetAttribute{
 												Description: "The values to match against.",
@@ -146,6 +148,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 									Description: `The match operator. Possible values: "starts_with", "contains", "is_not", "does_not_contain", "is". Defaults to "is".`,
 									Optional:    true,
 									Default:     stringdefault.StaticString("is"),
+									Computed:    true,
 								},
 								"values": schema.SetAttribute{
 									Description: "The values to match against.",
@@ -185,21 +188,25 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 						Description: "Whether justification is required when requesting access. Defaults to true.",
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
+						Computed:    true,
 					},
 					"require_approver_reason": schema.BoolAttribute{
 						Description: "Whether approvers must provide a reason when approving/denying requests. Defaults to false.",
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
+						Computed:    true,
 					},
 					"requester_cannot_approve_self": schema.BoolAttribute{
 						Description: "Whether requesters are prevented from approving their own requests. Defaults to false.",
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
+						Computed:    true,
 					},
 					"require_mfa": schema.BoolAttribute{
 						Description: "Whether MFA is required for this access flow. Defaults to false.",
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
+						Computed:    true,
 					},
 					"labels": schema.SetAttribute{
 						Description: "List of labels associated with this access flow",
