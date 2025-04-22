@@ -180,6 +180,7 @@ func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource 
 		v2resources.NewAponoAccessScopeResource,
 		v2resources.NewAponoGroupResource,
 		v2resources.NewAponoResourceIntegrationResource,
+		v2resources.NewAponoAccessFlowV2Resource,
 	}
 }
 

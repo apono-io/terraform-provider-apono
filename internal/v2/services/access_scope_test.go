@@ -67,7 +67,6 @@ func TestListAccessScopesByName(t *testing.T) {
 
 				// Second request with page token
 				secondParams := client.ListAccessScopesV1Params{}
-				secondParams.Name = nameParam
 				pageToken := client.OptNilString{}
 				pageToken.SetTo("next-page")
 				secondParams.PageToken = pageToken

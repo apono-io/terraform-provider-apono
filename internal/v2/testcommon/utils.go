@@ -5,20 +5,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/apono-io/terraform-provider-apono/internal/provider"
 	v2client "github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
-	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/stretchr/testify/require"
 )
-
-// TestAccProtoV6ProviderFactories are used to instantiate a provider during
-// acceptance testing. The factory function will be invoked for every Terraform
-// CLI command executed to create a provider server to which the CLI can
-// reattach.
-var TestAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
-	"apono": providerserver.NewProtocol6WithError(provider.New("test")()),
-}
 
 // TestAccPreCheck validates the required environment variables are set.
 func TestAccPreCheck(t *testing.T) {
@@ -66,4 +56,10 @@ func PrefixedName(prefix, name string) string {
 
 func IsTestAccount(t *testing.T) bool {
 	return os.Getenv("IS_TEST_ACCOUNT") != ""
+}
+
+func CreateTestStringSet(t *testing.T, values []string) types.Set {
+	result, diags := types.SetValueFrom(t.Context(), types.StringType, values)
+	require.False(t, diags.HasError())
+	return result
 }

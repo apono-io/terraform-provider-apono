@@ -37,12 +37,10 @@ func ListAccessScopesByName(ctx context.Context, apiClient client.Invoker, name 
 	for {
 		params := client.ListAccessScopesV1Params{}
 
-		if name != "" {
-			params.Name.SetTo(name)
-		}
-
 		if pageToken != "" {
 			params.PageToken.SetTo(pageToken)
+		} else if name != "" {
+			params.Name.SetTo(name)
 		}
 
 		resp, err := apiClient.ListAccessScopesV1(ctx, params)

@@ -58,12 +58,12 @@ func ListGroupMembers(ctx context.Context, apiClient client.Invoker, groupID str
 	pageToken := ""
 
 	for {
-		params := client.ListGroupMembersV1Params{
-			ID: groupID,
-		}
+		params := client.ListGroupMembersV1Params{}
 
 		if pageToken != "" {
 			params.PageToken.SetTo(pageToken)
+		} else {
+			params.ID = groupID
 		}
 
 		resp, err := apiClient.ListGroupMembersV1(ctx, params)
@@ -85,16 +85,15 @@ func ListGroupMembers(ctx context.Context, apiClient client.Invoker, groupID str
 
 func ListGroups(ctx context.Context, apiClient client.Invoker, name string) ([]client.GroupV1, error) {
 	allGroups := []client.GroupV1{}
-	params := client.ListGroupsV1Params{}
 	pageToken := ""
 
-	if name != "" {
-		params.Name.SetTo(name)
-	}
-
 	for {
+		params := client.ListGroupsV1Params{}
+
 		if pageToken != "" {
 			params.PageToken.SetTo(pageToken)
+		} else if name != "" {
+			params.Name.SetTo(name)
 		}
 
 		resp, err := apiClient.ListGroupsV1(ctx, params)
