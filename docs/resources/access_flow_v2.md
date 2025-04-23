@@ -70,10 +70,10 @@ Required:
 
 Optional:
 
-- `resource_scopes` (Attributes Set) Resource scope configuration (see [below for nested schema](#nestedatt--access_targets--integration--resource_scopes))
+- `resources_scopes` (Attributes Set) Resource scope configuration (see [below for nested schema](#nestedatt--access_targets--integration--resources_scopes))
 
-<a id="nestedatt--access_targets--integration--resource_scopes"></a>
-### Nested Schema for `access_targets.integration.resource_scopes`
+<a id="nestedatt--access_targets--integration--resources_scopes"></a>
+### Nested Schema for `access_targets.integration.resources_scopes`
 
 Required:
 
