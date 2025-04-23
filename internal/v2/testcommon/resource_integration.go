@@ -30,7 +30,6 @@ func GenerateResourceIntegrationResponse() *client.IntegrationV4 {
 		},
 	}
 
-	// Set AWS secret store configuration
 	integration.SecretStoreConfig = client.OptNilIntegrationV4SecretStoreConfig{
 		Value: client.IntegrationV4SecretStoreConfig{
 			AWS: client.OptNilIntegrationV4SecretStoreConfigAWS{
@@ -44,7 +43,6 @@ func GenerateResourceIntegrationResponse() *client.IntegrationV4 {
 		Set: true,
 	}
 
-	// Set owner configuration
 	integration.Owner = client.OptNilIntegrationV4Owner{
 		Value: client.IntegrationV4Owner{
 			AttributeType:  "user",
@@ -57,7 +55,6 @@ func GenerateResourceIntegrationResponse() *client.IntegrationV4 {
 		Set: true,
 	}
 
-	// Set owners mapping configuration
 	integration.OwnersMapping = client.OptNilIntegrationV4OwnersMapping{
 		Value: client.IntegrationV4OwnersMapping{
 			KeyName:       "owner",
