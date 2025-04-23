@@ -4,9 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/mocks"
-	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/testcommon"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -20,25 +18,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAponoResourceIntegrationResource(t *testing.T) {
-	r := &AponoResourceIntegrationResource{}
+func TestAponoAccessFlowV2Resource(t *testing.T) {
+	r := &AponoAccessFlowV2Resource{}
 
 	t.Run("Create", func(t *testing.T) {
 		mockInvoker := mocks.NewInvoker(t)
 		r.client = mockInvoker
 
-		mockResponse := testcommon.GenerateResourceIntegrationResponse()
-		mockResponse.Category = common.ResourceCategory
+		mockResponse := testcommon.GenerateAccessFlowResponse()
 
 		ctx := t.Context()
 
-		model, err := models.ResourceIntegrationToModel(ctx, mockResponse)
+		model, err := models.AccessFlowResponseToModel(ctx, *mockResponse)
 		require.NoError(t, err, "Failed to convert mock response to model")
 
 		model.ID = types.StringNull()
 
 		mockInvoker.EXPECT().
-			CreateIntegrationV4(mock.Anything, mock.Anything).
+			CreateAccessFlowV2(mock.Anything, mock.Anything).
 			Return(mockResponse, nil)
 
 		req := resource.CreateRequest{
@@ -61,36 +58,37 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 
 		require.False(t, resp.Diagnostics.HasError(), "Create returned error: %s", resp.Diagnostics.Errors())
 
-		var state models.ResourceIntegrationModel
+		var state models.AccessFlowV2Model
 		diags = resp.State.Get(ctx, &state)
 		require.False(t, diags.HasError(), "Error getting state: %s", diags.Errors())
 
-		assert.Equal(t, mockResponse.ID, state.ID.ValueString())
-		assert.Equal(t, mockResponse.Name, state.Name.ValueString())
-		assert.Equal(t, mockResponse.Type, state.Type.ValueString())
+		model.ID = state.ID
+
+		assert.Equal(t, state, *model)
 	})
 
 	t.Run("Read", func(t *testing.T) {
 		mockInvoker := mocks.NewInvoker(t)
 		r.client = mockInvoker
 
-		mockResponse := testcommon.GenerateResourceIntegrationResponse()
-		mockResponse.Category = common.ResourceCategory
+		mockResponse := testcommon.GenerateAccessFlowResponse()
 		ctx := t.Context()
 
-		model, err := models.ResourceIntegrationToModel(ctx, mockResponse)
+		model, err := models.AccessFlowResponseToModel(ctx, *mockResponse)
 		require.NoError(t, err, "Failed to convert mock response to model")
 
 		mockInvoker.EXPECT().
-			GetIntegrationsByIdV4(mock.Anything, client.GetIntegrationsByIdV4Params{ID: mockResponse.ID}).
+			GetAccessFlowV2(mock.Anything, mock.Anything).
 			Return(mockResponse, nil)
+
+		state := *model
 
 		req := resource.ReadRequest{
 			State: tfsdk.State{
 				Schema: r.getTestSchema(ctx),
 			},
 		}
-		diags := req.State.Set(ctx, model)
+		diags := req.State.Set(ctx, state)
 		require.False(t, diags.HasError(), "Error setting state: %s", diags.Errors())
 
 		resp := resource.ReadResponse{
@@ -104,36 +102,35 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 
 		require.False(t, resp.Diagnostics.HasError(), "Read returned error: %s", resp.Diagnostics.Errors())
 
-		var got models.ResourceIntegrationModel
+		var got models.AccessFlowV2Model
 		diags = resp.State.Get(ctx, &got)
 		require.False(t, diags.HasError(), "Error getting state: %s", diags.Errors())
 
-		assert.Equal(t, model.ID.ValueString(), got.ID.ValueString())
-		assert.Equal(t, model.Name.ValueString(), got.Name.ValueString())
-		assert.Equal(t, model.Type.ValueString(), got.Type.ValueString())
+		assert.Equal(t, state, got)
 	})
 
-	t.Run("Read_NotFound", func(t *testing.T) {
+	t.Run("ReadNotFound", func(t *testing.T) {
 		mockInvoker := mocks.NewInvoker(t)
 		r.client = mockInvoker
 
 		ctx := t.Context()
+
 		notFoundErr := &validate.UnexpectedStatusCodeError{StatusCode: 404}
-
-		mockResponse := testcommon.GenerateResourceIntegrationResponse()
-		model, err := models.ResourceIntegrationToModel(ctx, mockResponse)
-		require.NoError(t, err, "Failed to convert mock response to model")
-
 		mockInvoker.EXPECT().
-			GetIntegrationsByIdV4(mock.Anything, client.GetIntegrationsByIdV4Params{ID: mockResponse.ID}).
+			GetAccessFlowV2(mock.Anything, mock.Anything).
 			Return(nil, notFoundErr)
+
+		mockResponse := testcommon.GenerateAccessFlowResponse()
+		model, err := models.AccessFlowResponseToModel(ctx, *mockResponse)
+		require.NoError(t, err, "Failed to convert mock response to model")
+		state := *model
 
 		req := resource.ReadRequest{
 			State: tfsdk.State{
 				Schema: r.getTestSchema(ctx),
 			},
 		}
-		diags := req.State.Set(ctx, model)
+		diags := req.State.Set(ctx, state)
 		require.False(t, diags.HasError(), "Error setting state: %s", diags.Errors())
 
 		resp := resource.ReadResponse{
@@ -146,6 +143,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		r.Read(ctx, req, &resp)
 
 		require.False(t, resp.Diagnostics.HasError())
+
 		assert.True(t, resp.State.Raw.IsNull())
 	})
 
@@ -153,24 +151,20 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		mockInvoker := mocks.NewInvoker(t)
 		r.client = mockInvoker
 
-		mockResponse := testcommon.GenerateResourceIntegrationResponse()
-		mockResponse.Category = common.ResourceCategory
+		mockResponse := testcommon.GenerateAccessFlowResponse()
 		ctx := t.Context()
 
-		updatedResponse := testcommon.GenerateResourceIntegrationResponse()
+		updatedResponse := testcommon.GenerateAccessFlowResponse()
 		updatedResponse.Name = "updated-name"
-		updatedResponse.Category = common.ResourceCategory
-		updatedResponse.CustomAccessDetails.Value = "Updated access details"
-		updatedResponse.ConnectedResourceTypes.Value = append(updatedResponse.ConnectedResourceTypes.Value, "role")
 
-		stateModel, err := models.ResourceIntegrationToModel(ctx, mockResponse)
-		require.NoError(t, err, "Failed to convert mock response to model")
+		planModel, err := models.AccessFlowResponseToModel(ctx, *updatedResponse)
+		require.NoError(t, err, "Failed to convert updated response to model: %s", err)
 
-		planModel, err := models.ResourceIntegrationToModel(ctx, updatedResponse)
-		require.NoError(t, err, "Failed to convert updated response to model")
+		stateModel, err := models.AccessFlowResponseToModel(ctx, *mockResponse)
+		require.NoError(t, err, "Failed to convert mock response to model: %s", err)
 
 		mockInvoker.EXPECT().
-			UpdateIntegrationV4(mock.Anything, mock.Anything, client.UpdateIntegrationV4Params{ID: mockResponse.ID}).
+			UpdateAccessFlowV2(ctx, mock.Anything, mock.Anything).
 			Return(updatedResponse, nil)
 
 		req := resource.UpdateRequest{
@@ -198,18 +192,11 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 
 		require.False(t, resp.Diagnostics.HasError(), "Update returned error: %s", resp.Diagnostics.Errors())
 
-		var got models.ResourceIntegrationModel
+		var got models.AccessFlowV2Model
 		diags = resp.State.Get(ctx, &got)
 		require.False(t, diags.HasError(), "Error getting state: %s", diags.Errors())
 
-		assert.Equal(t, planModel.ID.ValueString(), got.ID.ValueString())
-		assert.Equal(t, "updated-name", got.Name.ValueString())
-		assert.Equal(t, "Updated access details", got.CustomAccessDetails.ValueString())
-
-		var connectedTypes []string
-		diags = got.ConnectedResourceTypes.ElementsAs(ctx, &connectedTypes, false)
-		require.False(t, diags.HasError(), "Error getting connected resource types")
-		assert.Contains(t, connectedTypes, "role")
+		assert.Equal(t, *planModel, got)
 	})
 
 	t.Run("Delete", func(t *testing.T) {
@@ -218,14 +205,13 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 
 		ctx := t.Context()
 
-		mockResponse := testcommon.GenerateResourceIntegrationResponse()
-		mockResponse.Category = common.ResourceCategory
+		mockResponse := testcommon.GenerateAccessFlowResponse()
 
-		model, err := models.ResourceIntegrationToModel(ctx, mockResponse)
-		require.NoError(t, err, "Failed to convert mock response to model")
+		model, err := models.AccessFlowResponseToModel(ctx, *mockResponse)
+		require.NoError(t, err, "Failed to convert mock response to model: %s", err)
 
 		mockInvoker.EXPECT().
-			DeleteIntegrationV4(mock.Anything, client.DeleteIntegrationV4Params{ID: mockResponse.ID}).
+			DeleteAccessFlowV2(ctx, mock.Anything).
 			Return(nil)
 
 		req := resource.DeleteRequest{
@@ -234,7 +220,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 			},
 		}
 
-		diags := req.State.Set(ctx, model)
+		diags := req.State.Set(ctx, *model)
 		require.False(t, diags.HasError(), "Error setting state: %s", diags.Errors())
 
 		resp := resource.DeleteResponse{}
@@ -244,19 +230,19 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		assert.False(t, resp.Diagnostics.HasError())
 	})
 
-	t.Run("Delete_NotFound", func(t *testing.T) {
+	t.Run("DeleteNotFound", func(t *testing.T) {
 		mockInvoker := mocks.NewInvoker(t)
 		r.client = mockInvoker
 
 		ctx := t.Context()
 		notFoundErr := &validate.UnexpectedStatusCodeError{StatusCode: 404}
 
-		mockResponse := testcommon.GenerateResourceIntegrationResponse()
-		model, err := models.ResourceIntegrationToModel(ctx, mockResponse)
-		require.NoError(t, err, "Failed to convert mock response to model")
+		mockResponse := testcommon.GenerateAccessFlowResponse()
+		model, err := models.AccessFlowResponseToModel(ctx, *mockResponse)
+		require.NoError(t, err, "Failed to convert mock response to model: %s", err)
 
 		mockInvoker.EXPECT().
-			DeleteIntegrationV4(mock.Anything, client.DeleteIntegrationV4Params{ID: mockResponse.ID}).
+			DeleteAccessFlowV2(ctx, mock.Anything).
 			Return(notFoundErr)
 
 		req := resource.DeleteRequest{
@@ -265,7 +251,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 			},
 		}
 
-		diags := req.State.Set(ctx, model)
+		diags := req.State.Set(ctx, *model)
 		require.False(t, diags.HasError(), "Error setting state: %s", diags.Errors())
 
 		resp := resource.DeleteResponse{}
@@ -281,15 +267,16 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 
 		ctx := t.Context()
 
-		mockResponse := testcommon.GenerateResourceIntegrationResponse()
-		mockResponse.Category = common.ResourceCategory
+		mockResponse := testcommon.GenerateAccessFlowResponse()
+		model, err := models.AccessFlowResponseToModel(ctx, *mockResponse)
+		require.NoError(t, err, "Failed to convert mock response to model: %s", err)
 
 		mockInvoker.EXPECT().
-			GetIntegrationsByIdV4(mock.Anything, client.GetIntegrationsByIdV4Params{ID: mockResponse.ID}).
+			GetAccessFlowV2(mock.Anything, mock.Anything).
 			Return(mockResponse, nil)
 
 		req := resource.ImportStateRequest{
-			ID: mockResponse.ID,
+			ID: model.ID.ValueString(),
 		}
 
 		resp := resource.ImportStateResponse{
@@ -307,17 +294,14 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		readResp := resource.ReadResponse{State: resp.State}
 		r.Read(ctx, readReq, &readResp)
 
-		var imported models.ResourceIntegrationModel
+		var imported models.AccessFlowV2Model
 		diags := readResp.State.Get(ctx, &imported)
 		require.False(t, diags.HasError())
-
-		assert.Equal(t, mockResponse.ID, imported.ID.ValueString())
-		assert.Equal(t, mockResponse.Name, imported.Name.ValueString())
-		assert.Equal(t, mockResponse.Type, imported.Type.ValueString())
+		assert.Equal(t, *model, imported)
 	})
 }
 
-func (r *AponoResourceIntegrationResource) getTestSchema(ctx context.Context) schema.Schema {
+func (r *AponoAccessFlowV2Resource) getTestSchema(ctx context.Context) schema.Schema {
 	var resp resource.SchemaResponse
 	r.Schema(ctx, resource.SchemaRequest{}, &resp)
 	return resp.Schema
