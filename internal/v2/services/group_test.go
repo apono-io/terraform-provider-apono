@@ -191,7 +191,6 @@ func TestListGroups(t *testing.T) {
 
 				// Second request with page token
 				secondParams := client.ListGroupsV1Params{}
-				secondParams.Name.SetTo("paginated-group")
 				pageToken := client.OptNilString{}
 				pageToken.SetTo("next-page")
 				secondParams.PageToken = pageToken

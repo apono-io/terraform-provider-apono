@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/testcommon"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/testcommon/testprovider"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
@@ -19,7 +20,7 @@ func TestAccAponoAccessScopeResource(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testcommon.TestAccPreCheck(t) },
-		ProtoV6ProviderFactories: testcommon.TestAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: testprovider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccAponoAccessScopeConfig(rName, query),
