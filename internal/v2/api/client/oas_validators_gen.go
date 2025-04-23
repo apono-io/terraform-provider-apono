@@ -146,7 +146,7 @@ func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) Validate() erro
 		})
 	}
 	if err := func() error {
-		if value, ok := s.ResourceScopes.Get(); ok {
+		if value, ok := s.ResourcesScopes.Get(); ok {
 			if err := func() error {
 				if value == nil {
 					return errors.New("nil is invalid value")
@@ -176,7 +176,7 @@ func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) Validate() erro
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "resource_scopes",
+			Name:  "resources_scopes",
 			Error: err,
 		})
 	}
@@ -1110,7 +1110,7 @@ func (s *AccessTargetUpsertPublicV2ModelIntegration) Validate() error {
 		})
 	}
 	if err := func() error {
-		if value, ok := s.ResourceScopes.Get(); ok {
+		if value, ok := s.ResourcesScopes.Get(); ok {
 			if err := func() error {
 				if value == nil {
 					return errors.New("nil is invalid value")
@@ -1140,7 +1140,7 @@ func (s *AccessTargetUpsertPublicV2ModelIntegration) Validate() error {
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "resource_scopes",
+			Name:  "resources_scopes",
 			Error: err,
 		})
 	}
@@ -1472,8 +1472,15 @@ func (s *CreateAccessRequestV4) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if s.Entitlements == nil {
-			return errors.New("nil is invalid value")
+		if value, ok := s.Entitlements.Get(); ok {
+			if err := func() error {
+				if value == nil {
+					return errors.New("nil is invalid value")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
 		}
 		return nil
 	}(); err != nil {

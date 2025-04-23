@@ -64,9 +64,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 						},
 					},
 				},
-				"custom_access_details":               tftypes.String,
-				"user_cleanup_period_in_days":         tftypes.Number,
-				"credentials_rotation_period_in_days": tftypes.Number,
+				"custom_access_details": tftypes.String,
 				"owner": tftypes.Object{
 					AttributeTypes: map[string]tftypes.Type{
 						"source_integration_name": tftypes.String,
@@ -161,12 +159,10 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 				tftypes.NewValue(tftypes.String, "db"),
 				tftypes.NewValue(tftypes.String, "schema"),
 			}),
-			"integration_config":                  integrationConfigVal,
-			"secret_store_config":                 secretStoreVal,
-			"custom_access_details":               tftypes.NewValue(tftypes.String, "Access via VPN"),
-			"user_cleanup_period_in_days":         tftypes.NewValue(tftypes.Number, 30),
-			"credentials_rotation_period_in_days": tftypes.NewValue(tftypes.Number, 90),
-			"owner":                               ownerVal,
+			"integration_config":    integrationConfigVal,
+			"secret_store_config":   secretStoreVal,
+			"custom_access_details": tftypes.NewValue(tftypes.String, "Access via VPN"),
+			"owner":                 ownerVal,
 			"owners_mapping": tftypes.NewValue(tftypes.Object{
 				AttributeTypes: map[string]tftypes.Type{
 					"source_integration_name": tftypes.String,
@@ -278,9 +274,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 					},
 				},
 			}, nil),
-			"custom_access_details":               tftypes.NewValue(tftypes.String, nil),
-			"user_cleanup_period_in_days":         tftypes.NewValue(tftypes.Number, nil),
-			"credentials_rotation_period_in_days": tftypes.NewValue(tftypes.Number, nil),
+			"custom_access_details": tftypes.NewValue(tftypes.String, nil),
 			"owner": tftypes.NewValue(tftypes.Object{
 				AttributeTypes: map[string]tftypes.Type{
 					"source_integration_name": tftypes.String,
@@ -350,12 +344,10 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 			"integration_config": tftypes.NewValue(tftypes.Map{ElementType: tftypes.String}, map[string]tftypes.Value{
 				"host": tftypes.NewValue(tftypes.String, "old-db.example.com"),
 			}),
-			"secret_store_config":                 tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"aws": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"region": tftypes.String, "secret_id": tftypes.String}}, "gcp": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"project": tftypes.String, "secret_id": tftypes.String}}, "azure": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"vault_url": tftypes.String, "name": tftypes.String}}, "hashicorp_vault": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"secret_engine": tftypes.String, "path": tftypes.String}}}}, nil),
-			"custom_access_details":               tftypes.NewValue(tftypes.String, nil),
-			"user_cleanup_period_in_days":         tftypes.NewValue(tftypes.Number, nil),
-			"credentials_rotation_period_in_days": tftypes.NewValue(tftypes.Number, nil),
-			"owner":                               tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "type": tftypes.String, "values": tftypes.List{ElementType: tftypes.String}}}, nil),
-			"owners_mapping":                      tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
+			"secret_store_config":   tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"aws": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"region": tftypes.String, "secret_id": tftypes.String}}, "gcp": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"project": tftypes.String, "secret_id": tftypes.String}}, "azure": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"vault_url": tftypes.String, "name": tftypes.String}}, "hashicorp_vault": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"secret_engine": tftypes.String, "path": tftypes.String}}}}, nil),
+			"custom_access_details": tftypes.NewValue(tftypes.String, nil),
+			"owner":                 tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "type": tftypes.String, "values": tftypes.List{ElementType: tftypes.String}}}, nil),
+			"owners_mapping":        tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
 		})
 
 		mockIntegration := &client.IntegrationV4{
@@ -376,10 +368,6 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 			},
 			CustomAccessDetails: client.OptNilString{
 				Value: "Updated access details",
-				Set:   true,
-			},
-			UserCleanupPeriodInDays: client.OptNilInt64{
-				Value: 45,
 				Set:   true,
 			},
 			Category: common.ResourceCategory,
@@ -434,7 +422,6 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		assert.Equal(t, "prod_db", dbVal.ValueString())
 
 		assert.Equal(t, "Updated access details", updatedState.CustomAccessDetails.ValueString())
-		assert.Equal(t, int64(45), updatedState.UserCleanupPeriodInDays.ValueInt64())
 	})
 
 	t.Run("Read_NotFound", func(t *testing.T) {
@@ -451,12 +438,10 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 			"integration_config": tftypes.NewValue(tftypes.Map{ElementType: tftypes.String}, map[string]tftypes.Value{
 				"host": tftypes.NewValue(tftypes.String, "deleted-db.example.com"),
 			}),
-			"secret_store_config":                 tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"aws": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"region": tftypes.String, "secret_id": tftypes.String}}, "gcp": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"project": tftypes.String, "secret_id": tftypes.String}}, "azure": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"vault_url": tftypes.String, "name": tftypes.String}}, "hashicorp_vault": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"secret_engine": tftypes.String, "path": tftypes.String}}}}, nil),
-			"custom_access_details":               tftypes.NewValue(tftypes.String, nil),
-			"user_cleanup_period_in_days":         tftypes.NewValue(tftypes.Number, nil),
-			"credentials_rotation_period_in_days": tftypes.NewValue(tftypes.Number, nil),
-			"owner":                               tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "type": tftypes.String, "values": tftypes.List{ElementType: tftypes.String}}}, nil),
-			"owners_mapping":                      tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
+			"secret_store_config":   tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"aws": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"region": tftypes.String, "secret_id": tftypes.String}}, "gcp": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"project": tftypes.String, "secret_id": tftypes.String}}, "azure": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"vault_url": tftypes.String, "name": tftypes.String}}, "hashicorp_vault": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"secret_engine": tftypes.String, "path": tftypes.String}}}}, nil),
+			"custom_access_details": tftypes.NewValue(tftypes.String, nil),
+			"owner":                 tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "type": tftypes.String, "values": tftypes.List{ElementType: tftypes.String}}}, nil),
+			"owners_mapping":        tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
 		})
 
 		notFoundErr := &validate.UnexpectedStatusCodeError{StatusCode: 404}
@@ -500,11 +485,9 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 				"azure":           tftypes.Object{AttributeTypes: map[string]tftypes.Type{"vault_url": tftypes.String, "name": tftypes.String}},
 				"hashicorp_vault": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"secret_engine": tftypes.String, "path": tftypes.String}},
 			}}, nil),
-			"custom_access_details":               tftypes.NewValue(tftypes.String, "Old access details"),
-			"user_cleanup_period_in_days":         tftypes.NewValue(tftypes.Number, 30),
-			"credentials_rotation_period_in_days": tftypes.NewValue(tftypes.Number, 90),
-			"owner":                               tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "type": tftypes.String, "values": tftypes.List{ElementType: tftypes.String}}}, nil),
-			"owners_mapping":                      tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
+			"custom_access_details": tftypes.NewValue(tftypes.String, "Old access details"),
+			"owner":                 tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "type": tftypes.String, "values": tftypes.List{ElementType: tftypes.String}}}, nil),
+			"owners_mapping":        tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
 		})
 
 		awsSecretVal := tftypes.NewValue(tftypes.Object{
@@ -561,21 +544,17 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 				"port":     tftypes.NewValue(tftypes.String, "5433"),
 				"database": tftypes.NewValue(tftypes.String, "new_db"),
 			}),
-			"secret_store_config":                 secretStoreVal,
-			"custom_access_details":               tftypes.NewValue(tftypes.String, "Updated access details"),
-			"user_cleanup_period_in_days":         tftypes.NewValue(tftypes.Number, 45),
-			"credentials_rotation_period_in_days": tftypes.NewValue(tftypes.Number, 120),
-			"owner":                               ownerVal,
-			"owners_mapping":                      tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
+			"secret_store_config":   secretStoreVal,
+			"custom_access_details": tftypes.NewValue(tftypes.String, "Updated access details"),
+			"owner":                 ownerVal,
+			"owners_mapping":        tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
 		})
 
 		mockInvoker.EXPECT().
 			UpdateIntegrationV4(mock.Anything, mock.MatchedBy(func(request *client.UpdateIntegrationV4) bool {
 				return request.Name == "updated-postgres-name" &&
 					len(request.IntegrationConfig) == 3 &&
-					request.CustomAccessDetails.Value == "Updated access details" &&
-					request.UserCleanupPeriodInDays.Value == 45 &&
-					request.CredentialsRotationPeriodInDays.Value == 120
+					request.CustomAccessDetails.Value == "Updated access details"
 			}), client.UpdateIntegrationV4Params{ID: "integration-123456"}).
 			Return(&client.IntegrationV4{
 				ID:   "integration-123456",
@@ -596,14 +575,6 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 				},
 				CustomAccessDetails: client.OptNilString{
 					Value: "Updated access details",
-					Set:   true,
-				},
-				UserCleanupPeriodInDays: client.OptNilInt64{
-					Value: 45,
-					Set:   true,
-				},
-				CredentialsRotationPeriodInDays: client.OptNilInt64{
-					Value: 120,
 					Set:   true,
 				},
 				SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
@@ -683,8 +654,6 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		assert.Equal(t, "5433", portVal.ValueString())
 
 		assert.Equal(t, "Updated access details", updatedState.CustomAccessDetails.ValueString())
-		assert.Equal(t, int64(45), updatedState.UserCleanupPeriodInDays.ValueInt64())
-		assert.Equal(t, int64(120), updatedState.CredentialsRotationPeriodInDays.ValueInt64())
 
 		require.NotNil(t, updatedState.SecretStoreConfig)
 		require.NotNil(t, updatedState.SecretStoreConfig.AWS)
@@ -717,12 +686,10 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 			"integration_config": tftypes.NewValue(tftypes.Map{ElementType: tftypes.String}, map[string]tftypes.Value{
 				"host": tftypes.NewValue(tftypes.String, "db-to-delete.example.com"),
 			}),
-			"secret_store_config":                 tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"aws": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"region": tftypes.String, "secret_id": tftypes.String}}, "gcp": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"project": tftypes.String, "secret_id": tftypes.String}}, "azure": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"vault_url": tftypes.String, "name": tftypes.String}}, "hashicorp_vault": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"secret_engine": tftypes.String, "path": tftypes.String}}}}, nil),
-			"custom_access_details":               tftypes.NewValue(tftypes.String, nil),
-			"user_cleanup_period_in_days":         tftypes.NewValue(tftypes.Number, nil),
-			"credentials_rotation_period_in_days": tftypes.NewValue(tftypes.Number, nil),
-			"owner":                               tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "type": tftypes.String, "values": tftypes.List{ElementType: tftypes.String}}}, nil),
-			"owners_mapping":                      tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
+			"secret_store_config":   tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"aws": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"region": tftypes.String, "secret_id": tftypes.String}}, "gcp": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"project": tftypes.String, "secret_id": tftypes.String}}, "azure": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"vault_url": tftypes.String, "name": tftypes.String}}, "hashicorp_vault": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"secret_engine": tftypes.String, "path": tftypes.String}}}}, nil),
+			"custom_access_details": tftypes.NewValue(tftypes.String, nil),
+			"owner":                 tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "type": tftypes.String, "values": tftypes.List{ElementType: tftypes.String}}}, nil),
+			"owners_mapping":        tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
 		})
 
 		mockInvoker.EXPECT().
@@ -755,12 +722,10 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 			"integration_config": tftypes.NewValue(tftypes.Map{ElementType: tftypes.String}, map[string]tftypes.Value{
 				"host": tftypes.NewValue(tftypes.String, "missing-db.example.com"),
 			}),
-			"secret_store_config":                 tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"aws": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"region": tftypes.String, "secret_id": tftypes.String}}, "gcp": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"project": tftypes.String, "secret_id": tftypes.String}}, "azure": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"vault_url": tftypes.String, "name": tftypes.String}}, "hashicorp_vault": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"secret_engine": tftypes.String, "path": tftypes.String}}}}, nil),
-			"custom_access_details":               tftypes.NewValue(tftypes.String, nil),
-			"user_cleanup_period_in_days":         tftypes.NewValue(tftypes.Number, nil),
-			"credentials_rotation_period_in_days": tftypes.NewValue(tftypes.Number, nil),
-			"owner":                               tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "type": tftypes.String, "values": tftypes.List{ElementType: tftypes.String}}}, nil),
-			"owners_mapping":                      tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
+			"secret_store_config":   tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"aws": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"region": tftypes.String, "secret_id": tftypes.String}}, "gcp": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"project": tftypes.String, "secret_id": tftypes.String}}, "azure": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"vault_url": tftypes.String, "name": tftypes.String}}, "hashicorp_vault": tftypes.Object{AttributeTypes: map[string]tftypes.Type{"secret_engine": tftypes.String, "path": tftypes.String}}}}, nil),
+			"custom_access_details": tftypes.NewValue(tftypes.String, nil),
+			"owner":                 tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "type": tftypes.String, "values": tftypes.List{ElementType: tftypes.String}}}, nil),
+			"owners_mapping":        tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"source_integration_name": tftypes.String, "key_name": tftypes.String, "attribute_type": tftypes.String}}, nil),
 		})
 
 		notFoundErr := &validate.UnexpectedStatusCodeError{StatusCode: 404}

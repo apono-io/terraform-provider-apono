@@ -4437,12 +4437,7 @@
             "nullable": true
           },
           "connector_version": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ConnectorSessionVersionMetadataV3"
-              }
-            ],
+            "type": "string",
             "nullable": true
           }
         }
@@ -4463,25 +4458,6 @@
           },
           "last_connected_time": {
             "$ref": "#/components/schemas/ApiInstant"
-          }
-        }
-      },
-      "ConnectorSessionVersionMetadataV3": {
-        "required": [
-          "version"
-        ],
-        "type": "object",
-        "properties": {
-          "version": {
-            "type": "string"
-          },
-          "commit": {
-            "type": "string",
-            "nullable": true
-          },
-          "build_date": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -4644,7 +4620,6 @@
       },
       "CreateAccessRequestV4": {
         "required": [
-          "entitlements",
           "custom_fields"
         ],
         "type": "object",
@@ -4657,7 +4632,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CreateAccessRequestEntitlementV4"
-            }
+            },
+            "nullable": true
           },
           "justification": {
             "type": "string",
@@ -4776,16 +4752,6 @@
           },
           "custom_access_details": {
             "type": "string",
-            "nullable": true
-          },
-          "user_cleanup_period_in_days": {
-            "format": "int64",
-            "type": "integer",
-            "nullable": true
-          },
-          "credentials_rotation_period_in_days": {
-            "format": "int64",
-            "type": "integer",
             "nullable": true
           },
           "owner": {
@@ -5284,7 +5250,7 @@
               "type": "string"
             }
           },
-          "resource_scopes": {
+          "resources_scopes": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ResourcesScopeIntegrationAccessTargetPublicV2Model"
@@ -5446,16 +5412,6 @@
           },
           "custom_access_details": {
             "type": "string",
-            "nullable": true
-          },
-          "user_cleanup_period_in_days": {
-            "format": "int64",
-            "type": "integer",
-            "nullable": true
-          },
-          "credentials_rotation_period_in_days": {
-            "format": "int64",
-            "type": "integer",
             "nullable": true
           },
           "owner": {
@@ -6593,16 +6549,6 @@
           },
           "custom_access_details": {
             "type": "string",
-            "nullable": true
-          },
-          "user_cleanup_period_in_days": {
-            "format": "int64",
-            "type": "integer",
-            "nullable": true
-          },
-          "credentials_rotation_period_in_days": {
-            "format": "int64",
-            "type": "integer",
             "nullable": true
           },
           "owner": {

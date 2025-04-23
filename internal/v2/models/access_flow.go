@@ -300,7 +300,7 @@ func convertIntegrationTargetToUpsertRequest(ctx context.Context, model Integrat
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert resource scopes: %w", err)
 		}
-		integration.ResourceScopes.SetTo(scopes)
+		integration.ResourcesScopes.SetTo(scopes)
 	}
 
 	return &integration, nil
