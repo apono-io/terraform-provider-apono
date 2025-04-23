@@ -183,26 +183,6 @@ func TestResourceIntegrationModelToCreateRequest(t *testing.T) {
 		assert.Equal(t, "Use your SSO credentials to login", req.CustomAccessDetails.Value)
 	})
 
-	t.Run("with cleanup periods", func(t *testing.T) {
-		model := ResourceIntegrationModel{
-			Name: types.StringValue("test-integration"),
-			Type: types.StringValue("postgres"),
-			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
-				types.StringValue("database"),
-			}),
-			UserCleanupPeriodInDays:         types.Int64Value(30),
-			CredentialsRotationPeriodInDays: types.Int64Value(90),
-		}
-
-		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
-
-		require.NoError(t, err)
-		assert.True(t, req.UserCleanupPeriodInDays.IsSet())
-		assert.Equal(t, int64(30), req.UserCleanupPeriodInDays.Value)
-		assert.True(t, req.CredentialsRotationPeriodInDays.IsSet())
-		assert.Equal(t, int64(90), req.CredentialsRotationPeriodInDays.Value)
-	})
-
 	t.Run("with owner config", func(t *testing.T) {
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("test-integration"),
@@ -283,8 +263,6 @@ func TestResourceIntegrationToModel(t *testing.T) {
 		assert.True(t, model.IntegrationConfig.IsNull())
 		assert.Nil(t, model.SecretStoreConfig)
 		assert.True(t, model.CustomAccessDetails.IsNull())
-		assert.True(t, model.UserCleanupPeriodInDays.IsNull())
-		assert.True(t, model.CredentialsRotationPeriodInDays.IsNull())
 		assert.Nil(t, model.Owner)
 		assert.Nil(t, model.OwnersMapping)
 	})
@@ -510,7 +488,7 @@ func TestResourceIntegrationToModel(t *testing.T) {
 		assert.Nil(t, model.SecretStoreConfig.Azure)
 	})
 
-	t.Run("with custom access details and cleanup periods", func(t *testing.T) {
+	t.Run("with custom access details", func(t *testing.T) {
 		integration := &client.IntegrationV4{
 			ID:   "integration-id",
 			Name: "test-integration",
@@ -527,22 +505,12 @@ func TestResourceIntegrationToModel(t *testing.T) {
 				Value: "Use your SSO credentials to login",
 				Set:   true,
 			},
-			UserCleanupPeriodInDays: client.OptNilInt64{
-				Value: 30,
-				Set:   true,
-			},
-			CredentialsRotationPeriodInDays: client.OptNilInt64{
-				Value: 90,
-				Set:   true,
-			},
 		}
 
 		model, err := ResourceIntegrationToModel(ctx, integration)
 
 		require.NoError(t, err)
 		assert.Equal(t, "Use your SSO credentials to login", model.CustomAccessDetails.ValueString())
-		assert.Equal(t, int64(30), model.UserCleanupPeriodInDays.ValueInt64())
-		assert.Equal(t, int64(90), model.CredentialsRotationPeriodInDays.ValueInt64())
 	})
 
 	t.Run("with owner config", func(t *testing.T) {
@@ -796,25 +764,6 @@ func TestResourceIntegrationModelToUpdateRequest(t *testing.T) {
 		require.NoError(t, err)
 		assert.True(t, req.CustomAccessDetails.IsSet())
 		assert.Equal(t, "Updated access instructions", req.CustomAccessDetails.Value)
-	})
-
-	t.Run("with cleanup periods", func(t *testing.T) {
-		model := ResourceIntegrationModel{
-			Name: types.StringValue("updated-integration"),
-			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
-				types.StringValue("database"),
-			}),
-			UserCleanupPeriodInDays:         types.Int64Value(45),
-			CredentialsRotationPeriodInDays: types.Int64Value(120),
-		}
-
-		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
-
-		require.NoError(t, err)
-		assert.True(t, req.UserCleanupPeriodInDays.IsSet())
-		assert.Equal(t, int64(45), req.UserCleanupPeriodInDays.Value)
-		assert.True(t, req.CredentialsRotationPeriodInDays.IsSet())
-		assert.Equal(t, int64(120), req.CredentialsRotationPeriodInDays.Value)
 	})
 
 	t.Run("with owner config", func(t *testing.T) {

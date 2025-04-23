@@ -585,9 +585,9 @@ func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) encodeFields(e 
 		e.ArrEnd()
 	}
 	{
-		if s.ResourceScopes.Set {
-			e.FieldStart("resource_scopes")
-			s.ResourceScopes.Encode(e)
+		if s.ResourcesScopes.Set {
+			e.FieldStart("resources_scopes")
+			s.ResourcesScopes.Encode(e)
 		}
 	}
 }
@@ -596,7 +596,7 @@ var jsonFieldsNameOfAccessBundleAccessTargetUpsertPublicV2ModelIntegration = [4]
 	0: "integration_reference",
 	1: "resource_type",
 	2: "permissions",
-	3: "resource_scopes",
+	3: "resources_scopes",
 }
 
 // Decode decodes AccessBundleAccessTargetUpsertPublicV2ModelIntegration from json.
@@ -652,15 +652,15 @@ func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) Decode(d *jx.De
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"permissions\"")
 			}
-		case "resource_scopes":
+		case "resources_scopes":
 			if err := func() error {
-				s.ResourceScopes.Reset()
-				if err := s.ResourceScopes.Decode(d); err != nil {
+				s.ResourcesScopes.Reset()
+				if err := s.ResourcesScopes.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"resource_scopes\"")
+				return errors.Wrap(err, "decode field \"resources_scopes\"")
 			}
 		default:
 			return d.Skip()
@@ -5624,9 +5624,9 @@ func (s *AccessTargetUpsertPublicV2ModelIntegration) encodeFields(e *jx.Encoder)
 		e.ArrEnd()
 	}
 	{
-		if s.ResourceScopes.Set {
-			e.FieldStart("resource_scopes")
-			s.ResourceScopes.Encode(e)
+		if s.ResourcesScopes.Set {
+			e.FieldStart("resources_scopes")
+			s.ResourcesScopes.Encode(e)
 		}
 	}
 }
@@ -5635,7 +5635,7 @@ var jsonFieldsNameOfAccessTargetUpsertPublicV2ModelIntegration = [4]string{
 	0: "integration_reference",
 	1: "resource_type",
 	2: "permissions",
-	3: "resource_scopes",
+	3: "resources_scopes",
 }
 
 // Decode decodes AccessTargetUpsertPublicV2ModelIntegration from json.
@@ -5691,15 +5691,15 @@ func (s *AccessTargetUpsertPublicV2ModelIntegration) Decode(d *jx.Decoder) error
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"permissions\"")
 			}
-		case "resource_scopes":
+		case "resources_scopes":
 			if err := func() error {
-				s.ResourceScopes.Reset()
-				if err := s.ResourceScopes.Decode(d); err != nil {
+				s.ResourcesScopes.Reset()
+				if err := s.ResourcesScopes.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"resource_scopes\"")
+				return errors.Wrap(err, "decode field \"resources_scopes\"")
 			}
 		default:
 			return d.Skip()
@@ -8043,136 +8043,6 @@ func (s *ConnectorSessionMetadataV3CloudProviderMetadata) UnmarshalJSON(data []b
 }
 
 // Encode implements json.Marshaler.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields encodes fields.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) encodeFields(e *jx.Encoder) {
-	{
-		e.FieldStart("version")
-		e.Str(s.Version)
-	}
-	{
-		if s.Commit.Set {
-			e.FieldStart("commit")
-			s.Commit.Encode(e)
-		}
-	}
-	{
-		if s.BuildDate.Set {
-			e.FieldStart("build_date")
-			s.BuildDate.Encode(e)
-		}
-	}
-}
-
-var jsonFieldsNameOfConnectorSessionMetadataV3ConnectorVersion = [3]string{
-	0: "version",
-	1: "commit",
-	2: "build_date",
-}
-
-// Decode decodes ConnectorSessionMetadataV3ConnectorVersion from json.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode ConnectorSessionMetadataV3ConnectorVersion to nil")
-	}
-	var requiredBitSet [1]uint8
-
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		switch string(k) {
-		case "version":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				v, err := d.Str()
-				s.Version = string(v)
-				if err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"version\"")
-			}
-		case "commit":
-			if err := func() error {
-				s.Commit.Reset()
-				if err := s.Commit.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"commit\"")
-			}
-		case "build_date":
-			if err := func() error {
-				s.BuildDate.Reset()
-				if err := s.BuildDate.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"build_date\"")
-			}
-		default:
-			return d.Skip()
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode ConnectorSessionMetadataV3ConnectorVersion")
-	}
-	// Validate required fields.
-	var failures []validate.FieldError
-	for i, mask := range [1]uint8{
-		0b00000001,
-	} {
-		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
-			// Mask only required fields and check equality to mask using XOR.
-			//
-			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
-			// Bits of fields which would be set are actually bits of missed fields.
-			missed := bits.OnesCount8(result)
-			for bitN := 0; bitN < missed; bitN++ {
-				bitIdx := bits.TrailingZeros8(result)
-				fieldIdx := i*8 + bitIdx
-				var name string
-				if fieldIdx < len(jsonFieldsNameOfConnectorSessionMetadataV3ConnectorVersion) {
-					name = jsonFieldsNameOfConnectorSessionMetadataV3ConnectorVersion[fieldIdx]
-				} else {
-					name = strconv.Itoa(fieldIdx)
-				}
-				failures = append(failures, validate.FieldError{
-					Name:  name,
-					Error: validate.ErrFieldRequired,
-				})
-				// Reset bit.
-				result &^= 1 << bitIdx
-			}
-		}
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
 func (s *ConnectorSessionV3) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -8857,12 +8727,10 @@ func (s *CreateAccessRequestV4) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		e.FieldStart("entitlements")
-		e.ArrStart()
-		for _, elem := range s.Entitlements {
-			elem.Encode(e)
+		if s.Entitlements.Set {
+			e.FieldStart("entitlements")
+			s.Entitlements.Encode(e)
 		}
-		e.ArrEnd()
 	}
 	{
 		if s.Justification.Set {
@@ -8910,17 +8778,9 @@ func (s *CreateAccessRequestV4) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"bundle_reference\"")
 			}
 		case "entitlements":
-			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				s.Entitlements = make([]CreateAccessRequestEntitlementV4, 0)
-				if err := d.Arr(func(d *jx.Decoder) error {
-					var elem CreateAccessRequestEntitlementV4
-					if err := elem.Decode(d); err != nil {
-						return err
-					}
-					s.Entitlements = append(s.Entitlements, elem)
-					return nil
-				}); err != nil {
+				s.Entitlements.Reset()
+				if err := s.Entitlements.Decode(d); err != nil {
 					return err
 				}
 				return nil
@@ -8967,7 +8827,7 @@ func (s *CreateAccessRequestV4) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00010010,
+		0b00010000,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -9524,18 +9384,6 @@ func (s *CreateIntegrationV4) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.UserCleanupPeriodInDays.Set {
-			e.FieldStart("user_cleanup_period_in_days")
-			s.UserCleanupPeriodInDays.Encode(e)
-		}
-	}
-	{
-		if s.CredentialsRotationPeriodInDays.Set {
-			e.FieldStart("credentials_rotation_period_in_days")
-			s.CredentialsRotationPeriodInDays.Encode(e)
-		}
-	}
-	{
 		if s.Owner.Set {
 			e.FieldStart("owner")
 			s.Owner.Encode(e)
@@ -9549,18 +9397,16 @@ func (s *CreateIntegrationV4) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfCreateIntegrationV4 = [11]string{
-	0:  "name",
-	1:  "type",
-	2:  "connector_id",
-	3:  "integration_config",
-	4:  "secret_store_config",
-	5:  "connected_resource_types",
-	6:  "custom_access_details",
-	7:  "user_cleanup_period_in_days",
-	8:  "credentials_rotation_period_in_days",
-	9:  "owner",
-	10: "owners_mapping",
+var jsonFieldsNameOfCreateIntegrationV4 = [9]string{
+	0: "name",
+	1: "type",
+	2: "connector_id",
+	3: "integration_config",
+	4: "secret_store_config",
+	5: "connected_resource_types",
+	6: "custom_access_details",
+	7: "owner",
+	8: "owners_mapping",
 }
 
 // Decode decodes CreateIntegrationV4 from json.
@@ -9645,26 +9491,6 @@ func (s *CreateIntegrationV4) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"custom_access_details\"")
-			}
-		case "user_cleanup_period_in_days":
-			if err := func() error {
-				s.UserCleanupPeriodInDays.Reset()
-				if err := s.UserCleanupPeriodInDays.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"user_cleanup_period_in_days\"")
-			}
-		case "credentials_rotation_period_in_days":
-			if err := func() error {
-				s.CredentialsRotationPeriodInDays.Reset()
-				if err := s.CredentialsRotationPeriodInDays.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"credentials_rotation_period_in_days\"")
 			}
 		case "owner":
 			if err := func() error {
@@ -13796,18 +13622,6 @@ func (s *IntegrationV4) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.UserCleanupPeriodInDays.Set {
-			e.FieldStart("user_cleanup_period_in_days")
-			s.UserCleanupPeriodInDays.Encode(e)
-		}
-	}
-	{
-		if s.CredentialsRotationPeriodInDays.Set {
-			e.FieldStart("credentials_rotation_period_in_days")
-			s.CredentialsRotationPeriodInDays.Encode(e)
-		}
-	}
-	{
 		if s.Owner.Set {
 			e.FieldStart("owner")
 			s.Owner.Encode(e)
@@ -13821,7 +13635,7 @@ func (s *IntegrationV4) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfIntegrationV4 = [15]string{
+var jsonFieldsNameOfIntegrationV4 = [13]string{
 	0:  "id",
 	1:  "name",
 	2:  "type",
@@ -13833,10 +13647,8 @@ var jsonFieldsNameOfIntegrationV4 = [15]string{
 	8:  "secret_store_config",
 	9:  "connected_resource_types",
 	10: "custom_access_details",
-	11: "user_cleanup_period_in_days",
-	12: "credentials_rotation_period_in_days",
-	13: "owner",
-	14: "owners_mapping",
+	11: "owner",
+	12: "owners_mapping",
 }
 
 // Decode decodes IntegrationV4 from json.
@@ -13967,26 +13779,6 @@ func (s *IntegrationV4) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"custom_access_details\"")
-			}
-		case "user_cleanup_period_in_days":
-			if err := func() error {
-				s.UserCleanupPeriodInDays.Reset()
-				if err := s.UserCleanupPeriodInDays.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"user_cleanup_period_in_days\"")
-			}
-		case "credentials_rotation_period_in_days":
-			if err := func() error {
-				s.CredentialsRotationPeriodInDays.Reset()
-				if err := s.CredentialsRotationPeriodInDays.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"credentials_rotation_period_in_days\"")
 			}
 		case "owner":
 			if err := func() error {
@@ -16773,8 +16565,8 @@ func (s *OptNilConnectorSessionMetadataV3CloudProviderMetadata) UnmarshalJSON(da
 	return s.Decode(d)
 }
 
-// Encode encodes ConnectorSessionMetadataV3ConnectorVersion as json.
-func (o OptNilConnectorSessionMetadataV3ConnectorVersion) Encode(e *jx.Encoder) {
+// Encode encodes []CreateAccessRequestEntitlementV4 as json.
+func (o OptNilCreateAccessRequestEntitlementV4Array) Encode(e *jx.Encoder) {
 	if !o.Set {
 		return
 	}
@@ -16782,20 +16574,24 @@ func (o OptNilConnectorSessionMetadataV3ConnectorVersion) Encode(e *jx.Encoder) 
 		e.Null()
 		return
 	}
-	o.Value.Encode(e)
+	e.ArrStart()
+	for _, elem := range o.Value {
+		elem.Encode(e)
+	}
+	e.ArrEnd()
 }
 
-// Decode decodes ConnectorSessionMetadataV3ConnectorVersion from json.
-func (o *OptNilConnectorSessionMetadataV3ConnectorVersion) Decode(d *jx.Decoder) error {
+// Decode decodes []CreateAccessRequestEntitlementV4 from json.
+func (o *OptNilCreateAccessRequestEntitlementV4Array) Decode(d *jx.Decoder) error {
 	if o == nil {
-		return errors.New("invalid: unable to decode OptNilConnectorSessionMetadataV3ConnectorVersion to nil")
+		return errors.New("invalid: unable to decode OptNilCreateAccessRequestEntitlementV4Array to nil")
 	}
 	if d.Next() == jx.Null {
 		if err := d.Null(); err != nil {
 			return err
 		}
 
-		var v ConnectorSessionMetadataV3ConnectorVersion
+		var v []CreateAccessRequestEntitlementV4
 		o.Value = v
 		o.Set = true
 		o.Null = true
@@ -16803,21 +16599,29 @@ func (o *OptNilConnectorSessionMetadataV3ConnectorVersion) Decode(d *jx.Decoder)
 	}
 	o.Set = true
 	o.Null = false
-	if err := o.Value.Decode(d); err != nil {
+	o.Value = make([]CreateAccessRequestEntitlementV4, 0)
+	if err := d.Arr(func(d *jx.Decoder) error {
+		var elem CreateAccessRequestEntitlementV4
+		if err := elem.Decode(d); err != nil {
+			return err
+		}
+		o.Value = append(o.Value, elem)
+		return nil
+	}); err != nil {
 		return err
 	}
 	return nil
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s OptNilConnectorSessionMetadataV3ConnectorVersion) MarshalJSON() ([]byte, error) {
+func (s OptNilCreateAccessRequestEntitlementV4Array) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptNilConnectorSessionMetadataV3ConnectorVersion) UnmarshalJSON(data []byte) error {
+func (s *OptNilCreateAccessRequestEntitlementV4Array) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -17424,57 +17228,6 @@ func (s OptNilInt32) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptNilInt32) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes int64 as json.
-func (o OptNilInt64) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	if o.Null {
-		e.Null()
-		return
-	}
-	e.Int64(int64(o.Value))
-}
-
-// Decode decodes int64 from json.
-func (o *OptNilInt64) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptNilInt64 to nil")
-	}
-	if d.Next() == jx.Null {
-		if err := d.Null(); err != nil {
-			return err
-		}
-
-		var v int64
-		o.Value = v
-		o.Set = true
-		o.Null = true
-		return nil
-	}
-	o.Set = true
-	o.Null = false
-	v, err := d.Int64()
-	if err != nil {
-		return err
-	}
-	o.Value = int64(v)
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptNilInt64) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptNilInt64) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -25044,18 +24797,6 @@ func (s *UpdateIntegrationV4) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.UserCleanupPeriodInDays.Set {
-			e.FieldStart("user_cleanup_period_in_days")
-			s.UserCleanupPeriodInDays.Encode(e)
-		}
-	}
-	{
-		if s.CredentialsRotationPeriodInDays.Set {
-			e.FieldStart("credentials_rotation_period_in_days")
-			s.CredentialsRotationPeriodInDays.Encode(e)
-		}
-	}
-	{
 		if s.Owner.Set {
 			e.FieldStart("owner")
 			s.Owner.Encode(e)
@@ -25069,16 +24810,14 @@ func (s *UpdateIntegrationV4) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfUpdateIntegrationV4 = [9]string{
+var jsonFieldsNameOfUpdateIntegrationV4 = [7]string{
 	0: "name",
 	1: "integration_config",
 	2: "secret_store_config",
 	3: "connected_resource_types",
 	4: "custom_access_details",
-	5: "user_cleanup_period_in_days",
-	6: "credentials_rotation_period_in_days",
-	7: "owner",
-	8: "owners_mapping",
+	5: "owner",
+	6: "owners_mapping",
 }
 
 // Decode decodes UpdateIntegrationV4 from json.
@@ -25086,7 +24825,7 @@ func (s *UpdateIntegrationV4) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode UpdateIntegrationV4 to nil")
 	}
-	var requiredBitSet [2]uint8
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -25142,26 +24881,6 @@ func (s *UpdateIntegrationV4) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"custom_access_details\"")
 			}
-		case "user_cleanup_period_in_days":
-			if err := func() error {
-				s.UserCleanupPeriodInDays.Reset()
-				if err := s.UserCleanupPeriodInDays.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"user_cleanup_period_in_days\"")
-			}
-		case "credentials_rotation_period_in_days":
-			if err := func() error {
-				s.CredentialsRotationPeriodInDays.Reset()
-				if err := s.CredentialsRotationPeriodInDays.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"credentials_rotation_period_in_days\"")
-			}
 		case "owner":
 			if err := func() error {
 				s.Owner.Reset()
@@ -25191,9 +24910,8 @@ func (s *UpdateIntegrationV4) Decode(d *jx.Decoder) error {
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
-	for i, mask := range [2]uint8{
+	for i, mask := range [1]uint8{
 		0b00000011,
-		0b00000000,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

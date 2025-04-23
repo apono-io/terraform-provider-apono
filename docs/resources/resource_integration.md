@@ -25,12 +25,10 @@ Manages an Apono Resource Integration.
 
 ### Optional
 
-- `credentials_rotation_period_in_days` (Number) Period in days after which credentials are rotated.
 - `custom_access_details` (String) Custom details for accessing the resource.
 - `owner` (Attributes) Owner configuration for the resource integration. (see [below for nested schema](#nestedatt--owner))
 - `owners_mapping` (Attributes) Owners mapping configuration. (see [below for nested schema](#nestedatt--owners_mapping))
 - `secret_store_config` (Attributes) Configuration for secret store. (see [below for nested schema](#nestedatt--secret_store_config))
-- `user_cleanup_period_in_days` (Number) Period in days after which users are cleaned up.
 
 ### Read-Only
 

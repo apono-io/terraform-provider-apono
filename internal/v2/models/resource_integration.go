@@ -12,18 +12,16 @@ import (
 )
 
 type ResourceIntegrationModel struct {
-	ID                              types.String         `tfsdk:"id"`
-	Name                            types.String         `tfsdk:"name"`
-	Type                            types.String         `tfsdk:"type"`
-	ConnectorID                     types.String         `tfsdk:"connector_id"`
-	ConnectedResourceTypes          types.List           `tfsdk:"connected_resource_types"`
-	IntegrationConfig               types.Map            `tfsdk:"integration_config"`
-	SecretStoreConfig               *SecretStoreConfig   `tfsdk:"secret_store_config"`
-	CustomAccessDetails             types.String         `tfsdk:"custom_access_details"`
-	UserCleanupPeriodInDays         types.Int64          `tfsdk:"user_cleanup_period_in_days"`
-	CredentialsRotationPeriodInDays types.Int64          `tfsdk:"credentials_rotation_period_in_days"`
-	Owner                           *OwnerConfig         `tfsdk:"owner"`
-	OwnersMapping                   *OwnersMappingConfig `tfsdk:"owners_mapping"`
+	ID                     types.String         `tfsdk:"id"`
+	Name                   types.String         `tfsdk:"name"`
+	Type                   types.String         `tfsdk:"type"`
+	ConnectorID            types.String         `tfsdk:"connector_id"`
+	ConnectedResourceTypes types.List           `tfsdk:"connected_resource_types"`
+	IntegrationConfig      types.Map            `tfsdk:"integration_config"`
+	SecretStoreConfig      *SecretStoreConfig   `tfsdk:"secret_store_config"`
+	CustomAccessDetails    types.String         `tfsdk:"custom_access_details"`
+	Owner                  *OwnerConfig         `tfsdk:"owner"`
+	OwnersMapping          *OwnersMappingConfig `tfsdk:"owners_mapping"`
 }
 
 type SecretStoreConfig struct {
@@ -101,14 +99,6 @@ func ResourceIntegrationModelToCreateRequest(ctx context.Context, model Resource
 		req.CustomAccessDetails.SetTo(model.CustomAccessDetails.ValueString())
 	}
 
-	if !model.UserCleanupPeriodInDays.IsNull() {
-		req.UserCleanupPeriodInDays.SetTo(model.UserCleanupPeriodInDays.ValueInt64())
-	}
-
-	if !model.CredentialsRotationPeriodInDays.IsNull() {
-		req.CredentialsRotationPeriodInDays.SetTo(model.CredentialsRotationPeriodInDays.ValueInt64())
-	}
-
 	if model.Owner != nil {
 		var values []string
 		diags := model.Owner.Values.ElementsAs(ctx, &values, false)
@@ -176,14 +166,6 @@ func ResourceIntegrationModelToUpdateRequest(ctx context.Context, model Resource
 
 	if !model.CustomAccessDetails.IsNull() {
 		req.CustomAccessDetails.SetTo(model.CustomAccessDetails.ValueString())
-	}
-
-	if !model.UserCleanupPeriodInDays.IsNull() {
-		req.UserCleanupPeriodInDays.SetTo(model.UserCleanupPeriodInDays.ValueInt64())
-	}
-
-	if !model.CredentialsRotationPeriodInDays.IsNull() {
-		req.CredentialsRotationPeriodInDays.SetTo(model.CredentialsRotationPeriodInDays.ValueInt64())
 	}
 
 	if model.Owner != nil {
@@ -299,14 +281,6 @@ func ResourceIntegrationToModel(ctx context.Context, integration *client.Integra
 
 	if integration.CustomAccessDetails.IsSet() {
 		model.CustomAccessDetails = types.StringValue(integration.CustomAccessDetails.Value)
-	}
-
-	if integration.UserCleanupPeriodInDays.IsSet() {
-		model.UserCleanupPeriodInDays = types.Int64Value(integration.UserCleanupPeriodInDays.Value)
-	}
-
-	if integration.CredentialsRotationPeriodInDays.IsSet() {
-		model.CredentialsRotationPeriodInDays = types.Int64Value(integration.CredentialsRotationPeriodInDays.Value)
 	}
 
 	if integration.Owner.IsSet() {

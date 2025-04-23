@@ -168,7 +168,7 @@ type AccessBundleAccessTargetUpsertPublicV2ModelIntegration struct {
 	IntegrationReference string                                                        `json:"integration_reference"`
 	ResourceType         string                                                        `json:"resource_type"`
 	Permissions          []string                                                      `json:"permissions"`
-	ResourceScopes       OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray `json:"resource_scopes"`
+	ResourcesScopes      OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray `json:"resources_scopes"`
 }
 
 // GetIntegrationReference returns the value of IntegrationReference.
@@ -186,9 +186,9 @@ func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) GetPermissions(
 	return s.Permissions
 }
 
-// GetResourceScopes returns the value of ResourceScopes.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) GetResourceScopes() OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray {
-	return s.ResourceScopes
+// GetResourcesScopes returns the value of ResourcesScopes.
+func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) GetResourcesScopes() OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray {
+	return s.ResourcesScopes
 }
 
 // SetIntegrationReference sets the value of IntegrationReference.
@@ -206,9 +206,9 @@ func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) SetPermissions(
 	s.Permissions = val
 }
 
-// SetResourceScopes sets the value of ResourceScopes.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) SetResourceScopes(val OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) {
-	s.ResourceScopes = val
+// SetResourcesScopes sets the value of ResourcesScopes.
+func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) SetResourcesScopes(val OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) {
+	s.ResourcesScopes = val
 }
 
 // Ref: #/components/schemas/AccessBundleV1
@@ -1848,7 +1848,7 @@ type AccessTargetUpsertPublicV2ModelIntegration struct {
 	IntegrationReference string                                                        `json:"integration_reference"`
 	ResourceType         string                                                        `json:"resource_type"`
 	Permissions          []string                                                      `json:"permissions"`
-	ResourceScopes       OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray `json:"resource_scopes"`
+	ResourcesScopes      OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray `json:"resources_scopes"`
 }
 
 // GetIntegrationReference returns the value of IntegrationReference.
@@ -1866,9 +1866,9 @@ func (s *AccessTargetUpsertPublicV2ModelIntegration) GetPermissions() []string {
 	return s.Permissions
 }
 
-// GetResourceScopes returns the value of ResourceScopes.
-func (s *AccessTargetUpsertPublicV2ModelIntegration) GetResourceScopes() OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray {
-	return s.ResourceScopes
+// GetResourcesScopes returns the value of ResourcesScopes.
+func (s *AccessTargetUpsertPublicV2ModelIntegration) GetResourcesScopes() OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray {
+	return s.ResourcesScopes
 }
 
 // SetIntegrationReference sets the value of IntegrationReference.
@@ -1886,9 +1886,9 @@ func (s *AccessTargetUpsertPublicV2ModelIntegration) SetPermissions(val []string
 	s.Permissions = val
 }
 
-// SetResourceScopes sets the value of ResourceScopes.
-func (s *AccessTargetUpsertPublicV2ModelIntegration) SetResourceScopes(val OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) {
-	s.ResourceScopes = val
+// SetResourcesScopes sets the value of ResourcesScopes.
+func (s *AccessTargetUpsertPublicV2ModelIntegration) SetResourcesScopes(val OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) {
+	s.ResourcesScopes = val
 }
 
 // Ref: #/components/schemas/ActivityReportJsonExportModel
@@ -2511,7 +2511,7 @@ type ConnectorActionParamsModelSecretConfig struct{}
 // Ref: #/components/schemas/ConnectorSessionMetadataV3
 type ConnectorSessionMetadataV3 struct {
 	CloudProviderMetadata OptNilConnectorSessionMetadataV3CloudProviderMetadata `json:"cloud_provider_metadata"`
-	ConnectorVersion      OptNilConnectorSessionMetadataV3ConnectorVersion      `json:"connector_version"`
+	ConnectorVersion      OptNilString                                          `json:"connector_version"`
 }
 
 // GetCloudProviderMetadata returns the value of CloudProviderMetadata.
@@ -2520,7 +2520,7 @@ func (s *ConnectorSessionMetadataV3) GetCloudProviderMetadata() OptNilConnectorS
 }
 
 // GetConnectorVersion returns the value of ConnectorVersion.
-func (s *ConnectorSessionMetadataV3) GetConnectorVersion() OptNilConnectorSessionMetadataV3ConnectorVersion {
+func (s *ConnectorSessionMetadataV3) GetConnectorVersion() OptNilString {
 	return s.ConnectorVersion
 }
 
@@ -2530,7 +2530,7 @@ func (s *ConnectorSessionMetadataV3) SetCloudProviderMetadata(val OptNilConnecto
 }
 
 // SetConnectorVersion sets the value of ConnectorVersion.
-func (s *ConnectorSessionMetadataV3) SetConnectorVersion(val OptNilConnectorSessionMetadataV3ConnectorVersion) {
+func (s *ConnectorSessionMetadataV3) SetConnectorVersion(val OptNilString) {
 	s.ConnectorVersion = val
 }
 
@@ -2678,42 +2678,6 @@ func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetResourceGroup(val O
 // SetIsAzureAdmin sets the value of IsAzureAdmin.
 func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetIsAzureAdmin(val OptNilBool) {
 	s.IsAzureAdmin = val
-}
-
-type ConnectorSessionMetadataV3ConnectorVersion struct {
-	Version   string       `json:"version"`
-	Commit    OptNilString `json:"commit"`
-	BuildDate OptNilString `json:"build_date"`
-}
-
-// GetVersion returns the value of Version.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) GetVersion() string {
-	return s.Version
-}
-
-// GetCommit returns the value of Commit.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) GetCommit() OptNilString {
-	return s.Commit
-}
-
-// GetBuildDate returns the value of BuildDate.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) GetBuildDate() OptNilString {
-	return s.BuildDate
-}
-
-// SetVersion sets the value of Version.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) SetVersion(val string) {
-	s.Version = val
-}
-
-// SetCommit sets the value of Commit.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) SetCommit(val OptNilString) {
-	s.Commit = val
-}
-
-// SetBuildDate sets the value of BuildDate.
-func (s *ConnectorSessionMetadataV3ConnectorVersion) SetBuildDate(val OptNilString) {
-	s.BuildDate = val
 }
 
 // Ref: #/components/schemas/ConnectorSessionV3
@@ -2943,11 +2907,11 @@ func (s *CreateAccessRequestEntitlementV4) SetPermissionID(val string) {
 
 // Ref: #/components/schemas/CreateAccessRequestV4
 type CreateAccessRequestV4 struct {
-	BundleReference OptNilString                       `json:"bundle_reference"`
-	Entitlements    []CreateAccessRequestEntitlementV4 `json:"entitlements"`
-	Justification   OptNilString                       `json:"justification"`
-	DurationInSec   OptNilInt32                        `json:"duration_in_sec"`
-	CustomFields    CreateAccessRequestV4CustomFields  `json:"custom_fields"`
+	BundleReference OptNilString                                `json:"bundle_reference"`
+	Entitlements    OptNilCreateAccessRequestEntitlementV4Array `json:"entitlements"`
+	Justification   OptNilString                                `json:"justification"`
+	DurationInSec   OptNilInt32                                 `json:"duration_in_sec"`
+	CustomFields    CreateAccessRequestV4CustomFields           `json:"custom_fields"`
 }
 
 // GetBundleReference returns the value of BundleReference.
@@ -2956,7 +2920,7 @@ func (s *CreateAccessRequestV4) GetBundleReference() OptNilString {
 }
 
 // GetEntitlements returns the value of Entitlements.
-func (s *CreateAccessRequestV4) GetEntitlements() []CreateAccessRequestEntitlementV4 {
+func (s *CreateAccessRequestV4) GetEntitlements() OptNilCreateAccessRequestEntitlementV4Array {
 	return s.Entitlements
 }
 
@@ -2981,7 +2945,7 @@ func (s *CreateAccessRequestV4) SetBundleReference(val OptNilString) {
 }
 
 // SetEntitlements sets the value of Entitlements.
-func (s *CreateAccessRequestV4) SetEntitlements(val []CreateAccessRequestEntitlementV4) {
+func (s *CreateAccessRequestV4) SetEntitlements(val OptNilCreateAccessRequestEntitlementV4Array) {
 	s.Entitlements = val
 }
 
@@ -3124,17 +3088,15 @@ type CreateIntegrationSecretConfig struct{}
 
 // Ref: #/components/schemas/CreateIntegrationV4
 type CreateIntegrationV4 struct {
-	Name                            string                                     `json:"name"`
-	Type                            string                                     `json:"type"`
-	ConnectorID                     OptNilString                               `json:"connector_id"`
-	IntegrationConfig               JsonMapModel                               `json:"integration_config"`
-	SecretStoreConfig               OptNilCreateIntegrationV4SecretStoreConfig `json:"secret_store_config"`
-	ConnectedResourceTypes          OptNilStringArray                          `json:"connected_resource_types"`
-	CustomAccessDetails             OptNilString                               `json:"custom_access_details"`
-	UserCleanupPeriodInDays         OptNilInt64                                `json:"user_cleanup_period_in_days"`
-	CredentialsRotationPeriodInDays OptNilInt64                                `json:"credentials_rotation_period_in_days"`
-	Owner                           OptNilCreateIntegrationV4Owner             `json:"owner"`
-	OwnersMapping                   OptNilCreateIntegrationV4OwnersMapping     `json:"owners_mapping"`
+	Name                   string                                     `json:"name"`
+	Type                   string                                     `json:"type"`
+	ConnectorID            OptNilString                               `json:"connector_id"`
+	IntegrationConfig      JsonMapModel                               `json:"integration_config"`
+	SecretStoreConfig      OptNilCreateIntegrationV4SecretStoreConfig `json:"secret_store_config"`
+	ConnectedResourceTypes OptNilStringArray                          `json:"connected_resource_types"`
+	CustomAccessDetails    OptNilString                               `json:"custom_access_details"`
+	Owner                  OptNilCreateIntegrationV4Owner             `json:"owner"`
+	OwnersMapping          OptNilCreateIntegrationV4OwnersMapping     `json:"owners_mapping"`
 }
 
 // GetName returns the value of Name.
@@ -3170,16 +3132,6 @@ func (s *CreateIntegrationV4) GetConnectedResourceTypes() OptNilStringArray {
 // GetCustomAccessDetails returns the value of CustomAccessDetails.
 func (s *CreateIntegrationV4) GetCustomAccessDetails() OptNilString {
 	return s.CustomAccessDetails
-}
-
-// GetUserCleanupPeriodInDays returns the value of UserCleanupPeriodInDays.
-func (s *CreateIntegrationV4) GetUserCleanupPeriodInDays() OptNilInt64 {
-	return s.UserCleanupPeriodInDays
-}
-
-// GetCredentialsRotationPeriodInDays returns the value of CredentialsRotationPeriodInDays.
-func (s *CreateIntegrationV4) GetCredentialsRotationPeriodInDays() OptNilInt64 {
-	return s.CredentialsRotationPeriodInDays
 }
 
 // GetOwner returns the value of Owner.
@@ -3225,16 +3177,6 @@ func (s *CreateIntegrationV4) SetConnectedResourceTypes(val OptNilStringArray) {
 // SetCustomAccessDetails sets the value of CustomAccessDetails.
 func (s *CreateIntegrationV4) SetCustomAccessDetails(val OptNilString) {
 	s.CustomAccessDetails = val
-}
-
-// SetUserCleanupPeriodInDays sets the value of UserCleanupPeriodInDays.
-func (s *CreateIntegrationV4) SetUserCleanupPeriodInDays(val OptNilInt64) {
-	s.UserCleanupPeriodInDays = val
-}
-
-// SetCredentialsRotationPeriodInDays sets the value of CredentialsRotationPeriodInDays.
-func (s *CreateIntegrationV4) SetCredentialsRotationPeriodInDays(val OptNilInt64) {
-	s.CredentialsRotationPeriodInDays = val
 }
 
 // SetOwner sets the value of Owner.
@@ -4566,21 +4508,19 @@ func (s *IntegrationStatus) UnmarshalText(data []byte) error {
 
 // Ref: #/components/schemas/IntegrationV4
 type IntegrationV4 struct {
-	ID                              string                               `json:"id"`
-	Name                            string                               `json:"name"`
-	Type                            string                               `json:"type"`
-	Category                        string                               `json:"category"`
-	ConnectorID                     OptNilString                         `json:"connector_id"`
-	Status                          string                               `json:"status"`
-	LastSyncTime                    OptNilDateTime                       `json:"last_sync_time"`
-	IntegrationConfig               JsonMapModel                         `json:"integration_config"`
-	SecretStoreConfig               OptNilIntegrationV4SecretStoreConfig `json:"secret_store_config"`
-	ConnectedResourceTypes          OptNilStringArray                    `json:"connected_resource_types"`
-	CustomAccessDetails             OptNilString                         `json:"custom_access_details"`
-	UserCleanupPeriodInDays         OptNilInt64                          `json:"user_cleanup_period_in_days"`
-	CredentialsRotationPeriodInDays OptNilInt64                          `json:"credentials_rotation_period_in_days"`
-	Owner                           OptNilIntegrationV4Owner             `json:"owner"`
-	OwnersMapping                   OptNilIntegrationV4OwnersMapping     `json:"owners_mapping"`
+	ID                     string                               `json:"id"`
+	Name                   string                               `json:"name"`
+	Type                   string                               `json:"type"`
+	Category               string                               `json:"category"`
+	ConnectorID            OptNilString                         `json:"connector_id"`
+	Status                 string                               `json:"status"`
+	LastSyncTime           OptNilDateTime                       `json:"last_sync_time"`
+	IntegrationConfig      JsonMapModel                         `json:"integration_config"`
+	SecretStoreConfig      OptNilIntegrationV4SecretStoreConfig `json:"secret_store_config"`
+	ConnectedResourceTypes OptNilStringArray                    `json:"connected_resource_types"`
+	CustomAccessDetails    OptNilString                         `json:"custom_access_details"`
+	Owner                  OptNilIntegrationV4Owner             `json:"owner"`
+	OwnersMapping          OptNilIntegrationV4OwnersMapping     `json:"owners_mapping"`
 }
 
 // GetID returns the value of ID.
@@ -4636,16 +4576,6 @@ func (s *IntegrationV4) GetConnectedResourceTypes() OptNilStringArray {
 // GetCustomAccessDetails returns the value of CustomAccessDetails.
 func (s *IntegrationV4) GetCustomAccessDetails() OptNilString {
 	return s.CustomAccessDetails
-}
-
-// GetUserCleanupPeriodInDays returns the value of UserCleanupPeriodInDays.
-func (s *IntegrationV4) GetUserCleanupPeriodInDays() OptNilInt64 {
-	return s.UserCleanupPeriodInDays
-}
-
-// GetCredentialsRotationPeriodInDays returns the value of CredentialsRotationPeriodInDays.
-func (s *IntegrationV4) GetCredentialsRotationPeriodInDays() OptNilInt64 {
-	return s.CredentialsRotationPeriodInDays
 }
 
 // GetOwner returns the value of Owner.
@@ -4711,16 +4641,6 @@ func (s *IntegrationV4) SetConnectedResourceTypes(val OptNilStringArray) {
 // SetCustomAccessDetails sets the value of CustomAccessDetails.
 func (s *IntegrationV4) SetCustomAccessDetails(val OptNilString) {
 	s.CustomAccessDetails = val
-}
-
-// SetUserCleanupPeriodInDays sets the value of UserCleanupPeriodInDays.
-func (s *IntegrationV4) SetUserCleanupPeriodInDays(val OptNilInt64) {
-	s.UserCleanupPeriodInDays = val
-}
-
-// SetCredentialsRotationPeriodInDays sets the value of CredentialsRotationPeriodInDays.
-func (s *IntegrationV4) SetCredentialsRotationPeriodInDays(val OptNilInt64) {
-	s.CredentialsRotationPeriodInDays = val
 }
 
 // SetOwner sets the value of Owner.
@@ -6906,52 +6826,52 @@ func (o OptNilConnectorSessionMetadataV3CloudProviderMetadata) Or(d ConnectorSes
 	return d
 }
 
-// NewOptNilConnectorSessionMetadataV3ConnectorVersion returns new OptNilConnectorSessionMetadataV3ConnectorVersion with value set to v.
-func NewOptNilConnectorSessionMetadataV3ConnectorVersion(v ConnectorSessionMetadataV3ConnectorVersion) OptNilConnectorSessionMetadataV3ConnectorVersion {
-	return OptNilConnectorSessionMetadataV3ConnectorVersion{
+// NewOptNilCreateAccessRequestEntitlementV4Array returns new OptNilCreateAccessRequestEntitlementV4Array with value set to v.
+func NewOptNilCreateAccessRequestEntitlementV4Array(v []CreateAccessRequestEntitlementV4) OptNilCreateAccessRequestEntitlementV4Array {
+	return OptNilCreateAccessRequestEntitlementV4Array{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilConnectorSessionMetadataV3ConnectorVersion is optional nullable ConnectorSessionMetadataV3ConnectorVersion.
-type OptNilConnectorSessionMetadataV3ConnectorVersion struct {
-	Value ConnectorSessionMetadataV3ConnectorVersion
+// OptNilCreateAccessRequestEntitlementV4Array is optional nullable []CreateAccessRequestEntitlementV4.
+type OptNilCreateAccessRequestEntitlementV4Array struct {
+	Value []CreateAccessRequestEntitlementV4
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilConnectorSessionMetadataV3ConnectorVersion was set.
-func (o OptNilConnectorSessionMetadataV3ConnectorVersion) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilCreateAccessRequestEntitlementV4Array was set.
+func (o OptNilCreateAccessRequestEntitlementV4Array) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilConnectorSessionMetadataV3ConnectorVersion) Reset() {
-	var v ConnectorSessionMetadataV3ConnectorVersion
+func (o *OptNilCreateAccessRequestEntitlementV4Array) Reset() {
+	var v []CreateAccessRequestEntitlementV4
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilConnectorSessionMetadataV3ConnectorVersion) SetTo(v ConnectorSessionMetadataV3ConnectorVersion) {
+func (o *OptNilCreateAccessRequestEntitlementV4Array) SetTo(v []CreateAccessRequestEntitlementV4) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilConnectorSessionMetadataV3ConnectorVersion) IsNull() bool { return o.Null }
+func (o OptNilCreateAccessRequestEntitlementV4Array) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilConnectorSessionMetadataV3ConnectorVersion) SetToNull() {
+func (o *OptNilCreateAccessRequestEntitlementV4Array) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v ConnectorSessionMetadataV3ConnectorVersion
+	var v []CreateAccessRequestEntitlementV4
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilConnectorSessionMetadataV3ConnectorVersion) Get() (v ConnectorSessionMetadataV3ConnectorVersion, ok bool) {
+func (o OptNilCreateAccessRequestEntitlementV4Array) Get() (v []CreateAccessRequestEntitlementV4, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -6962,7 +6882,7 @@ func (o OptNilConnectorSessionMetadataV3ConnectorVersion) Get() (v ConnectorSess
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilConnectorSessionMetadataV3ConnectorVersion) Or(d ConnectorSessionMetadataV3ConnectorVersion) ConnectorSessionMetadataV3ConnectorVersion {
+func (o OptNilCreateAccessRequestEntitlementV4Array) Or(d []CreateAccessRequestEntitlementV4) []CreateAccessRequestEntitlementV4 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -11145,15 +11065,13 @@ type UpdateIntegrationSecretConfig struct{}
 
 // Ref: #/components/schemas/UpdateIntegrationV4
 type UpdateIntegrationV4 struct {
-	Name                            string                                     `json:"name"`
-	IntegrationConfig               JsonMapModel                               `json:"integration_config"`
-	SecretStoreConfig               OptNilUpdateIntegrationV4SecretStoreConfig `json:"secret_store_config"`
-	ConnectedResourceTypes          OptNilStringArray                          `json:"connected_resource_types"`
-	CustomAccessDetails             OptNilString                               `json:"custom_access_details"`
-	UserCleanupPeriodInDays         OptNilInt64                                `json:"user_cleanup_period_in_days"`
-	CredentialsRotationPeriodInDays OptNilInt64                                `json:"credentials_rotation_period_in_days"`
-	Owner                           OptNilUpdateIntegrationV4Owner             `json:"owner"`
-	OwnersMapping                   OptNilUpdateIntegrationV4OwnersMapping     `json:"owners_mapping"`
+	Name                   string                                     `json:"name"`
+	IntegrationConfig      JsonMapModel                               `json:"integration_config"`
+	SecretStoreConfig      OptNilUpdateIntegrationV4SecretStoreConfig `json:"secret_store_config"`
+	ConnectedResourceTypes OptNilStringArray                          `json:"connected_resource_types"`
+	CustomAccessDetails    OptNilString                               `json:"custom_access_details"`
+	Owner                  OptNilUpdateIntegrationV4Owner             `json:"owner"`
+	OwnersMapping          OptNilUpdateIntegrationV4OwnersMapping     `json:"owners_mapping"`
 }
 
 // GetName returns the value of Name.
@@ -11179,16 +11097,6 @@ func (s *UpdateIntegrationV4) GetConnectedResourceTypes() OptNilStringArray {
 // GetCustomAccessDetails returns the value of CustomAccessDetails.
 func (s *UpdateIntegrationV4) GetCustomAccessDetails() OptNilString {
 	return s.CustomAccessDetails
-}
-
-// GetUserCleanupPeriodInDays returns the value of UserCleanupPeriodInDays.
-func (s *UpdateIntegrationV4) GetUserCleanupPeriodInDays() OptNilInt64 {
-	return s.UserCleanupPeriodInDays
-}
-
-// GetCredentialsRotationPeriodInDays returns the value of CredentialsRotationPeriodInDays.
-func (s *UpdateIntegrationV4) GetCredentialsRotationPeriodInDays() OptNilInt64 {
-	return s.CredentialsRotationPeriodInDays
 }
 
 // GetOwner returns the value of Owner.
@@ -11224,16 +11132,6 @@ func (s *UpdateIntegrationV4) SetConnectedResourceTypes(val OptNilStringArray) {
 // SetCustomAccessDetails sets the value of CustomAccessDetails.
 func (s *UpdateIntegrationV4) SetCustomAccessDetails(val OptNilString) {
 	s.CustomAccessDetails = val
-}
-
-// SetUserCleanupPeriodInDays sets the value of UserCleanupPeriodInDays.
-func (s *UpdateIntegrationV4) SetUserCleanupPeriodInDays(val OptNilInt64) {
-	s.UserCleanupPeriodInDays = val
-}
-
-// SetCredentialsRotationPeriodInDays sets the value of CredentialsRotationPeriodInDays.
-func (s *UpdateIntegrationV4) SetCredentialsRotationPeriodInDays(val OptNilInt64) {
-	s.CredentialsRotationPeriodInDays = val
 }
 
 // SetOwner sets the value of Owner.

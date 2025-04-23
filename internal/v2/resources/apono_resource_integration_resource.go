@@ -149,14 +149,6 @@ func (r *AponoResourceIntegrationResource) Schema(_ context.Context, _ resource.
 				Description: "Custom details for accessing the resource.",
 				Optional:    true,
 			},
-			"user_cleanup_period_in_days": schema.Int64Attribute{
-				Description: "Period in days after which users are cleaned up.",
-				Optional:    true,
-			},
-			"credentials_rotation_period_in_days": schema.Int64Attribute{
-				Description: "Period in days after which credentials are rotated.",
-				Optional:    true,
-			},
 			"owner": schema.SingleNestedAttribute{
 				Description: "Owner configuration for the resource integration.",
 				Optional:    true,
