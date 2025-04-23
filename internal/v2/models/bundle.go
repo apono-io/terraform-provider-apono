@@ -4,20 +4,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type BundleIntegrationModel struct {
+type IntegrationTargetModel struct {
 	IntegrationName types.String                  `tfsdk:"integration_name"`
 	ResourceType    types.String                  `tfsdk:"resource_type"`
 	Permissions     types.Set                     `tfsdk:"permissions"`
-	ResourcesScope  []BundleIntegrationScopeModel `tfsdk:"resources_scope"`
+	ResourcesScope  []IntegrationTargetScopeModel `tfsdk:"resources_scope"`
 }
 
-type BundleIntegrationScopeModel struct {
+type IntegrationTargetScopeModel struct {
 	ScopeMode types.String `tfsdk:"scope_mode"`
 	Type      types.String `tfsdk:"type"`
 	Key       types.String `tfsdk:"key"`
 	Values    types.Set    `tfsdk:"values"`
 }
 
-type BundleAccessScopeModel struct {
+type AccessScopeTargetModel struct {
 	Name types.String `tfsdk:"name"`
 }

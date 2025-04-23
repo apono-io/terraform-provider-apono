@@ -25,7 +25,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 		},
 		Grantees: &AccessFlowGranteesModel{
 			LogicalOperator: types.StringValue("OR"),
-			Conditions: []AccessFlowCriteria{
+			Conditions: []AccessFlowCondition{
 				{
 					SourceIntegrationName: types.StringValue("Okta Directory"),
 					Type:                  types.StringValue("user"),
@@ -46,7 +46,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 			ApproverGroups: []AccessFlowApproverGroup{
 				{
 					LogicalOperator: types.StringValue("OR"),
-					Approvers: []AccessFlowCriteria{
+					Approvers: []AccessFlowCondition{
 						{
 							SourceIntegrationName: types.StringValue("Okta Directory"),
 							Type:                  types.StringValue("user"),
@@ -137,7 +137,7 @@ func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
 		Trigger: types.StringValue("AUTOMATIC"),
 		Grantees: &AccessFlowGranteesModel{
 			LogicalOperator: types.StringValue("AND"),
-			Conditions: []AccessFlowCriteria{
+			Conditions: []AccessFlowCondition{
 				{
 					Type:          types.StringValue("user"),
 					MatchOperator: types.StringValue("is"),

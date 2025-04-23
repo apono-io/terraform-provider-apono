@@ -10,6 +10,7 @@ import (
 )
 
 type AccessFlowV2Model struct {
+	ID                 types.String              `tfsdk:"id"`
 	Name               types.String              `tfsdk:"name"`
 	Active             types.Bool                `tfsdk:"active"`
 	Trigger            types.String              `tfsdk:"trigger"`
@@ -34,11 +35,11 @@ type AccessFlowApproverPolicy struct {
 }
 
 type AccessFlowApproverGroup struct {
-	LogicalOperator types.String         `tfsdk:"logical_operator"`
-	Approvers       []AccessFlowCriteria `tfsdk:"approvers"`
+	LogicalOperator types.String          `tfsdk:"logical_operator"`
+	Approvers       []AccessFlowCondition `tfsdk:"approvers"`
 }
 
-type AccessFlowCriteria struct {
+type AccessFlowCondition struct {
 	SourceIntegrationName types.String `tfsdk:"source_integration_name"`
 	Type                  types.String `tfsdk:"type"`
 	MatchOperator         types.String `tfsdk:"match_operator"`
@@ -46,8 +47,8 @@ type AccessFlowCriteria struct {
 }
 
 type AccessFlowGranteesModel struct {
-	LogicalOperator types.String         `tfsdk:"logical_operator"`
-	Conditions      []AccessFlowCriteria `tfsdk:"conditions"`
+	LogicalOperator types.String          `tfsdk:"logical_operator"`
+	Conditions      []AccessFlowCondition `tfsdk:"conditions"`
 }
 
 type AccessFlowSettingsModel struct {
@@ -59,9 +60,9 @@ type AccessFlowSettingsModel struct {
 }
 
 type AccessTargetModel struct {
-	Integration *BundleIntegrationModel  `tfsdk:"integration"`
+	Integration *IntegrationTargetModel  `tfsdk:"integration"`
 	Bundle      *AccessTargetBundleModel `tfsdk:"bundle"`
-	AccessScope *BundleAccessScopeModel  `tfsdk:"access_scope"`
+	AccessScope *AccessScopeTargetModel  `tfsdk:"access_scope"`
 }
 
 type AccessTargetBundleModel struct {
@@ -175,7 +176,7 @@ func convertApproverGroupToUpsertRequest(ctx context.Context, model AccessFlowAp
 	var approvers []client.ConditionUpsertPublicV2Model
 
 	for i, approverModel := range model.Approvers {
-		condition, err := convertCriteriaToUpsertRequest(ctx, approverModel)
+		condition, err := convertConditionToUpsertRequest(ctx, approverModel)
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert approver condition at index %d: %w", i, err)
 		}
@@ -196,7 +197,7 @@ func convertGranteesToUpsertRequest(ctx context.Context, model AccessFlowGrantee
 	var conditions []client.ConditionUpsertPublicV2Model
 
 	for i, conditionModel := range model.Conditions {
-		condition, err := convertCriteriaToUpsertRequest(ctx, conditionModel)
+		condition, err := convertConditionToUpsertRequest(ctx, conditionModel)
 
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert grantee condition at index %d: %w", i, err)
@@ -211,16 +212,16 @@ func convertGranteesToUpsertRequest(ctx context.Context, model AccessFlowGrantee
 	return &grantees, nil
 }
 
-func convertCriteriaToUpsertRequest(ctx context.Context, model AccessFlowCriteria) (*client.ConditionUpsertPublicV2Model, error) {
-	criteria := client.ConditionUpsertPublicV2Model{
+func convertConditionToUpsertRequest(ctx context.Context, model AccessFlowCondition) (*client.ConditionUpsertPublicV2Model, error) {
+	condition := client.ConditionUpsertPublicV2Model{
 		Type: model.Type.ValueString(),
 	}
 
 	if !model.SourceIntegrationName.IsNull() {
-		criteria.SourceIntegrationReference.SetTo(model.SourceIntegrationName.ValueString())
+		condition.SourceIntegrationReference.SetTo(model.SourceIntegrationName.ValueString())
 	}
 
-	criteria.MatchOperator.SetTo(model.MatchOperator.ValueString())
+	condition.MatchOperator.SetTo(model.MatchOperator.ValueString())
 
 	var values []string
 
@@ -228,9 +229,9 @@ func convertCriteriaToUpsertRequest(ctx context.Context, model AccessFlowCriteri
 		return nil, fmt.Errorf("failed to convert values: %v", diags)
 	}
 
-	criteria.Values.SetTo(values)
+	condition.Values.SetTo(values)
 
-	return &criteria, nil
+	return &condition, nil
 }
 
 func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessTargetModel) ([]client.AccessTargetUpsertPublicV2Model, error) {
@@ -282,7 +283,7 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessTar
 	return targets, nil
 }
 
-func convertIntegrationTargetToUpsertRequest(ctx context.Context, model BundleIntegrationModel) (*client.AccessTargetUpsertPublicV2ModelIntegration, error) {
+func convertIntegrationTargetToUpsertRequest(ctx context.Context, model IntegrationTargetModel) (*client.AccessTargetUpsertPublicV2ModelIntegration, error) {
 	integration := client.AccessTargetUpsertPublicV2ModelIntegration{
 		IntegrationReference: model.IntegrationName.ValueString(),
 		ResourceType:         model.ResourceType.ValueString(),
@@ -305,7 +306,7 @@ func convertIntegrationTargetToUpsertRequest(ctx context.Context, model BundleIn
 	return &integration, nil
 }
 
-func convertResourcesScopeToUpsertRequest(ctx context.Context, scopes []BundleIntegrationScopeModel) ([]client.ResourcesScopeIntegrationAccessTargetPublicV2Model, error) {
+func convertResourcesScopeToUpsertRequest(ctx context.Context, scopes []IntegrationTargetScopeModel) ([]client.ResourcesScopeIntegrationAccessTargetPublicV2Model, error) {
 	var result []client.ResourcesScopeIntegrationAccessTargetPublicV2Model
 
 	for i, scope := range scopes {

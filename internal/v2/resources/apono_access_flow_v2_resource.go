@@ -8,7 +8,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -29,10 +31,43 @@ func (r *AponoAccessFlowV2Resource) Metadata(_ context.Context, req resource.Met
 	resp.TypeName = req.ProviderTypeName + "_access_flow_v2"
 }
 
+func getIdentityConditionSchema() schema.NestedAttributeObject {
+	return schema.NestedAttributeObject{
+		Attributes: map[string]schema.Attribute{
+			"source_integration_name": schema.StringAttribute{
+				Description: "The name of the source integration.",
+				Optional:    true,
+			},
+			"type": schema.StringAttribute{
+				Description: "The type of identity condition.",
+				Required:    true,
+			},
+			"match_operator": schema.StringAttribute{
+				Description: `The match operator. Possible values: "starts_with", "contains", "is_not", "does_not_contain", "is". Defaults to "is".`,
+				Optional:    true,
+				Default:     stringdefault.StaticString("is"),
+				Computed:    true,
+			},
+			"values": schema.SetAttribute{
+				Description: "The values to match against.",
+				Required:    true,
+				ElementType: types.StringType,
+			},
+		},
+	}
+}
+
 func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Description: "Manages an Apono Access Flow V2.",
 		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Description: "The unique identifier of the access scope.",
+				Computed:    true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
 			"name": schema.StringAttribute{
 				Description: "The name of the access flow.",
 				Required:    true,
@@ -92,31 +127,9 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 									Required:    true,
 								},
 								"approvers": schema.SetNestedAttribute{
-									Description: "List of approvers.",
-									Required:    true,
-									NestedObject: schema.NestedAttributeObject{
-										Attributes: map[string]schema.Attribute{
-											"source_integration_name": schema.StringAttribute{
-												Description: "The name of the source integration.",
-												Optional:    true,
-											},
-											"type": schema.StringAttribute{
-												Description: "The type of approver.",
-												Required:    true,
-											},
-											"match_operator": schema.StringAttribute{
-												Description: `The match operator. Defaults to "is".`,
-												Optional:    true,
-												Default:     stringdefault.StaticString("is"),
-												Computed:    true,
-											},
-											"values": schema.SetAttribute{
-												Description: "The values to match against.",
-												Required:    true,
-												ElementType: types.StringType,
-											},
-										},
-									},
+									Description:  "List of approvers.",
+									Required:     true,
+									NestedObject: getIdentityConditionSchema(),
 								},
 							},
 						},
@@ -132,31 +145,9 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 						Required:    true,
 					},
 					"conditions": schema.SetNestedAttribute{
-						Description: "List of conditions. Cannot be empty.",
-						Required:    true,
-						NestedObject: schema.NestedAttributeObject{
-							Attributes: map[string]schema.Attribute{
-								"source_integration_name": schema.StringAttribute{
-									Description: "The name of the source integration.",
-									Optional:    true,
-								},
-								"type": schema.StringAttribute{
-									Description: "The type of grantee.",
-									Required:    true,
-								},
-								"match_operator": schema.StringAttribute{
-									Description: `The match operator. Possible values: "starts_with", "contains", "is_not", "does_not_contain", "is". Defaults to "is".`,
-									Optional:    true,
-									Default:     stringdefault.StaticString("is"),
-									Computed:    true,
-								},
-								"values": schema.SetAttribute{
-									Description: "The values to match against.",
-									Required:    true,
-									ElementType: types.StringType,
-								},
-							},
-						},
+						Description:  "List of conditions. Cannot be empty.",
+						Required:     true,
+						NestedObject: getIdentityConditionSchema(),
 					},
 				},
 			},
@@ -165,7 +156,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"integration": getBundleIntegrationSchema(),
+						"integration": getIntegrationTargetSchema(),
 						"bundle": schema.SingleNestedAttribute{
 							Description: "Bundle target configuration",
 							Optional:    true,
@@ -176,7 +167,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 								},
 							},
 						},
-						"access_scope": getBundleAccessScopeSchema(),
+						"access_scope": getAccessScopeTargetSchema(),
 					},
 				},
 			},

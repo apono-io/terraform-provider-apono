@@ -60,10 +60,10 @@ func ListGroupMembers(ctx context.Context, apiClient client.Invoker, groupID str
 	for {
 		params := client.ListGroupMembersV1Params{}
 
+		params.ID = groupID
+
 		if pageToken != "" {
 			params.PageToken.SetTo(pageToken)
-		} else {
-			params.ID = groupID
 		}
 
 		resp, err := apiClient.ListGroupMembersV1(ctx, params)

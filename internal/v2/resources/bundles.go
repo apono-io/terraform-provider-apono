@@ -5,9 +5,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func getBundleIntegrationSchema() schema.SingleNestedAttribute {
+func getIntegrationTargetSchema() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
-		Description: "Integration configuration",
+		Description: "Integration target configuration",
 		Optional:    true,
 		Attributes: map[string]schema.Attribute{
 			"integration_name": schema.StringAttribute{
@@ -52,7 +52,7 @@ func getBundleIntegrationSchema() schema.SingleNestedAttribute {
 	}
 }
 
-func getBundleAccessScopeSchema() schema.SingleNestedAttribute {
+func getAccessScopeTargetSchema() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
 		Description: "Access scope configuration",
 		Optional:    true,
