@@ -40,6 +40,21 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 					Name: types.StringValue("PROD ENV"),
 				},
 			},
+			{
+				Integration: &IntegrationTargetModel{
+					IntegrationName: types.StringValue("postgresql"),
+					ResourceType:    types.StringValue("database"),
+					Permissions:     testcommon.CreateTestStringSet(t, []string{"read", "write"}),
+					ResourcesScopes: []IntegrationTargetScopeModel{
+						{
+							ScopeMode: types.StringValue("include_resources"),
+							Type:      types.StringValue("NAME"),
+							Key:       types.StringNull(),
+							Values:    testcommon.CreateTestStringSet(t, []string{"db1", "db2"}),
+						},
+					},
+				},
+			},
 		},
 		ApproverPolicy: &AccessFlowApproverPolicy{
 			ApprovalMode: types.StringValue("ANY_OF"),
@@ -99,11 +114,26 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	require.True(t, ok)
 	assert.ElementsMatch(t, []string{"person@example.com", "person_two@example.com"}, values)
 
-	require.Len(t, result.AccessTargets, 1)
+	require.Len(t, result.AccessTargets, 2)
+
 	assert.True(t, result.AccessTargets[0].Bundle.IsSet())
 	bundle, ok := result.AccessTargets[0].Bundle.Get()
 	require.True(t, ok)
 	assert.Equal(t, "PROD ENV", bundle.BundleReference)
+
+	assert.True(t, result.AccessTargets[1].Integration.IsSet())
+	integration, ok := result.AccessTargets[1].Integration.Get()
+	require.True(t, ok)
+	assert.Equal(t, "postgresql", integration.IntegrationReference)
+	assert.Equal(t, "database", integration.ResourceType)
+	assert.ElementsMatch(t, []string{"read", "write"}, integration.Permissions)
+	require.True(t, integration.ResourceScopes.IsSet())
+	resourceScopes, ok := integration.ResourceScopes.Get()
+	require.True(t, ok)
+	require.Len(t, resourceScopes, 1)
+	assert.Equal(t, "include_resources", resourceScopes[0].ScopeMode)
+	assert.Equal(t, "NAME", resourceScopes[0].Type)
+	assert.ElementsMatch(t, []string{"db1", "db2"}, resourceScopes[0].Values)
 
 	require.True(t, result.ApproverPolicy.IsSet())
 	approverPolicy, ok := result.ApproverPolicy.Get()

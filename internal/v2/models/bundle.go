@@ -8,7 +8,7 @@ type IntegrationTargetModel struct {
 	IntegrationName types.String                  `tfsdk:"integration_name"`
 	ResourceType    types.String                  `tfsdk:"resource_type"`
 	Permissions     types.Set                     `tfsdk:"permissions"`
-	ResourceScopes  []IntegrationTargetScopeModel `tfsdk:"resource_scopes"`
+	ResourcesScopes []IntegrationTargetScopeModel `tfsdk:"resources_scopes"`
 }
 
 type IntegrationTargetScopeModel struct {
