@@ -23,7 +23,7 @@ func getIntegrationTargetSchema() schema.SingleNestedAttribute {
 				Required:    true,
 				ElementType: types.StringType,
 			},
-			"resources_scope": schema.SetNestedAttribute{
+			"resource_scopes": schema.SetNestedAttribute{
 				Description: "Resource scope configuration",
 				Optional:    true,
 				NestedObject: schema.NestedAttributeObject{

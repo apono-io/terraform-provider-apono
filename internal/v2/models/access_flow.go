@@ -295,8 +295,8 @@ func convertIntegrationTargetToUpsertRequest(ctx context.Context, model Integrat
 	}
 	integration.Permissions = permissions
 
-	if len(model.ResourcesScope) > 0 {
-		scopes, err := convertResourcesScopeToUpsertRequest(ctx, model.ResourcesScope)
+	if len(model.ResourceScopes) > 0 {
+		scopes, err := convertResourceScopesToUpsertRequest(ctx, model.ResourceScopes)
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert resource scopes: %w", err)
 		}
@@ -306,7 +306,7 @@ func convertIntegrationTargetToUpsertRequest(ctx context.Context, model Integrat
 	return &integration, nil
 }
 
-func convertResourcesScopeToUpsertRequest(ctx context.Context, scopes []IntegrationTargetScopeModel) ([]client.ResourcesScopeIntegrationAccessTargetPublicV2Model, error) {
+func convertResourceScopesToUpsertRequest(ctx context.Context, scopes []IntegrationTargetScopeModel) ([]client.ResourcesScopeIntegrationAccessTargetPublicV2Model, error) {
 	var result []client.ResourcesScopeIntegrationAccessTargetPublicV2Model
 
 	for i, scope := range scopes {
