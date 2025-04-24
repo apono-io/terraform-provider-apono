@@ -2,9 +2,12 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
@@ -215,21 +218,150 @@ func (r *AponoAccessFlowV2Resource) Configure(ctx context.Context, req resource.
 }
 
 func (r *AponoAccessFlowV2Resource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	// TODO: Implement create
+	var plan models.AccessFlowV2Model
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	upsertRequest, err := models.AccessFlowV2ModelToUpsertRequest(ctx, plan)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating access flow",
+			fmt.Sprintf("Unable to create access flow, got error: %s", err),
+		)
+		return
+	}
+
+	accessFlow, err := r.client.CreateAccessFlowV2(ctx, upsertRequest)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating access flow",
+			fmt.Sprintf("Unable to create access flow, got error: %s", err),
+		)
+		return
+	}
+
+	accessFlowModel, err := models.AccessFlowResponseToModel(ctx, *accessFlow)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating access flow",
+			fmt.Sprintf("Unable to convert API response to model: %s", err),
+		)
+		return
+	}
+
+	diags = resp.State.Set(ctx, accessFlowModel)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 func (r *AponoAccessFlowV2Resource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	// TODO: Implement read
+	var state models.AccessFlowV2Model
+	diags := req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	accessFlow, err := r.client.GetAccessFlowV2(ctx, client.GetAccessFlowV2Params{
+		ID: state.ID.ValueString(),
+	})
+	if err != nil {
+		if client.IsNotFoundError(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+
+		resp.Diagnostics.AddError("Error reading access flow", fmt.Sprintf("Unable to read access flow with ID %s, got error: %s", state.ID.ValueString(), err))
+		return
+	}
+
+	accessFlowModel, err := models.AccessFlowResponseToModel(ctx, *accessFlow)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error reading access flow",
+			fmt.Sprintf("Unable to convert API response to model: %s", err),
+		)
+		return
+	}
+
+	diags = resp.State.Set(ctx, accessFlowModel)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 func (r *AponoAccessFlowV2Resource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	// TODO: Implement update
+	var plan models.AccessFlowV2Model
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	upsertRequest, err := models.AccessFlowV2ModelToUpsertRequest(ctx, plan)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error updating access flow",
+			fmt.Sprintf("Unable to update access flow, got error: %s", err),
+		)
+		return
+	}
+
+	accessFlow, err := r.client.UpdateAccessFlowV2(ctx, upsertRequest, client.UpdateAccessFlowV2Params{
+		ID: plan.ID.ValueString(),
+	})
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error updating access flow",
+			fmt.Sprintf("Unable to update access flow, got error: %s", err),
+		)
+		return
+	}
+
+	accessFlowModel, err := models.AccessFlowResponseToModel(ctx, *accessFlow)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error updating access flow",
+			fmt.Sprintf("Unable to convert API response to model: %s", err),
+		)
+		return
+	}
+
+	diags = resp.State.Set(ctx, accessFlowModel)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 func (r *AponoAccessFlowV2Resource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	// TODO: Implement delete
+	var state models.AccessFlowV2Model
+	diags := req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	if err := r.client.DeleteAccessFlowV2(ctx, client.DeleteAccessFlowV2Params{
+		ID: state.ID.ValueString(),
+	}); err != nil {
+		if client.IsNotFoundError(err) {
+			return
+		}
+
+		resp.Diagnostics.AddError(
+			"Error deleting access flow",
+			fmt.Sprintf("Unable to delete access flow with ID %s, got error: %s", state.ID.ValueString(), err),
+		)
+	}
 }
 
 func (r *AponoAccessFlowV2Resource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// TODO: Implement import
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

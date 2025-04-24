@@ -15,18 +15,7 @@ func TestAccAponoResourceIntegrationResource(t *testing.T) {
 	resourceName := "apono_resource_integration.test"
 	integrationType := "mock-duck"
 
-	var connectorID string
-
-	if testcommon.IsTestAccount(t) {
-		connectorID = "terraofrm-tests-account-connector"
-	} else {
-		// Fetch the first connector ID dynamically
-		connector, err := testcommon.GetFirstConnectorV3(t)
-		if err != nil {
-			t.Fatalf("failed to get connector: %v", err)
-		}
-		connectorID = connector.ID
-	}
+	connectorID := testcommon.GetTestConnectorID(t)
 
 	resourceType := "mock-duck"
 	customAccessDetails := "Example access instructions"
