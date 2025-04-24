@@ -110,8 +110,9 @@ func ListGroups(ctx context.Context, apiClient client.Invoker, name string) ([]c
 		pageToken = resp.Pagination.NextPageToken.Value
 	}
 
+	// Sort groups by id for consistency
 	sort.Slice(allGroups, func(i, j int) bool {
-		return allGroups[i].Name < allGroups[j].Name
+		return allGroups[i].ID < allGroups[j].ID
 	})
 
 	return allGroups, nil

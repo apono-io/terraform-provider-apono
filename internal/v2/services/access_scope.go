@@ -57,9 +57,9 @@ func ListAccessScopesByName(ctx context.Context, apiClient client.Invoker, name 
 		pageToken = resp.Pagination.NextPageToken.Value
 	}
 
-	// Sort results by name before returning
+	// Sort results by id for consistency
 	sort.Slice(results, func(i, j int) bool {
-		return results[i].Name < results[j].Name
+		return results[i].ID < results[j].ID
 	})
 
 	return results, nil

@@ -45,7 +45,6 @@ func TestListGroupMembers(t *testing.T) {
 			name:    "multiple pages",
 			groupID: "paginated-group",
 			setupMock: func(m *mocks.Invoker) {
-				// First request with no page token
 				firstParams := client.ListGroupMembersV1Params{
 					ID: "paginated-group",
 				}
@@ -63,7 +62,6 @@ func TestListGroupMembers(t *testing.T) {
 					},
 				}, nil)
 
-				// Second request with page token
 				secondParams := client.ListGroupMembersV1Params{
 					ID: "paginated-group",
 				}
@@ -155,8 +153,8 @@ func TestListGroups(t *testing.T) {
 
 				m.On("ListGroupsV1", ctx, params).Return(&client.PublicApiListResponseGroupPublicV1Model{
 					Items: []client.GroupV1{
-						{Name: "test-group-1"},
-						{Name: "test-group-2"},
+						{ID: "b-id", Name: "test-group-2"},
+						{ID: "a-id", Name: "test-group-1"},
 					},
 					Pagination: client.PublicApiPaginationInfoModel{
 						NextPageToken: client.OptNilString{},
@@ -164,15 +162,14 @@ func TestListGroups(t *testing.T) {
 				}, nil)
 			},
 			expectedGroups: []client.GroupV1{
-				{Name: "test-group-1"},
-				{Name: "test-group-2"},
+				{ID: "a-id", Name: "test-group-1"},
+				{ID: "b-id", Name: "test-group-2"},
 			},
 		},
 		{
 			name:      "multiple pages",
 			groupName: "paginated-group",
 			setupMock: func(m *mocks.Invoker) {
-				// First request with no page token
 				firstParams := client.ListGroupsV1Params{}
 				firstParams.Name.SetTo("paginated-group")
 
@@ -181,15 +178,14 @@ func TestListGroups(t *testing.T) {
 
 				m.On("ListGroupsV1", ctx, firstParams).Return(&client.PublicApiListResponseGroupPublicV1Model{
 					Items: []client.GroupV1{
-						{Name: "paginated-group-1"},
-						{Name: "paginated-group-2"},
+						{ID: "d-id", Name: "paginated-group-4"},
+						{ID: "b-id", Name: "paginated-group-2"},
 					},
 					Pagination: client.PublicApiPaginationInfoModel{
 						NextPageToken: nextToken,
 					},
 				}, nil)
 
-				// Second request with page token
 				secondParams := client.ListGroupsV1Params{}
 				pageToken := client.OptNilString{}
 				pageToken.SetTo("next-page")
@@ -197,8 +193,8 @@ func TestListGroups(t *testing.T) {
 
 				m.On("ListGroupsV1", ctx, secondParams).Return(&client.PublicApiListResponseGroupPublicV1Model{
 					Items: []client.GroupV1{
-						{Name: "paginated-group-3"},
-						{Name: "paginated-group-4"},
+						{ID: "a-id", Name: "paginated-group-1"},
+						{ID: "c-id", Name: "paginated-group-3"},
 					},
 					Pagination: client.PublicApiPaginationInfoModel{
 						NextPageToken: client.OptNilString{},
@@ -206,10 +202,10 @@ func TestListGroups(t *testing.T) {
 				}, nil)
 			},
 			expectedGroups: []client.GroupV1{
-				{Name: "paginated-group-1"},
-				{Name: "paginated-group-2"},
-				{Name: "paginated-group-3"},
-				{Name: "paginated-group-4"},
+				{ID: "a-id", Name: "paginated-group-1"},
+				{ID: "b-id", Name: "paginated-group-2"},
+				{ID: "c-id", Name: "paginated-group-3"},
+				{ID: "d-id", Name: "paginated-group-4"},
 			},
 		},
 		{
