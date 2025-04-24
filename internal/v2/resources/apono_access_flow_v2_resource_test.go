@@ -15,20 +15,10 @@ func TestAccAponoAccessFlowV2Resource(t *testing.T) {
 	resourceName := "apono_access_flow_v2.test"
 	updatedJustificationRequired := false
 
-	var connectorID string
-
 	integrationType := "mock-duck"
 	resourceType := "mock-duck"
 
-	if testcommon.IsTestAccount(t) {
-		connectorID = "terraofrm-tests-account-connector"
-	} else {
-		connector, err := testcommon.GetFirstConnectorV3(t)
-		if err != nil {
-			t.Fatalf("failed to get connector: %v", err)
-		}
-		connectorID = connector.ID
-	}
+	connectorID := testcommon.GetTestConnectorID(t)
 
 	users, err := testcommon.GetUsers(t)
 	if err != nil {
