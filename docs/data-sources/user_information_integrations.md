@@ -46,6 +46,7 @@ output "jumpcloud_user_information_integration" {
 Optional:
 
 - `last_sync_time` (String) The timestamp of the last synchronization.
+- `secret_store_config` (Attributes) Configuration for secret store. (see [below for nested schema](#nestedatt--integrations--secret_store_config))
 
 Read-Only:
 
@@ -53,23 +54,21 @@ Read-Only:
 - `id` (String) The unique identifier of the integration.
 - `integration_config` (Map of String) Configuration for the integration as key-value pairs.
 - `name` (String) The name of the integration.
-- `secret_config` (Attributes) Configuration for secret store. (see [below for nested schema](#nestedatt--integrations--secret_config))
 - `status` (String) The status of the integration.
 - `type` (String) The type of the integration.
 
-<a id="nestedatt--integrations--secret_config"></a>
-### Nested Schema for `integrations.secret_config`
+<a id="nestedatt--integrations--secret_store_config"></a>
+### Nested Schema for `integrations.secret_store_config`
 
 Read-Only:
 
-- `aws` (Attributes) AWS secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_config--aws))
-- `azure` (Attributes) Azure secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_config--azure))
-- `gcp` (Attributes) GCP secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_config--gcp))
-- `hashicorp_vault` (Attributes) HashiCorp Vault secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_config--hashicorp_vault))
-- `type` (String) The type of the secret store (AWS, GCP, AZURE, HASHICORP_VAULT).
+- `aws` (Attributes) AWS secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--aws))
+- `azure` (Attributes) Azure secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--azure))
+- `gcp` (Attributes) GCP secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--gcp))
+- `hashicorp_vault` (Attributes) HashiCorp Vault secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--hashicorp_vault))
 
-<a id="nestedatt--integrations--secret_config--aws"></a>
-### Nested Schema for `integrations.secret_config.aws`
+<a id="nestedatt--integrations--secret_store_config--aws"></a>
+### Nested Schema for `integrations.secret_store_config.aws`
 
 Read-Only:
 
@@ -77,8 +76,8 @@ Read-Only:
 - `secret_id` (String) The AWS secret ID.
 
 
-<a id="nestedatt--integrations--secret_config--azure"></a>
-### Nested Schema for `integrations.secret_config.azure`
+<a id="nestedatt--integrations--secret_store_config--azure"></a>
+### Nested Schema for `integrations.secret_store_config.azure`
 
 Read-Only:
 
@@ -86,8 +85,8 @@ Read-Only:
 - `vault_url` (String) The Azure Vault URL.
 
 
-<a id="nestedatt--integrations--secret_config--gcp"></a>
-### Nested Schema for `integrations.secret_config.gcp`
+<a id="nestedatt--integrations--secret_store_config--gcp"></a>
+### Nested Schema for `integrations.secret_store_config.gcp`
 
 Read-Only:
 
@@ -95,8 +94,8 @@ Read-Only:
 - `secret_id` (String) The GCP secret ID.
 
 
-<a id="nestedatt--integrations--secret_config--hashicorp_vault"></a>
-### Nested Schema for `integrations.secret_config.hashicorp_vault`
+<a id="nestedatt--integrations--secret_store_config--hashicorp_vault"></a>
+### Nested Schema for `integrations.secret_store_config.hashicorp_vault`
 
 Read-Only:
 
