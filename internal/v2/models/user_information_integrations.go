@@ -21,7 +21,7 @@ type UserInformationIntegrationModel struct {
 	Status            types.String       `tfsdk:"status"`
 	LastSyncTime      types.String       `tfsdk:"last_sync_time"`
 	IntegrationConfig types.Map          `tfsdk:"integration_config"`
-	SecretConfig      *SecretStoreConfig `tfsdk:"secret_config"`
+	SecretConfig      *SecretStoreConfig `tfsdk:"secret_store_config"`
 }
 
 func UserInformationIntegrationToModal(ctx context.Context, integration *client.IntegrationV4) (*UserInformationIntegrationModel, error) {

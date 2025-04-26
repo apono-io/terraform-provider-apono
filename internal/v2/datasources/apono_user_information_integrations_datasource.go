@@ -6,6 +6,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -73,72 +74,7 @@ func (d *AponoUserInformationIntegrationsDataSource) Schema(_ context.Context, _
 							ElementType: types.StringType,
 							Computed:    true,
 						},
-						"secret_config": schema.SingleNestedAttribute{
-							Description: "Configuration for secret store.",
-							Computed:    true,
-							Attributes: map[string]schema.Attribute{
-								"type": schema.StringAttribute{
-									Description: "The type of the secret store (AWS, GCP, AZURE, HASHICORP_VAULT).",
-									Computed:    true,
-								},
-								"aws": schema.SingleNestedAttribute{
-									Description: "AWS secret store configuration.",
-									Computed:    true,
-									Attributes: map[string]schema.Attribute{
-										"region": schema.StringAttribute{
-											Description: "The AWS region.",
-											Computed:    true,
-										},
-										"secret_id": schema.StringAttribute{
-											Description: "The AWS secret ID.",
-											Computed:    true,
-										},
-									},
-								},
-								"gcp": schema.SingleNestedAttribute{
-									Description: "GCP secret store configuration.",
-									Computed:    true,
-									Attributes: map[string]schema.Attribute{
-										"project": schema.StringAttribute{
-											Description: "The GCP project.",
-											Computed:    true,
-										},
-										"secret_id": schema.StringAttribute{
-											Description: "The GCP secret ID.",
-											Computed:    true,
-										},
-									},
-								},
-								"azure": schema.SingleNestedAttribute{
-									Description: "Azure secret store configuration.",
-									Computed:    true,
-									Attributes: map[string]schema.Attribute{
-										"vault_url": schema.StringAttribute{
-											Description: "The Azure Vault URL.",
-											Computed:    true,
-										},
-										"name": schema.StringAttribute{
-											Description: "The Azure secret name.",
-											Computed:    true,
-										},
-									},
-								},
-								"hashicorp_vault": schema.SingleNestedAttribute{
-									Description: "HashiCorp Vault secret store configuration.",
-									Computed:    true,
-									Attributes: map[string]schema.Attribute{
-										"secret_engine": schema.StringAttribute{
-											Description: "The HashiCorp Vault secret engine.",
-											Computed:    true,
-										},
-										"path": schema.StringAttribute{
-											Description: "The HashiCorp Vault path.",
-											Computed:    true,
-										},
-									},
-								},
-							},
-						},
+						"secret_store_config": schemas.GetSecretStoreConfigSchema(schemas.DataSourceMode),
 					},
 				},
 			},
@@ -167,7 +103,7 @@ func (d *AponoUserInformationIntegrationsDataSource) Read(ctx context.Context, r
 		typeName = model.Type.ValueString()
 	}
 
-	integrations, err := services.ListIntegrations(ctx, d.client, typeName, name, []string{"USER-INFORMATION"})
+	integrations, err := services.ListIntegrations(ctx, d.client, typeName, name, []string{common.UserInformation})
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving user information integrations", err.Error())
 		return

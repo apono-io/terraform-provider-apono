@@ -34,7 +34,7 @@ func TestAponoUserInformationIntegrationsDataSource(t *testing.T) {
 				ID:           "int-1",
 				Name:         "integration-1",
 				Type:         "ldap",
-				Category:     "USER-INFORMATION",
+				Category:     common.UserInformation,
 				Status:       "ACTIVE",
 				LastSyncTime: client.NewOptNilDateTime(now),
 				IntegrationConfig: map[string]jx.Raw{
@@ -45,7 +45,7 @@ func TestAponoUserInformationIntegrationsDataSource(t *testing.T) {
 				ID:           "int-2",
 				Name:         "integration-2",
 				Type:         "okta",
-				Category:     "USER-INFORMATION",
+				Category:     common.UserInformation,
 				Status:       "ACTIVE",
 				LastSyncTime: client.NewOptNilDateTime(now),
 				IntegrationConfig: map[string]jx.Raw{
@@ -57,7 +57,7 @@ func TestAponoUserInformationIntegrationsDataSource(t *testing.T) {
 		mockInvoker.EXPECT().
 			ListIntegrationsV4(mock.Anything, mock.MatchedBy(func(params client.ListIntegrationsV4Params) bool {
 				categoryParam, ok := params.Category.Get()
-				return ok && len(categoryParam) == 1 && categoryParam[0] == "USER-INFORMATION"
+				return ok && len(categoryParam) == 1 && categoryParam[0] == common.UserInformation
 			})).
 			Return(&client.PublicApiListResponseIntegrationPublicV4Model{
 				Items:      integrations,

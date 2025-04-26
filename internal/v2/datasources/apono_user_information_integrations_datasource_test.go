@@ -3,6 +3,7 @@ package datasources_test
 import (
 	"testing"
 
+	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/testcommon"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/testcommon/testprovider"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -18,7 +19,7 @@ func TestAccAponoUserInformationIntegrationsDataSource(t *testing.T) {
 	if testcommon.IsTestAccount(t) {
 		checks = append(checks,
 			resource.TestCheckResourceAttr(dataSourceName, "integrations.0.name", "Jumpcloud IDP"),
-			resource.TestCheckResourceAttr(dataSourceName, "integrations.0.category", "USER-INFORMATION"),
+			resource.TestCheckResourceAttr(dataSourceName, "integrations.0.category", common.UserInformation),
 			resource.TestCheckResourceAttr(dataSourceName, "integrations.0.status", "ACTIVE"),
 		)
 	}
