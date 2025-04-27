@@ -53,7 +53,7 @@ resource "apono_access_flow_v2" "test" {
   trigger = "SELF_SERVE"
   active = true
 
-  grantees = {
+  requestors = {
     logical_operator = "OR"
     conditions = [
       {
@@ -104,7 +104,7 @@ resource "apono_access_flow_v2" "test" {
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
 					resource.TestCheckResourceAttr(resourceName, "trigger", "SELF_SERVE"),
 					resource.TestCheckResourceAttr(resourceName, "active", "true"),
-					resource.TestCheckResourceAttr(resourceName, "grantees.logical_operator", "OR"),
+					resource.TestCheckResourceAttr(resourceName, "requestors.logical_operator", "OR"),
 					resource.TestCheckResourceAttr(resourceName, "access_targets.#", "1"),
 					resource.TestCheckResourceAttr(resourceName, "settings.justification_required", "true"),
 					resource.TestCheckResourceAttr(resourceName, "settings.labels.#", "2"),

@@ -18,8 +18,8 @@ Manages an Apono Access Flow V2.
 ### Required
 
 - `access_targets` (Attributes Set) List of access targets for this access flow (see [below for nested schema](#nestedatt--access_targets))
-- `grantees` (Attributes) The users or groups that can be granted access through this flow. (see [below for nested schema](#nestedatt--grantees))
 - `name` (String) The name of the access flow.
+- `requestors` (Attributes) The users or groups that can be granted access through this flow. (see [below for nested schema](#nestedatt--requestors))
 - `settings` (Attributes) Access flow settings configuration (see [below for nested schema](#nestedatt--settings))
 - `trigger` (String) The trigger type for the access flow. Can be "SELF_SERVE" or "AUTOMATIC".
 
@@ -88,16 +88,16 @@ Optional:
 
 
 
-<a id="nestedatt--grantees"></a>
-### Nested Schema for `grantees`
+<a id="nestedatt--requestors"></a>
+### Nested Schema for `requestors`
 
 Required:
 
-- `conditions` (Attributes Set) List of conditions. Cannot be empty. (see [below for nested schema](#nestedatt--grantees--conditions))
+- `conditions` (Attributes Set) List of conditions. Cannot be empty. (see [below for nested schema](#nestedatt--requestors--conditions))
 - `logical_operator` (String) The logical operator for the conditions. Can be "OR" or "AND".
 
-<a id="nestedatt--grantees--conditions"></a>
-### Nested Schema for `grantees.conditions`
+<a id="nestedatt--requestors--conditions"></a>
+### Nested Schema for `requestors.conditions`
 
 Required:
 

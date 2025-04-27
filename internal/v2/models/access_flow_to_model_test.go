@@ -33,7 +33,7 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	}
 	response.Timeframe.SetTo(timeframe)
 
-	response.Grantees = client.GranteesPublicV2Model{
+	response.Requestors = client.RequestorsPublicV2Model{
 		LogicalOperator: "OR",
 		Conditions: []client.ConditionPublicV2Model{
 			{
@@ -41,9 +41,9 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 			},
 		},
 	}
-	response.Grantees.Conditions[0].SourceIntegrationName.SetTo("Okta Directory")
-	response.Grantees.Conditions[0].MatchOperator.SetTo("is")
-	response.Grantees.Conditions[0].Values.SetTo([]string{"person@example.com", "person_two@example.com"})
+	response.Requestors.Conditions[0].SourceIntegrationName.SetTo("Okta Directory")
+	response.Requestors.Conditions[0].MatchOperator.SetTo("is")
+	response.Requestors.Conditions[0].Values.SetTo([]string{"person@example.com", "person_two@example.com"})
 
 	bundleTarget := client.AccessTargetPublicV2Model{}
 	bundleData := client.AccessTargetPublicV2ModelBundle{
@@ -127,15 +127,15 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	require.False(t, diags.HasError())
 	assert.ElementsMatch(t, []string{"DB", "PROD", "TERRAFORM"}, labels)
 
-	require.NotNil(t, model.Grantees)
-	assert.Equal(t, "OR", model.Grantees.LogicalOperator.ValueString())
-	require.Len(t, model.Grantees.Conditions, 1)
-	assert.Equal(t, "Okta Directory", model.Grantees.Conditions[0].SourceIntegrationName.ValueString())
-	assert.Equal(t, "user", model.Grantees.Conditions[0].Type.ValueString())
-	assert.Equal(t, "is", model.Grantees.Conditions[0].MatchOperator.ValueString())
+	require.NotNil(t, model.Requestors)
+	assert.Equal(t, "OR", model.Requestors.LogicalOperator.ValueString())
+	require.Len(t, model.Requestors.Conditions, 1)
+	assert.Equal(t, "Okta Directory", model.Requestors.Conditions[0].SourceIntegrationName.ValueString())
+	assert.Equal(t, "user", model.Requestors.Conditions[0].Type.ValueString())
+	assert.Equal(t, "is", model.Requestors.Conditions[0].MatchOperator.ValueString())
 
 	var values []string
-	diags = model.Grantees.Conditions[0].Values.ElementsAs(ctx, &values, false)
+	diags = model.Requestors.Conditions[0].Values.ElementsAs(ctx, &values, false)
 	require.False(t, diags.HasError())
 	assert.ElementsMatch(t, []string{"person@example.com", "person_two@example.com"}, values)
 
@@ -193,7 +193,7 @@ func TestAccessFlowResponseToModel_MinimalFields(t *testing.T) {
 			RequireMfa:                   false,
 			Labels:                       []string{},
 		},
-		Grantees: client.GranteesPublicV2Model{
+		Requestors: client.RequestorsPublicV2Model{
 			LogicalOperator: "AND",
 			Conditions: []client.ConditionPublicV2Model{
 				{
@@ -202,8 +202,8 @@ func TestAccessFlowResponseToModel_MinimalFields(t *testing.T) {
 			},
 		},
 	}
-	response.Grantees.Conditions[0].MatchOperator.SetTo("is")
-	response.Grantees.Conditions[0].Values.SetTo([]string{"person@example.com"})
+	response.Requestors.Conditions[0].MatchOperator.SetTo("is")
+	response.Requestors.Conditions[0].Values.SetTo([]string{"person@example.com"})
 
 	bundleTarget := client.AccessTargetPublicV2Model{}
 	bundleData := client.AccessTargetPublicV2ModelBundle{
@@ -233,15 +233,15 @@ func TestAccessFlowResponseToModel_MinimalFields(t *testing.T) {
 	assert.False(t, model.Settings.RequireMFA.ValueBool())
 	assert.True(t, model.Settings.Labels.IsNull())
 
-	require.NotNil(t, model.Grantees)
-	assert.Equal(t, "AND", model.Grantees.LogicalOperator.ValueString())
-	require.Len(t, model.Grantees.Conditions, 1)
-	assert.Equal(t, "user", model.Grantees.Conditions[0].Type.ValueString())
-	assert.Equal(t, "is", model.Grantees.Conditions[0].MatchOperator.ValueString())
-	assert.True(t, model.Grantees.Conditions[0].SourceIntegrationName.IsNull())
+	require.NotNil(t, model.Requestors)
+	assert.Equal(t, "AND", model.Requestors.LogicalOperator.ValueString())
+	require.Len(t, model.Requestors.Conditions, 1)
+	assert.Equal(t, "user", model.Requestors.Conditions[0].Type.ValueString())
+	assert.Equal(t, "is", model.Requestors.Conditions[0].MatchOperator.ValueString())
+	assert.True(t, model.Requestors.Conditions[0].SourceIntegrationName.IsNull())
 
 	var values []string
-	diags := model.Grantees.Conditions[0].Values.ElementsAs(ctx, &values, false)
+	diags := model.Requestors.Conditions[0].Values.ElementsAs(ctx, &values, false)
 	require.False(t, diags.HasError())
 	assert.ElementsMatch(t, []string{"person@example.com"}, values)
 

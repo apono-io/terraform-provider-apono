@@ -445,6 +445,15 @@ func (UnimplementedHandler) GetUser(ctx context.Context, params GetUserParams) (
 	return r, ht.ErrNotImplemented
 }
 
+// GetUserV3 implements getUserV3 operation.
+//
+// Get User.
+//
+// GET /api/admin/v3/users/{id}
+func (UnimplementedHandler) GetUserV3(ctx context.Context, params GetUserV3Params) (r *UserV3, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // ListAccessBundles implements listAccessBundles operation.
 //
 // List Access Bundles.
@@ -631,6 +640,15 @@ func (UnimplementedHandler) ListIntegrationsV4(ctx context.Context, params ListI
 //
 // GET /api/v2/users
 func (UnimplementedHandler) ListUsers(ctx context.Context) (r *PaginatedResponseUserModel, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// ListUsersV3 implements listUsersV3 operation.
+//
+// List Users.
+//
+// GET /api/admin/v3/users
+func (UnimplementedHandler) ListUsersV3(ctx context.Context, params ListUsersV3Params) (r *PublicApiListResponseUserPublicV3Model, _ error) {
 	return r, ht.ErrNotImplemented
 }
 

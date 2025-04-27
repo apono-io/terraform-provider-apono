@@ -29,7 +29,7 @@ func GenerateAccessFlowResponse() *client.AccessFlowPublicV2Model {
 	}
 	response.Timeframe.SetTo(timeframe)
 
-	response.Grantees = client.GranteesPublicV2Model{
+	response.Requestors = client.RequestorsPublicV2Model{
 		LogicalOperator: "OR",
 		Conditions: []client.ConditionPublicV2Model{
 			{
@@ -37,9 +37,9 @@ func GenerateAccessFlowResponse() *client.AccessFlowPublicV2Model {
 			},
 		},
 	}
-	response.Grantees.Conditions[0].SourceIntegrationName.SetTo("Okta Directory")
-	response.Grantees.Conditions[0].MatchOperator.SetTo("is")
-	response.Grantees.Conditions[0].Values.SetTo([]string{"person@example.com", "person_two@example.com"})
+	response.Requestors.Conditions[0].SourceIntegrationName.SetTo("Okta Directory")
+	response.Requestors.Conditions[0].MatchOperator.SetTo("is")
+	response.Requestors.Conditions[0].Values.SetTo([]string{"person@example.com", "person_two@example.com"})
 
 	bundleTarget := client.AccessTargetPublicV2Model{}
 	bundleData := client.AccessTargetPublicV2ModelBundle{
