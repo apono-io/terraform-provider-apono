@@ -6,36 +6,37 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-var _ datasource.DataSource = &AponoGroupsDataSource{}
+var _ datasource.DataSource = &AponoManagedGroupsDataSource{}
 
-func NewAponoGroupsDataSource() datasource.DataSource {
-	return &AponoGroupsDataSource{}
+func NewAponoManagedGroupsDataSource() datasource.DataSource {
+	return &AponoManagedGroupsDataSource{}
 }
 
-type AponoGroupsDataSource struct {
+type AponoManagedGroupsDataSource struct {
 	client client.Invoker
 }
 
-func (d *AponoGroupsDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_groups"
+func (d *AponoManagedGroupsDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_managed_groups"
 }
 
-func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *AponoManagedGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves a list of Apono Groups.",
+		Description: "Retrieves a list of Apono Managed Groups.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "Filter groups by name, supports wildcards.",
+				Description: "Filter managed groups by name, supports wildcards.",
 				Optional:    true,
 			},
 			"source_integration": schema.StringAttribute{
-				Description: "Filter groups by source integration name or ID.",
+				Description: "Filter managed groups by source integration name or ID.",
 				Optional:    true,
 			},
 			"groups": schema.SetNestedAttribute{
@@ -55,6 +56,10 @@ func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 							Description: "The source integration ID.",
 							Computed:    true,
 						},
+						"source_integration_name": schema.StringAttribute{
+							Description: "The source integration name.",
+							Computed:    true,
+						},
 					},
 				},
 			},
@@ -62,12 +67,12 @@ func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 	}
 }
 
-func (d *AponoGroupsDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *AponoManagedGroupsDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	common.ConfigureDataSourceClientInvoker(ctx, req, resp, &d.client)
 }
 
-func (d *AponoGroupsDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config services.GroupsDataModel
+func (d *AponoManagedGroupsDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config models.GroupsDataModel
 	diags := req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -97,9 +102,9 @@ func (d *AponoGroupsDataSource) Read(ctx context.Context, req datasource.ReadReq
 
 	filteredGroups := services.FilterGroupsBySourceIntegration(allGroups, sourceIntegration)
 
-	var groupModels []services.GroupDataModel
+	var groupModels []models.GroupDataModel
 	for _, group := range filteredGroups {
-		groupModels = append(groupModels, services.GroupToDataModel(&group))
+		groupModels = append(groupModels, models.GroupToDataModel(&group))
 	}
 
 	config.Groups = groupModels

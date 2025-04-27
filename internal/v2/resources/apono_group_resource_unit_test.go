@@ -6,7 +6,7 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/mocks"
-	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
@@ -65,7 +65,7 @@ func TestAponoGroupResource(t *testing.T) {
 		r.Create(t.Context(), req, &resp)
 
 		require.False(t, resp.Diagnostics.HasError())
-		var stateVal services.GroupModel
+		var stateVal models.GroupModel
 		diags := resp.State.Get(t.Context(), &stateVal)
 		require.False(t, diags.HasError())
 
@@ -113,7 +113,7 @@ func TestAponoGroupResource(t *testing.T) {
 		r.Read(ctx, req, &resp)
 
 		require.False(t, resp.Diagnostics.HasError())
-		var stateModel services.GroupModel
+		var stateModel models.GroupModel
 		diags := resp.State.Get(ctx, &stateModel)
 		require.False(t, diags.HasError())
 
@@ -177,7 +177,7 @@ func TestAponoGroupResource(t *testing.T) {
 		r.Update(t.Context(), req, &resp)
 
 		require.False(t, resp.Diagnostics.HasError())
-		var updatedState services.GroupModel
+		var updatedState models.GroupModel
 		diags := resp.State.Get(t.Context(), &updatedState)
 		require.False(t, diags.HasError())
 
@@ -252,7 +252,7 @@ func TestAponoGroupResource(t *testing.T) {
 		r.Read(ctx, readReq, &readResp)
 
 		require.False(t, readResp.Diagnostics.HasError())
-		var stateModel services.GroupModel
+		var stateModel models.GroupModel
 		diags := readResp.State.Get(ctx, &stateModel)
 		require.False(t, diags.HasError())
 
