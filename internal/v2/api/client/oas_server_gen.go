@@ -296,6 +296,12 @@ type Handler interface {
 	//
 	// GET /api/v2/users/{id}
 	GetUser(ctx context.Context, params GetUserParams) (*UserModel, error)
+	// GetUserV3 implements getUserV3 operation.
+	//
+	// Get User.
+	//
+	// GET /api/admin/v3/users/{id}
+	GetUserV3(ctx context.Context, params GetUserV3Params) (*UserV3, error)
 	// ListAccessBundles implements listAccessBundles operation.
 	//
 	// List Access Bundles.
@@ -422,6 +428,12 @@ type Handler interface {
 	//
 	// GET /api/v2/users
 	ListUsers(ctx context.Context) (*PaginatedResponseUserModel, error)
+	// ListUsersV3 implements listUsersV3 operation.
+	//
+	// List Users.
+	//
+	// GET /api/admin/v3/users
+	ListUsersV3(ctx context.Context, params ListUsersV3Params) (*PublicApiListResponseUserPublicV3Model, error)
 	// RefreshIntegrationV2 implements refreshIntegrationV2 operation.
 	//
 	// Refresh integration.

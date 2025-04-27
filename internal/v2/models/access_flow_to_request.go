@@ -46,12 +46,12 @@ func AccessFlowV2ModelToUpsertRequest(ctx context.Context, model AccessFlowV2Mod
 		upsert.ApproverPolicy.SetTo(*approverPolicy)
 	}
 
-	grantees, err := convertGranteesToUpsertRequest(ctx, *model.Grantees)
+	requestors, err := convertRequestorsToUpsertRequest(ctx, *model.Requestors)
 	if err != nil {
-		return nil, fmt.Errorf("failed to convert grantees: %w", err)
+		return nil, fmt.Errorf("failed to convert requestors: %w", err)
 	}
 
-	upsert.Grantees = *grantees
+	upsert.Requestors = *requestors
 
 	targets, err := convertAccessTargetsToUpsertRequest(ctx, model.AccessTargets)
 	if err != nil {
@@ -127,8 +127,8 @@ func convertApproverGroupToUpsertRequest(ctx context.Context, model AccessFlowAp
 	return &group, nil
 }
 
-func convertGranteesToUpsertRequest(ctx context.Context, model AccessFlowGranteesModel) (*client.GranteesUpsertPublicV2Model, error) {
-	grantees := client.GranteesUpsertPublicV2Model{
+func convertRequestorsToUpsertRequest(ctx context.Context, model AccessFlowRequestorsModel) (*client.RequestorsUpsertPublicV2Model, error) {
+	requestors := client.RequestorsUpsertPublicV2Model{
 		LogicalOperator: model.LogicalOperator.ValueString(),
 	}
 
@@ -145,9 +145,9 @@ func convertGranteesToUpsertRequest(ctx context.Context, model AccessFlowGrantee
 
 	}
 
-	grantees.Conditions = conditions
+	requestors.Conditions = conditions
 
-	return &grantees, nil
+	return &requestors, nil
 }
 
 func convertConditionToUpsertRequest(ctx context.Context, model AccessFlowCondition) (*client.ConditionUpsertPublicV2Model, error) {

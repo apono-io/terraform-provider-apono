@@ -43,11 +43,11 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowPu
 		model.ApproverPolicy = approverPolicy
 	}
 
-	grantees, err := convertGranteesToModel(ctx, response.Grantees)
+	requestors, err := convertRequestorsToModel(ctx, response.Requestors)
 	if err != nil {
-		return nil, fmt.Errorf("failed to convert grantees: %w", err)
+		return nil, fmt.Errorf("failed to convert requestors: %w", err)
 	}
-	model.Grantees = grantees
+	model.Requestors = requestors
 
 	accessTargets, err := convertAccessTargetsToModel(ctx, response.AccessTargets)
 	if err != nil {
@@ -113,13 +113,13 @@ func convertApproverGroupToModel(ctx context.Context, group client.ApproverGroup
 	return model, nil
 }
 
-func convertGranteesToModel(ctx context.Context, grantees client.GranteesPublicV2Model) (*AccessFlowGranteesModel, error) {
-	model := &AccessFlowGranteesModel{
-		LogicalOperator: types.StringValue(grantees.LogicalOperator),
+func convertRequestorsToModel(ctx context.Context, requestors client.RequestorsPublicV2Model) (*AccessFlowRequestorsModel, error) {
+	model := &AccessFlowRequestorsModel{
+		LogicalOperator: types.StringValue(requestors.LogicalOperator),
 	}
 
 	var conditions []AccessFlowCondition
-	for _, condition := range grantees.Conditions {
+	for _, condition := range requestors.Conditions {
 		conditionModel, err := convertConditionToModel(ctx, condition)
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert grantee condition: %w", err)

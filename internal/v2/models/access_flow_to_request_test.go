@@ -23,7 +23,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 			TimeZone:   types.StringValue("Asia/Jerusalem"),
 			DaysOfWeek: testcommon.CreateTestStringSet(t, []string{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"}),
 		},
-		Grantees: &AccessFlowGranteesModel{
+		Requestors: &AccessFlowRequestorsModel{
 			LogicalOperator: types.StringValue("OR"),
 			Conditions: []AccessFlowCondition{
 				{
@@ -101,16 +101,16 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 		[]client.DayOfWeekPublicV2Model{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"},
 		timeframe.DaysOfWeek)
 
-	assert.Equal(t, "OR", result.Grantees.LogicalOperator)
-	require.Len(t, result.Grantees.Conditions, 1)
-	assert.Equal(t, "user", result.Grantees.Conditions[0].Type)
-	sourceIntegRef, ok := result.Grantees.Conditions[0].SourceIntegrationReference.Get()
+	assert.Equal(t, "OR", result.Requestors.LogicalOperator)
+	require.Len(t, result.Requestors.Conditions, 1)
+	assert.Equal(t, "user", result.Requestors.Conditions[0].Type)
+	sourceIntegRef, ok := result.Requestors.Conditions[0].SourceIntegrationReference.Get()
 	require.True(t, ok)
 	assert.Equal(t, "Okta Directory", sourceIntegRef)
-	matchOp, ok := result.Grantees.Conditions[0].MatchOperator.Get()
+	matchOp, ok := result.Requestors.Conditions[0].MatchOperator.Get()
 	require.True(t, ok)
 	assert.Equal(t, "is", matchOp)
-	values, ok := result.Grantees.Conditions[0].Values.Get()
+	values, ok := result.Requestors.Conditions[0].Values.Get()
 	require.True(t, ok)
 	assert.ElementsMatch(t, []string{"person@example.com", "person_two@example.com"}, values)
 
@@ -165,7 +165,7 @@ func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
 		Name:    types.StringValue("minimal_flow"),
 		Active:  types.BoolValue(false),
 		Trigger: types.StringValue("AUTOMATIC"),
-		Grantees: &AccessFlowGranteesModel{
+		Requestors: &AccessFlowRequestorsModel{
 			LogicalOperator: types.StringValue("AND"),
 			Conditions: []AccessFlowCondition{
 				{
@@ -196,13 +196,13 @@ func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
 	assert.False(t, result.Timeframe.IsSet())
 	assert.False(t, result.ApproverPolicy.IsSet())
 
-	assert.Equal(t, "AND", result.Grantees.LogicalOperator)
-	require.Len(t, result.Grantees.Conditions, 1)
-	assert.Equal(t, "user", result.Grantees.Conditions[0].Type)
-	matchOp, ok := result.Grantees.Conditions[0].MatchOperator.Get()
+	assert.Equal(t, "AND", result.Requestors.LogicalOperator)
+	require.Len(t, result.Requestors.Conditions, 1)
+	assert.Equal(t, "user", result.Requestors.Conditions[0].Type)
+	matchOp, ok := result.Requestors.Conditions[0].MatchOperator.Get()
 	require.True(t, ok)
 	assert.Equal(t, "is", matchOp)
-	values, ok := result.Grantees.Conditions[0].Values.Get()
+	values, ok := result.Requestors.Conditions[0].Values.Get()
 	require.True(t, ok)
 	assert.ElementsMatch(t, []string{"person@example.com"}, values)
 

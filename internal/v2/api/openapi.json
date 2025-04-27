@@ -843,6 +843,109 @@
         }
       }
     },
+    "/api/admin/v3/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "List Users",
+        "operationId": "listUsersV3",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "default": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "source_integration_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "source_integration_name",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiListResponseUserPublicV3Model"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v3/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get User",
+        "operationId": "getUserV3",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserV3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/admin/v4/integrations": {
       "get": {
         "tags": [
@@ -3306,7 +3409,7 @@
           "name",
           "active",
           "trigger",
-          "grantees",
+          "requestors",
           "access_targets",
           "settings",
           "creation_date"
@@ -3326,8 +3429,8 @@
           "trigger": {
             "type": "string"
           },
-          "grantees": {
-            "$ref": "#/components/schemas/GranteesPublicV2Model"
+          "requestors": {
+            "$ref": "#/components/schemas/RequestorsPublicV2Model"
           },
           "access_targets": {
             "type": "array",
@@ -3479,7 +3582,7 @@
           "name",
           "active",
           "trigger",
-          "grantees",
+          "requestors",
           "access_targets",
           "settings"
         ],
@@ -3495,8 +3598,8 @@
           "trigger": {
             "type": "string"
           },
-          "grantees": {
-            "$ref": "#/components/schemas/GranteesUpsertPublicV2Model"
+          "requestors": {
+            "$ref": "#/components/schemas/RequestorsUpsertPublicV2Model"
           },
           "access_targets": {
             "type": "array",
@@ -4909,44 +5012,6 @@
           }
         }
       },
-      "GranteesPublicV2Model": {
-        "required": [
-          "logical_operator",
-          "conditions"
-        ],
-        "description": "GranteesV2",
-        "type": "object",
-        "properties": {
-          "logical_operator": {
-            "type": "string"
-          },
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ConditionPublicV2Model"
-            }
-          }
-        }
-      },
-      "GranteesUpsertPublicV2Model": {
-        "required": [
-          "logical_operator",
-          "conditions"
-        ],
-        "description": "GranteesUpsertV2",
-        "type": "object",
-        "properties": {
-          "logical_operator": {
-            "type": "string"
-          },
-          "conditions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ConditionUpsertPublicV2Model"
-            }
-          }
-        }
-      },
       "GroupMemberV1": {
         "required": [
           "email"
@@ -6019,6 +6084,24 @@
           }
         }
       },
+      "PublicApiListResponseUserPublicV3Model": {
+        "required": [
+          "items",
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserV3"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PublicApiPaginationInfoModel"
+          }
+        }
+      },
       "PublicApiMessageResponse": {
         "required": [
           "message"
@@ -6090,6 +6173,44 @@
         "properties": {
           "name": {
             "type": "string"
+          }
+        }
+      },
+      "RequestorsPublicV2Model": {
+        "required": [
+          "logical_operator",
+          "conditions"
+        ],
+        "description": "RequestorsV2",
+        "type": "object",
+        "properties": {
+          "logical_operator": {
+            "type": "string"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConditionPublicV2Model"
+            }
+          }
+        }
+      },
+      "RequestorsUpsertPublicV2Model": {
+        "required": [
+          "logical_operator",
+          "conditions"
+        ],
+        "description": "RequestorsUpsertV2",
+        "type": "object",
+        "properties": {
+          "logical_operator": {
+            "type": "string"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConditionUpsertPublicV2Model"
+            }
           }
         }
       },
@@ -6824,6 +6945,62 @@
           },
           "active": {
             "type": "boolean"
+          }
+        }
+      },
+      "UserV3": {
+        "required": [
+          "id",
+          "email",
+          "email_aliases",
+          "first_name",
+          "last_name",
+          "active",
+          "roles"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "email_aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_integration_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "source_integration_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
           }
         }
       },

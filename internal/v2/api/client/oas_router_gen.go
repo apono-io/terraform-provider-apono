@@ -446,62 +446,128 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 					}
 
-				case '3': // Prefix: "3/connectors"
+				case '3': // Prefix: "3/"
 
-					if l := len("3/connectors"); len(elem) >= l && elem[0:l] == "3/connectors" {
+					if l := len("3/"); len(elem) >= l && elem[0:l] == "3/" {
 						elem = elem[l:]
 					} else {
 						break
 					}
 
 					if len(elem) == 0 {
-						switch r.Method {
-						case "GET":
-							s.handleListConnectorsV3Request([0]string{}, elemIsEscaped, w, r)
-						default:
-							s.notAllowed(w, r, "GET")
-						}
-
-						return
+						break
 					}
 					switch elem[0] {
-					case '/': // Prefix: "/"
+					case 'c': // Prefix: "connectors"
 
-						if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+						if l := len("connectors"); len(elem) >= l && elem[0:l] == "connectors" {
 							elem = elem[l:]
 						} else {
 							break
 						}
 
-						// Param: "id"
-						// Leaf parameter, slashes are prohibited
-						idx := strings.IndexByte(elem, '/')
-						if idx >= 0 {
-							break
-						}
-						args[0] = elem
-						elem = ""
-
 						if len(elem) == 0 {
-							// Leaf node.
 							switch r.Method {
-							case "DELETE":
-								s.handleDeleteConnectorV3Request([1]string{
-									args[0],
-								}, elemIsEscaped, w, r)
 							case "GET":
-								s.handleGetConnectorV3Request([1]string{
-									args[0],
-								}, elemIsEscaped, w, r)
-							case "PUT":
-								s.handleUpdateConnectorV3Request([1]string{
-									args[0],
-								}, elemIsEscaped, w, r)
+								s.handleListConnectorsV3Request([0]string{}, elemIsEscaped, w, r)
 							default:
-								s.notAllowed(w, r, "DELETE,GET,PUT")
+								s.notAllowed(w, r, "GET")
 							}
 
 							return
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "id"
+							// Leaf parameter, slashes are prohibited
+							idx := strings.IndexByte(elem, '/')
+							if idx >= 0 {
+								break
+							}
+							args[0] = elem
+							elem = ""
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "DELETE":
+									s.handleDeleteConnectorV3Request([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								case "GET":
+									s.handleGetConnectorV3Request([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								case "PUT":
+									s.handleUpdateConnectorV3Request([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "DELETE,GET,PUT")
+								}
+
+								return
+							}
+
+						}
+
+					case 'u': // Prefix: "users"
+
+						if l := len("users"); len(elem) >= l && elem[0:l] == "users" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch r.Method {
+							case "GET":
+								s.handleListUsersV3Request([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "GET")
+							}
+
+							return
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "id"
+							// Leaf parameter, slashes are prohibited
+							idx := strings.IndexByte(elem, '/')
+							if idx >= 0 {
+								break
+							}
+							args[0] = elem
+							elem = ""
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleGetUserV3Request([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET")
+								}
+
+								return
+							}
+
 						}
 
 					}
@@ -2452,76 +2518,148 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 
 					}
 
-				case '3': // Prefix: "3/connectors"
+				case '3': // Prefix: "3/"
 
-					if l := len("3/connectors"); len(elem) >= l && elem[0:l] == "3/connectors" {
+					if l := len("3/"); len(elem) >= l && elem[0:l] == "3/" {
 						elem = elem[l:]
 					} else {
 						break
 					}
 
 					if len(elem) == 0 {
-						switch method {
-						case "GET":
-							r.name = ListConnectorsV3Operation
-							r.summary = "List Connectors"
-							r.operationID = "listConnectorsV3"
-							r.pathPattern = "/api/admin/v3/connectors"
-							r.args = args
-							r.count = 0
-							return r, true
-						default:
-							return
-						}
+						break
 					}
 					switch elem[0] {
-					case '/': // Prefix: "/"
+					case 'c': // Prefix: "connectors"
 
-						if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+						if l := len("connectors"); len(elem) >= l && elem[0:l] == "connectors" {
 							elem = elem[l:]
 						} else {
 							break
 						}
 
-						// Param: "id"
-						// Leaf parameter, slashes are prohibited
-						idx := strings.IndexByte(elem, '/')
-						if idx >= 0 {
-							break
-						}
-						args[0] = elem
-						elem = ""
-
 						if len(elem) == 0 {
-							// Leaf node.
 							switch method {
-							case "DELETE":
-								r.name = DeleteConnectorV3Operation
-								r.summary = "Delete Connector"
-								r.operationID = "deleteConnectorV3"
-								r.pathPattern = "/api/admin/v3/connectors/{id}"
-								r.args = args
-								r.count = 1
-								return r, true
 							case "GET":
-								r.name = GetConnectorV3Operation
-								r.summary = "Get Connector"
-								r.operationID = "getConnectorV3"
-								r.pathPattern = "/api/admin/v3/connectors/{id}"
+								r.name = ListConnectorsV3Operation
+								r.summary = "List Connectors"
+								r.operationID = "listConnectorsV3"
+								r.pathPattern = "/api/admin/v3/connectors"
 								r.args = args
-								r.count = 1
-								return r, true
-							case "PUT":
-								r.name = UpdateConnectorV3Operation
-								r.summary = "Update Connector"
-								r.operationID = "updateConnectorV3"
-								r.pathPattern = "/api/admin/v3/connectors/{id}"
-								r.args = args
-								r.count = 1
+								r.count = 0
 								return r, true
 							default:
 								return
 							}
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "id"
+							// Leaf parameter, slashes are prohibited
+							idx := strings.IndexByte(elem, '/')
+							if idx >= 0 {
+								break
+							}
+							args[0] = elem
+							elem = ""
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch method {
+								case "DELETE":
+									r.name = DeleteConnectorV3Operation
+									r.summary = "Delete Connector"
+									r.operationID = "deleteConnectorV3"
+									r.pathPattern = "/api/admin/v3/connectors/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								case "GET":
+									r.name = GetConnectorV3Operation
+									r.summary = "Get Connector"
+									r.operationID = "getConnectorV3"
+									r.pathPattern = "/api/admin/v3/connectors/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								case "PUT":
+									r.name = UpdateConnectorV3Operation
+									r.summary = "Update Connector"
+									r.operationID = "updateConnectorV3"
+									r.pathPattern = "/api/admin/v3/connectors/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+
+						}
+
+					case 'u': // Prefix: "users"
+
+						if l := len("users"); len(elem) >= l && elem[0:l] == "users" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch method {
+							case "GET":
+								r.name = ListUsersV3Operation
+								r.summary = "List Users"
+								r.operationID = "listUsersV3"
+								r.pathPattern = "/api/admin/v3/users"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "id"
+							// Leaf parameter, slashes are prohibited
+							idx := strings.IndexByte(elem, '/')
+							if idx >= 0 {
+								break
+							}
+							args[0] = elem
+							elem = ""
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch method {
+								case "GET":
+									r.name = GetUserV3Operation
+									r.summary = "Get User"
+									r.operationID = "getUserV3"
+									r.pathPattern = "/api/admin/v3/users/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+
 						}
 
 					}

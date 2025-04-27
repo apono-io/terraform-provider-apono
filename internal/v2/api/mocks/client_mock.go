@@ -2771,6 +2771,65 @@ func (_c *Invoker_GetUser_Call) RunAndReturn(run func(context.Context, client.Ge
 	return _c
 }
 
+// GetUserV3 provides a mock function with given fields: ctx, params
+func (_m *Invoker) GetUserV3(ctx context.Context, params client.GetUserV3Params) (*client.UserV3, error) {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetUserV3")
+	}
+
+	var r0 *client.UserV3
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetUserV3Params) (*client.UserV3, error)); ok {
+		return rf(ctx, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetUserV3Params) *client.UserV3); ok {
+		r0 = rf(ctx, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.UserV3)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, client.GetUserV3Params) error); ok {
+		r1 = rf(ctx, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_GetUserV3_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetUserV3'
+type Invoker_GetUserV3_Call struct {
+	*mock.Call
+}
+
+// GetUserV3 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.GetUserV3Params
+func (_e *Invoker_Expecter) GetUserV3(ctx interface{}, params interface{}) *Invoker_GetUserV3_Call {
+	return &Invoker_GetUserV3_Call{Call: _e.mock.On("GetUserV3", ctx, params)}
+}
+
+func (_c *Invoker_GetUserV3_Call) Run(run func(ctx context.Context, params client.GetUserV3Params)) *Invoker_GetUserV3_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.GetUserV3Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_GetUserV3_Call) Return(_a0 *client.UserV3, _a1 error) *Invoker_GetUserV3_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_GetUserV3_Call) RunAndReturn(run func(context.Context, client.GetUserV3Params) (*client.UserV3, error)) *Invoker_GetUserV3_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListAccessBundles provides a mock function with given fields: ctx
 func (_m *Invoker) ListAccessBundles(ctx context.Context) (*client.PaginatedResponseAccessBundleV1Model, error) {
 	ret := _m.Called(ctx)
@@ -3999,6 +4058,65 @@ func (_c *Invoker_ListUsers_Call) Return(_a0 *client.PaginatedResponseUserModel,
 }
 
 func (_c *Invoker_ListUsers_Call) RunAndReturn(run func(context.Context) (*client.PaginatedResponseUserModel, error)) *Invoker_ListUsers_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ListUsersV3 provides a mock function with given fields: ctx, params
+func (_m *Invoker) ListUsersV3(ctx context.Context, params client.ListUsersV3Params) (*client.PublicApiListResponseUserPublicV3Model, error) {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListUsersV3")
+	}
+
+	var r0 *client.PublicApiListResponseUserPublicV3Model
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.ListUsersV3Params) (*client.PublicApiListResponseUserPublicV3Model, error)); ok {
+		return rf(ctx, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, client.ListUsersV3Params) *client.PublicApiListResponseUserPublicV3Model); ok {
+		r0 = rf(ctx, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.PublicApiListResponseUserPublicV3Model)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, client.ListUsersV3Params) error); ok {
+		r1 = rf(ctx, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_ListUsersV3_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListUsersV3'
+type Invoker_ListUsersV3_Call struct {
+	*mock.Call
+}
+
+// ListUsersV3 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.ListUsersV3Params
+func (_e *Invoker_Expecter) ListUsersV3(ctx interface{}, params interface{}) *Invoker_ListUsersV3_Call {
+	return &Invoker_ListUsersV3_Call{Call: _e.mock.On("ListUsersV3", ctx, params)}
+}
+
+func (_c *Invoker_ListUsersV3_Call) Run(run func(ctx context.Context, params client.ListUsersV3Params)) *Invoker_ListUsersV3_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.ListUsersV3Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_ListUsersV3_Call) Return(_a0 *client.PublicApiListResponseUserPublicV3Model, _a1 error) *Invoker_ListUsersV3_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_ListUsersV3_Call) RunAndReturn(run func(context.Context, client.ListUsersV3Params) (*client.PublicApiListResponseUserPublicV3Model, error)) *Invoker_ListUsersV3_Call {
 	_c.Call.Return(run)
 	return _c
 }

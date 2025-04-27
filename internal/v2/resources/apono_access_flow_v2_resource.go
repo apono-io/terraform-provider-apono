@@ -139,7 +139,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 					},
 				},
 			},
-			"grantees": schema.SingleNestedAttribute{
+			"requestors": schema.SingleNestedAttribute{
 				Description: "The users or groups that can be granted access through this flow.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{

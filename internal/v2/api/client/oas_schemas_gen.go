@@ -255,7 +255,7 @@ type AccessFlowPublicV2Model struct {
 	Name               string                                      `json:"name"`
 	Active             bool                                        `json:"active"`
 	Trigger            string                                      `json:"trigger"`
-	Grantees           GranteesPublicV2Model                       `json:"grantees"`
+	Requestors         RequestorsPublicV2Model                     `json:"requestors"`
 	AccessTargets      []AccessTargetPublicV2Model                 `json:"access_targets"`
 	ApproverPolicy     OptNilAccessFlowPublicV2ModelApproverPolicy `json:"approver_policy"`
 	GrantDurationInMin OptNilInt32                                 `json:"grant_duration_in_min"`
@@ -285,9 +285,9 @@ func (s *AccessFlowPublicV2Model) GetTrigger() string {
 	return s.Trigger
 }
 
-// GetGrantees returns the value of Grantees.
-func (s *AccessFlowPublicV2Model) GetGrantees() GranteesPublicV2Model {
-	return s.Grantees
+// GetRequestors returns the value of Requestors.
+func (s *AccessFlowPublicV2Model) GetRequestors() RequestorsPublicV2Model {
+	return s.Requestors
 }
 
 // GetAccessTargets returns the value of AccessTargets.
@@ -345,9 +345,9 @@ func (s *AccessFlowPublicV2Model) SetTrigger(val string) {
 	s.Trigger = val
 }
 
-// SetGrantees sets the value of Grantees.
-func (s *AccessFlowPublicV2Model) SetGrantees(val GranteesPublicV2Model) {
-	s.Grantees = val
+// SetRequestors sets the value of Requestors.
+func (s *AccessFlowPublicV2Model) SetRequestors(val RequestorsPublicV2Model) {
+	s.Requestors = val
 }
 
 // SetAccessTargets sets the value of AccessTargets.
@@ -598,7 +598,7 @@ type AccessFlowUpsertPublicV2Model struct {
 	Name               string                                            `json:"name"`
 	Active             bool                                              `json:"active"`
 	Trigger            string                                            `json:"trigger"`
-	Grantees           GranteesUpsertPublicV2Model                       `json:"grantees"`
+	Requestors         RequestorsUpsertPublicV2Model                     `json:"requestors"`
 	AccessTargets      []AccessTargetUpsertPublicV2Model                 `json:"access_targets"`
 	ApproverPolicy     OptNilAccessFlowUpsertPublicV2ModelApproverPolicy `json:"approver_policy"`
 	GrantDurationInMin OptNilInt32                                       `json:"grant_duration_in_min"`
@@ -621,9 +621,9 @@ func (s *AccessFlowUpsertPublicV2Model) GetTrigger() string {
 	return s.Trigger
 }
 
-// GetGrantees returns the value of Grantees.
-func (s *AccessFlowUpsertPublicV2Model) GetGrantees() GranteesUpsertPublicV2Model {
-	return s.Grantees
+// GetRequestors returns the value of Requestors.
+func (s *AccessFlowUpsertPublicV2Model) GetRequestors() RequestorsUpsertPublicV2Model {
+	return s.Requestors
 }
 
 // GetAccessTargets returns the value of AccessTargets.
@@ -666,9 +666,9 @@ func (s *AccessFlowUpsertPublicV2Model) SetTrigger(val string) {
 	s.Trigger = val
 }
 
-// SetGrantees sets the value of Grantees.
-func (s *AccessFlowUpsertPublicV2Model) SetGrantees(val GranteesUpsertPublicV2Model) {
-	s.Grantees = val
+// SetRequestors sets the value of Requestors.
+func (s *AccessFlowUpsertPublicV2Model) SetRequestors(val RequestorsUpsertPublicV2Model) {
+	s.Requestors = val
 }
 
 // SetAccessTargets sets the value of AccessTargets.
@@ -3807,60 +3807,6 @@ func (s *GranteeV1) SetID(val string) {
 // SetType sets the value of Type.
 func (s *GranteeV1) SetType(val string) {
 	s.Type = val
-}
-
-// GranteesV2.
-// Ref: #/components/schemas/GranteesPublicV2Model
-type GranteesPublicV2Model struct {
-	LogicalOperator string                   `json:"logical_operator"`
-	Conditions      []ConditionPublicV2Model `json:"conditions"`
-}
-
-// GetLogicalOperator returns the value of LogicalOperator.
-func (s *GranteesPublicV2Model) GetLogicalOperator() string {
-	return s.LogicalOperator
-}
-
-// GetConditions returns the value of Conditions.
-func (s *GranteesPublicV2Model) GetConditions() []ConditionPublicV2Model {
-	return s.Conditions
-}
-
-// SetLogicalOperator sets the value of LogicalOperator.
-func (s *GranteesPublicV2Model) SetLogicalOperator(val string) {
-	s.LogicalOperator = val
-}
-
-// SetConditions sets the value of Conditions.
-func (s *GranteesPublicV2Model) SetConditions(val []ConditionPublicV2Model) {
-	s.Conditions = val
-}
-
-// GranteesUpsertV2.
-// Ref: #/components/schemas/GranteesUpsertPublicV2Model
-type GranteesUpsertPublicV2Model struct {
-	LogicalOperator string                         `json:"logical_operator"`
-	Conditions      []ConditionUpsertPublicV2Model `json:"conditions"`
-}
-
-// GetLogicalOperator returns the value of LogicalOperator.
-func (s *GranteesUpsertPublicV2Model) GetLogicalOperator() string {
-	return s.LogicalOperator
-}
-
-// GetConditions returns the value of Conditions.
-func (s *GranteesUpsertPublicV2Model) GetConditions() []ConditionUpsertPublicV2Model {
-	return s.Conditions
-}
-
-// SetLogicalOperator sets the value of LogicalOperator.
-func (s *GranteesUpsertPublicV2Model) SetLogicalOperator(val string) {
-	s.LogicalOperator = val
-}
-
-// SetConditions sets the value of Conditions.
-func (s *GranteesUpsertPublicV2Model) SetConditions(val []ConditionUpsertPublicV2Model) {
-	s.Conditions = val
 }
 
 // Ref: #/components/schemas/GroupMemberV1
@@ -9283,6 +9229,69 @@ func (o OptNilUpsertAccessFlowV1Settings) Or(d UpsertAccessFlowV1Settings) Upser
 	return d
 }
 
+// NewOptNilUserV3Attributes returns new OptNilUserV3Attributes with value set to v.
+func NewOptNilUserV3Attributes(v UserV3Attributes) OptNilUserV3Attributes {
+	return OptNilUserV3Attributes{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilUserV3Attributes is optional nullable UserV3Attributes.
+type OptNilUserV3Attributes struct {
+	Value UserV3Attributes
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilUserV3Attributes was set.
+func (o OptNilUserV3Attributes) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilUserV3Attributes) Reset() {
+	var v UserV3Attributes
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilUserV3Attributes) SetTo(v UserV3Attributes) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilUserV3Attributes) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilUserV3Attributes) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v UserV3Attributes
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilUserV3Attributes) Get() (v UserV3Attributes, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilUserV3Attributes) Or(d UserV3Attributes) UserV3Attributes {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptUpdateIntegrationSecretConfig returns new OptUpdateIntegrationSecretConfig with value set to v.
 func NewOptUpdateIntegrationSecretConfig(v *UpdateIntegrationSecretConfig) OptUpdateIntegrationSecretConfig {
 	return OptUpdateIntegrationSecretConfig{
@@ -10079,6 +10088,32 @@ func (s *PublicApiListResponseIntegrationPublicV4Model) SetPagination(val Public
 	s.Pagination = val
 }
 
+// Ref: #/components/schemas/PublicApiListResponseUserPublicV3Model
+type PublicApiListResponseUserPublicV3Model struct {
+	Items      []UserV3                     `json:"items"`
+	Pagination PublicApiPaginationInfoModel `json:"pagination"`
+}
+
+// GetItems returns the value of Items.
+func (s *PublicApiListResponseUserPublicV3Model) GetItems() []UserV3 {
+	return s.Items
+}
+
+// GetPagination returns the value of Pagination.
+func (s *PublicApiListResponseUserPublicV3Model) GetPagination() PublicApiPaginationInfoModel {
+	return s.Pagination
+}
+
+// SetItems sets the value of Items.
+func (s *PublicApiListResponseUserPublicV3Model) SetItems(val []UserV3) {
+	s.Items = val
+}
+
+// SetPagination sets the value of Pagination.
+func (s *PublicApiListResponseUserPublicV3Model) SetPagination(val PublicApiPaginationInfoModel) {
+	s.Pagination = val
+}
+
 // Ref: #/components/schemas/PublicApiMessageResponse
 type PublicApiMessageResponse struct {
 	Message string `json:"message"`
@@ -10330,6 +10365,60 @@ func (s *RequestEntitlementPermissionV4) GetName() string {
 // SetName sets the value of Name.
 func (s *RequestEntitlementPermissionV4) SetName(val string) {
 	s.Name = val
+}
+
+// RequestorsV2.
+// Ref: #/components/schemas/RequestorsPublicV2Model
+type RequestorsPublicV2Model struct {
+	LogicalOperator string                   `json:"logical_operator"`
+	Conditions      []ConditionPublicV2Model `json:"conditions"`
+}
+
+// GetLogicalOperator returns the value of LogicalOperator.
+func (s *RequestorsPublicV2Model) GetLogicalOperator() string {
+	return s.LogicalOperator
+}
+
+// GetConditions returns the value of Conditions.
+func (s *RequestorsPublicV2Model) GetConditions() []ConditionPublicV2Model {
+	return s.Conditions
+}
+
+// SetLogicalOperator sets the value of LogicalOperator.
+func (s *RequestorsPublicV2Model) SetLogicalOperator(val string) {
+	s.LogicalOperator = val
+}
+
+// SetConditions sets the value of Conditions.
+func (s *RequestorsPublicV2Model) SetConditions(val []ConditionPublicV2Model) {
+	s.Conditions = val
+}
+
+// RequestorsUpsertV2.
+// Ref: #/components/schemas/RequestorsUpsertPublicV2Model
+type RequestorsUpsertPublicV2Model struct {
+	LogicalOperator string                         `json:"logical_operator"`
+	Conditions      []ConditionUpsertPublicV2Model `json:"conditions"`
+}
+
+// GetLogicalOperator returns the value of LogicalOperator.
+func (s *RequestorsUpsertPublicV2Model) GetLogicalOperator() string {
+	return s.LogicalOperator
+}
+
+// GetConditions returns the value of Conditions.
+func (s *RequestorsUpsertPublicV2Model) GetConditions() []ConditionUpsertPublicV2Model {
+	return s.Conditions
+}
+
+// SetLogicalOperator sets the value of LogicalOperator.
+func (s *RequestorsUpsertPublicV2Model) SetLogicalOperator(val string) {
+	s.LogicalOperator = val
+}
+
+// SetConditions sets the value of Conditions.
+func (s *RequestorsUpsertPublicV2Model) SetConditions(val []ConditionUpsertPublicV2Model) {
+	s.Conditions = val
 }
 
 // Ref: #/components/schemas/ResourceResponse
@@ -11752,4 +11841,129 @@ func (s *UserModel) SetLastName(val string) {
 // SetActive sets the value of Active.
 func (s *UserModel) SetActive(val bool) {
 	s.Active = val
+}
+
+// Ref: #/components/schemas/UserV3
+type UserV3 struct {
+	ID                    string                 `json:"id"`
+	Email                 string                 `json:"email"`
+	EmailAliases          []string               `json:"email_aliases"`
+	FirstName             string                 `json:"first_name"`
+	LastName              string                 `json:"last_name"`
+	Active                bool                   `json:"active"`
+	Roles                 []string               `json:"roles"`
+	SourceIntegrationID   OptNilString           `json:"source_integration_id"`
+	SourceIntegrationName OptNilString           `json:"source_integration_name"`
+	Attributes            OptNilUserV3Attributes `json:"attributes"`
+}
+
+// GetID returns the value of ID.
+func (s *UserV3) GetID() string {
+	return s.ID
+}
+
+// GetEmail returns the value of Email.
+func (s *UserV3) GetEmail() string {
+	return s.Email
+}
+
+// GetEmailAliases returns the value of EmailAliases.
+func (s *UserV3) GetEmailAliases() []string {
+	return s.EmailAliases
+}
+
+// GetFirstName returns the value of FirstName.
+func (s *UserV3) GetFirstName() string {
+	return s.FirstName
+}
+
+// GetLastName returns the value of LastName.
+func (s *UserV3) GetLastName() string {
+	return s.LastName
+}
+
+// GetActive returns the value of Active.
+func (s *UserV3) GetActive() bool {
+	return s.Active
+}
+
+// GetRoles returns the value of Roles.
+func (s *UserV3) GetRoles() []string {
+	return s.Roles
+}
+
+// GetSourceIntegrationID returns the value of SourceIntegrationID.
+func (s *UserV3) GetSourceIntegrationID() OptNilString {
+	return s.SourceIntegrationID
+}
+
+// GetSourceIntegrationName returns the value of SourceIntegrationName.
+func (s *UserV3) GetSourceIntegrationName() OptNilString {
+	return s.SourceIntegrationName
+}
+
+// GetAttributes returns the value of Attributes.
+func (s *UserV3) GetAttributes() OptNilUserV3Attributes {
+	return s.Attributes
+}
+
+// SetID sets the value of ID.
+func (s *UserV3) SetID(val string) {
+	s.ID = val
+}
+
+// SetEmail sets the value of Email.
+func (s *UserV3) SetEmail(val string) {
+	s.Email = val
+}
+
+// SetEmailAliases sets the value of EmailAliases.
+func (s *UserV3) SetEmailAliases(val []string) {
+	s.EmailAliases = val
+}
+
+// SetFirstName sets the value of FirstName.
+func (s *UserV3) SetFirstName(val string) {
+	s.FirstName = val
+}
+
+// SetLastName sets the value of LastName.
+func (s *UserV3) SetLastName(val string) {
+	s.LastName = val
+}
+
+// SetActive sets the value of Active.
+func (s *UserV3) SetActive(val bool) {
+	s.Active = val
+}
+
+// SetRoles sets the value of Roles.
+func (s *UserV3) SetRoles(val []string) {
+	s.Roles = val
+}
+
+// SetSourceIntegrationID sets the value of SourceIntegrationID.
+func (s *UserV3) SetSourceIntegrationID(val OptNilString) {
+	s.SourceIntegrationID = val
+}
+
+// SetSourceIntegrationName sets the value of SourceIntegrationName.
+func (s *UserV3) SetSourceIntegrationName(val OptNilString) {
+	s.SourceIntegrationName = val
+}
+
+// SetAttributes sets the value of Attributes.
+func (s *UserV3) SetAttributes(val OptNilUserV3Attributes) {
+	s.Attributes = val
+}
+
+type UserV3Attributes map[string]string
+
+func (s *UserV3Attributes) init() UserV3Attributes {
+	m := *s
+	if m == nil {
+		m = map[string]string{}
+		*s = m
+	}
+	return m
 }
