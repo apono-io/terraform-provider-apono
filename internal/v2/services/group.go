@@ -6,53 +6,9 @@ import (
 	"sort"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// GroupModel represents the Terraform model for an Apono group.
-type GroupModel struct {
-	ID      types.String `tfsdk:"id"`
-	Name    types.String `tfsdk:"name"`
-	Members types.Set    `tfsdk:"members"`
-}
-
-// GroupDataModel represents an individual group in the groups data source.
-type GroupDataModel struct {
-	ID                  types.String `tfsdk:"id"`
-	Name                types.String `tfsdk:"name"`
-	SourceIntegrationID types.String `tfsdk:"source_integration_id"`
-}
-
-// GroupsDataModel represents the data source model for groups.
-type GroupsDataModel struct {
-	Name              types.String     `tfsdk:"name"`
-	SourceIntegration types.String     `tfsdk:"source_integration"`
-	Groups            []GroupDataModel `tfsdk:"groups"`
-}
-
-func GroupToModel(group *client.GroupV1) GroupModel {
-	return GroupModel{
-		ID:   types.StringValue(group.ID),
-		Name: types.StringValue(group.Name),
-		// Members will be filled separately since they require a different API call
-	}
-}
-
-func GroupToDataModel(group *client.GroupV1) GroupDataModel {
-	model := GroupDataModel{
-		ID:   types.StringValue(group.ID),
-		Name: types.StringValue(group.Name),
-	}
-
-	if sourceIntegrationID, exists := group.SourceIntegrationID.Get(); exists {
-		model.SourceIntegrationID = types.StringValue(sourceIntegrationID)
-	} else {
-		model.SourceIntegrationID = types.StringNull()
-	}
-
-	return model
-}
-
+// ListGroupMembers retrieves all members for a specific group.
 func ListGroupMembers(ctx context.Context, apiClient client.Invoker, groupID string) ([]client.GroupMemberV1, error) {
 	results := []client.GroupMemberV1{}
 	pageToken := ""
@@ -83,6 +39,7 @@ func ListGroupMembers(ctx context.Context, apiClient client.Invoker, groupID str
 	return results, nil
 }
 
+// ListGroups retrieves all groups matching the provided name filter.
 func ListGroups(ctx context.Context, apiClient client.Invoker, name string) ([]client.GroupV1, error) {
 	allGroups := []client.GroupV1{}
 	pageToken := ""

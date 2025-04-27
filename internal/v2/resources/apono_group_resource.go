@@ -6,6 +6,7 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -63,7 +64,7 @@ func (r *AponoGroupResource) Configure(ctx context.Context, req resource.Configu
 }
 
 func (r *AponoGroupResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan services.GroupModel
+	var plan models.GroupModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -93,7 +94,7 @@ func (r *AponoGroupResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	result := services.GroupToModel(group)
+	result := models.GroupToModel(group)
 	result.Members = plan.Members
 
 	diags = resp.State.Set(ctx, result)
@@ -106,7 +107,7 @@ func (r *AponoGroupResource) Create(ctx context.Context, req resource.CreateRequ
 }
 
 func (r *AponoGroupResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state services.GroupModel
+	var state models.GroupModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -129,7 +130,7 @@ func (r *AponoGroupResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	result := services.GroupToModel(group)
+	result := models.GroupToModel(group)
 
 	memberEmails := []string{}
 	for _, member := range membersResp {
@@ -152,14 +153,14 @@ func (r *AponoGroupResource) Read(ctx context.Context, req resource.ReadRequest,
 }
 
 func (r *AponoGroupResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var state services.GroupModel
+	var state models.GroupModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	var plan services.GroupModel
+	var plan models.GroupModel
 	diags = req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -184,7 +185,7 @@ func (r *AponoGroupResource) Update(ctx context.Context, req resource.UpdateRequ
 			return
 		}
 
-		state = services.GroupToModel(group)
+		state = models.GroupToModel(group)
 	}
 
 	if !plan.Members.Equal(state.Members) {
@@ -223,7 +224,7 @@ func (r *AponoGroupResource) Update(ctx context.Context, req resource.UpdateRequ
 }
 
 func (r *AponoGroupResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state services.GroupModel
+	var state models.GroupModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
