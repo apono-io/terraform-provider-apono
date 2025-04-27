@@ -7,7 +7,7 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/mocks"
-	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
@@ -18,17 +18,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAponoGroupsDataSource(t *testing.T) {
+func TestAponoManagedGroupsDataSource(t *testing.T) {
 	mockInvoker := mocks.NewInvoker(t)
-	d := &AponoGroupsDataSource{client: mockInvoker}
+	d := &AponoManagedGroupsDataSource{client: mockInvoker}
 
 	getGroupsSetType := func() tftypes.Set {
 		return tftypes.Set{
 			ElementType: tftypes.Object{
 				AttributeTypes: map[string]tftypes.Type{
-					"id":                    tftypes.String,
-					"name":                  tftypes.String,
-					"source_integration_id": tftypes.String,
+					"id":                      tftypes.String,
+					"name":                    tftypes.String,
+					"source_integration_id":   tftypes.String,
+					"source_integration_name": tftypes.String,
 				},
 			},
 		}
@@ -54,11 +55,19 @@ func TestAponoGroupsDataSource(t *testing.T) {
 						Value: "source-int-1",
 						Set:   true,
 					},
+					SourceIntegrationName: client.OptNilString{
+						Value: "Source Integration 1",
+						Set:   true,
+					},
 				},
 				{
 					ID:   "g-789012",
 					Name: "test-group-2",
 					SourceIntegrationID: client.OptNilString{
+						Value: "",
+						Set:   false,
+					},
+					SourceIntegrationName: client.OptNilString{
 						Value: "",
 						Set:   false,
 					},
@@ -99,7 +108,7 @@ func TestAponoGroupsDataSource(t *testing.T) {
 
 		require.False(t, resp.Diagnostics.HasError())
 
-		var stateVal services.GroupsDataModel
+		var stateVal models.GroupsDataModel
 		diags := resp.State.Get(ctx, &stateVal)
 		require.False(t, diags.HasError())
 
@@ -116,11 +125,13 @@ func TestAponoGroupsDataSource(t *testing.T) {
 				foundGroup1 = true
 				assert.Equal(t, "test-group-1", group.Name.ValueString())
 				assert.Equal(t, "source-int-1", group.SourceIntegrationID.ValueString())
+				assert.Equal(t, "Source Integration 1", group.SourceIntegrationName.ValueString())
 			}
 			if group.ID.ValueString() == "g-789012" {
 				foundGroup2 = true
 				assert.Equal(t, "test-group-2", group.Name.ValueString())
 				assert.True(t, group.SourceIntegrationID.IsNull())
+				assert.True(t, group.SourceIntegrationName.IsNull())
 			}
 		}
 
@@ -139,12 +150,20 @@ func TestAponoGroupsDataSource(t *testing.T) {
 						Value: "source-int-1",
 						Set:   true,
 					},
+					SourceIntegrationName: client.OptNilString{
+						Value: "Source Integration 1",
+						Set:   true,
+					},
 				},
 				{
 					ID:   "g-789012",
 					Name: "group-2",
 					SourceIntegrationID: client.OptNilString{
 						Value: "source-int-2",
+						Set:   true,
+					},
+					SourceIntegrationName: client.OptNilString{
+						Value: "Source Integration 2",
 						Set:   true,
 					},
 				},
@@ -184,7 +203,7 @@ func TestAponoGroupsDataSource(t *testing.T) {
 
 		require.False(t, resp.Diagnostics.HasError())
 
-		var stateVal services.GroupsDataModel
+		var stateVal models.GroupsDataModel
 		diags := resp.State.Get(ctx, &stateVal)
 		require.False(t, diags.HasError())
 
@@ -194,6 +213,7 @@ func TestAponoGroupsDataSource(t *testing.T) {
 		assert.Equal(t, "g-123456", stateVal.Groups[0].ID.ValueString())
 		assert.Equal(t, "group-1", stateVal.Groups[0].Name.ValueString())
 		assert.Equal(t, "source-int-1", stateVal.Groups[0].SourceIntegrationID.ValueString())
+		assert.Equal(t, "Source Integration 1", stateVal.Groups[0].SourceIntegrationName.ValueString())
 	})
 
 	t.Run("Read_ApiError", func(t *testing.T) {
@@ -228,7 +248,7 @@ func TestAponoGroupsDataSource(t *testing.T) {
 	})
 }
 
-func (d *AponoGroupsDataSource) getTestSchema(ctx context.Context) schema.Schema {
+func (d *AponoManagedGroupsDataSource) getTestSchema(ctx context.Context) schema.Schema {
 	var resp datasource.SchemaResponse
 	d.Schema(ctx, datasource.SchemaRequest{}, &resp)
 	return resp.Schema
