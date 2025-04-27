@@ -17,12 +17,12 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowPu
 		Trigger: types.StringValue(response.Trigger),
 	}
 
-	if response.GrantDurationInMin.IsSet() {
-		model.GrantDurationInMin = types.Int32Value(response.GrantDurationInMin.Value)
+	if val, ok := response.GrantDurationInMin.Get(); ok {
+		model.GrantDurationInMin = types.Int32Value(val)
 	}
 
-	if response.Timeframe.IsSet() && !response.Timeframe.IsNull() {
-		timeframe, err := convertTimeframeToModel(ctx, response.Timeframe.Value)
+	if val, ok := response.Timeframe.Get(); ok {
+		timeframe, err := convertTimeframeToModel(ctx, val)
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert timeframe: %w", err)
 		}
@@ -35,8 +35,8 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowPu
 	}
 	model.Settings = settings
 
-	if response.ApproverPolicy.IsSet() && !response.ApproverPolicy.IsNull() {
-		approverPolicy, err := convertApproverPolicyToModel(ctx, response.ApproverPolicy.Value)
+	if val, ok := response.ApproverPolicy.Get(); ok {
+		approverPolicy, err := convertApproverPolicyToModel(ctx, val)
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert approver policy: %w", err)
 		}
@@ -136,16 +136,16 @@ func convertConditionToModel(ctx context.Context, condition client.ConditionPubl
 		Type: types.StringValue(condition.Type),
 	}
 
-	if condition.SourceIntegrationName.IsSet() && !condition.SourceIntegrationName.IsNull() {
-		model.SourceIntegrationName = types.StringValue(condition.SourceIntegrationName.Value)
+	if val, ok := condition.SourceIntegrationName.Get(); ok {
+		model.SourceIntegrationName = types.StringValue(val)
 	}
 
-	if condition.MatchOperator.IsSet() && !condition.MatchOperator.IsNull() {
-		model.MatchOperator = types.StringValue(condition.MatchOperator.Value)
+	if val, ok := condition.MatchOperator.Get(); ok {
+		model.MatchOperator = types.StringValue(val)
 	}
 
-	if condition.Values.IsSet() && !condition.Values.IsNull() {
-		valuesSet, diags := types.SetValueFrom(ctx, types.StringType, condition.Values.Value)
+	if val, ok := condition.Values.Get(); ok {
+		valuesSet, diags := types.SetValueFrom(ctx, types.StringType, val)
 		if diags.HasError() {
 			return nil, fmt.Errorf("failed to convert condition values: %v", diags)
 		}
@@ -161,23 +161,23 @@ func convertAccessTargetsToModel(ctx context.Context, accessTargets []client.Acc
 	for _, target := range accessTargets {
 		modelTarget := AccessTargetModel{}
 
-		if target.Integration.IsSet() && !target.Integration.IsNull() {
-			integrationTarget, err := convertIntegrationTargetToModel(ctx, target.Integration.Value)
+		if val, ok := target.Integration.Get(); ok {
+			integrationTarget, err := convertIntegrationTargetToModel(ctx, val)
 			if err != nil {
 				return nil, fmt.Errorf("failed to convert integration target: %w", err)
 			}
 			modelTarget.Integration = integrationTarget
 		}
 
-		if target.Bundle.IsSet() && !target.Bundle.IsNull() {
+		if val, ok := target.Bundle.Get(); ok {
 			modelTarget.Bundle = &AccessTargetBundleModel{
-				Name: types.StringValue(target.Bundle.Value.BundleName),
+				Name: types.StringValue(val.BundleName),
 			}
 		}
 
-		if target.AccessScope.IsSet() && !target.AccessScope.IsNull() {
+		if val, ok := target.AccessScope.Get(); ok {
 			modelTarget.AccessScope = &AccessScopeTargetModel{
-				Name: types.StringValue(target.AccessScope.Value.AccessScopeName),
+				Name: types.StringValue(val.AccessScopeName),
 			}
 		}
 
@@ -199,8 +199,8 @@ func convertIntegrationTargetToModel(ctx context.Context, integration client.Acc
 	}
 	model.Permissions = permissionsSet
 
-	if integration.ResourcesScopes.IsSet() && !integration.ResourcesScopes.IsNull() {
-		scopes, err := convertResourcesScopesToModel(ctx, integration.ResourcesScopes.Value)
+	if val, ok := integration.ResourcesScopes.Get(); ok {
+		scopes, err := convertResourcesScopesToModel(ctx, val)
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert resource scopes: %w", err)
 		}
@@ -219,8 +219,8 @@ func convertResourcesScopesToModel(ctx context.Context, scopes []client.Resource
 			Type:      types.StringValue(scope.Type),
 		}
 
-		if scope.Key.IsSet() {
-			modelScope.Key = types.StringValue(scope.Key.Value)
+		if val, ok := scope.Key.Get(); ok {
+			modelScope.Key = types.StringValue(val)
 		}
 
 		valuesSet, diags := types.SetValueFrom(ctx, types.StringType, scope.Values)

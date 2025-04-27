@@ -7,6 +7,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -83,68 +84,7 @@ func (r *AponoResourceIntegrationResource) Schema(_ context.Context, _ resource.
 				ElementType: types.StringType,
 				Required:    true,
 			},
-			"secret_store_config": schema.SingleNestedAttribute{
-				Description: "Configuration for secret store.",
-				Optional:    true,
-				Attributes: map[string]schema.Attribute{
-					"aws": schema.SingleNestedAttribute{
-						Description: "AWS secret store configuration.",
-						Optional:    true,
-						Attributes: map[string]schema.Attribute{
-							"region": schema.StringAttribute{
-								Description: "The AWS region.",
-								Required:    true,
-							},
-							"secret_id": schema.StringAttribute{
-								Description: "The AWS secret ID.",
-								Required:    true,
-							},
-						},
-					},
-					"gcp": schema.SingleNestedAttribute{
-						Description: "GCP secret store configuration.",
-						Optional:    true,
-						Attributes: map[string]schema.Attribute{
-							"project": schema.StringAttribute{
-								Description: "The GCP project.",
-								Required:    true,
-							},
-							"secret_id": schema.StringAttribute{
-								Description: "The GCP secret ID.",
-								Required:    true,
-							},
-						},
-					},
-					"azure": schema.SingleNestedAttribute{
-						Description: "Azure secret store configuration.",
-						Optional:    true,
-						Attributes: map[string]schema.Attribute{
-							"vault_url": schema.StringAttribute{
-								Description: "The Azure Vault URL.",
-								Required:    true,
-							},
-							"name": schema.StringAttribute{
-								Description: "The Azure secret name.",
-								Required:    true,
-							},
-						},
-					},
-					"hashicorp_vault": schema.SingleNestedAttribute{
-						Description: "HashiCorp Vault secret store configuration.",
-						Optional:    true,
-						Attributes: map[string]schema.Attribute{
-							"secret_engine": schema.StringAttribute{
-								Description: "The HashiCorp Vault secret engine.",
-								Required:    true,
-							},
-							"path": schema.StringAttribute{
-								Description: "The HashiCorp Vault path.",
-								Required:    true,
-							},
-						},
-					},
-				},
-			},
+			"secret_store_config": schemas.GetSecretStoreConfigSchema(schemas.ResourceMode),
 			"custom_access_details": schema.StringAttribute{
 				Description: "Custom details for accessing the resource.",
 				Optional:    true,
