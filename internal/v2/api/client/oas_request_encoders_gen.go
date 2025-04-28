@@ -11,100 +11,8 @@ import (
 	ht "github.com/ogen-go/ogen/http"
 )
 
-func encodeBulkDeleteAttributesFormIdentitiesRequest(
-	req []IdentityAttributeKeysModel,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		e.ArrStart()
-		for _, elem := range req {
-			elem.Encode(e)
-		}
-		e.ArrEnd()
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeBulkUpsertAttributesForIdentitiesRequest(
-	req []IdentityAttributeModel,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		e.ArrStart()
-		for _, elem := range req {
-			elem.Encode(e)
-		}
-		e.ArrEnd()
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeCreateAccessBundleRequest(
-	req *UpsertAccessBundleV1,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeCreateAccessFlowV1Request(
-	req *UpsertAccessFlowV1,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
 func encodeCreateAccessFlowV2Request(
 	req *AccessFlowUpsertPublicV2Model,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeCreateAccessRequestRequest(
-	req *CreateAccessRequest,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeCreateAccessRequestV4Request(
-	req *CreateAccessRequestV4,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -131,20 +39,6 @@ func encodeCreateAccessScopesV1Request(
 	return nil
 }
 
-func encodeCreateBundleV2Request(
-	req *UpsertBundlePublicV2Model,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
 func encodeCreateGroupV1Request(
 	req *CreateGroupV1,
 	r *http.Request,
@@ -159,106 +53,8 @@ func encodeCreateGroupV1Request(
 	return nil
 }
 
-func encodeCreateIntegrationV2Request(
-	req *CreateIntegration,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
 func encodeCreateIntegrationV4Request(
 	req *CreateIntegrationV4,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeGetGrantAccessConnectorActionParamsRequest(
-	req *GetGrantRevokeAccessConnectorActionParamsModel,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeGetRevokeAccessConnectorActionParamsRequest(
-	req *GetGrantRevokeAccessConnectorActionParamsModel,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeRequestAccessAgainV4Request(
-	req *RequestAgainV4,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeRevokeAccessRequestsRequest(
-	req *AccessRequestsBulkRevokeRequestV3,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeUpdateAccessBundleRequest(
-	req *UpdateAccessBundleV1,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeUpdateAccessFlowV1Request(
-	req *UpdateAccessFlowV1,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -287,20 +83,6 @@ func encodeUpdateAccessFlowV2Request(
 
 func encodeUpdateAccessScopesV1Request(
 	req *UpsertAccessScopeV1,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeUpdateBundleV2Request(
-	req *UpsertBundlePublicV2Model,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -355,36 +137,8 @@ func encodeUpdateGroupV1Request(
 	return nil
 }
 
-func encodeUpdateIntegrationV2Request(
-	req *UpdateIntegration,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
 func encodeUpdateIntegrationV4Request(
 	req *UpdateIntegrationV4,
-	r *http.Request,
-) error {
-	const contentType = "application/json"
-	e := new(jx.Encoder)
-	{
-		req.Encode(e)
-	}
-	encoded := e.Bytes()
-	ht.SetBody(r, bytes.NewReader(encoded), contentType)
-	return nil
-}
-
-func encodeUpdateResourceUserTagsRequest(
-	req *UpdateResourceUserTagsRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

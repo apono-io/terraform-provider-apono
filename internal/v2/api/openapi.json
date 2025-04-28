@@ -6321,10 +6321,7 @@
         }
       },
       "SecretConfig": {
-        "type": "object",
-        "additionalProperties": {
-          "type": "object"
-        }
+        "type": "object"
       },
       "SecretConfig1": {
         "type": "object"
