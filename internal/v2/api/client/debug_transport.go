@@ -2,6 +2,7 @@ package client
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -54,10 +55,14 @@ func (t *DebugTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 		}
 		bodyStr = strings.TrimSpace(bodyStr)
 
-		return resp, fmt.Errorf(
+		errorDetails := fmt.Sprintf(
 			"API Error Response:\nURL: %s\nMethod: %s\nStatus: %s\nBody: %s",
 			req.URL.String(), req.Method, resp.Status, bodyStr,
 		)
+
+		tflog.Error(req.Context(), errorDetails)
+
+		return resp, errors.New(errorDetails)
 	}
 
 	return resp, err
