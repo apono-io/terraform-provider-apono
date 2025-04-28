@@ -15,8 +15,9 @@ import (
 )
 
 var (
-	_ resource.Resource                = &AponoBundleV2Resource{}
-	_ resource.ResourceWithImportState = &AponoBundleV2Resource{}
+	_ resource.Resource                     = &AponoBundleV2Resource{}
+	_ resource.ResourceWithImportState      = &AponoBundleV2Resource{}
+	_ resource.ResourceWithConfigValidators = &AponoBundleV2Resource{}
 )
 
 func NewAponoBundleV2Resource() resource.Resource {
