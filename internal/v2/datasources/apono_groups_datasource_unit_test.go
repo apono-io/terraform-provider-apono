@@ -18,9 +18,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAponoManagedGroupsDataSource(t *testing.T) {
+func TestAponoGroupsDataSource(t *testing.T) {
 	mockInvoker := mocks.NewInvoker(t)
-	d := &AponoManagedGroupsDataSource{client: mockInvoker}
+	d := &AponoGroupsDataSource{client: mockInvoker}
 
 	getGroupsSetType := func() tftypes.Set {
 		return tftypes.Set{
@@ -222,7 +222,7 @@ func TestAponoManagedGroupsDataSource(t *testing.T) {
 	})
 }
 
-func (d *AponoManagedGroupsDataSource) getTestSchema(ctx context.Context) schema.Schema {
+func (d *AponoGroupsDataSource) getTestSchema(ctx context.Context) schema.Schema {
 	var resp datasource.SchemaResponse
 	d.Schema(ctx, datasource.SchemaRequest{}, &resp)
 	return resp.Schema

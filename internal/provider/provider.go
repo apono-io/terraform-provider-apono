@@ -178,7 +178,7 @@ func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewAccessBundleResource,
 		NewWebhookResource,
 		v2resources.NewAponoAccessScopeResource,
-		v2resources.NewAponoGroupResource,
+		v2resources.NewAponoManagedGroupResource,
 		v2resources.NewAponoResourceIntegrationResource,
 		v2resources.NewAponoAccessFlowV2Resource,
 		v2resources.NewAponoBundleV2Resource,
@@ -190,7 +190,7 @@ func (p *AponoProvider) DataSources(_ context.Context) []func() datasource.DataS
 		NewConnectorDataSource,
 		NewIntegrationsDataSource,
 		v2datasources.NewAponoAccessScopesDataSource,
-		v2datasources.NewAponoManagedGroupsDataSource,
+		v2datasources.NewAponoGroupsDataSource,
 		v2datasources.NewAponoUserInformationIntegrationsDataSource,
 	}
 }

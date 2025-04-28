@@ -16,9 +16,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAponoGroupResource(t *testing.T) {
+func TestAponoManagedGroupResource(t *testing.T) {
 	mockInvoker := mocks.NewInvoker(t)
-	r := &AponoGroupResource{client: mockInvoker}
+	r := &AponoManagedGroupResource{client: mockInvoker}
 
 	getStateType := func() tftypes.Type {
 		return tftypes.Object{
@@ -268,7 +268,7 @@ func TestAponoGroupResource(t *testing.T) {
 	})
 }
 
-func (r *AponoGroupResource) getTestSchema(ctx context.Context) schema.Schema {
+func (r *AponoManagedGroupResource) getTestSchema(ctx context.Context) schema.Schema {
 	var resp resource.SchemaResponse
 	r.Schema(ctx, resource.SchemaRequest{}, &resp)
 	return resp.Schema

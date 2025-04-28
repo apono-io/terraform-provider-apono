@@ -10,9 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccAponoGroupResource(t *testing.T) {
+func TestAccAponoManagedGroupResource(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-test")
-	resourceName := "apono_group.test"
+	resourceName := "apono_managed_group.test"
 
 	users, err := testcommon.GetUsers(t)
 	if err != nil {
@@ -32,7 +32,7 @@ func TestAccAponoGroupResource(t *testing.T) {
 		}
 
 		return fmt.Sprintf(`
-resource "apono_group" "test" {
+resource "apono_managed_group" "test" {
   name     = "%s"
   members  = [%s
   ]
@@ -47,7 +47,7 @@ resource "apono_group" "test" {
 		}
 
 		return fmt.Sprintf(`
-resource "apono_group" "test" {
+resource "apono_managed_group" "test" {
   name     = "%s"
   members  = [%s
   ]

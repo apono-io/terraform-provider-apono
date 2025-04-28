@@ -49,21 +49,15 @@ func (t *DebugTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 		resp.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
 		bodyStr := string(bodyBytes)
-		if len(bodyStr) > 1000 {
-			bodyStr = bodyStr[:1000] + "... [truncated]"
+		if len(bodyStr) > 4096 {
+			bodyStr = bodyStr[:4096] + "... [truncated]"
 		}
 		bodyStr = strings.TrimSpace(bodyStr)
 
-		errorDetail := fmt.Sprintf(
+		return resp, fmt.Errorf(
 			"API Error Response:\nURL: %s\nMethod: %s\nStatus: %s\nBody: %s",
 			req.URL.String(), req.Method, resp.Status, bodyStr,
 		)
-
-		tflog.Error(req.Context(), errorDetail)
-
-		if isAcceptanceTest {
-			fmt.Fprintf(os.Stderr, "\n[DEBUG] %s\n", errorDetail)
-		}
 	}
 
 	return resp, err
