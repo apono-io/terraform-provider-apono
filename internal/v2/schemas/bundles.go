@@ -1,11 +1,11 @@
-package resources
+package schemas
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func getIntegrationTargetSchema() schema.SingleNestedAttribute {
+func GetIntegrationTargetSchema() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
 		Description: "Integration target configuration",
 		Optional:    true,
@@ -52,7 +52,7 @@ func getIntegrationTargetSchema() schema.SingleNestedAttribute {
 	}
 }
 
-func getAccessScopeTargetSchema() schema.SingleNestedAttribute {
+func GetAccessScopeTargetSchema() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
 		Description: "Access scope configuration",
 		Optional:    true,

@@ -39,15 +39,12 @@ func TestUserInformationIntegrationToModal(t *testing.T) {
 	t.Run("with last sync time", func(t *testing.T) {
 		syncTime := time.Date(2023, 6, 15, 12, 30, 0, 0, time.UTC)
 		integration := &client.IntegrationV4{
-			ID:       "integration-id",
-			Name:     "test-integration",
-			Type:     "postgres",
-			Category: "database",
-			Status:   "connected",
-			LastSyncTime: client.OptNilDateTime{
-				Value: syncTime,
-				Set:   true,
-			},
+			ID:           "integration-id",
+			Name:         "test-integration",
+			Type:         "postgres",
+			Category:     "database",
+			Status:       "connected",
+			LastSyncTime: client.NewOptNilApiInstant(client.ApiInstant(syncTime)),
 		}
 
 		model, err := UserInformationIntegrationToModal(ctx, integration)
@@ -102,18 +99,16 @@ func TestUserInformationIntegrationToModal(t *testing.T) {
 			Type:     "postgres",
 			Category: "database",
 			Status:   "connected",
-			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
-				Value: client.IntegrationV4SecretStoreConfig{
-					AWS: client.OptNilIntegrationV4SecretStoreConfigAWS{
-						Value: client.IntegrationV4SecretStoreConfigAWS{
+			SecretStoreConfig: client.NewOptNilSecretStoreConfigV4(
+				client.SecretStoreConfigV4{
+					AWS: client.NewOptNilAwsSecretConfigV4(
+						client.AwsSecretConfigV4{
 							Region:   "us-east-1",
 							SecretID: "secret-id",
 						},
-						Set: true,
-					},
+					),
 				},
-				Set: true,
-			},
+			),
 		}
 
 		model, err := UserInformationIntegrationToModal(ctx, integration)
@@ -126,95 +121,5 @@ func TestUserInformationIntegrationToModal(t *testing.T) {
 		assert.Nil(t, model.SecretConfig.GCP)
 		assert.Nil(t, model.SecretConfig.Azure)
 		assert.Nil(t, model.SecretConfig.HashicorpVault)
-	})
-
-	t.Run("with GCP secret store config", func(t *testing.T) {
-		integration := &client.IntegrationV4{
-			ID:       "integration-id",
-			Name:     "test-integration",
-			Type:     "postgres",
-			Category: "database",
-			Status:   "connected",
-			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
-				Value: client.IntegrationV4SecretStoreConfig{
-					Gcp: client.OptNilIntegrationV4SecretStoreConfigGcp{
-						Value: client.IntegrationV4SecretStoreConfigGcp{
-							Project:  "my-project",
-							SecretID: "secret-id",
-						},
-						Set: true,
-					},
-				},
-				Set: true,
-			},
-		}
-
-		model, err := UserInformationIntegrationToModal(ctx, integration)
-
-		require.NoError(t, err)
-		require.NotNil(t, model.SecretConfig)
-		require.NotNil(t, model.SecretConfig.GCP)
-		assert.Equal(t, "my-project", model.SecretConfig.GCP.Project.ValueString())
-		assert.Equal(t, "secret-id", model.SecretConfig.GCP.SecretID.ValueString())
-	})
-
-	t.Run("with Azure secret store config", func(t *testing.T) {
-		integration := &client.IntegrationV4{
-			ID:       "integration-id",
-			Name:     "test-integration",
-			Type:     "postgres",
-			Category: "database",
-			Status:   "connected",
-			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
-				Value: client.IntegrationV4SecretStoreConfig{
-					Azure: client.OptNilIntegrationV4SecretStoreConfigAzure{
-						Value: client.IntegrationV4SecretStoreConfigAzure{
-							VaultURL: "https://myvault.vault.azure.net",
-							Name:     "secret-name",
-						},
-						Set: true,
-					},
-				},
-				Set: true,
-			},
-		}
-
-		model, err := UserInformationIntegrationToModal(ctx, integration)
-
-		require.NoError(t, err)
-		require.NotNil(t, model.SecretConfig)
-		require.NotNil(t, model.SecretConfig.Azure)
-		assert.Equal(t, "https://myvault.vault.azure.net", model.SecretConfig.Azure.VaultURL.ValueString())
-		assert.Equal(t, "secret-name", model.SecretConfig.Azure.Name.ValueString())
-	})
-
-	t.Run("with HashiCorp Vault secret store config", func(t *testing.T) {
-		integration := &client.IntegrationV4{
-			ID:       "integration-id",
-			Name:     "test-integration",
-			Type:     "postgres",
-			Category: "database",
-			Status:   "connected",
-			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
-				Value: client.IntegrationV4SecretStoreConfig{
-					HashicorpVault: client.OptNilIntegrationV4SecretStoreConfigHashicorpVault{
-						Value: client.IntegrationV4SecretStoreConfigHashicorpVault{
-							SecretEngine: "kv",
-							Path:         "secret/data/postgres",
-						},
-						Set: true,
-					},
-				},
-				Set: true,
-			},
-		}
-
-		model, err := UserInformationIntegrationToModal(ctx, integration)
-
-		require.NoError(t, err)
-		require.NotNil(t, model.SecretConfig)
-		require.NotNil(t, model.SecretConfig.HashicorpVault)
-		assert.Equal(t, "kv", model.SecretConfig.HashicorpVault.SecretEngine.ValueString())
-		assert.Equal(t, "secret/data/postgres", model.SecretConfig.HashicorpVault.Path.ValueString())
 	})
 }

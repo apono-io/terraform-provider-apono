@@ -58,7 +58,7 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowPu
 	return &model, nil
 }
 
-func convertTimeframeToModel(ctx context.Context, timeframe client.AccessFlowPublicV2ModelTimeframe) (*AccessFlowTimeframeModel, error) {
+func convertTimeframeToModel(ctx context.Context, timeframe client.AccessFlowTimeframePublicV2Model) (*AccessFlowTimeframeModel, error) {
 	daysOfWeek := []string{}
 	for _, day := range timeframe.DaysOfWeek {
 		daysOfWeek = append(daysOfWeek, string(day))
@@ -77,7 +77,7 @@ func convertTimeframeToModel(ctx context.Context, timeframe client.AccessFlowPub
 	}, nil
 }
 
-func convertApproverPolicyToModel(ctx context.Context, policy client.AccessFlowPublicV2ModelApproverPolicy) (*AccessFlowApproverPolicy, error) {
+func convertApproverPolicyToModel(ctx context.Context, policy client.ApproverPolicyPublicV2Model) (*AccessFlowApproverPolicy, error) {
 	model := &AccessFlowApproverPolicy{
 		ApprovalMode: types.StringValue(policy.ApprovalMode),
 	}
@@ -155,11 +155,11 @@ func convertConditionToModel(ctx context.Context, condition client.ConditionPubl
 	return model, nil
 }
 
-func convertAccessTargetsToModel(ctx context.Context, accessTargets []client.AccessTargetPublicV2Model) ([]AccessTargetModel, error) {
-	var modelTargets []AccessTargetModel
+func convertAccessTargetsToModel(ctx context.Context, accessTargets []client.AccessTargetPublicV2Model) ([]AccessFlowAccessTargetModel, error) {
+	var modelTargets []AccessFlowAccessTargetModel
 
 	for _, target := range accessTargets {
-		modelTarget := AccessTargetModel{}
+		modelTarget := AccessFlowAccessTargetModel{}
 
 		if val, ok := target.Integration.Get(); ok {
 			integrationTarget, err := convertIntegrationTargetToModel(ctx, val)
@@ -170,7 +170,7 @@ func convertAccessTargetsToModel(ctx context.Context, accessTargets []client.Acc
 		}
 
 		if val, ok := target.Bundle.Get(); ok {
-			modelTarget.Bundle = &AccessTargetBundleModel{
+			modelTarget.Bundle = &AccessFlowTargetBundleModel{
 				Name: types.StringValue(val.BundleName),
 			}
 		}
@@ -187,7 +187,7 @@ func convertAccessTargetsToModel(ctx context.Context, accessTargets []client.Acc
 	return modelTargets, nil
 }
 
-func convertIntegrationTargetToModel(ctx context.Context, integration client.AccessTargetPublicV2ModelIntegration) (*IntegrationTargetModel, error) {
+func convertIntegrationTargetToModel(ctx context.Context, integration client.IntegrationAccessTargetPublicV2Model) (*IntegrationTargetModel, error) {
 	model := &IntegrationTargetModel{
 		IntegrationName: types.StringValue(integration.IntegrationName),
 		ResourceType:    types.StringValue(integration.ResourceType),

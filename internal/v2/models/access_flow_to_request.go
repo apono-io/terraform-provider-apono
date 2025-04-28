@@ -63,8 +63,8 @@ func AccessFlowV2ModelToUpsertRequest(ctx context.Context, model AccessFlowV2Mod
 	return &upsert, nil
 }
 
-func convertTimeframeToUpsertRequest(ctx context.Context, model AccessFlowTimeframeModel) (*client.AccessFlowUpsertPublicV2ModelTimeframe, error) {
-	timeframe := client.AccessFlowUpsertPublicV2ModelTimeframe{
+func convertTimeframeToUpsertRequest(ctx context.Context, model AccessFlowTimeframeModel) (*client.AccessFlowTimeframePublicV2Model, error) {
+	timeframe := client.AccessFlowTimeframePublicV2Model{
 		StartTime: model.StartTime.ValueString(),
 		EndTime:   model.EndTime.ValueString(),
 		TimeZone:  model.TimeZone.ValueString(),
@@ -85,8 +85,8 @@ func convertTimeframeToUpsertRequest(ctx context.Context, model AccessFlowTimefr
 	return &timeframe, nil
 }
 
-func convertApproverPolicyToUpsertRequest(ctx context.Context, model AccessFlowApproverPolicy) (*client.AccessFlowUpsertPublicV2ModelApproverPolicy, error) {
-	policy := client.AccessFlowUpsertPublicV2ModelApproverPolicy{
+func convertApproverPolicyToUpsertRequest(ctx context.Context, model AccessFlowApproverPolicy) (*client.ApproverPolicyUpsertPublicV2Model, error) {
+	policy := client.ApproverPolicyUpsertPublicV2Model{
 		ApprovalMode: model.ApprovalMode.ValueString(),
 	}
 
@@ -172,7 +172,7 @@ func convertConditionToUpsertRequest(ctx context.Context, model AccessFlowCondit
 	return &condition, nil
 }
 
-func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessTargetModel) ([]client.AccessTargetUpsertPublicV2Model, error) {
+func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessFlowAccessTargetModel) ([]client.AccessTargetUpsertPublicV2Model, error) {
 	var targets []client.AccessTargetUpsertPublicV2Model
 
 	for i, model := range models {
@@ -191,7 +191,7 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessTar
 		}
 
 		if model.Bundle != nil {
-			bundle := client.AccessTargetUpsertPublicV2ModelBundle{
+			bundle := client.BundleAccessTargetUpsertPublicV2Model{
 				BundleReference: model.Bundle.Name.ValueString(),
 			}
 
@@ -202,7 +202,7 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessTar
 		}
 
 		if model.AccessScope != nil {
-			scope := client.AccessTargetUpsertPublicV2ModelAccessScope{
+			scope := client.AccessScopeAccessTargetUpsertPublicV2Model{
 				AccessScopeReference: model.AccessScope.Name.ValueString(),
 			}
 
@@ -221,8 +221,8 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessTar
 	return targets, nil
 }
 
-func convertIntegrationTargetToUpsertRequest(ctx context.Context, model IntegrationTargetModel) (*client.AccessTargetUpsertPublicV2ModelIntegration, error) {
-	integration := client.AccessTargetUpsertPublicV2ModelIntegration{
+func convertIntegrationTargetToUpsertRequest(ctx context.Context, model IntegrationTargetModel) (*client.IntegrationAccessTargetUpsertPublicV2Model, error) {
+	integration := client.IntegrationAccessTargetUpsertPublicV2Model{
 		IntegrationReference: model.IntegrationName.ValueString(),
 		ResourceType:         model.ResourceType.ValueString(),
 	}

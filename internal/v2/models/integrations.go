@@ -38,30 +38,30 @@ type HashicorpVaultConfig struct {
 	Path         types.String `tfsdk:"path"`
 }
 
-func createSecretStoreConfig(config *SecretStoreConfig) client.CreateIntegrationV4SecretStoreConfig {
-	secretConfig := client.CreateIntegrationV4SecretStoreConfig{}
+func upsertSecretStoreConfig(config *SecretStoreConfig) client.UpsertSecretStoreConfigV4 {
+	secretConfig := client.UpsertSecretStoreConfigV4{}
 
 	if config.AWS != nil {
 		awsConfig := config.AWS
-		secretConfig.AWS = client.NewOptNilCreateIntegrationV4SecretStoreConfigAWS(client.CreateIntegrationV4SecretStoreConfigAWS{
+		secretConfig.AWS = client.NewOptNilAwsSecretConfigV4(client.AwsSecretConfigV4{
 			Region:   awsConfig.Region.ValueString(),
 			SecretID: awsConfig.SecretID.ValueString(),
 		})
 	} else if config.GCP != nil {
 		gcpConfig := config.GCP
-		secretConfig.Gcp = client.NewOptNilCreateIntegrationV4SecretStoreConfigGcp(client.CreateIntegrationV4SecretStoreConfigGcp{
+		secretConfig.Gcp = client.NewOptNilGcpSecretConfigV4(client.GcpSecretConfigV4{
 			Project:  gcpConfig.Project.ValueString(),
 			SecretID: gcpConfig.SecretID.ValueString(),
 		})
 	} else if config.Azure != nil {
 		azureConfig := config.Azure
-		secretConfig.Azure = client.NewOptNilCreateIntegrationV4SecretStoreConfigAzure(client.CreateIntegrationV4SecretStoreConfigAzure{
+		secretConfig.Azure = client.NewOptNilAzureSecretConfigV4(client.AzureSecretConfigV4{
 			VaultURL: azureConfig.VaultURL.ValueString(),
 			Name:     azureConfig.Name.ValueString(),
 		})
 	} else if config.HashicorpVault != nil {
 		vaultConfig := config.HashicorpVault
-		secretConfig.HashicorpVault = client.NewOptNilCreateIntegrationV4SecretStoreConfigHashicorpVault(client.CreateIntegrationV4SecretStoreConfigHashicorpVault{
+		secretConfig.HashicorpVault = client.NewOptNilHashicorpVaultSecretConfigV4(client.HashicorpVaultSecretConfigV4{
 			SecretEngine: vaultConfig.SecretEngine.ValueString(),
 			Path:         vaultConfig.Path.ValueString(),
 		})
@@ -70,39 +70,7 @@ func createSecretStoreConfig(config *SecretStoreConfig) client.CreateIntegration
 	return secretConfig
 }
 
-func updateSecretStoreConfig(config *SecretStoreConfig) client.UpdateIntegrationV4SecretStoreConfig {
-	secretConfig := client.UpdateIntegrationV4SecretStoreConfig{}
-
-	if config.AWS != nil {
-		awsConfig := config.AWS
-		secretConfig.AWS = client.NewOptNilUpdateIntegrationV4SecretStoreConfigAWS(client.UpdateIntegrationV4SecretStoreConfigAWS{
-			Region:   awsConfig.Region.ValueString(),
-			SecretID: awsConfig.SecretID.ValueString(),
-		})
-	} else if config.GCP != nil {
-		gcpConfig := config.GCP
-		secretConfig.Gcp = client.NewOptNilUpdateIntegrationV4SecretStoreConfigGcp(client.UpdateIntegrationV4SecretStoreConfigGcp{
-			Project:  gcpConfig.Project.ValueString(),
-			SecretID: gcpConfig.SecretID.ValueString(),
-		})
-	} else if config.Azure != nil {
-		azureConfig := config.Azure
-		secretConfig.Azure = client.NewOptNilUpdateIntegrationV4SecretStoreConfigAzure(client.UpdateIntegrationV4SecretStoreConfigAzure{
-			VaultURL: azureConfig.VaultURL.ValueString(),
-			Name:     azureConfig.Name.ValueString(),
-		})
-	} else if config.HashicorpVault != nil {
-		vaultConfig := config.HashicorpVault
-		secretConfig.HashicorpVault = client.NewOptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault(client.UpdateIntegrationV4SecretStoreConfigHashicorpVault{
-			SecretEngine: vaultConfig.SecretEngine.ValueString(),
-			Path:         vaultConfig.Path.ValueString(),
-		})
-	}
-
-	return secretConfig
-}
-
-func convertSecretStoreConfigToModel(apiSecretConfig client.IntegrationV4SecretStoreConfig) *SecretStoreConfig {
+func convertSecretStoreConfigToModel(apiSecretConfig client.SecretStoreConfigV4) *SecretStoreConfig {
 	secretConfig := &SecretStoreConfig{}
 
 	if awsConfig, ok := apiSecretConfig.AWS.Get(); ok {

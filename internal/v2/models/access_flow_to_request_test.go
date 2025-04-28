@@ -34,9 +34,9 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 				},
 			},
 		},
-		AccessTargets: []AccessTargetModel{
+		AccessTargets: []AccessFlowAccessTargetModel{
 			{
-				Bundle: &AccessTargetBundleModel{
+				Bundle: &AccessFlowTargetBundleModel{
 					Name: types.StringValue("PROD ENV"),
 				},
 			},
@@ -175,9 +175,9 @@ func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
 				},
 			},
 		},
-		AccessTargets: []AccessTargetModel{
+		AccessTargets: []AccessFlowAccessTargetModel{
 			{
-				Bundle: &AccessTargetBundleModel{
+				Bundle: &AccessFlowTargetBundleModel{
 					Name: types.StringValue("QA ENV"),
 				},
 			},

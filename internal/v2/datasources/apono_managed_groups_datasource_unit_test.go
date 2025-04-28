@@ -49,32 +49,20 @@ func TestAponoManagedGroupsDataSource(t *testing.T) {
 		mockListResponse := &client.PublicApiListResponseGroupPublicV1Model{
 			Items: []client.GroupV1{
 				{
-					ID:   "g-123456",
-					Name: "test-group-1",
-					SourceIntegrationID: client.OptNilString{
-						Value: "source-int-1",
-						Set:   true,
-					},
-					SourceIntegrationName: client.OptNilString{
-						Value: "Source Integration 1",
-						Set:   true,
-					},
+					ID:                    "g-123456",
+					Name:                  "test-group-1",
+					SourceIntegrationID:   client.NewOptNilString("source-int-1"),
+					SourceIntegrationName: client.NewOptNilString("Source Integration 1"),
 				},
 				{
-					ID:   "g-789012",
-					Name: "test-group-2",
-					SourceIntegrationID: client.OptNilString{
-						Value: "",
-						Set:   false,
-					},
-					SourceIntegrationName: client.OptNilString{
-						Value: "",
-						Set:   false,
-					},
+					ID:                    "g-789012",
+					Name:                  "test-group-2",
+					SourceIntegrationID:   client.NewOptNilString(""),
+					SourceIntegrationName: client.NewOptNilString(""),
 				},
 			},
 			Pagination: client.PublicApiPaginationInfoModel{
-				NextPageToken: client.OptNilString{},
+				NextPageToken: client.NewOptNilString(""),
 			},
 		}
 
@@ -144,32 +132,20 @@ func TestAponoManagedGroupsDataSource(t *testing.T) {
 		mockListResponse := &client.PublicApiListResponseGroupPublicV1Model{
 			Items: []client.GroupV1{
 				{
-					ID:   "g-123456",
-					Name: "group-1",
-					SourceIntegrationID: client.OptNilString{
-						Value: "source-int-1",
-						Set:   true,
-					},
-					SourceIntegrationName: client.OptNilString{
-						Value: "Source Integration 1",
-						Set:   true,
-					},
+					ID:                    "g-123456",
+					Name:                  "group-1",
+					SourceIntegrationID:   client.NewOptNilString("source-int-1"),
+					SourceIntegrationName: client.NewOptNilString("Source Integration 1"),
 				},
 				{
-					ID:   "g-789012",
-					Name: "group-2",
-					SourceIntegrationID: client.OptNilString{
-						Value: "source-int-2",
-						Set:   true,
-					},
-					SourceIntegrationName: client.OptNilString{
-						Value: "Source Integration 2",
-						Set:   true,
-					},
+					ID:                    "g-789012",
+					Name:                  "group-2",
+					SourceIntegrationID:   client.NewOptNilString("source-int-2"),
+					SourceIntegrationName: client.NewOptNilString("Source Integration 2"),
 				},
 			},
 			Pagination: client.PublicApiPaginationInfoModel{
-				NextPageToken: client.OptNilString{},
+				NextPageToken: client.NewOptNilString(""),
 			},
 		}
 

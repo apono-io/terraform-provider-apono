@@ -3,16 +3,16 @@ package models
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AccessFlowV2Model struct {
-	ID                 types.String               `tfsdk:"id"`
-	Name               types.String               `tfsdk:"name"`
-	Active             types.Bool                 `tfsdk:"active"`
-	Trigger            types.String               `tfsdk:"trigger"`
-	GrantDurationInMin types.Int32                `tfsdk:"grant_duration_in_min"`
-	Timeframe          *AccessFlowTimeframeModel  `tfsdk:"timeframe"`
-	ApproverPolicy     *AccessFlowApproverPolicy  `tfsdk:"approver_policy"`
-	Requestors         *AccessFlowRequestorsModel `tfsdk:"requestors"`
-	AccessTargets      []AccessTargetModel        `tfsdk:"access_targets"`
-	Settings           *AccessFlowSettingsModel   `tfsdk:"settings"`
+	ID                 types.String                  `tfsdk:"id"`
+	Name               types.String                  `tfsdk:"name"`
+	Active             types.Bool                    `tfsdk:"active"`
+	Trigger            types.String                  `tfsdk:"trigger"`
+	GrantDurationInMin types.Int32                   `tfsdk:"grant_duration_in_min"`
+	Timeframe          *AccessFlowTimeframeModel     `tfsdk:"timeframe"`
+	ApproverPolicy     *AccessFlowApproverPolicy     `tfsdk:"approver_policy"`
+	Requestors         *AccessFlowRequestorsModel    `tfsdk:"requestors"`
+	AccessTargets      []AccessFlowAccessTargetModel `tfsdk:"access_targets"`
+	Settings           *AccessFlowSettingsModel      `tfsdk:"settings"`
 }
 
 type AccessFlowTimeframeModel struct {
@@ -52,12 +52,12 @@ type AccessFlowSettingsModel struct {
 	Labels                     types.Set  `tfsdk:"labels"`
 }
 
-type AccessTargetModel struct {
-	Integration *IntegrationTargetModel  `tfsdk:"integration"`
-	Bundle      *AccessTargetBundleModel `tfsdk:"bundle"`
-	AccessScope *AccessScopeTargetModel  `tfsdk:"access_scope"`
+type AccessFlowTargetBundleModel struct {
+	Name types.String `tfsdk:"name"`
 }
 
-type AccessTargetBundleModel struct {
-	Name types.String `tfsdk:"name"`
+type AccessFlowAccessTargetModel struct {
+	Integration *IntegrationTargetModel      `tfsdk:"integration"`
+	Bundle      *AccessFlowTargetBundleModel `tfsdk:"bundle"`
+	AccessScope *AccessScopeTargetModel      `tfsdk:"access_scope"`
 }

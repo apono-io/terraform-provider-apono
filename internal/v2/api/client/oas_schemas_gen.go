@@ -12,203 +12,55 @@ import (
 // AccessBundleAccessTargetV2.
 // Ref: #/components/schemas/AccessBundleAccessTargetPublicV2Model
 type AccessBundleAccessTargetPublicV2Model struct {
-	Integration OptNilAccessBundleAccessTargetPublicV2ModelIntegration `json:"integration"`
-	AccessScope OptNilAccessBundleAccessTargetPublicV2ModelAccessScope `json:"access_scope"`
+	Integration OptNilIntegrationAccessTargetPublicV2Model `json:"integration"`
+	AccessScope OptNilAccessScopeAccessTargetPublicV2Model `json:"access_scope"`
 }
 
 // GetIntegration returns the value of Integration.
-func (s *AccessBundleAccessTargetPublicV2Model) GetIntegration() OptNilAccessBundleAccessTargetPublicV2ModelIntegration {
+func (s *AccessBundleAccessTargetPublicV2Model) GetIntegration() OptNilIntegrationAccessTargetPublicV2Model {
 	return s.Integration
 }
 
 // GetAccessScope returns the value of AccessScope.
-func (s *AccessBundleAccessTargetPublicV2Model) GetAccessScope() OptNilAccessBundleAccessTargetPublicV2ModelAccessScope {
+func (s *AccessBundleAccessTargetPublicV2Model) GetAccessScope() OptNilAccessScopeAccessTargetPublicV2Model {
 	return s.AccessScope
 }
 
 // SetIntegration sets the value of Integration.
-func (s *AccessBundleAccessTargetPublicV2Model) SetIntegration(val OptNilAccessBundleAccessTargetPublicV2ModelIntegration) {
+func (s *AccessBundleAccessTargetPublicV2Model) SetIntegration(val OptNilIntegrationAccessTargetPublicV2Model) {
 	s.Integration = val
 }
 
 // SetAccessScope sets the value of AccessScope.
-func (s *AccessBundleAccessTargetPublicV2Model) SetAccessScope(val OptNilAccessBundleAccessTargetPublicV2ModelAccessScope) {
+func (s *AccessBundleAccessTargetPublicV2Model) SetAccessScope(val OptNilAccessScopeAccessTargetPublicV2Model) {
 	s.AccessScope = val
-}
-
-// AccessScopeAccessTargetV2.
-type AccessBundleAccessTargetPublicV2ModelAccessScope struct {
-	AccessScopeID   string `json:"access_scope_id"`
-	AccessScopeName string `json:"access_scope_name"`
-}
-
-// GetAccessScopeID returns the value of AccessScopeID.
-func (s *AccessBundleAccessTargetPublicV2ModelAccessScope) GetAccessScopeID() string {
-	return s.AccessScopeID
-}
-
-// GetAccessScopeName returns the value of AccessScopeName.
-func (s *AccessBundleAccessTargetPublicV2ModelAccessScope) GetAccessScopeName() string {
-	return s.AccessScopeName
-}
-
-// SetAccessScopeID sets the value of AccessScopeID.
-func (s *AccessBundleAccessTargetPublicV2ModelAccessScope) SetAccessScopeID(val string) {
-	s.AccessScopeID = val
-}
-
-// SetAccessScopeName sets the value of AccessScopeName.
-func (s *AccessBundleAccessTargetPublicV2ModelAccessScope) SetAccessScopeName(val string) {
-	s.AccessScopeName = val
-}
-
-// IntegrationAccessTargetV2.
-type AccessBundleAccessTargetPublicV2ModelIntegration struct {
-	IntegrationID   string                                                        `json:"integration_id"`
-	IntegrationName string                                                        `json:"integration_name"`
-	ResourceType    string                                                        `json:"resource_type"`
-	Permissions     []string                                                      `json:"permissions"`
-	ResourcesScopes OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray `json:"resources_scopes"`
-}
-
-// GetIntegrationID returns the value of IntegrationID.
-func (s *AccessBundleAccessTargetPublicV2ModelIntegration) GetIntegrationID() string {
-	return s.IntegrationID
-}
-
-// GetIntegrationName returns the value of IntegrationName.
-func (s *AccessBundleAccessTargetPublicV2ModelIntegration) GetIntegrationName() string {
-	return s.IntegrationName
-}
-
-// GetResourceType returns the value of ResourceType.
-func (s *AccessBundleAccessTargetPublicV2ModelIntegration) GetResourceType() string {
-	return s.ResourceType
-}
-
-// GetPermissions returns the value of Permissions.
-func (s *AccessBundleAccessTargetPublicV2ModelIntegration) GetPermissions() []string {
-	return s.Permissions
-}
-
-// GetResourcesScopes returns the value of ResourcesScopes.
-func (s *AccessBundleAccessTargetPublicV2ModelIntegration) GetResourcesScopes() OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray {
-	return s.ResourcesScopes
-}
-
-// SetIntegrationID sets the value of IntegrationID.
-func (s *AccessBundleAccessTargetPublicV2ModelIntegration) SetIntegrationID(val string) {
-	s.IntegrationID = val
-}
-
-// SetIntegrationName sets the value of IntegrationName.
-func (s *AccessBundleAccessTargetPublicV2ModelIntegration) SetIntegrationName(val string) {
-	s.IntegrationName = val
-}
-
-// SetResourceType sets the value of ResourceType.
-func (s *AccessBundleAccessTargetPublicV2ModelIntegration) SetResourceType(val string) {
-	s.ResourceType = val
-}
-
-// SetPermissions sets the value of Permissions.
-func (s *AccessBundleAccessTargetPublicV2ModelIntegration) SetPermissions(val []string) {
-	s.Permissions = val
-}
-
-// SetResourcesScopes sets the value of ResourcesScopes.
-func (s *AccessBundleAccessTargetPublicV2ModelIntegration) SetResourcesScopes(val OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) {
-	s.ResourcesScopes = val
 }
 
 // AccessBundleAccessTargetUpsertV2.
 // Ref: #/components/schemas/AccessBundleAccessTargetUpsertPublicV2Model
 type AccessBundleAccessTargetUpsertPublicV2Model struct {
-	Integration OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration `json:"integration"`
-	AccessScope OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope `json:"access_scope"`
+	Integration OptNilIntegrationAccessTargetUpsertPublicV2Model `json:"integration"`
+	AccessScope OptNilAccessScopeAccessTargetUpsertPublicV2Model `json:"access_scope"`
 }
 
 // GetIntegration returns the value of Integration.
-func (s *AccessBundleAccessTargetUpsertPublicV2Model) GetIntegration() OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration {
+func (s *AccessBundleAccessTargetUpsertPublicV2Model) GetIntegration() OptNilIntegrationAccessTargetUpsertPublicV2Model {
 	return s.Integration
 }
 
 // GetAccessScope returns the value of AccessScope.
-func (s *AccessBundleAccessTargetUpsertPublicV2Model) GetAccessScope() OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope {
+func (s *AccessBundleAccessTargetUpsertPublicV2Model) GetAccessScope() OptNilAccessScopeAccessTargetUpsertPublicV2Model {
 	return s.AccessScope
 }
 
 // SetIntegration sets the value of Integration.
-func (s *AccessBundleAccessTargetUpsertPublicV2Model) SetIntegration(val OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration) {
+func (s *AccessBundleAccessTargetUpsertPublicV2Model) SetIntegration(val OptNilIntegrationAccessTargetUpsertPublicV2Model) {
 	s.Integration = val
 }
 
 // SetAccessScope sets the value of AccessScope.
-func (s *AccessBundleAccessTargetUpsertPublicV2Model) SetAccessScope(val OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope) {
+func (s *AccessBundleAccessTargetUpsertPublicV2Model) SetAccessScope(val OptNilAccessScopeAccessTargetUpsertPublicV2Model) {
 	s.AccessScope = val
-}
-
-// AccessScopeAccessTargetUpsertV2.
-type AccessBundleAccessTargetUpsertPublicV2ModelAccessScope struct {
-	AccessScopeReference string `json:"access_scope_reference"`
-}
-
-// GetAccessScopeReference returns the value of AccessScopeReference.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelAccessScope) GetAccessScopeReference() string {
-	return s.AccessScopeReference
-}
-
-// SetAccessScopeReference sets the value of AccessScopeReference.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelAccessScope) SetAccessScopeReference(val string) {
-	s.AccessScopeReference = val
-}
-
-// IntegrationAccessTargetUpsertV2.
-type AccessBundleAccessTargetUpsertPublicV2ModelIntegration struct {
-	IntegrationReference string                                                        `json:"integration_reference"`
-	ResourceType         string                                                        `json:"resource_type"`
-	Permissions          []string                                                      `json:"permissions"`
-	ResourcesScopes      OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray `json:"resources_scopes"`
-}
-
-// GetIntegrationReference returns the value of IntegrationReference.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) GetIntegrationReference() string {
-	return s.IntegrationReference
-}
-
-// GetResourceType returns the value of ResourceType.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) GetResourceType() string {
-	return s.ResourceType
-}
-
-// GetPermissions returns the value of Permissions.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) GetPermissions() []string {
-	return s.Permissions
-}
-
-// GetResourcesScopes returns the value of ResourcesScopes.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) GetResourcesScopes() OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray {
-	return s.ResourcesScopes
-}
-
-// SetIntegrationReference sets the value of IntegrationReference.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) SetIntegrationReference(val string) {
-	s.IntegrationReference = val
-}
-
-// SetResourceType sets the value of ResourceType.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) SetResourceType(val string) {
-	s.ResourceType = val
-}
-
-// SetPermissions sets the value of Permissions.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) SetPermissions(val []string) {
-	s.Permissions = val
-}
-
-// SetResourcesScopes sets the value of ResourcesScopes.
-func (s *AccessBundleAccessTargetUpsertPublicV2ModelIntegration) SetResourcesScopes(val OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) {
-	s.ResourcesScopes = val
 }
 
 // Ref: #/components/schemas/AccessBundleV1
@@ -251,18 +103,18 @@ func (s *AccessBundleV1) SetIntegrationTargets(val []AccessTargetIntegrationV1) 
 // AccessFlowV2.
 // Ref: #/components/schemas/AccessFlowPublicV2Model
 type AccessFlowPublicV2Model struct {
-	ID                 string                                      `json:"id"`
-	Name               string                                      `json:"name"`
-	Active             bool                                        `json:"active"`
-	Trigger            string                                      `json:"trigger"`
-	Requestors         RequestorsPublicV2Model                     `json:"requestors"`
-	AccessTargets      []AccessTargetPublicV2Model                 `json:"access_targets"`
-	ApproverPolicy     OptNilAccessFlowPublicV2ModelApproverPolicy `json:"approver_policy"`
-	GrantDurationInMin OptNilInt32                                 `json:"grant_duration_in_min"`
-	Timeframe          OptNilAccessFlowPublicV2ModelTimeframe      `json:"timeframe"`
-	Settings           AccessFlowSettingsPublicV2Model             `json:"settings"`
-	CreationDate       ApiInstant                                  `json:"creation_date"`
-	UpdateDate         OptNilDateTime                              `json:"update_date"`
+	ID                 string                                 `json:"id"`
+	Name               string                                 `json:"name"`
+	Active             bool                                   `json:"active"`
+	Trigger            string                                 `json:"trigger"`
+	Requestors         RequestorsPublicV2Model                `json:"requestors"`
+	AccessTargets      []AccessTargetPublicV2Model            `json:"access_targets"`
+	ApproverPolicy     OptNilApproverPolicyPublicV2Model      `json:"approver_policy"`
+	GrantDurationInMin OptNilInt32                            `json:"grant_duration_in_min"`
+	Timeframe          OptNilAccessFlowTimeframePublicV2Model `json:"timeframe"`
+	Settings           AccessFlowSettingsPublicV2Model        `json:"settings"`
+	CreationDate       ApiInstant                             `json:"creation_date"`
+	UpdateDate         OptNilApiInstant                       `json:"update_date"`
 }
 
 // GetID returns the value of ID.
@@ -296,7 +148,7 @@ func (s *AccessFlowPublicV2Model) GetAccessTargets() []AccessTargetPublicV2Model
 }
 
 // GetApproverPolicy returns the value of ApproverPolicy.
-func (s *AccessFlowPublicV2Model) GetApproverPolicy() OptNilAccessFlowPublicV2ModelApproverPolicy {
+func (s *AccessFlowPublicV2Model) GetApproverPolicy() OptNilApproverPolicyPublicV2Model {
 	return s.ApproverPolicy
 }
 
@@ -306,7 +158,7 @@ func (s *AccessFlowPublicV2Model) GetGrantDurationInMin() OptNilInt32 {
 }
 
 // GetTimeframe returns the value of Timeframe.
-func (s *AccessFlowPublicV2Model) GetTimeframe() OptNilAccessFlowPublicV2ModelTimeframe {
+func (s *AccessFlowPublicV2Model) GetTimeframe() OptNilAccessFlowTimeframePublicV2Model {
 	return s.Timeframe
 }
 
@@ -321,7 +173,7 @@ func (s *AccessFlowPublicV2Model) GetCreationDate() ApiInstant {
 }
 
 // GetUpdateDate returns the value of UpdateDate.
-func (s *AccessFlowPublicV2Model) GetUpdateDate() OptNilDateTime {
+func (s *AccessFlowPublicV2Model) GetUpdateDate() OptNilApiInstant {
 	return s.UpdateDate
 }
 
@@ -356,7 +208,7 @@ func (s *AccessFlowPublicV2Model) SetAccessTargets(val []AccessTargetPublicV2Mod
 }
 
 // SetApproverPolicy sets the value of ApproverPolicy.
-func (s *AccessFlowPublicV2Model) SetApproverPolicy(val OptNilAccessFlowPublicV2ModelApproverPolicy) {
+func (s *AccessFlowPublicV2Model) SetApproverPolicy(val OptNilApproverPolicyPublicV2Model) {
 	s.ApproverPolicy = val
 }
 
@@ -366,7 +218,7 @@ func (s *AccessFlowPublicV2Model) SetGrantDurationInMin(val OptNilInt32) {
 }
 
 // SetTimeframe sets the value of Timeframe.
-func (s *AccessFlowPublicV2Model) SetTimeframe(val OptNilAccessFlowPublicV2ModelTimeframe) {
+func (s *AccessFlowPublicV2Model) SetTimeframe(val OptNilAccessFlowTimeframePublicV2Model) {
 	s.Timeframe = val
 }
 
@@ -381,82 +233,8 @@ func (s *AccessFlowPublicV2Model) SetCreationDate(val ApiInstant) {
 }
 
 // SetUpdateDate sets the value of UpdateDate.
-func (s *AccessFlowPublicV2Model) SetUpdateDate(val OptNilDateTime) {
+func (s *AccessFlowPublicV2Model) SetUpdateDate(val OptNilApiInstant) {
 	s.UpdateDate = val
-}
-
-// ApproverPolicyV2.
-type AccessFlowPublicV2ModelApproverPolicy struct {
-	ApprovalMode   string                       `json:"approval_mode"`
-	ApproverGroups []ApproverGroupPublicV2Model `json:"approver_groups"`
-}
-
-// GetApprovalMode returns the value of ApprovalMode.
-func (s *AccessFlowPublicV2ModelApproverPolicy) GetApprovalMode() string {
-	return s.ApprovalMode
-}
-
-// GetApproverGroups returns the value of ApproverGroups.
-func (s *AccessFlowPublicV2ModelApproverPolicy) GetApproverGroups() []ApproverGroupPublicV2Model {
-	return s.ApproverGroups
-}
-
-// SetApprovalMode sets the value of ApprovalMode.
-func (s *AccessFlowPublicV2ModelApproverPolicy) SetApprovalMode(val string) {
-	s.ApprovalMode = val
-}
-
-// SetApproverGroups sets the value of ApproverGroups.
-func (s *AccessFlowPublicV2ModelApproverPolicy) SetApproverGroups(val []ApproverGroupPublicV2Model) {
-	s.ApproverGroups = val
-}
-
-// AccessFlowTimeframeV2.
-type AccessFlowPublicV2ModelTimeframe struct {
-	StartTime  string                   `json:"start_time"`
-	EndTime    string                   `json:"end_time"`
-	DaysOfWeek []DayOfWeekPublicV2Model `json:"days_of_week"`
-	TimeZone   string                   `json:"time_zone"`
-}
-
-// GetStartTime returns the value of StartTime.
-func (s *AccessFlowPublicV2ModelTimeframe) GetStartTime() string {
-	return s.StartTime
-}
-
-// GetEndTime returns the value of EndTime.
-func (s *AccessFlowPublicV2ModelTimeframe) GetEndTime() string {
-	return s.EndTime
-}
-
-// GetDaysOfWeek returns the value of DaysOfWeek.
-func (s *AccessFlowPublicV2ModelTimeframe) GetDaysOfWeek() []DayOfWeekPublicV2Model {
-	return s.DaysOfWeek
-}
-
-// GetTimeZone returns the value of TimeZone.
-func (s *AccessFlowPublicV2ModelTimeframe) GetTimeZone() string {
-	return s.TimeZone
-}
-
-// SetStartTime sets the value of StartTime.
-func (s *AccessFlowPublicV2ModelTimeframe) SetStartTime(val string) {
-	s.StartTime = val
-}
-
-// SetEndTime sets the value of EndTime.
-func (s *AccessFlowPublicV2ModelTimeframe) SetEndTime(val string) {
-	s.EndTime = val
-}
-
-// SetDaysOfWeek sets the value of DaysOfWeek.
-func (s *AccessFlowPublicV2ModelTimeframe) SetDaysOfWeek(val []DayOfWeekPublicV2Model) {
-	s.DaysOfWeek = val
-}
-
-// SetTimeZone sets the value of TimeZone.
-func (s *AccessFlowPublicV2ModelTimeframe) SetTimeZone(val string) {
-	s.TimeZone = val
 }
 
 // AccessFlowSettingsV2.
@@ -519,10 +297,107 @@ func (s *AccessFlowSettingsPublicV2Model) SetLabels(val []string) {
 	s.Labels = val
 }
 
+// Ref: #/components/schemas/AccessFlowSettingsV1
+type AccessFlowSettingsV1 struct {
+	RequireJustificationOnRequestAgain OptNilBool `json:"require_justification_on_request_again"`
+	RequireAllApprovers                OptNilBool `json:"require_all_approvers"`
+	RequireApproverJustification       OptNilBool `json:"require_approver_justification"`
+	ApproverCannotApproveHimself       OptNilBool `json:"approver_cannot_approve_himself"`
+}
+
+// GetRequireJustificationOnRequestAgain returns the value of RequireJustificationOnRequestAgain.
+func (s *AccessFlowSettingsV1) GetRequireJustificationOnRequestAgain() OptNilBool {
+	return s.RequireJustificationOnRequestAgain
+}
+
+// GetRequireAllApprovers returns the value of RequireAllApprovers.
+func (s *AccessFlowSettingsV1) GetRequireAllApprovers() OptNilBool {
+	return s.RequireAllApprovers
+}
+
+// GetRequireApproverJustification returns the value of RequireApproverJustification.
+func (s *AccessFlowSettingsV1) GetRequireApproverJustification() OptNilBool {
+	return s.RequireApproverJustification
+}
+
+// GetApproverCannotApproveHimself returns the value of ApproverCannotApproveHimself.
+func (s *AccessFlowSettingsV1) GetApproverCannotApproveHimself() OptNilBool {
+	return s.ApproverCannotApproveHimself
+}
+
+// SetRequireJustificationOnRequestAgain sets the value of RequireJustificationOnRequestAgain.
+func (s *AccessFlowSettingsV1) SetRequireJustificationOnRequestAgain(val OptNilBool) {
+	s.RequireJustificationOnRequestAgain = val
+}
+
+// SetRequireAllApprovers sets the value of RequireAllApprovers.
+func (s *AccessFlowSettingsV1) SetRequireAllApprovers(val OptNilBool) {
+	s.RequireAllApprovers = val
+}
+
+// SetRequireApproverJustification sets the value of RequireApproverJustification.
+func (s *AccessFlowSettingsV1) SetRequireApproverJustification(val OptNilBool) {
+	s.RequireApproverJustification = val
+}
+
+// SetApproverCannotApproveHimself sets the value of ApproverCannotApproveHimself.
+func (s *AccessFlowSettingsV1) SetApproverCannotApproveHimself(val OptNilBool) {
+	s.ApproverCannotApproveHimself = val
+}
+
+// AccessFlowTimeframeV2.
+// Ref: #/components/schemas/AccessFlowTimeframePublicV2Model
+type AccessFlowTimeframePublicV2Model struct {
+	StartTime  string                   `json:"start_time"`
+	EndTime    string                   `json:"end_time"`
+	DaysOfWeek []DayOfWeekPublicV2Model `json:"days_of_week"`
+	TimeZone   string                   `json:"time_zone"`
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *AccessFlowTimeframePublicV2Model) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *AccessFlowTimeframePublicV2Model) GetEndTime() string {
+	return s.EndTime
+}
+
+// GetDaysOfWeek returns the value of DaysOfWeek.
+func (s *AccessFlowTimeframePublicV2Model) GetDaysOfWeek() []DayOfWeekPublicV2Model {
+	return s.DaysOfWeek
+}
+
+// GetTimeZone returns the value of TimeZone.
+func (s *AccessFlowTimeframePublicV2Model) GetTimeZone() string {
+	return s.TimeZone
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *AccessFlowTimeframePublicV2Model) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *AccessFlowTimeframePublicV2Model) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+// SetDaysOfWeek sets the value of DaysOfWeek.
+func (s *AccessFlowTimeframePublicV2Model) SetDaysOfWeek(val []DayOfWeekPublicV2Model) {
+	s.DaysOfWeek = val
+}
+
+// SetTimeZone sets the value of TimeZone.
+func (s *AccessFlowTimeframePublicV2Model) SetTimeZone(val string) {
+	s.TimeZone = val
+}
+
 // Ref: #/components/schemas/AccessFlowTriggerV1
 type AccessFlowTriggerV1 struct {
-	Type      string                             `json:"type"`
-	Timeframe OptNilAccessFlowTriggerV1Timeframe `json:"timeframe"`
+	Type      string            `json:"type"`
+	Timeframe OptNilTimeframeV1 `json:"timeframe"`
 }
 
 // GetType returns the value of Type.
@@ -531,7 +406,7 @@ func (s *AccessFlowTriggerV1) GetType() string {
 }
 
 // GetTimeframe returns the value of Timeframe.
-func (s *AccessFlowTriggerV1) GetTimeframe() OptNilAccessFlowTriggerV1Timeframe {
+func (s *AccessFlowTriggerV1) GetTimeframe() OptNilTimeframeV1 {
 	return s.Timeframe
 }
 
@@ -541,69 +416,22 @@ func (s *AccessFlowTriggerV1) SetType(val string) {
 }
 
 // SetTimeframe sets the value of Timeframe.
-func (s *AccessFlowTriggerV1) SetTimeframe(val OptNilAccessFlowTriggerV1Timeframe) {
+func (s *AccessFlowTriggerV1) SetTimeframe(val OptNilTimeframeV1) {
 	s.Timeframe = val
-}
-
-type AccessFlowTriggerV1Timeframe struct {
-	StartOfDayTimeInSeconds int64       `json:"start_of_day_time_in_seconds"`
-	EndOfDayTimeInSeconds   int64       `json:"end_of_day_time_in_seconds"`
-	DaysInWeek              []DayOfWeek `json:"days_in_week"`
-	TimeZone                string      `json:"time_zone"`
-}
-
-// GetStartOfDayTimeInSeconds returns the value of StartOfDayTimeInSeconds.
-func (s *AccessFlowTriggerV1Timeframe) GetStartOfDayTimeInSeconds() int64 {
-	return s.StartOfDayTimeInSeconds
-}
-
-// GetEndOfDayTimeInSeconds returns the value of EndOfDayTimeInSeconds.
-func (s *AccessFlowTriggerV1Timeframe) GetEndOfDayTimeInSeconds() int64 {
-	return s.EndOfDayTimeInSeconds
-}
-
-// GetDaysInWeek returns the value of DaysInWeek.
-func (s *AccessFlowTriggerV1Timeframe) GetDaysInWeek() []DayOfWeek {
-	return s.DaysInWeek
-}
-
-// GetTimeZone returns the value of TimeZone.
-func (s *AccessFlowTriggerV1Timeframe) GetTimeZone() string {
-	return s.TimeZone
-}
-
-// SetStartOfDayTimeInSeconds sets the value of StartOfDayTimeInSeconds.
-func (s *AccessFlowTriggerV1Timeframe) SetStartOfDayTimeInSeconds(val int64) {
-	s.StartOfDayTimeInSeconds = val
-}
-
-// SetEndOfDayTimeInSeconds sets the value of EndOfDayTimeInSeconds.
-func (s *AccessFlowTriggerV1Timeframe) SetEndOfDayTimeInSeconds(val int64) {
-	s.EndOfDayTimeInSeconds = val
-}
-
-// SetDaysInWeek sets the value of DaysInWeek.
-func (s *AccessFlowTriggerV1Timeframe) SetDaysInWeek(val []DayOfWeek) {
-	s.DaysInWeek = val
-}
-
-// SetTimeZone sets the value of TimeZone.
-func (s *AccessFlowTriggerV1Timeframe) SetTimeZone(val string) {
-	s.TimeZone = val
 }
 
 // AccessFlowUpsertV2.
 // Ref: #/components/schemas/AccessFlowUpsertPublicV2Model
 type AccessFlowUpsertPublicV2Model struct {
-	Name               string                                            `json:"name"`
-	Active             bool                                              `json:"active"`
-	Trigger            string                                            `json:"trigger"`
-	Requestors         RequestorsUpsertPublicV2Model                     `json:"requestors"`
-	AccessTargets      []AccessTargetUpsertPublicV2Model                 `json:"access_targets"`
-	ApproverPolicy     OptNilAccessFlowUpsertPublicV2ModelApproverPolicy `json:"approver_policy"`
-	GrantDurationInMin OptNilInt32                                       `json:"grant_duration_in_min"`
-	Timeframe          OptNilAccessFlowUpsertPublicV2ModelTimeframe      `json:"timeframe"`
-	Settings           AccessFlowSettingsPublicV2Model                   `json:"settings"`
+	Name               string                                  `json:"name"`
+	Active             bool                                    `json:"active"`
+	Trigger            string                                  `json:"trigger"`
+	Requestors         RequestorsUpsertPublicV2Model           `json:"requestors"`
+	AccessTargets      []AccessTargetUpsertPublicV2Model       `json:"access_targets"`
+	ApproverPolicy     OptNilApproverPolicyUpsertPublicV2Model `json:"approver_policy"`
+	GrantDurationInMin OptNilInt32                             `json:"grant_duration_in_min"`
+	Timeframe          OptNilAccessFlowTimeframePublicV2Model  `json:"timeframe"`
+	Settings           AccessFlowSettingsPublicV2Model         `json:"settings"`
 }
 
 // GetName returns the value of Name.
@@ -632,7 +460,7 @@ func (s *AccessFlowUpsertPublicV2Model) GetAccessTargets() []AccessTargetUpsertP
 }
 
 // GetApproverPolicy returns the value of ApproverPolicy.
-func (s *AccessFlowUpsertPublicV2Model) GetApproverPolicy() OptNilAccessFlowUpsertPublicV2ModelApproverPolicy {
+func (s *AccessFlowUpsertPublicV2Model) GetApproverPolicy() OptNilApproverPolicyUpsertPublicV2Model {
 	return s.ApproverPolicy
 }
 
@@ -642,7 +470,7 @@ func (s *AccessFlowUpsertPublicV2Model) GetGrantDurationInMin() OptNilInt32 {
 }
 
 // GetTimeframe returns the value of Timeframe.
-func (s *AccessFlowUpsertPublicV2Model) GetTimeframe() OptNilAccessFlowUpsertPublicV2ModelTimeframe {
+func (s *AccessFlowUpsertPublicV2Model) GetTimeframe() OptNilAccessFlowTimeframePublicV2Model {
 	return s.Timeframe
 }
 
@@ -677,7 +505,7 @@ func (s *AccessFlowUpsertPublicV2Model) SetAccessTargets(val []AccessTargetUpser
 }
 
 // SetApproverPolicy sets the value of ApproverPolicy.
-func (s *AccessFlowUpsertPublicV2Model) SetApproverPolicy(val OptNilAccessFlowUpsertPublicV2ModelApproverPolicy) {
+func (s *AccessFlowUpsertPublicV2Model) SetApproverPolicy(val OptNilApproverPolicyUpsertPublicV2Model) {
 	s.ApproverPolicy = val
 }
 
@@ -687,87 +515,13 @@ func (s *AccessFlowUpsertPublicV2Model) SetGrantDurationInMin(val OptNilInt32) {
 }
 
 // SetTimeframe sets the value of Timeframe.
-func (s *AccessFlowUpsertPublicV2Model) SetTimeframe(val OptNilAccessFlowUpsertPublicV2ModelTimeframe) {
+func (s *AccessFlowUpsertPublicV2Model) SetTimeframe(val OptNilAccessFlowTimeframePublicV2Model) {
 	s.Timeframe = val
 }
 
 // SetSettings sets the value of Settings.
 func (s *AccessFlowUpsertPublicV2Model) SetSettings(val AccessFlowSettingsPublicV2Model) {
 	s.Settings = val
-}
-
-// ApproverPolicyUpsertV2.
-type AccessFlowUpsertPublicV2ModelApproverPolicy struct {
-	ApprovalMode   string                             `json:"approval_mode"`
-	ApproverGroups []ApproverGroupUpsertPublicV2Model `json:"approver_groups"`
-}
-
-// GetApprovalMode returns the value of ApprovalMode.
-func (s *AccessFlowUpsertPublicV2ModelApproverPolicy) GetApprovalMode() string {
-	return s.ApprovalMode
-}
-
-// GetApproverGroups returns the value of ApproverGroups.
-func (s *AccessFlowUpsertPublicV2ModelApproverPolicy) GetApproverGroups() []ApproverGroupUpsertPublicV2Model {
-	return s.ApproverGroups
-}
-
-// SetApprovalMode sets the value of ApprovalMode.
-func (s *AccessFlowUpsertPublicV2ModelApproverPolicy) SetApprovalMode(val string) {
-	s.ApprovalMode = val
-}
-
-// SetApproverGroups sets the value of ApproverGroups.
-func (s *AccessFlowUpsertPublicV2ModelApproverPolicy) SetApproverGroups(val []ApproverGroupUpsertPublicV2Model) {
-	s.ApproverGroups = val
-}
-
-// AccessFlowTimeframeV2.
-type AccessFlowUpsertPublicV2ModelTimeframe struct {
-	StartTime  string                   `json:"start_time"`
-	EndTime    string                   `json:"end_time"`
-	DaysOfWeek []DayOfWeekPublicV2Model `json:"days_of_week"`
-	TimeZone   string                   `json:"time_zone"`
-}
-
-// GetStartTime returns the value of StartTime.
-func (s *AccessFlowUpsertPublicV2ModelTimeframe) GetStartTime() string {
-	return s.StartTime
-}
-
-// GetEndTime returns the value of EndTime.
-func (s *AccessFlowUpsertPublicV2ModelTimeframe) GetEndTime() string {
-	return s.EndTime
-}
-
-// GetDaysOfWeek returns the value of DaysOfWeek.
-func (s *AccessFlowUpsertPublicV2ModelTimeframe) GetDaysOfWeek() []DayOfWeekPublicV2Model {
-	return s.DaysOfWeek
-}
-
-// GetTimeZone returns the value of TimeZone.
-func (s *AccessFlowUpsertPublicV2ModelTimeframe) GetTimeZone() string {
-	return s.TimeZone
-}
-
-// SetStartTime sets the value of StartTime.
-func (s *AccessFlowUpsertPublicV2ModelTimeframe) SetStartTime(val string) {
-	s.StartTime = val
-}
-
-// SetEndTime sets the value of EndTime.
-func (s *AccessFlowUpsertPublicV2ModelTimeframe) SetEndTime(val string) {
-	s.EndTime = val
-}
-
-// SetDaysOfWeek sets the value of DaysOfWeek.
-func (s *AccessFlowUpsertPublicV2ModelTimeframe) SetDaysOfWeek(val []DayOfWeekPublicV2Model) {
-	s.DaysOfWeek = val
-}
-
-// SetTimeZone sets the value of TimeZone.
-func (s *AccessFlowUpsertPublicV2ModelTimeframe) SetTimeZone(val string) {
-	s.TimeZone = val
 }
 
 // Ref: #/components/schemas/AccessFlowV1
@@ -781,7 +535,7 @@ type AccessFlowV1 struct {
 	BundleTargets      []AccessTargetBundleV1      `json:"bundle_targets"`
 	Approvers          OptNilApproverV1Array       `json:"approvers"`
 	RevokeAfterInSec   int32                       `json:"revoke_after_in_sec"`
-	Settings           OptNilAccessFlowV1Settings  `json:"settings"`
+	Settings           OptNilAccessFlowSettingsV1  `json:"settings"`
 	CreatedDate        Instant                     `json:"created_date"`
 }
 
@@ -831,7 +585,7 @@ func (s *AccessFlowV1) GetRevokeAfterInSec() int32 {
 }
 
 // GetSettings returns the value of Settings.
-func (s *AccessFlowV1) GetSettings() OptNilAccessFlowV1Settings {
+func (s *AccessFlowV1) GetSettings() OptNilAccessFlowSettingsV1 {
 	return s.Settings
 }
 
@@ -886,60 +640,13 @@ func (s *AccessFlowV1) SetRevokeAfterInSec(val int32) {
 }
 
 // SetSettings sets the value of Settings.
-func (s *AccessFlowV1) SetSettings(val OptNilAccessFlowV1Settings) {
+func (s *AccessFlowV1) SetSettings(val OptNilAccessFlowSettingsV1) {
 	s.Settings = val
 }
 
 // SetCreatedDate sets the value of CreatedDate.
 func (s *AccessFlowV1) SetCreatedDate(val Instant) {
 	s.CreatedDate = val
-}
-
-type AccessFlowV1Settings struct {
-	RequireJustificationOnRequestAgain OptNilBool `json:"require_justification_on_request_again"`
-	RequireAllApprovers                OptNilBool `json:"require_all_approvers"`
-	RequireApproverJustification       OptNilBool `json:"require_approver_justification"`
-	ApproverCannotApproveHimself       OptNilBool `json:"approver_cannot_approve_himself"`
-}
-
-// GetRequireJustificationOnRequestAgain returns the value of RequireJustificationOnRequestAgain.
-func (s *AccessFlowV1Settings) GetRequireJustificationOnRequestAgain() OptNilBool {
-	return s.RequireJustificationOnRequestAgain
-}
-
-// GetRequireAllApprovers returns the value of RequireAllApprovers.
-func (s *AccessFlowV1Settings) GetRequireAllApprovers() OptNilBool {
-	return s.RequireAllApprovers
-}
-
-// GetRequireApproverJustification returns the value of RequireApproverJustification.
-func (s *AccessFlowV1Settings) GetRequireApproverJustification() OptNilBool {
-	return s.RequireApproverJustification
-}
-
-// GetApproverCannotApproveHimself returns the value of ApproverCannotApproveHimself.
-func (s *AccessFlowV1Settings) GetApproverCannotApproveHimself() OptNilBool {
-	return s.ApproverCannotApproveHimself
-}
-
-// SetRequireJustificationOnRequestAgain sets the value of RequireJustificationOnRequestAgain.
-func (s *AccessFlowV1Settings) SetRequireJustificationOnRequestAgain(val OptNilBool) {
-	s.RequireJustificationOnRequestAgain = val
-}
-
-// SetRequireAllApprovers sets the value of RequireAllApprovers.
-func (s *AccessFlowV1Settings) SetRequireAllApprovers(val OptNilBool) {
-	s.RequireAllApprovers = val
-}
-
-// SetRequireApproverJustification sets the value of RequireApproverJustification.
-func (s *AccessFlowV1Settings) SetRequireApproverJustification(val OptNilBool) {
-	s.RequireApproverJustification = val
-}
-
-// SetApproverCannotApproveHimself sets the value of ApproverCannotApproveHimself.
-func (s *AccessFlowV1Settings) SetApproverCannotApproveHimself(val OptNilBool) {
-	s.ApproverCannotApproveHimself = val
 }
 
 // Ref: #/components/schemas/AccessRequest
@@ -1115,10 +822,10 @@ type AccessRequestV4 struct {
 	DurationInSec  OptNilInt32                  `json:"duration_in_sec"`
 	Justification  OptNilString                 `json:"justification"`
 	CreationDate   ApiInstant                   `json:"creation_date"`
-	RevocationDate OptNilDateTime               `json:"revocation_date"`
+	RevocationDate OptNilApiInstant             `json:"revocation_date"`
 	CustomFields   AccessRequestV4CustomFields  `json:"custom_fields"`
 	AccessGroups   []AccessRequestAccessGroupV4 `json:"access_groups"`
-	Bundle         OptNilAccessRequestV4Bundle  `json:"bundle"`
+	Bundle         OptNilBundlePartialV4        `json:"bundle"`
 }
 
 // GetID returns the value of ID.
@@ -1147,7 +854,7 @@ func (s *AccessRequestV4) GetCreationDate() ApiInstant {
 }
 
 // GetRevocationDate returns the value of RevocationDate.
-func (s *AccessRequestV4) GetRevocationDate() OptNilDateTime {
+func (s *AccessRequestV4) GetRevocationDate() OptNilApiInstant {
 	return s.RevocationDate
 }
 
@@ -1162,7 +869,7 @@ func (s *AccessRequestV4) GetAccessGroups() []AccessRequestAccessGroupV4 {
 }
 
 // GetBundle returns the value of Bundle.
-func (s *AccessRequestV4) GetBundle() OptNilAccessRequestV4Bundle {
+func (s *AccessRequestV4) GetBundle() OptNilBundlePartialV4 {
 	return s.Bundle
 }
 
@@ -1192,7 +899,7 @@ func (s *AccessRequestV4) SetCreationDate(val ApiInstant) {
 }
 
 // SetRevocationDate sets the value of RevocationDate.
-func (s *AccessRequestV4) SetRevocationDate(val OptNilDateTime) {
+func (s *AccessRequestV4) SetRevocationDate(val OptNilApiInstant) {
 	s.RevocationDate = val
 }
 
@@ -1207,33 +914,8 @@ func (s *AccessRequestV4) SetAccessGroups(val []AccessRequestAccessGroupV4) {
 }
 
 // SetBundle sets the value of Bundle.
-func (s *AccessRequestV4) SetBundle(val OptNilAccessRequestV4Bundle) {
+func (s *AccessRequestV4) SetBundle(val OptNilBundlePartialV4) {
 	s.Bundle = val
-}
-
-type AccessRequestV4Bundle struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-}
-
-// GetID returns the value of ID.
-func (s *AccessRequestV4Bundle) GetID() string {
-	return s.ID
-}
-
-// GetName returns the value of Name.
-func (s *AccessRequestV4Bundle) GetName() string {
-	return s.Name
-}
-
-// SetID sets the value of ID.
-func (s *AccessRequestV4Bundle) SetID(val string) {
-	s.ID = val
-}
-
-// SetName sets the value of Name.
-func (s *AccessRequestV4Bundle) SetName(val string) {
-	s.Name = val
 }
 
 type AccessRequestV4CustomFields map[string]string
@@ -1260,6 +942,49 @@ func (s *AccessRequestsBulkRevokeRequestV3) GetRequestIds() []string {
 // SetRequestIds sets the value of RequestIds.
 func (s *AccessRequestsBulkRevokeRequestV3) SetRequestIds(val []string) {
 	s.RequestIds = val
+}
+
+// AccessScopeAccessTargetV2.
+// Ref: #/components/schemas/AccessScopeAccessTargetPublicV2Model
+type AccessScopeAccessTargetPublicV2Model struct {
+	AccessScopeID   string `json:"access_scope_id"`
+	AccessScopeName string `json:"access_scope_name"`
+}
+
+// GetAccessScopeID returns the value of AccessScopeID.
+func (s *AccessScopeAccessTargetPublicV2Model) GetAccessScopeID() string {
+	return s.AccessScopeID
+}
+
+// GetAccessScopeName returns the value of AccessScopeName.
+func (s *AccessScopeAccessTargetPublicV2Model) GetAccessScopeName() string {
+	return s.AccessScopeName
+}
+
+// SetAccessScopeID sets the value of AccessScopeID.
+func (s *AccessScopeAccessTargetPublicV2Model) SetAccessScopeID(val string) {
+	s.AccessScopeID = val
+}
+
+// SetAccessScopeName sets the value of AccessScopeName.
+func (s *AccessScopeAccessTargetPublicV2Model) SetAccessScopeName(val string) {
+	s.AccessScopeName = val
+}
+
+// AccessScopeAccessTargetUpsertV2.
+// Ref: #/components/schemas/AccessScopeAccessTargetUpsertPublicV2Model
+type AccessScopeAccessTargetUpsertPublicV2Model struct {
+	AccessScopeReference string `json:"access_scope_reference"`
+}
+
+// GetAccessScopeReference returns the value of AccessScopeReference.
+func (s *AccessScopeAccessTargetUpsertPublicV2Model) GetAccessScopeReference() string {
+	return s.AccessScopeReference
+}
+
+// SetAccessScopeReference sets the value of AccessScopeReference.
+func (s *AccessScopeAccessTargetUpsertPublicV2Model) SetAccessScopeReference(val string) {
+	s.AccessScopeReference = val
 }
 
 // Ref: #/components/schemas/AccessScopeV1
@@ -1327,7 +1052,7 @@ type AccessSessionDetailsV1 struct {
 	CustomAdminMessage OptNilString                           `json:"custom_admin_message"`
 	Parameters         OptNilAccessSessionDetailsV1Parameters `json:"parameters"`
 	Cli                OptNilString                           `json:"cli"`
-	Link               OptNilAccessSessionDetailsV1Link       `json:"link"`
+	Link               OptNilLinkV1                           `json:"link"`
 }
 
 // GetInstructions returns the value of Instructions.
@@ -1351,7 +1076,7 @@ func (s *AccessSessionDetailsV1) GetCli() OptNilString {
 }
 
 // GetLink returns the value of Link.
-func (s *AccessSessionDetailsV1) GetLink() OptNilAccessSessionDetailsV1Link {
+func (s *AccessSessionDetailsV1) GetLink() OptNilLinkV1 {
 	return s.Link
 }
 
@@ -1376,33 +1101,8 @@ func (s *AccessSessionDetailsV1) SetCli(val OptNilString) {
 }
 
 // SetLink sets the value of Link.
-func (s *AccessSessionDetailsV1) SetLink(val OptNilAccessSessionDetailsV1Link) {
+func (s *AccessSessionDetailsV1) SetLink(val OptNilLinkV1) {
 	s.Link = val
-}
-
-type AccessSessionDetailsV1Link struct {
-	URL   string       `json:"url"`
-	Title OptNilString `json:"title"`
-}
-
-// GetURL returns the value of URL.
-func (s *AccessSessionDetailsV1Link) GetURL() string {
-	return s.URL
-}
-
-// GetTitle returns the value of Title.
-func (s *AccessSessionDetailsV1Link) GetTitle() OptNilString {
-	return s.Title
-}
-
-// SetURL sets the value of URL.
-func (s *AccessSessionDetailsV1Link) SetURL(val string) {
-	s.URL = val
-}
-
-// SetTitle sets the value of Title.
-func (s *AccessSessionDetailsV1Link) SetTitle(val OptNilString) {
-	s.Title = val
 }
 
 type AccessSessionDetailsV1Parameters map[string]string
@@ -1629,266 +1329,77 @@ func (s *AccessTargetIntegrationV1) SetPermissions(val []string) {
 // AccessTargetV2.
 // Ref: #/components/schemas/AccessTargetPublicV2Model
 type AccessTargetPublicV2Model struct {
-	Integration OptNilAccessTargetPublicV2ModelIntegration `json:"integration"`
-	Bundle      OptNilAccessTargetPublicV2ModelBundle      `json:"bundle"`
-	AccessScope OptNilAccessTargetPublicV2ModelAccessScope `json:"access_scope"`
+	Integration OptNilIntegrationAccessTargetPublicV2Model `json:"integration"`
+	Bundle      OptNilBundleAccessTargetPublicV2Model      `json:"bundle"`
+	AccessScope OptNilAccessScopeAccessTargetPublicV2Model `json:"access_scope"`
 }
 
 // GetIntegration returns the value of Integration.
-func (s *AccessTargetPublicV2Model) GetIntegration() OptNilAccessTargetPublicV2ModelIntegration {
+func (s *AccessTargetPublicV2Model) GetIntegration() OptNilIntegrationAccessTargetPublicV2Model {
 	return s.Integration
 }
 
 // GetBundle returns the value of Bundle.
-func (s *AccessTargetPublicV2Model) GetBundle() OptNilAccessTargetPublicV2ModelBundle {
+func (s *AccessTargetPublicV2Model) GetBundle() OptNilBundleAccessTargetPublicV2Model {
 	return s.Bundle
 }
 
 // GetAccessScope returns the value of AccessScope.
-func (s *AccessTargetPublicV2Model) GetAccessScope() OptNilAccessTargetPublicV2ModelAccessScope {
+func (s *AccessTargetPublicV2Model) GetAccessScope() OptNilAccessScopeAccessTargetPublicV2Model {
 	return s.AccessScope
 }
 
 // SetIntegration sets the value of Integration.
-func (s *AccessTargetPublicV2Model) SetIntegration(val OptNilAccessTargetPublicV2ModelIntegration) {
+func (s *AccessTargetPublicV2Model) SetIntegration(val OptNilIntegrationAccessTargetPublicV2Model) {
 	s.Integration = val
 }
 
 // SetBundle sets the value of Bundle.
-func (s *AccessTargetPublicV2Model) SetBundle(val OptNilAccessTargetPublicV2ModelBundle) {
+func (s *AccessTargetPublicV2Model) SetBundle(val OptNilBundleAccessTargetPublicV2Model) {
 	s.Bundle = val
 }
 
 // SetAccessScope sets the value of AccessScope.
-func (s *AccessTargetPublicV2Model) SetAccessScope(val OptNilAccessTargetPublicV2ModelAccessScope) {
+func (s *AccessTargetPublicV2Model) SetAccessScope(val OptNilAccessScopeAccessTargetPublicV2Model) {
 	s.AccessScope = val
-}
-
-// AccessScopeAccessTargetV2.
-type AccessTargetPublicV2ModelAccessScope struct {
-	AccessScopeID   string `json:"access_scope_id"`
-	AccessScopeName string `json:"access_scope_name"`
-}
-
-// GetAccessScopeID returns the value of AccessScopeID.
-func (s *AccessTargetPublicV2ModelAccessScope) GetAccessScopeID() string {
-	return s.AccessScopeID
-}
-
-// GetAccessScopeName returns the value of AccessScopeName.
-func (s *AccessTargetPublicV2ModelAccessScope) GetAccessScopeName() string {
-	return s.AccessScopeName
-}
-
-// SetAccessScopeID sets the value of AccessScopeID.
-func (s *AccessTargetPublicV2ModelAccessScope) SetAccessScopeID(val string) {
-	s.AccessScopeID = val
-}
-
-// SetAccessScopeName sets the value of AccessScopeName.
-func (s *AccessTargetPublicV2ModelAccessScope) SetAccessScopeName(val string) {
-	s.AccessScopeName = val
-}
-
-// BundleAccessTargetV2.
-type AccessTargetPublicV2ModelBundle struct {
-	BundleID   string `json:"bundle_id"`
-	BundleName string `json:"bundle_name"`
-}
-
-// GetBundleID returns the value of BundleID.
-func (s *AccessTargetPublicV2ModelBundle) GetBundleID() string {
-	return s.BundleID
-}
-
-// GetBundleName returns the value of BundleName.
-func (s *AccessTargetPublicV2ModelBundle) GetBundleName() string {
-	return s.BundleName
-}
-
-// SetBundleID sets the value of BundleID.
-func (s *AccessTargetPublicV2ModelBundle) SetBundleID(val string) {
-	s.BundleID = val
-}
-
-// SetBundleName sets the value of BundleName.
-func (s *AccessTargetPublicV2ModelBundle) SetBundleName(val string) {
-	s.BundleName = val
-}
-
-// IntegrationAccessTargetV2.
-type AccessTargetPublicV2ModelIntegration struct {
-	IntegrationID   string                                                        `json:"integration_id"`
-	IntegrationName string                                                        `json:"integration_name"`
-	ResourceType    string                                                        `json:"resource_type"`
-	Permissions     []string                                                      `json:"permissions"`
-	ResourcesScopes OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray `json:"resources_scopes"`
-}
-
-// GetIntegrationID returns the value of IntegrationID.
-func (s *AccessTargetPublicV2ModelIntegration) GetIntegrationID() string {
-	return s.IntegrationID
-}
-
-// GetIntegrationName returns the value of IntegrationName.
-func (s *AccessTargetPublicV2ModelIntegration) GetIntegrationName() string {
-	return s.IntegrationName
-}
-
-// GetResourceType returns the value of ResourceType.
-func (s *AccessTargetPublicV2ModelIntegration) GetResourceType() string {
-	return s.ResourceType
-}
-
-// GetPermissions returns the value of Permissions.
-func (s *AccessTargetPublicV2ModelIntegration) GetPermissions() []string {
-	return s.Permissions
-}
-
-// GetResourcesScopes returns the value of ResourcesScopes.
-func (s *AccessTargetPublicV2ModelIntegration) GetResourcesScopes() OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray {
-	return s.ResourcesScopes
-}
-
-// SetIntegrationID sets the value of IntegrationID.
-func (s *AccessTargetPublicV2ModelIntegration) SetIntegrationID(val string) {
-	s.IntegrationID = val
-}
-
-// SetIntegrationName sets the value of IntegrationName.
-func (s *AccessTargetPublicV2ModelIntegration) SetIntegrationName(val string) {
-	s.IntegrationName = val
-}
-
-// SetResourceType sets the value of ResourceType.
-func (s *AccessTargetPublicV2ModelIntegration) SetResourceType(val string) {
-	s.ResourceType = val
-}
-
-// SetPermissions sets the value of Permissions.
-func (s *AccessTargetPublicV2ModelIntegration) SetPermissions(val []string) {
-	s.Permissions = val
-}
-
-// SetResourcesScopes sets the value of ResourcesScopes.
-func (s *AccessTargetPublicV2ModelIntegration) SetResourcesScopes(val OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) {
-	s.ResourcesScopes = val
 }
 
 // AccessTargetUpsertV2.
 // Ref: #/components/schemas/AccessTargetUpsertPublicV2Model
 type AccessTargetUpsertPublicV2Model struct {
-	Integration OptNilAccessTargetUpsertPublicV2ModelIntegration `json:"integration"`
-	Bundle      OptNilAccessTargetUpsertPublicV2ModelBundle      `json:"bundle"`
-	AccessScope OptNilAccessTargetUpsertPublicV2ModelAccessScope `json:"access_scope"`
+	Integration OptNilIntegrationAccessTargetUpsertPublicV2Model `json:"integration"`
+	Bundle      OptNilBundleAccessTargetUpsertPublicV2Model      `json:"bundle"`
+	AccessScope OptNilAccessScopeAccessTargetUpsertPublicV2Model `json:"access_scope"`
 }
 
 // GetIntegration returns the value of Integration.
-func (s *AccessTargetUpsertPublicV2Model) GetIntegration() OptNilAccessTargetUpsertPublicV2ModelIntegration {
+func (s *AccessTargetUpsertPublicV2Model) GetIntegration() OptNilIntegrationAccessTargetUpsertPublicV2Model {
 	return s.Integration
 }
 
 // GetBundle returns the value of Bundle.
-func (s *AccessTargetUpsertPublicV2Model) GetBundle() OptNilAccessTargetUpsertPublicV2ModelBundle {
+func (s *AccessTargetUpsertPublicV2Model) GetBundle() OptNilBundleAccessTargetUpsertPublicV2Model {
 	return s.Bundle
 }
 
 // GetAccessScope returns the value of AccessScope.
-func (s *AccessTargetUpsertPublicV2Model) GetAccessScope() OptNilAccessTargetUpsertPublicV2ModelAccessScope {
+func (s *AccessTargetUpsertPublicV2Model) GetAccessScope() OptNilAccessScopeAccessTargetUpsertPublicV2Model {
 	return s.AccessScope
 }
 
 // SetIntegration sets the value of Integration.
-func (s *AccessTargetUpsertPublicV2Model) SetIntegration(val OptNilAccessTargetUpsertPublicV2ModelIntegration) {
+func (s *AccessTargetUpsertPublicV2Model) SetIntegration(val OptNilIntegrationAccessTargetUpsertPublicV2Model) {
 	s.Integration = val
 }
 
 // SetBundle sets the value of Bundle.
-func (s *AccessTargetUpsertPublicV2Model) SetBundle(val OptNilAccessTargetUpsertPublicV2ModelBundle) {
+func (s *AccessTargetUpsertPublicV2Model) SetBundle(val OptNilBundleAccessTargetUpsertPublicV2Model) {
 	s.Bundle = val
 }
 
 // SetAccessScope sets the value of AccessScope.
-func (s *AccessTargetUpsertPublicV2Model) SetAccessScope(val OptNilAccessTargetUpsertPublicV2ModelAccessScope) {
+func (s *AccessTargetUpsertPublicV2Model) SetAccessScope(val OptNilAccessScopeAccessTargetUpsertPublicV2Model) {
 	s.AccessScope = val
-}
-
-// AccessScopeAccessTargetUpsertV2.
-type AccessTargetUpsertPublicV2ModelAccessScope struct {
-	AccessScopeReference string `json:"access_scope_reference"`
-}
-
-// GetAccessScopeReference returns the value of AccessScopeReference.
-func (s *AccessTargetUpsertPublicV2ModelAccessScope) GetAccessScopeReference() string {
-	return s.AccessScopeReference
-}
-
-// SetAccessScopeReference sets the value of AccessScopeReference.
-func (s *AccessTargetUpsertPublicV2ModelAccessScope) SetAccessScopeReference(val string) {
-	s.AccessScopeReference = val
-}
-
-// BundleAccessTargetUpsertV2.
-type AccessTargetUpsertPublicV2ModelBundle struct {
-	BundleReference string `json:"bundle_reference"`
-}
-
-// GetBundleReference returns the value of BundleReference.
-func (s *AccessTargetUpsertPublicV2ModelBundle) GetBundleReference() string {
-	return s.BundleReference
-}
-
-// SetBundleReference sets the value of BundleReference.
-func (s *AccessTargetUpsertPublicV2ModelBundle) SetBundleReference(val string) {
-	s.BundleReference = val
-}
-
-// IntegrationAccessTargetUpsertV2.
-type AccessTargetUpsertPublicV2ModelIntegration struct {
-	IntegrationReference string                                                        `json:"integration_reference"`
-	ResourceType         string                                                        `json:"resource_type"`
-	Permissions          []string                                                      `json:"permissions"`
-	ResourcesScopes      OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray `json:"resources_scopes"`
-}
-
-// GetIntegrationReference returns the value of IntegrationReference.
-func (s *AccessTargetUpsertPublicV2ModelIntegration) GetIntegrationReference() string {
-	return s.IntegrationReference
-}
-
-// GetResourceType returns the value of ResourceType.
-func (s *AccessTargetUpsertPublicV2ModelIntegration) GetResourceType() string {
-	return s.ResourceType
-}
-
-// GetPermissions returns the value of Permissions.
-func (s *AccessTargetUpsertPublicV2ModelIntegration) GetPermissions() []string {
-	return s.Permissions
-}
-
-// GetResourcesScopes returns the value of ResourcesScopes.
-func (s *AccessTargetUpsertPublicV2ModelIntegration) GetResourcesScopes() OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray {
-	return s.ResourcesScopes
-}
-
-// SetIntegrationReference sets the value of IntegrationReference.
-func (s *AccessTargetUpsertPublicV2ModelIntegration) SetIntegrationReference(val string) {
-	s.IntegrationReference = val
-}
-
-// SetResourceType sets the value of ResourceType.
-func (s *AccessTargetUpsertPublicV2ModelIntegration) SetResourceType(val string) {
-	s.ResourceType = val
-}
-
-// SetPermissions sets the value of Permissions.
-func (s *AccessTargetUpsertPublicV2ModelIntegration) SetPermissions(val []string) {
-	s.Permissions = val
-}
-
-// SetResourcesScopes sets the value of ResourcesScopes.
-func (s *AccessTargetUpsertPublicV2ModelIntegration) SetResourcesScopes(val OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) {
-	s.ResourcesScopes = val
 }
 
 // Ref: #/components/schemas/ActivityReportJsonExportModel
@@ -2032,6 +1543,32 @@ type AddGroupMemberV1NoContent struct{}
 
 type ApiInstant time.Time
 
+// Ref: #/components/schemas/AponoSecretConfigV4
+type AponoSecretConfigV4 struct {
+	Parameters AponoSecretConfigV4Parameters `json:"parameters"`
+}
+
+// GetParameters returns the value of Parameters.
+func (s *AponoSecretConfigV4) GetParameters() AponoSecretConfigV4Parameters {
+	return s.Parameters
+}
+
+// SetParameters sets the value of Parameters.
+func (s *AponoSecretConfigV4) SetParameters(val AponoSecretConfigV4Parameters) {
+	s.Parameters = val
+}
+
+type AponoSecretConfigV4Parameters map[string]string
+
+func (s *AponoSecretConfigV4Parameters) init() AponoSecretConfigV4Parameters {
+	m := *s
+	if m == nil {
+		m = map[string]string{}
+		*s = m
+	}
+	return m
+}
+
 // ApproverGroupV2.
 // Ref: #/components/schemas/ApproverGroupPublicV2Model
 type ApproverGroupPublicV2Model struct {
@@ -2084,6 +1621,60 @@ func (s *ApproverGroupUpsertPublicV2Model) SetLogicalOperator(val string) {
 // SetApprovers sets the value of Approvers.
 func (s *ApproverGroupUpsertPublicV2Model) SetApprovers(val []ConditionUpsertPublicV2Model) {
 	s.Approvers = val
+}
+
+// ApproverPolicyV2.
+// Ref: #/components/schemas/ApproverPolicyPublicV2Model
+type ApproverPolicyPublicV2Model struct {
+	ApprovalMode   string                       `json:"approval_mode"`
+	ApproverGroups []ApproverGroupPublicV2Model `json:"approver_groups"`
+}
+
+// GetApprovalMode returns the value of ApprovalMode.
+func (s *ApproverPolicyPublicV2Model) GetApprovalMode() string {
+	return s.ApprovalMode
+}
+
+// GetApproverGroups returns the value of ApproverGroups.
+func (s *ApproverPolicyPublicV2Model) GetApproverGroups() []ApproverGroupPublicV2Model {
+	return s.ApproverGroups
+}
+
+// SetApprovalMode sets the value of ApprovalMode.
+func (s *ApproverPolicyPublicV2Model) SetApprovalMode(val string) {
+	s.ApprovalMode = val
+}
+
+// SetApproverGroups sets the value of ApproverGroups.
+func (s *ApproverPolicyPublicV2Model) SetApproverGroups(val []ApproverGroupPublicV2Model) {
+	s.ApproverGroups = val
+}
+
+// ApproverPolicyUpsertV2.
+// Ref: #/components/schemas/ApproverPolicyUpsertPublicV2Model
+type ApproverPolicyUpsertPublicV2Model struct {
+	ApprovalMode   string                             `json:"approval_mode"`
+	ApproverGroups []ApproverGroupUpsertPublicV2Model `json:"approver_groups"`
+}
+
+// GetApprovalMode returns the value of ApprovalMode.
+func (s *ApproverPolicyUpsertPublicV2Model) GetApprovalMode() string {
+	return s.ApprovalMode
+}
+
+// GetApproverGroups returns the value of ApproverGroups.
+func (s *ApproverPolicyUpsertPublicV2Model) GetApproverGroups() []ApproverGroupUpsertPublicV2Model {
+	return s.ApproverGroups
+}
+
+// SetApprovalMode sets the value of ApprovalMode.
+func (s *ApproverPolicyUpsertPublicV2Model) SetApprovalMode(val string) {
+	s.ApprovalMode = val
+}
+
+// SetApproverGroups sets the value of ApproverGroups.
+func (s *ApproverPolicyUpsertPublicV2Model) SetApproverGroups(val []ApproverGroupUpsertPublicV2Model) {
+	s.ApproverGroups = val
 }
 
 // Ref: #/components/schemas/ApproverV1
@@ -2187,6 +1778,127 @@ func (s *AvailableEntitlementV1) SetResource(val EntitlementResourceV4) {
 // SetPermission sets the value of Permission.
 func (s *AvailableEntitlementV1) SetPermission(val EntitlementPermissionV4) {
 	s.Permission = val
+}
+
+// Ref: #/components/schemas/AwsSecretConfigV4
+type AwsSecretConfigV4 struct {
+	Region   string `json:"region"`
+	SecretID string `json:"secret_id"`
+}
+
+// GetRegion returns the value of Region.
+func (s *AwsSecretConfigV4) GetRegion() string {
+	return s.Region
+}
+
+// GetSecretID returns the value of SecretID.
+func (s *AwsSecretConfigV4) GetSecretID() string {
+	return s.SecretID
+}
+
+// SetRegion sets the value of Region.
+func (s *AwsSecretConfigV4) SetRegion(val string) {
+	s.Region = val
+}
+
+// SetSecretID sets the value of SecretID.
+func (s *AwsSecretConfigV4) SetSecretID(val string) {
+	s.SecretID = val
+}
+
+// Ref: #/components/schemas/AzureSecretConfigV4
+type AzureSecretConfigV4 struct {
+	VaultURL string `json:"vault_url"`
+	Name     string `json:"name"`
+}
+
+// GetVaultURL returns the value of VaultURL.
+func (s *AzureSecretConfigV4) GetVaultURL() string {
+	return s.VaultURL
+}
+
+// GetName returns the value of Name.
+func (s *AzureSecretConfigV4) GetName() string {
+	return s.Name
+}
+
+// SetVaultURL sets the value of VaultURL.
+func (s *AzureSecretConfigV4) SetVaultURL(val string) {
+	s.VaultURL = val
+}
+
+// SetName sets the value of Name.
+func (s *AzureSecretConfigV4) SetName(val string) {
+	s.Name = val
+}
+
+// BundleAccessTargetV2.
+// Ref: #/components/schemas/BundleAccessTargetPublicV2Model
+type BundleAccessTargetPublicV2Model struct {
+	BundleID   string `json:"bundle_id"`
+	BundleName string `json:"bundle_name"`
+}
+
+// GetBundleID returns the value of BundleID.
+func (s *BundleAccessTargetPublicV2Model) GetBundleID() string {
+	return s.BundleID
+}
+
+// GetBundleName returns the value of BundleName.
+func (s *BundleAccessTargetPublicV2Model) GetBundleName() string {
+	return s.BundleName
+}
+
+// SetBundleID sets the value of BundleID.
+func (s *BundleAccessTargetPublicV2Model) SetBundleID(val string) {
+	s.BundleID = val
+}
+
+// SetBundleName sets the value of BundleName.
+func (s *BundleAccessTargetPublicV2Model) SetBundleName(val string) {
+	s.BundleName = val
+}
+
+// BundleAccessTargetUpsertV2.
+// Ref: #/components/schemas/BundleAccessTargetUpsertPublicV2Model
+type BundleAccessTargetUpsertPublicV2Model struct {
+	BundleReference string `json:"bundle_reference"`
+}
+
+// GetBundleReference returns the value of BundleReference.
+func (s *BundleAccessTargetUpsertPublicV2Model) GetBundleReference() string {
+	return s.BundleReference
+}
+
+// SetBundleReference sets the value of BundleReference.
+func (s *BundleAccessTargetUpsertPublicV2Model) SetBundleReference(val string) {
+	s.BundleReference = val
+}
+
+// Ref: #/components/schemas/BundlePartialV4
+type BundlePartialV4 struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+// GetID returns the value of ID.
+func (s *BundlePartialV4) GetID() string {
+	return s.ID
+}
+
+// GetName returns the value of Name.
+func (s *BundlePartialV4) GetName() string {
+	return s.Name
+}
+
+// SetID sets the value of ID.
+func (s *BundlePartialV4) SetID(val string) {
+	s.ID = val
+}
+
+// SetName sets the value of Name.
+func (s *BundlePartialV4) SetName(val string) {
+	s.Name = val
 }
 
 // BundleV2.
@@ -2373,10 +2085,13 @@ func (s *ConnectDetailsResponse) SetDetails(val string) {
 	s.Details = val
 }
 
+// Ref: #/components/schemas/ConnectionMetadata
+type ConnectionMetadata struct{}
+
 // Ref: #/components/schemas/Connector
 type Connector struct {
 	ConnectorID   string        `json:"connector_id"`
-	LastConnected OptNilFloat64 `json:"last_connected"`
+	LastConnected OptNilInstant `json:"last_connected"`
 	Status        string        `json:"status"`
 }
 
@@ -2386,7 +2101,7 @@ func (s *Connector) GetConnectorID() string {
 }
 
 // GetLastConnected returns the value of LastConnected.
-func (s *Connector) GetLastConnected() OptNilFloat64 {
+func (s *Connector) GetLastConnected() OptNilInstant {
 	return s.LastConnected
 }
 
@@ -2401,7 +2116,7 @@ func (s *Connector) SetConnectorID(val string) {
 }
 
 // SetLastConnected sets the value of LastConnected.
-func (s *Connector) SetLastConnected(val OptNilFloat64) {
+func (s *Connector) SetLastConnected(val OptNilInstant) {
 	s.LastConnected = val
 }
 
@@ -2414,7 +2129,7 @@ func (s *Connector) SetStatus(val string) {
 type ConnectorActionParamsModel struct {
 	IntegrationType        string                                           `json:"integration_type"`
 	IntegrationMetadata    OptConnectorActionParamsModelIntegrationMetadata `json:"integration_metadata"`
-	SecretConfig           OptConnectorActionParamsModelSecretConfig        `json:"secret_config"`
+	SecretConfig           OptSecretConfig1                                 `json:"secret_config"`
 	ProviderName           OptNilString                                     `json:"provider_name"`
 	Action                 string                                           `json:"action"`
 	Params                 ConnectorActionParamsModelParams                 `json:"params"`
@@ -2433,7 +2148,7 @@ func (s *ConnectorActionParamsModel) GetIntegrationMetadata() OptConnectorAction
 }
 
 // GetSecretConfig returns the value of SecretConfig.
-func (s *ConnectorActionParamsModel) GetSecretConfig() OptConnectorActionParamsModelSecretConfig {
+func (s *ConnectorActionParamsModel) GetSecretConfig() OptSecretConfig1 {
 	return s.SecretConfig
 }
 
@@ -2473,7 +2188,7 @@ func (s *ConnectorActionParamsModel) SetIntegrationMetadata(val OptConnectorActi
 }
 
 // SetSecretConfig sets the value of SecretConfig.
-func (s *ConnectorActionParamsModel) SetSecretConfig(val OptConnectorActionParamsModelSecretConfig) {
+func (s *ConnectorActionParamsModel) SetSecretConfig(val OptSecretConfig1) {
 	s.SecretConfig = val
 }
 
@@ -2506,16 +2221,14 @@ type ConnectorActionParamsModelIntegrationMetadata struct{}
 
 type ConnectorActionParamsModelParams struct{}
 
-type ConnectorActionParamsModelSecretConfig struct{}
-
 // Ref: #/components/schemas/ConnectorSessionMetadataV3
 type ConnectorSessionMetadataV3 struct {
-	CloudProviderMetadata OptNilConnectorSessionMetadataV3CloudProviderMetadata `json:"cloud_provider_metadata"`
-	ConnectorVersion      OptNilString                                          `json:"connector_version"`
+	CloudProviderMetadata OptNilConnectorSessionsCloudProviderMetadataV3 `json:"cloud_provider_metadata"`
+	ConnectorVersion      OptNilString                                   `json:"connector_version"`
 }
 
 // GetCloudProviderMetadata returns the value of CloudProviderMetadata.
-func (s *ConnectorSessionMetadataV3) GetCloudProviderMetadata() OptNilConnectorSessionMetadataV3CloudProviderMetadata {
+func (s *ConnectorSessionMetadataV3) GetCloudProviderMetadata() OptNilConnectorSessionsCloudProviderMetadataV3 {
 	return s.CloudProviderMetadata
 }
 
@@ -2525,159 +2238,13 @@ func (s *ConnectorSessionMetadataV3) GetConnectorVersion() OptNilString {
 }
 
 // SetCloudProviderMetadata sets the value of CloudProviderMetadata.
-func (s *ConnectorSessionMetadataV3) SetCloudProviderMetadata(val OptNilConnectorSessionMetadataV3CloudProviderMetadata) {
+func (s *ConnectorSessionMetadataV3) SetCloudProviderMetadata(val OptNilConnectorSessionsCloudProviderMetadataV3) {
 	s.CloudProviderMetadata = val
 }
 
 // SetConnectorVersion sets the value of ConnectorVersion.
 func (s *ConnectorSessionMetadataV3) SetConnectorVersion(val OptNilString) {
 	s.ConnectorVersion = val
-}
-
-type ConnectorSessionMetadataV3CloudProviderMetadata struct {
-	KubernetesType    OptNilString `json:"kubernetes_type"`
-	KubernetesVersion OptNilString `json:"kubernetes_version"`
-	IsKubernetesAdmin OptNilBool   `json:"is_kubernetes_admin"`
-	LocalDeploy       OptNilBool   `json:"local_deploy"`
-	AWSAccountID      OptNilString `json:"aws_account_id"`
-	Region            OptNilString `json:"region"`
-	AvailabilityZone  OptNilString `json:"availability_zone"`
-	ProjectID         OptNilString `json:"project_id"`
-	OrganizationID    OptNilString `json:"organization_id"`
-	Zone              OptNilString `json:"zone"`
-	SubscriptionID    OptNilString `json:"subscription_id"`
-	ResourceGroup     OptNilString `json:"resource_group"`
-	IsAzureAdmin      OptNilBool   `json:"is_azure_admin"`
-}
-
-// GetKubernetesType returns the value of KubernetesType.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetKubernetesType() OptNilString {
-	return s.KubernetesType
-}
-
-// GetKubernetesVersion returns the value of KubernetesVersion.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetKubernetesVersion() OptNilString {
-	return s.KubernetesVersion
-}
-
-// GetIsKubernetesAdmin returns the value of IsKubernetesAdmin.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetIsKubernetesAdmin() OptNilBool {
-	return s.IsKubernetesAdmin
-}
-
-// GetLocalDeploy returns the value of LocalDeploy.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetLocalDeploy() OptNilBool {
-	return s.LocalDeploy
-}
-
-// GetAWSAccountID returns the value of AWSAccountID.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetAWSAccountID() OptNilString {
-	return s.AWSAccountID
-}
-
-// GetRegion returns the value of Region.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetRegion() OptNilString {
-	return s.Region
-}
-
-// GetAvailabilityZone returns the value of AvailabilityZone.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetAvailabilityZone() OptNilString {
-	return s.AvailabilityZone
-}
-
-// GetProjectID returns the value of ProjectID.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetProjectID() OptNilString {
-	return s.ProjectID
-}
-
-// GetOrganizationID returns the value of OrganizationID.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetOrganizationID() OptNilString {
-	return s.OrganizationID
-}
-
-// GetZone returns the value of Zone.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetZone() OptNilString {
-	return s.Zone
-}
-
-// GetSubscriptionID returns the value of SubscriptionID.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetSubscriptionID() OptNilString {
-	return s.SubscriptionID
-}
-
-// GetResourceGroup returns the value of ResourceGroup.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetResourceGroup() OptNilString {
-	return s.ResourceGroup
-}
-
-// GetIsAzureAdmin returns the value of IsAzureAdmin.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) GetIsAzureAdmin() OptNilBool {
-	return s.IsAzureAdmin
-}
-
-// SetKubernetesType sets the value of KubernetesType.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetKubernetesType(val OptNilString) {
-	s.KubernetesType = val
-}
-
-// SetKubernetesVersion sets the value of KubernetesVersion.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetKubernetesVersion(val OptNilString) {
-	s.KubernetesVersion = val
-}
-
-// SetIsKubernetesAdmin sets the value of IsKubernetesAdmin.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetIsKubernetesAdmin(val OptNilBool) {
-	s.IsKubernetesAdmin = val
-}
-
-// SetLocalDeploy sets the value of LocalDeploy.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetLocalDeploy(val OptNilBool) {
-	s.LocalDeploy = val
-}
-
-// SetAWSAccountID sets the value of AWSAccountID.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetAWSAccountID(val OptNilString) {
-	s.AWSAccountID = val
-}
-
-// SetRegion sets the value of Region.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetRegion(val OptNilString) {
-	s.Region = val
-}
-
-// SetAvailabilityZone sets the value of AvailabilityZone.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetAvailabilityZone(val OptNilString) {
-	s.AvailabilityZone = val
-}
-
-// SetProjectID sets the value of ProjectID.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetProjectID(val OptNilString) {
-	s.ProjectID = val
-}
-
-// SetOrganizationID sets the value of OrganizationID.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetOrganizationID(val OptNilString) {
-	s.OrganizationID = val
-}
-
-// SetZone sets the value of Zone.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetZone(val OptNilString) {
-	s.Zone = val
-}
-
-// SetSubscriptionID sets the value of SubscriptionID.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetSubscriptionID(val OptNilString) {
-	s.SubscriptionID = val
-}
-
-// SetResourceGroup sets the value of ResourceGroup.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetResourceGroup(val OptNilString) {
-	s.ResourceGroup = val
-}
-
-// SetIsAzureAdmin sets the value of IsAzureAdmin.
-func (s *ConnectorSessionMetadataV3CloudProviderMetadata) SetIsAzureAdmin(val OptNilBool) {
-	s.IsAzureAdmin = val
 }
 
 // Ref: #/components/schemas/ConnectorSessionV3
@@ -2717,13 +2284,160 @@ func (s *ConnectorSessionV3) SetLastConnectedTime(val ApiInstant) {
 	s.LastConnectedTime = val
 }
 
+// Ref: #/components/schemas/ConnectorSessionsCloudProviderMetadataV3
+type ConnectorSessionsCloudProviderMetadataV3 struct {
+	KubernetesType    OptNilString `json:"kubernetes_type"`
+	KubernetesVersion OptNilString `json:"kubernetes_version"`
+	IsKubernetesAdmin OptNilBool   `json:"is_kubernetes_admin"`
+	LocalDeploy       OptNilBool   `json:"local_deploy"`
+	AWSAccountID      OptNilString `json:"aws_account_id"`
+	Region            OptNilString `json:"region"`
+	AvailabilityZone  OptNilString `json:"availability_zone"`
+	ProjectID         OptNilString `json:"project_id"`
+	OrganizationID    OptNilString `json:"organization_id"`
+	Zone              OptNilString `json:"zone"`
+	SubscriptionID    OptNilString `json:"subscription_id"`
+	ResourceGroup     OptNilString `json:"resource_group"`
+	IsAzureAdmin      OptNilBool   `json:"is_azure_admin"`
+}
+
+// GetKubernetesType returns the value of KubernetesType.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetKubernetesType() OptNilString {
+	return s.KubernetesType
+}
+
+// GetKubernetesVersion returns the value of KubernetesVersion.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetKubernetesVersion() OptNilString {
+	return s.KubernetesVersion
+}
+
+// GetIsKubernetesAdmin returns the value of IsKubernetesAdmin.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetIsKubernetesAdmin() OptNilBool {
+	return s.IsKubernetesAdmin
+}
+
+// GetLocalDeploy returns the value of LocalDeploy.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetLocalDeploy() OptNilBool {
+	return s.LocalDeploy
+}
+
+// GetAWSAccountID returns the value of AWSAccountID.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetAWSAccountID() OptNilString {
+	return s.AWSAccountID
+}
+
+// GetRegion returns the value of Region.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetRegion() OptNilString {
+	return s.Region
+}
+
+// GetAvailabilityZone returns the value of AvailabilityZone.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetAvailabilityZone() OptNilString {
+	return s.AvailabilityZone
+}
+
+// GetProjectID returns the value of ProjectID.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetProjectID() OptNilString {
+	return s.ProjectID
+}
+
+// GetOrganizationID returns the value of OrganizationID.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetOrganizationID() OptNilString {
+	return s.OrganizationID
+}
+
+// GetZone returns the value of Zone.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetZone() OptNilString {
+	return s.Zone
+}
+
+// GetSubscriptionID returns the value of SubscriptionID.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetSubscriptionID() OptNilString {
+	return s.SubscriptionID
+}
+
+// GetResourceGroup returns the value of ResourceGroup.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetResourceGroup() OptNilString {
+	return s.ResourceGroup
+}
+
+// GetIsAzureAdmin returns the value of IsAzureAdmin.
+func (s *ConnectorSessionsCloudProviderMetadataV3) GetIsAzureAdmin() OptNilBool {
+	return s.IsAzureAdmin
+}
+
+// SetKubernetesType sets the value of KubernetesType.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetKubernetesType(val OptNilString) {
+	s.KubernetesType = val
+}
+
+// SetKubernetesVersion sets the value of KubernetesVersion.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetKubernetesVersion(val OptNilString) {
+	s.KubernetesVersion = val
+}
+
+// SetIsKubernetesAdmin sets the value of IsKubernetesAdmin.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetIsKubernetesAdmin(val OptNilBool) {
+	s.IsKubernetesAdmin = val
+}
+
+// SetLocalDeploy sets the value of LocalDeploy.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetLocalDeploy(val OptNilBool) {
+	s.LocalDeploy = val
+}
+
+// SetAWSAccountID sets the value of AWSAccountID.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetAWSAccountID(val OptNilString) {
+	s.AWSAccountID = val
+}
+
+// SetRegion sets the value of Region.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetRegion(val OptNilString) {
+	s.Region = val
+}
+
+// SetAvailabilityZone sets the value of AvailabilityZone.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetAvailabilityZone(val OptNilString) {
+	s.AvailabilityZone = val
+}
+
+// SetProjectID sets the value of ProjectID.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetProjectID(val OptNilString) {
+	s.ProjectID = val
+}
+
+// SetOrganizationID sets the value of OrganizationID.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetOrganizationID(val OptNilString) {
+	s.OrganizationID = val
+}
+
+// SetZone sets the value of Zone.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetZone(val OptNilString) {
+	s.Zone = val
+}
+
+// SetSubscriptionID sets the value of SubscriptionID.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetSubscriptionID(val OptNilString) {
+	s.SubscriptionID = val
+}
+
+// SetResourceGroup sets the value of ResourceGroup.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetResourceGroup(val OptNilString) {
+	s.ResourceGroup = val
+}
+
+// SetIsAzureAdmin sets the value of IsAzureAdmin.
+func (s *ConnectorSessionsCloudProviderMetadataV3) SetIsAzureAdmin(val OptNilBool) {
+	s.IsAzureAdmin = val
+}
+
 // Ref: #/components/schemas/ConnectorV3
 type ConnectorV3 struct {
 	ID                string               `json:"id"`
 	Name              string               `json:"name"`
 	Status            string               `json:"status"`
 	Version           string               `json:"version"`
-	LastConnected     OptNilDateTime       `json:"last_connected"`
+	LastConnected     OptNilApiInstant     `json:"last_connected"`
 	IsLatestVersion   bool                 `json:"is_latest_version"`
 	CloudProviderType string               `json:"cloud_provider_type"`
 	Sessions          []ConnectorSessionV3 `json:"sessions"`
@@ -2750,7 +2464,7 @@ func (s *ConnectorV3) GetVersion() string {
 }
 
 // GetLastConnected returns the value of LastConnected.
-func (s *ConnectorV3) GetLastConnected() OptNilDateTime {
+func (s *ConnectorV3) GetLastConnected() OptNilApiInstant {
 	return s.LastConnected
 }
 
@@ -2790,7 +2504,7 @@ func (s *ConnectorV3) SetVersion(val string) {
 }
 
 // SetLastConnected sets the value of LastConnected.
-func (s *ConnectorV3) SetLastConnected(val OptNilDateTime) {
+func (s *ConnectorV3) SetLastConnected(val OptNilApiInstant) {
 	s.LastConnected = val
 }
 
@@ -3003,13 +2717,13 @@ func (s *CreateGroupV1) SetMembersEmails(val []string) {
 
 // Ref: #/components/schemas/CreateIntegration
 type CreateIntegration struct {
-	Name                   string                           `json:"name"`
-	Type                   string                           `json:"type"`
-	ProvisionerID          OptNilString                     `json:"provisioner_id"`
-	Metadata               CreateIntegrationMetadata        `json:"metadata"`
-	SecretConfig           OptCreateIntegrationSecretConfig `json:"secret_config"`
-	ConnectedResourceTypes OptNilStringArray                `json:"connected_resource_types"`
-	CustomAccessDetails    OptNilString                     `json:"custom_access_details"`
+	Name                   string                    `json:"name"`
+	Type                   string                    `json:"type"`
+	ProvisionerID          OptNilString              `json:"provisioner_id"`
+	Metadata               CreateIntegrationMetadata `json:"metadata"`
+	SecretConfig           OptNilSecretConfig        `json:"secret_config"`
+	ConnectedResourceTypes OptNilStringArray         `json:"connected_resource_types"`
+	CustomAccessDetails    OptNilString              `json:"custom_access_details"`
 }
 
 // GetName returns the value of Name.
@@ -3033,7 +2747,7 @@ func (s *CreateIntegration) GetMetadata() CreateIntegrationMetadata {
 }
 
 // GetSecretConfig returns the value of SecretConfig.
-func (s *CreateIntegration) GetSecretConfig() OptCreateIntegrationSecretConfig {
+func (s *CreateIntegration) GetSecretConfig() OptNilSecretConfig {
 	return s.SecretConfig
 }
 
@@ -3068,7 +2782,7 @@ func (s *CreateIntegration) SetMetadata(val CreateIntegrationMetadata) {
 }
 
 // SetSecretConfig sets the value of SecretConfig.
-func (s *CreateIntegration) SetSecretConfig(val OptCreateIntegrationSecretConfig) {
+func (s *CreateIntegration) SetSecretConfig(val OptNilSecretConfig) {
 	s.SecretConfig = val
 }
 
@@ -3084,19 +2798,17 @@ func (s *CreateIntegration) SetCustomAccessDetails(val OptNilString) {
 
 type CreateIntegrationMetadata struct{}
 
-type CreateIntegrationSecretConfig struct{}
-
 // Ref: #/components/schemas/CreateIntegrationV4
 type CreateIntegrationV4 struct {
-	Name                   string                                     `json:"name"`
-	Type                   string                                     `json:"type"`
-	ConnectorID            OptNilString                               `json:"connector_id"`
-	IntegrationConfig      JsonMapModel                               `json:"integration_config"`
-	SecretStoreConfig      OptNilCreateIntegrationV4SecretStoreConfig `json:"secret_store_config"`
-	ConnectedResourceTypes OptNilStringArray                          `json:"connected_resource_types"`
-	CustomAccessDetails    OptNilString                               `json:"custom_access_details"`
-	Owner                  OptNilCreateIntegrationV4Owner             `json:"owner"`
-	OwnersMapping          OptNilCreateIntegrationV4OwnersMapping     `json:"owners_mapping"`
+	Name                   string                          `json:"name"`
+	Type                   string                          `json:"type"`
+	ConnectorID            OptNilString                    `json:"connector_id"`
+	IntegrationConfig      JsonMapModel                    `json:"integration_config"`
+	SecretStoreConfig      OptNilUpsertSecretStoreConfigV4 `json:"secret_store_config"`
+	ConnectedResourceTypes OptNilStringArray               `json:"connected_resource_types"`
+	CustomAccessDetails    OptNilString                    `json:"custom_access_details"`
+	Owner                  OptNilUpsertOwnerV4             `json:"owner"`
+	OwnersMapping          OptNilUpsertOwnerMappingV4      `json:"owners_mapping"`
 }
 
 // GetName returns the value of Name.
@@ -3120,7 +2832,7 @@ func (s *CreateIntegrationV4) GetIntegrationConfig() JsonMapModel {
 }
 
 // GetSecretStoreConfig returns the value of SecretStoreConfig.
-func (s *CreateIntegrationV4) GetSecretStoreConfig() OptNilCreateIntegrationV4SecretStoreConfig {
+func (s *CreateIntegrationV4) GetSecretStoreConfig() OptNilUpsertSecretStoreConfigV4 {
 	return s.SecretStoreConfig
 }
 
@@ -3135,12 +2847,12 @@ func (s *CreateIntegrationV4) GetCustomAccessDetails() OptNilString {
 }
 
 // GetOwner returns the value of Owner.
-func (s *CreateIntegrationV4) GetOwner() OptNilCreateIntegrationV4Owner {
+func (s *CreateIntegrationV4) GetOwner() OptNilUpsertOwnerV4 {
 	return s.Owner
 }
 
 // GetOwnersMapping returns the value of OwnersMapping.
-func (s *CreateIntegrationV4) GetOwnersMapping() OptNilCreateIntegrationV4OwnersMapping {
+func (s *CreateIntegrationV4) GetOwnersMapping() OptNilUpsertOwnerMappingV4 {
 	return s.OwnersMapping
 }
 
@@ -3165,7 +2877,7 @@ func (s *CreateIntegrationV4) SetIntegrationConfig(val JsonMapModel) {
 }
 
 // SetSecretStoreConfig sets the value of SecretStoreConfig.
-func (s *CreateIntegrationV4) SetSecretStoreConfig(val OptNilCreateIntegrationV4SecretStoreConfig) {
+func (s *CreateIntegrationV4) SetSecretStoreConfig(val OptNilUpsertSecretStoreConfigV4) {
 	s.SecretStoreConfig = val
 }
 
@@ -3180,268 +2892,13 @@ func (s *CreateIntegrationV4) SetCustomAccessDetails(val OptNilString) {
 }
 
 // SetOwner sets the value of Owner.
-func (s *CreateIntegrationV4) SetOwner(val OptNilCreateIntegrationV4Owner) {
+func (s *CreateIntegrationV4) SetOwner(val OptNilUpsertOwnerV4) {
 	s.Owner = val
 }
 
 // SetOwnersMapping sets the value of OwnersMapping.
-func (s *CreateIntegrationV4) SetOwnersMapping(val OptNilCreateIntegrationV4OwnersMapping) {
+func (s *CreateIntegrationV4) SetOwnersMapping(val OptNilUpsertOwnerMappingV4) {
 	s.OwnersMapping = val
-}
-
-type CreateIntegrationV4Owner struct {
-	AttributeType              string       `json:"attribute_type"`
-	AttributeValue             []string     `json:"attribute_value"`
-	SourceIntegrationReference OptNilString `json:"source_integration_reference"`
-}
-
-// GetAttributeType returns the value of AttributeType.
-func (s *CreateIntegrationV4Owner) GetAttributeType() string {
-	return s.AttributeType
-}
-
-// GetAttributeValue returns the value of AttributeValue.
-func (s *CreateIntegrationV4Owner) GetAttributeValue() []string {
-	return s.AttributeValue
-}
-
-// GetSourceIntegrationReference returns the value of SourceIntegrationReference.
-func (s *CreateIntegrationV4Owner) GetSourceIntegrationReference() OptNilString {
-	return s.SourceIntegrationReference
-}
-
-// SetAttributeType sets the value of AttributeType.
-func (s *CreateIntegrationV4Owner) SetAttributeType(val string) {
-	s.AttributeType = val
-}
-
-// SetAttributeValue sets the value of AttributeValue.
-func (s *CreateIntegrationV4Owner) SetAttributeValue(val []string) {
-	s.AttributeValue = val
-}
-
-// SetSourceIntegrationReference sets the value of SourceIntegrationReference.
-func (s *CreateIntegrationV4Owner) SetSourceIntegrationReference(val OptNilString) {
-	s.SourceIntegrationReference = val
-}
-
-type CreateIntegrationV4OwnersMapping struct {
-	KeyName                    string       `json:"key_name"`
-	AttributeType              string       `json:"attribute_type"`
-	SourceIntegrationReference OptNilString `json:"source_integration_reference"`
-}
-
-// GetKeyName returns the value of KeyName.
-func (s *CreateIntegrationV4OwnersMapping) GetKeyName() string {
-	return s.KeyName
-}
-
-// GetAttributeType returns the value of AttributeType.
-func (s *CreateIntegrationV4OwnersMapping) GetAttributeType() string {
-	return s.AttributeType
-}
-
-// GetSourceIntegrationReference returns the value of SourceIntegrationReference.
-func (s *CreateIntegrationV4OwnersMapping) GetSourceIntegrationReference() OptNilString {
-	return s.SourceIntegrationReference
-}
-
-// SetKeyName sets the value of KeyName.
-func (s *CreateIntegrationV4OwnersMapping) SetKeyName(val string) {
-	s.KeyName = val
-}
-
-// SetAttributeType sets the value of AttributeType.
-func (s *CreateIntegrationV4OwnersMapping) SetAttributeType(val string) {
-	s.AttributeType = val
-}
-
-// SetSourceIntegrationReference sets the value of SourceIntegrationReference.
-func (s *CreateIntegrationV4OwnersMapping) SetSourceIntegrationReference(val OptNilString) {
-	s.SourceIntegrationReference = val
-}
-
-type CreateIntegrationV4SecretStoreConfig struct {
-	AWS            OptNilCreateIntegrationV4SecretStoreConfigAWS            `json:"aws"`
-	Gcp            OptNilCreateIntegrationV4SecretStoreConfigGcp            `json:"gcp"`
-	Kubernetes     OptNilCreateIntegrationV4SecretStoreConfigKubernetes     `json:"kubernetes"`
-	Azure          OptNilCreateIntegrationV4SecretStoreConfigAzure          `json:"azure"`
-	HashicorpVault OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault `json:"hashicorp_vault"`
-}
-
-// GetAWS returns the value of AWS.
-func (s *CreateIntegrationV4SecretStoreConfig) GetAWS() OptNilCreateIntegrationV4SecretStoreConfigAWS {
-	return s.AWS
-}
-
-// GetGcp returns the value of Gcp.
-func (s *CreateIntegrationV4SecretStoreConfig) GetGcp() OptNilCreateIntegrationV4SecretStoreConfigGcp {
-	return s.Gcp
-}
-
-// GetKubernetes returns the value of Kubernetes.
-func (s *CreateIntegrationV4SecretStoreConfig) GetKubernetes() OptNilCreateIntegrationV4SecretStoreConfigKubernetes {
-	return s.Kubernetes
-}
-
-// GetAzure returns the value of Azure.
-func (s *CreateIntegrationV4SecretStoreConfig) GetAzure() OptNilCreateIntegrationV4SecretStoreConfigAzure {
-	return s.Azure
-}
-
-// GetHashicorpVault returns the value of HashicorpVault.
-func (s *CreateIntegrationV4SecretStoreConfig) GetHashicorpVault() OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault {
-	return s.HashicorpVault
-}
-
-// SetAWS sets the value of AWS.
-func (s *CreateIntegrationV4SecretStoreConfig) SetAWS(val OptNilCreateIntegrationV4SecretStoreConfigAWS) {
-	s.AWS = val
-}
-
-// SetGcp sets the value of Gcp.
-func (s *CreateIntegrationV4SecretStoreConfig) SetGcp(val OptNilCreateIntegrationV4SecretStoreConfigGcp) {
-	s.Gcp = val
-}
-
-// SetKubernetes sets the value of Kubernetes.
-func (s *CreateIntegrationV4SecretStoreConfig) SetKubernetes(val OptNilCreateIntegrationV4SecretStoreConfigKubernetes) {
-	s.Kubernetes = val
-}
-
-// SetAzure sets the value of Azure.
-func (s *CreateIntegrationV4SecretStoreConfig) SetAzure(val OptNilCreateIntegrationV4SecretStoreConfigAzure) {
-	s.Azure = val
-}
-
-// SetHashicorpVault sets the value of HashicorpVault.
-func (s *CreateIntegrationV4SecretStoreConfig) SetHashicorpVault(val OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault) {
-	s.HashicorpVault = val
-}
-
-type CreateIntegrationV4SecretStoreConfigAWS struct {
-	Region   string `json:"region"`
-	SecretID string `json:"secret_id"`
-}
-
-// GetRegion returns the value of Region.
-func (s *CreateIntegrationV4SecretStoreConfigAWS) GetRegion() string {
-	return s.Region
-}
-
-// GetSecretID returns the value of SecretID.
-func (s *CreateIntegrationV4SecretStoreConfigAWS) GetSecretID() string {
-	return s.SecretID
-}
-
-// SetRegion sets the value of Region.
-func (s *CreateIntegrationV4SecretStoreConfigAWS) SetRegion(val string) {
-	s.Region = val
-}
-
-// SetSecretID sets the value of SecretID.
-func (s *CreateIntegrationV4SecretStoreConfigAWS) SetSecretID(val string) {
-	s.SecretID = val
-}
-
-type CreateIntegrationV4SecretStoreConfigAzure struct {
-	VaultURL string `json:"vault_url"`
-	Name     string `json:"name"`
-}
-
-// GetVaultURL returns the value of VaultURL.
-func (s *CreateIntegrationV4SecretStoreConfigAzure) GetVaultURL() string {
-	return s.VaultURL
-}
-
-// GetName returns the value of Name.
-func (s *CreateIntegrationV4SecretStoreConfigAzure) GetName() string {
-	return s.Name
-}
-
-// SetVaultURL sets the value of VaultURL.
-func (s *CreateIntegrationV4SecretStoreConfigAzure) SetVaultURL(val string) {
-	s.VaultURL = val
-}
-
-// SetName sets the value of Name.
-func (s *CreateIntegrationV4SecretStoreConfigAzure) SetName(val string) {
-	s.Name = val
-}
-
-type CreateIntegrationV4SecretStoreConfigGcp struct {
-	Project  string `json:"project"`
-	SecretID string `json:"secret_id"`
-}
-
-// GetProject returns the value of Project.
-func (s *CreateIntegrationV4SecretStoreConfigGcp) GetProject() string {
-	return s.Project
-}
-
-// GetSecretID returns the value of SecretID.
-func (s *CreateIntegrationV4SecretStoreConfigGcp) GetSecretID() string {
-	return s.SecretID
-}
-
-// SetProject sets the value of Project.
-func (s *CreateIntegrationV4SecretStoreConfigGcp) SetProject(val string) {
-	s.Project = val
-}
-
-// SetSecretID sets the value of SecretID.
-func (s *CreateIntegrationV4SecretStoreConfigGcp) SetSecretID(val string) {
-	s.SecretID = val
-}
-
-type CreateIntegrationV4SecretStoreConfigHashicorpVault struct {
-	SecretEngine string `json:"secret_engine"`
-	Path         string `json:"path"`
-}
-
-// GetSecretEngine returns the value of SecretEngine.
-func (s *CreateIntegrationV4SecretStoreConfigHashicorpVault) GetSecretEngine() string {
-	return s.SecretEngine
-}
-
-// GetPath returns the value of Path.
-func (s *CreateIntegrationV4SecretStoreConfigHashicorpVault) GetPath() string {
-	return s.Path
-}
-
-// SetSecretEngine sets the value of SecretEngine.
-func (s *CreateIntegrationV4SecretStoreConfigHashicorpVault) SetSecretEngine(val string) {
-	s.SecretEngine = val
-}
-
-// SetPath sets the value of Path.
-func (s *CreateIntegrationV4SecretStoreConfigHashicorpVault) SetPath(val string) {
-	s.Path = val
-}
-
-type CreateIntegrationV4SecretStoreConfigKubernetes struct {
-	Namespace string `json:"namespace"`
-	Name      string `json:"name"`
-}
-
-// GetNamespace returns the value of Namespace.
-func (s *CreateIntegrationV4SecretStoreConfigKubernetes) GetNamespace() string {
-	return s.Namespace
-}
-
-// GetName returns the value of Name.
-func (s *CreateIntegrationV4SecretStoreConfigKubernetes) GetName() string {
-	return s.Name
-}
-
-// SetNamespace sets the value of Namespace.
-func (s *CreateIntegrationV4SecretStoreConfigKubernetes) SetNamespace(val string) {
-	s.Namespace = val
-}
-
-// SetName sets the value of Name.
-func (s *CreateIntegrationV4SecretStoreConfigKubernetes) SetName(val string) {
-	s.Name = val
 }
 
 // Ref: #/components/schemas/DayOfWeek
@@ -3702,6 +3159,32 @@ func (s *EntitlementResourceV4) SetName(val string) {
 	s.Name = val
 }
 
+// Ref: #/components/schemas/GcpSecretConfigV4
+type GcpSecretConfigV4 struct {
+	Project  string `json:"project"`
+	SecretID string `json:"secret_id"`
+}
+
+// GetProject returns the value of Project.
+func (s *GcpSecretConfigV4) GetProject() string {
+	return s.Project
+}
+
+// GetSecretID returns the value of SecretID.
+func (s *GcpSecretConfigV4) GetSecretID() string {
+	return s.SecretID
+}
+
+// SetProject sets the value of Project.
+func (s *GcpSecretConfigV4) SetProject(val string) {
+	s.Project = val
+}
+
+// SetSecretID sets the value of SecretID.
+func (s *GcpSecretConfigV4) SetSecretID(val string) {
+	s.SecretID = val
+}
+
 // Ref: #/components/schemas/GetGrantRevokeAccessConnectorActionParamsModel
 type GetGrantRevokeAccessConnectorActionParamsModel struct {
 	RequestID          string   `json:"request_id"`
@@ -3881,6 +3364,32 @@ func (s *GroupV1) SetSourceIntegrationID(val OptNilString) {
 // SetSourceIntegrationName sets the value of SourceIntegrationName.
 func (s *GroupV1) SetSourceIntegrationName(val OptNilString) {
 	s.SourceIntegrationName = val
+}
+
+// Ref: #/components/schemas/HashicorpVaultSecretConfigV4
+type HashicorpVaultSecretConfigV4 struct {
+	SecretEngine string `json:"secret_engine"`
+	Path         string `json:"path"`
+}
+
+// GetSecretEngine returns the value of SecretEngine.
+func (s *HashicorpVaultSecretConfigV4) GetSecretEngine() string {
+	return s.SecretEngine
+}
+
+// GetPath returns the value of Path.
+func (s *HashicorpVaultSecretConfigV4) GetPath() string {
+	return s.Path
+}
+
+// SetSecretEngine sets the value of SecretEngine.
+func (s *HashicorpVaultSecretConfigV4) SetSecretEngine(val string) {
+	s.SecretEngine = val
+}
+
+// SetPath sets the value of Path.
+func (s *HashicorpVaultSecretConfigV4) SetPath(val string) {
+	s.Path = val
 }
 
 // Ref: #/components/schemas/IdentitiesAttributesResponseModel
@@ -4087,18 +3596,18 @@ type Instant float64
 
 // Ref: #/components/schemas/Integration
 type Integration struct {
-	ID                     string                     `json:"id"`
-	Name                   string                     `json:"name"`
-	Type                   string                     `json:"type"`
-	Status                 IntegrationStatus          `json:"status"`
-	Details                OptNilString               `json:"details"`
-	ProvisionerID          OptNilString               `json:"provisioner_id"`
-	Connection             OptIntegrationConnection   `json:"connection"`
-	LastSyncTime           OptNilFloat64              `json:"last_sync_time"`
-	Metadata               IntegrationMetadata        `json:"metadata"`
-	SecretConfig           OptIntegrationSecretConfig `json:"secret_config"`
-	ConnectedResourceTypes []string                   `json:"connected_resource_types"`
-	CustomAccessDetails    OptNilString               `json:"custom_access_details"`
+	ID                     string                `json:"id"`
+	Name                   string                `json:"name"`
+	Type                   string                `json:"type"`
+	Status                 IntegrationStatus     `json:"status"`
+	Details                OptNilString          `json:"details"`
+	ProvisionerID          OptNilString          `json:"provisioner_id"`
+	Connection             OptConnectionMetadata `json:"connection"`
+	LastSyncTime           OptNilInstant         `json:"last_sync_time"`
+	Metadata               IntegrationMetadata   `json:"metadata"`
+	SecretConfig           OptNilSecretConfig    `json:"secret_config"`
+	ConnectedResourceTypes []string              `json:"connected_resource_types"`
+	CustomAccessDetails    OptNilString          `json:"custom_access_details"`
 }
 
 // GetID returns the value of ID.
@@ -4132,12 +3641,12 @@ func (s *Integration) GetProvisionerID() OptNilString {
 }
 
 // GetConnection returns the value of Connection.
-func (s *Integration) GetConnection() OptIntegrationConnection {
+func (s *Integration) GetConnection() OptConnectionMetadata {
 	return s.Connection
 }
 
 // GetLastSyncTime returns the value of LastSyncTime.
-func (s *Integration) GetLastSyncTime() OptNilFloat64 {
+func (s *Integration) GetLastSyncTime() OptNilInstant {
 	return s.LastSyncTime
 }
 
@@ -4147,7 +3656,7 @@ func (s *Integration) GetMetadata() IntegrationMetadata {
 }
 
 // GetSecretConfig returns the value of SecretConfig.
-func (s *Integration) GetSecretConfig() OptIntegrationSecretConfig {
+func (s *Integration) GetSecretConfig() OptNilSecretConfig {
 	return s.SecretConfig
 }
 
@@ -4192,12 +3701,12 @@ func (s *Integration) SetProvisionerID(val OptNilString) {
 }
 
 // SetConnection sets the value of Connection.
-func (s *Integration) SetConnection(val OptIntegrationConnection) {
+func (s *Integration) SetConnection(val OptConnectionMetadata) {
 	s.Connection = val
 }
 
 // SetLastSyncTime sets the value of LastSyncTime.
-func (s *Integration) SetLastSyncTime(val OptNilFloat64) {
+func (s *Integration) SetLastSyncTime(val OptNilInstant) {
 	s.LastSyncTime = val
 }
 
@@ -4207,7 +3716,7 @@ func (s *Integration) SetMetadata(val IntegrationMetadata) {
 }
 
 // SetSecretConfig sets the value of SecretConfig.
-func (s *Integration) SetSecretConfig(val OptIntegrationSecretConfig) {
+func (s *Integration) SetSecretConfig(val OptNilSecretConfig) {
 	s.SecretConfig = val
 }
 
@@ -4219,6 +3728,115 @@ func (s *Integration) SetConnectedResourceTypes(val []string) {
 // SetCustomAccessDetails sets the value of CustomAccessDetails.
 func (s *Integration) SetCustomAccessDetails(val OptNilString) {
 	s.CustomAccessDetails = val
+}
+
+// IntegrationAccessTargetV2.
+// Ref: #/components/schemas/IntegrationAccessTargetPublicV2Model
+type IntegrationAccessTargetPublicV2Model struct {
+	IntegrationID   string                                                        `json:"integration_id"`
+	IntegrationName string                                                        `json:"integration_name"`
+	ResourceType    string                                                        `json:"resource_type"`
+	Permissions     []string                                                      `json:"permissions"`
+	ResourcesScopes OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray `json:"resources_scopes"`
+}
+
+// GetIntegrationID returns the value of IntegrationID.
+func (s *IntegrationAccessTargetPublicV2Model) GetIntegrationID() string {
+	return s.IntegrationID
+}
+
+// GetIntegrationName returns the value of IntegrationName.
+func (s *IntegrationAccessTargetPublicV2Model) GetIntegrationName() string {
+	return s.IntegrationName
+}
+
+// GetResourceType returns the value of ResourceType.
+func (s *IntegrationAccessTargetPublicV2Model) GetResourceType() string {
+	return s.ResourceType
+}
+
+// GetPermissions returns the value of Permissions.
+func (s *IntegrationAccessTargetPublicV2Model) GetPermissions() []string {
+	return s.Permissions
+}
+
+// GetResourcesScopes returns the value of ResourcesScopes.
+func (s *IntegrationAccessTargetPublicV2Model) GetResourcesScopes() OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray {
+	return s.ResourcesScopes
+}
+
+// SetIntegrationID sets the value of IntegrationID.
+func (s *IntegrationAccessTargetPublicV2Model) SetIntegrationID(val string) {
+	s.IntegrationID = val
+}
+
+// SetIntegrationName sets the value of IntegrationName.
+func (s *IntegrationAccessTargetPublicV2Model) SetIntegrationName(val string) {
+	s.IntegrationName = val
+}
+
+// SetResourceType sets the value of ResourceType.
+func (s *IntegrationAccessTargetPublicV2Model) SetResourceType(val string) {
+	s.ResourceType = val
+}
+
+// SetPermissions sets the value of Permissions.
+func (s *IntegrationAccessTargetPublicV2Model) SetPermissions(val []string) {
+	s.Permissions = val
+}
+
+// SetResourcesScopes sets the value of ResourcesScopes.
+func (s *IntegrationAccessTargetPublicV2Model) SetResourcesScopes(val OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) {
+	s.ResourcesScopes = val
+}
+
+// IntegrationAccessTargetUpsertV2.
+// Ref: #/components/schemas/IntegrationAccessTargetUpsertPublicV2Model
+type IntegrationAccessTargetUpsertPublicV2Model struct {
+	IntegrationReference string                                                        `json:"integration_reference"`
+	ResourceType         string                                                        `json:"resource_type"`
+	Permissions          []string                                                      `json:"permissions"`
+	ResourcesScopes      OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray `json:"resources_scopes"`
+}
+
+// GetIntegrationReference returns the value of IntegrationReference.
+func (s *IntegrationAccessTargetUpsertPublicV2Model) GetIntegrationReference() string {
+	return s.IntegrationReference
+}
+
+// GetResourceType returns the value of ResourceType.
+func (s *IntegrationAccessTargetUpsertPublicV2Model) GetResourceType() string {
+	return s.ResourceType
+}
+
+// GetPermissions returns the value of Permissions.
+func (s *IntegrationAccessTargetUpsertPublicV2Model) GetPermissions() []string {
+	return s.Permissions
+}
+
+// GetResourcesScopes returns the value of ResourcesScopes.
+func (s *IntegrationAccessTargetUpsertPublicV2Model) GetResourcesScopes() OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray {
+	return s.ResourcesScopes
+}
+
+// SetIntegrationReference sets the value of IntegrationReference.
+func (s *IntegrationAccessTargetUpsertPublicV2Model) SetIntegrationReference(val string) {
+	s.IntegrationReference = val
+}
+
+// SetResourceType sets the value of ResourceType.
+func (s *IntegrationAccessTargetUpsertPublicV2Model) SetResourceType(val string) {
+	s.ResourceType = val
+}
+
+// SetPermissions sets the value of Permissions.
+func (s *IntegrationAccessTargetUpsertPublicV2Model) SetPermissions(val []string) {
+	s.Permissions = val
+}
+
+// SetResourcesScopes sets the value of ResourcesScopes.
+func (s *IntegrationAccessTargetUpsertPublicV2Model) SetResourcesScopes(val OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) {
+	s.ResourcesScopes = val
 }
 
 // Ref: #/components/schemas/IntegrationConfig
@@ -4350,8 +3968,6 @@ func (s *IntegrationConfigParam) SetOptional(val bool) {
 	s.Optional = val
 }
 
-type IntegrationConnection struct{}
-
 type IntegrationMetadata struct{}
 
 // Ref: #/components/schemas/IntegrationPartialV4
@@ -4379,8 +3995,6 @@ func (s *IntegrationPartialV4) SetID(val string) {
 func (s *IntegrationPartialV4) SetName(val string) {
 	s.Name = val
 }
-
-type IntegrationSecretConfig struct{}
 
 // Ref: #/components/schemas/IntegrationStatus
 type IntegrationStatus string
@@ -4454,19 +4068,19 @@ func (s *IntegrationStatus) UnmarshalText(data []byte) error {
 
 // Ref: #/components/schemas/IntegrationV4
 type IntegrationV4 struct {
-	ID                     string                               `json:"id"`
-	Name                   string                               `json:"name"`
-	Type                   string                               `json:"type"`
-	Category               string                               `json:"category"`
-	ConnectorID            OptNilString                         `json:"connector_id"`
-	Status                 string                               `json:"status"`
-	LastSyncTime           OptNilDateTime                       `json:"last_sync_time"`
-	IntegrationConfig      JsonMapModel                         `json:"integration_config"`
-	SecretStoreConfig      OptNilIntegrationV4SecretStoreConfig `json:"secret_store_config"`
-	ConnectedResourceTypes OptNilStringArray                    `json:"connected_resource_types"`
-	CustomAccessDetails    OptNilString                         `json:"custom_access_details"`
-	Owner                  OptNilIntegrationV4Owner             `json:"owner"`
-	OwnersMapping          OptNilIntegrationV4OwnersMapping     `json:"owners_mapping"`
+	ID                     string                    `json:"id"`
+	Name                   string                    `json:"name"`
+	Type                   string                    `json:"type"`
+	Category               string                    `json:"category"`
+	ConnectorID            OptNilString              `json:"connector_id"`
+	Status                 string                    `json:"status"`
+	LastSyncTime           OptNilApiInstant          `json:"last_sync_time"`
+	IntegrationConfig      JsonMapModel              `json:"integration_config"`
+	SecretStoreConfig      OptNilSecretStoreConfigV4 `json:"secret_store_config"`
+	ConnectedResourceTypes OptNilStringArray         `json:"connected_resource_types"`
+	CustomAccessDetails    OptNilString              `json:"custom_access_details"`
+	Owner                  OptNilOwnerV4             `json:"owner"`
+	OwnersMapping          OptNilOwnerMappingV4      `json:"owners_mapping"`
 }
 
 // GetID returns the value of ID.
@@ -4500,7 +4114,7 @@ func (s *IntegrationV4) GetStatus() string {
 }
 
 // GetLastSyncTime returns the value of LastSyncTime.
-func (s *IntegrationV4) GetLastSyncTime() OptNilDateTime {
+func (s *IntegrationV4) GetLastSyncTime() OptNilApiInstant {
 	return s.LastSyncTime
 }
 
@@ -4510,7 +4124,7 @@ func (s *IntegrationV4) GetIntegrationConfig() JsonMapModel {
 }
 
 // GetSecretStoreConfig returns the value of SecretStoreConfig.
-func (s *IntegrationV4) GetSecretStoreConfig() OptNilIntegrationV4SecretStoreConfig {
+func (s *IntegrationV4) GetSecretStoreConfig() OptNilSecretStoreConfigV4 {
 	return s.SecretStoreConfig
 }
 
@@ -4525,12 +4139,12 @@ func (s *IntegrationV4) GetCustomAccessDetails() OptNilString {
 }
 
 // GetOwner returns the value of Owner.
-func (s *IntegrationV4) GetOwner() OptNilIntegrationV4Owner {
+func (s *IntegrationV4) GetOwner() OptNilOwnerV4 {
 	return s.Owner
 }
 
 // GetOwnersMapping returns the value of OwnersMapping.
-func (s *IntegrationV4) GetOwnersMapping() OptNilIntegrationV4OwnersMapping {
+func (s *IntegrationV4) GetOwnersMapping() OptNilOwnerMappingV4 {
 	return s.OwnersMapping
 }
 
@@ -4565,7 +4179,7 @@ func (s *IntegrationV4) SetStatus(val string) {
 }
 
 // SetLastSyncTime sets the value of LastSyncTime.
-func (s *IntegrationV4) SetLastSyncTime(val OptNilDateTime) {
+func (s *IntegrationV4) SetLastSyncTime(val OptNilApiInstant) {
 	s.LastSyncTime = val
 }
 
@@ -4575,7 +4189,7 @@ func (s *IntegrationV4) SetIntegrationConfig(val JsonMapModel) {
 }
 
 // SetSecretStoreConfig sets the value of SecretStoreConfig.
-func (s *IntegrationV4) SetSecretStoreConfig(val OptNilIntegrationV4SecretStoreConfig) {
+func (s *IntegrationV4) SetSecretStoreConfig(val OptNilSecretStoreConfigV4) {
 	s.SecretStoreConfig = val
 }
 
@@ -4590,326 +4204,13 @@ func (s *IntegrationV4) SetCustomAccessDetails(val OptNilString) {
 }
 
 // SetOwner sets the value of Owner.
-func (s *IntegrationV4) SetOwner(val OptNilIntegrationV4Owner) {
+func (s *IntegrationV4) SetOwner(val OptNilOwnerV4) {
 	s.Owner = val
 }
 
 // SetOwnersMapping sets the value of OwnersMapping.
-func (s *IntegrationV4) SetOwnersMapping(val OptNilIntegrationV4OwnersMapping) {
+func (s *IntegrationV4) SetOwnersMapping(val OptNilOwnerMappingV4) {
 	s.OwnersMapping = val
-}
-
-type IntegrationV4Owner struct {
-	AttributeType         string       `json:"attribute_type"`
-	AttributeValue        []string     `json:"attribute_value"`
-	SourceIntegrationID   OptNilString `json:"source_integration_id"`
-	SourceIntegrationName OptNilString `json:"source_integration_name"`
-}
-
-// GetAttributeType returns the value of AttributeType.
-func (s *IntegrationV4Owner) GetAttributeType() string {
-	return s.AttributeType
-}
-
-// GetAttributeValue returns the value of AttributeValue.
-func (s *IntegrationV4Owner) GetAttributeValue() []string {
-	return s.AttributeValue
-}
-
-// GetSourceIntegrationID returns the value of SourceIntegrationID.
-func (s *IntegrationV4Owner) GetSourceIntegrationID() OptNilString {
-	return s.SourceIntegrationID
-}
-
-// GetSourceIntegrationName returns the value of SourceIntegrationName.
-func (s *IntegrationV4Owner) GetSourceIntegrationName() OptNilString {
-	return s.SourceIntegrationName
-}
-
-// SetAttributeType sets the value of AttributeType.
-func (s *IntegrationV4Owner) SetAttributeType(val string) {
-	s.AttributeType = val
-}
-
-// SetAttributeValue sets the value of AttributeValue.
-func (s *IntegrationV4Owner) SetAttributeValue(val []string) {
-	s.AttributeValue = val
-}
-
-// SetSourceIntegrationID sets the value of SourceIntegrationID.
-func (s *IntegrationV4Owner) SetSourceIntegrationID(val OptNilString) {
-	s.SourceIntegrationID = val
-}
-
-// SetSourceIntegrationName sets the value of SourceIntegrationName.
-func (s *IntegrationV4Owner) SetSourceIntegrationName(val OptNilString) {
-	s.SourceIntegrationName = val
-}
-
-type IntegrationV4OwnersMapping struct {
-	KeyName               string       `json:"key_name"`
-	AttributeType         string       `json:"attribute_type"`
-	SourceIntegrationID   OptNilString `json:"source_integration_id"`
-	SourceIntegrationName OptNilString `json:"source_integration_name"`
-}
-
-// GetKeyName returns the value of KeyName.
-func (s *IntegrationV4OwnersMapping) GetKeyName() string {
-	return s.KeyName
-}
-
-// GetAttributeType returns the value of AttributeType.
-func (s *IntegrationV4OwnersMapping) GetAttributeType() string {
-	return s.AttributeType
-}
-
-// GetSourceIntegrationID returns the value of SourceIntegrationID.
-func (s *IntegrationV4OwnersMapping) GetSourceIntegrationID() OptNilString {
-	return s.SourceIntegrationID
-}
-
-// GetSourceIntegrationName returns the value of SourceIntegrationName.
-func (s *IntegrationV4OwnersMapping) GetSourceIntegrationName() OptNilString {
-	return s.SourceIntegrationName
-}
-
-// SetKeyName sets the value of KeyName.
-func (s *IntegrationV4OwnersMapping) SetKeyName(val string) {
-	s.KeyName = val
-}
-
-// SetAttributeType sets the value of AttributeType.
-func (s *IntegrationV4OwnersMapping) SetAttributeType(val string) {
-	s.AttributeType = val
-}
-
-// SetSourceIntegrationID sets the value of SourceIntegrationID.
-func (s *IntegrationV4OwnersMapping) SetSourceIntegrationID(val OptNilString) {
-	s.SourceIntegrationID = val
-}
-
-// SetSourceIntegrationName sets the value of SourceIntegrationName.
-func (s *IntegrationV4OwnersMapping) SetSourceIntegrationName(val OptNilString) {
-	s.SourceIntegrationName = val
-}
-
-type IntegrationV4SecretStoreConfig struct {
-	AWS            OptNilIntegrationV4SecretStoreConfigAWS            `json:"aws"`
-	Gcp            OptNilIntegrationV4SecretStoreConfigGcp            `json:"gcp"`
-	Kubernetes     OptNilIntegrationV4SecretStoreConfigKubernetes     `json:"kubernetes"`
-	Azure          OptNilIntegrationV4SecretStoreConfigAzure          `json:"azure"`
-	HashicorpVault OptNilIntegrationV4SecretStoreConfigHashicorpVault `json:"hashicorp_vault"`
-	Apono          OptNilIntegrationV4SecretStoreConfigApono          `json:"apono"`
-}
-
-// GetAWS returns the value of AWS.
-func (s *IntegrationV4SecretStoreConfig) GetAWS() OptNilIntegrationV4SecretStoreConfigAWS {
-	return s.AWS
-}
-
-// GetGcp returns the value of Gcp.
-func (s *IntegrationV4SecretStoreConfig) GetGcp() OptNilIntegrationV4SecretStoreConfigGcp {
-	return s.Gcp
-}
-
-// GetKubernetes returns the value of Kubernetes.
-func (s *IntegrationV4SecretStoreConfig) GetKubernetes() OptNilIntegrationV4SecretStoreConfigKubernetes {
-	return s.Kubernetes
-}
-
-// GetAzure returns the value of Azure.
-func (s *IntegrationV4SecretStoreConfig) GetAzure() OptNilIntegrationV4SecretStoreConfigAzure {
-	return s.Azure
-}
-
-// GetHashicorpVault returns the value of HashicorpVault.
-func (s *IntegrationV4SecretStoreConfig) GetHashicorpVault() OptNilIntegrationV4SecretStoreConfigHashicorpVault {
-	return s.HashicorpVault
-}
-
-// GetApono returns the value of Apono.
-func (s *IntegrationV4SecretStoreConfig) GetApono() OptNilIntegrationV4SecretStoreConfigApono {
-	return s.Apono
-}
-
-// SetAWS sets the value of AWS.
-func (s *IntegrationV4SecretStoreConfig) SetAWS(val OptNilIntegrationV4SecretStoreConfigAWS) {
-	s.AWS = val
-}
-
-// SetGcp sets the value of Gcp.
-func (s *IntegrationV4SecretStoreConfig) SetGcp(val OptNilIntegrationV4SecretStoreConfigGcp) {
-	s.Gcp = val
-}
-
-// SetKubernetes sets the value of Kubernetes.
-func (s *IntegrationV4SecretStoreConfig) SetKubernetes(val OptNilIntegrationV4SecretStoreConfigKubernetes) {
-	s.Kubernetes = val
-}
-
-// SetAzure sets the value of Azure.
-func (s *IntegrationV4SecretStoreConfig) SetAzure(val OptNilIntegrationV4SecretStoreConfigAzure) {
-	s.Azure = val
-}
-
-// SetHashicorpVault sets the value of HashicorpVault.
-func (s *IntegrationV4SecretStoreConfig) SetHashicorpVault(val OptNilIntegrationV4SecretStoreConfigHashicorpVault) {
-	s.HashicorpVault = val
-}
-
-// SetApono sets the value of Apono.
-func (s *IntegrationV4SecretStoreConfig) SetApono(val OptNilIntegrationV4SecretStoreConfigApono) {
-	s.Apono = val
-}
-
-type IntegrationV4SecretStoreConfigAWS struct {
-	Region   string `json:"region"`
-	SecretID string `json:"secret_id"`
-}
-
-// GetRegion returns the value of Region.
-func (s *IntegrationV4SecretStoreConfigAWS) GetRegion() string {
-	return s.Region
-}
-
-// GetSecretID returns the value of SecretID.
-func (s *IntegrationV4SecretStoreConfigAWS) GetSecretID() string {
-	return s.SecretID
-}
-
-// SetRegion sets the value of Region.
-func (s *IntegrationV4SecretStoreConfigAWS) SetRegion(val string) {
-	s.Region = val
-}
-
-// SetSecretID sets the value of SecretID.
-func (s *IntegrationV4SecretStoreConfigAWS) SetSecretID(val string) {
-	s.SecretID = val
-}
-
-type IntegrationV4SecretStoreConfigApono struct {
-	Parameters IntegrationV4SecretStoreConfigAponoParameters `json:"parameters"`
-}
-
-// GetParameters returns the value of Parameters.
-func (s *IntegrationV4SecretStoreConfigApono) GetParameters() IntegrationV4SecretStoreConfigAponoParameters {
-	return s.Parameters
-}
-
-// SetParameters sets the value of Parameters.
-func (s *IntegrationV4SecretStoreConfigApono) SetParameters(val IntegrationV4SecretStoreConfigAponoParameters) {
-	s.Parameters = val
-}
-
-type IntegrationV4SecretStoreConfigAponoParameters map[string]string
-
-func (s *IntegrationV4SecretStoreConfigAponoParameters) init() IntegrationV4SecretStoreConfigAponoParameters {
-	m := *s
-	if m == nil {
-		m = map[string]string{}
-		*s = m
-	}
-	return m
-}
-
-type IntegrationV4SecretStoreConfigAzure struct {
-	VaultURL string `json:"vault_url"`
-	Name     string `json:"name"`
-}
-
-// GetVaultURL returns the value of VaultURL.
-func (s *IntegrationV4SecretStoreConfigAzure) GetVaultURL() string {
-	return s.VaultURL
-}
-
-// GetName returns the value of Name.
-func (s *IntegrationV4SecretStoreConfigAzure) GetName() string {
-	return s.Name
-}
-
-// SetVaultURL sets the value of VaultURL.
-func (s *IntegrationV4SecretStoreConfigAzure) SetVaultURL(val string) {
-	s.VaultURL = val
-}
-
-// SetName sets the value of Name.
-func (s *IntegrationV4SecretStoreConfigAzure) SetName(val string) {
-	s.Name = val
-}
-
-type IntegrationV4SecretStoreConfigGcp struct {
-	Project  string `json:"project"`
-	SecretID string `json:"secret_id"`
-}
-
-// GetProject returns the value of Project.
-func (s *IntegrationV4SecretStoreConfigGcp) GetProject() string {
-	return s.Project
-}
-
-// GetSecretID returns the value of SecretID.
-func (s *IntegrationV4SecretStoreConfigGcp) GetSecretID() string {
-	return s.SecretID
-}
-
-// SetProject sets the value of Project.
-func (s *IntegrationV4SecretStoreConfigGcp) SetProject(val string) {
-	s.Project = val
-}
-
-// SetSecretID sets the value of SecretID.
-func (s *IntegrationV4SecretStoreConfigGcp) SetSecretID(val string) {
-	s.SecretID = val
-}
-
-type IntegrationV4SecretStoreConfigHashicorpVault struct {
-	SecretEngine string `json:"secret_engine"`
-	Path         string `json:"path"`
-}
-
-// GetSecretEngine returns the value of SecretEngine.
-func (s *IntegrationV4SecretStoreConfigHashicorpVault) GetSecretEngine() string {
-	return s.SecretEngine
-}
-
-// GetPath returns the value of Path.
-func (s *IntegrationV4SecretStoreConfigHashicorpVault) GetPath() string {
-	return s.Path
-}
-
-// SetSecretEngine sets the value of SecretEngine.
-func (s *IntegrationV4SecretStoreConfigHashicorpVault) SetSecretEngine(val string) {
-	s.SecretEngine = val
-}
-
-// SetPath sets the value of Path.
-func (s *IntegrationV4SecretStoreConfigHashicorpVault) SetPath(val string) {
-	s.Path = val
-}
-
-type IntegrationV4SecretStoreConfigKubernetes struct {
-	Namespace string `json:"namespace"`
-	Name      string `json:"name"`
-}
-
-// GetNamespace returns the value of Namespace.
-func (s *IntegrationV4SecretStoreConfigKubernetes) GetNamespace() string {
-	return s.Namespace
-}
-
-// GetName returns the value of Name.
-func (s *IntegrationV4SecretStoreConfigKubernetes) GetName() string {
-	return s.Name
-}
-
-// SetNamespace sets the value of Namespace.
-func (s *IntegrationV4SecretStoreConfigKubernetes) SetNamespace(val string) {
-	s.Namespace = val
-}
-
-// SetName sets the value of Name.
-func (s *IntegrationV4SecretStoreConfigKubernetes) SetName(val string) {
-	s.Name = val
 }
 
 // Ref: #/components/schemas/JsonMapModel
@@ -4922,6 +4223,58 @@ func (s *JsonMapModel) init() JsonMapModel {
 		*s = m
 	}
 	return m
+}
+
+// Ref: #/components/schemas/KubernetesSecretConfigV4
+type KubernetesSecretConfigV4 struct {
+	Namespace string `json:"namespace"`
+	Name      string `json:"name"`
+}
+
+// GetNamespace returns the value of Namespace.
+func (s *KubernetesSecretConfigV4) GetNamespace() string {
+	return s.Namespace
+}
+
+// GetName returns the value of Name.
+func (s *KubernetesSecretConfigV4) GetName() string {
+	return s.Name
+}
+
+// SetNamespace sets the value of Namespace.
+func (s *KubernetesSecretConfigV4) SetNamespace(val string) {
+	s.Namespace = val
+}
+
+// SetName sets the value of Name.
+func (s *KubernetesSecretConfigV4) SetName(val string) {
+	s.Name = val
+}
+
+// Ref: #/components/schemas/LinkV1
+type LinkV1 struct {
+	URL   string       `json:"url"`
+	Title OptNilString `json:"title"`
+}
+
+// GetURL returns the value of URL.
+func (s *LinkV1) GetURL() string {
+	return s.URL
+}
+
+// GetTitle returns the value of Title.
+func (s *LinkV1) GetTitle() OptNilString {
+	return s.Title
+}
+
+// SetURL sets the value of URL.
+func (s *LinkV1) SetURL(val string) {
+	s.URL = val
+}
+
+// SetTitle sets the value of Title.
+func (s *LinkV1) SetTitle(val OptNilString) {
+	s.Title = val
 }
 
 // Ref: #/components/schemas/MessageResponse
@@ -4984,6 +4337,52 @@ func (o NilString) Or(d string) string {
 	return d
 }
 
+// NewOptConnectionMetadata returns new OptConnectionMetadata with value set to v.
+func NewOptConnectionMetadata(v *ConnectionMetadata) OptConnectionMetadata {
+	return OptConnectionMetadata{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptConnectionMetadata is optional *ConnectionMetadata.
+type OptConnectionMetadata struct {
+	Value *ConnectionMetadata
+	Set   bool
+}
+
+// IsSet returns true if OptConnectionMetadata was set.
+func (o OptConnectionMetadata) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptConnectionMetadata) Reset() {
+	var v *ConnectionMetadata
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptConnectionMetadata) SetTo(v *ConnectionMetadata) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptConnectionMetadata) Get() (v *ConnectionMetadata, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptConnectionMetadata) Or(d *ConnectionMetadata) *ConnectionMetadata {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptConnectorActionParamsModelIntegrationMetadata returns new OptConnectorActionParamsModelIntegrationMetadata with value set to v.
 func NewOptConnectorActionParamsModelIntegrationMetadata(v *ConnectorActionParamsModelIntegrationMetadata) OptConnectorActionParamsModelIntegrationMetadata {
 	return OptConnectorActionParamsModelIntegrationMetadata{
@@ -5024,98 +4423,6 @@ func (o OptConnectorActionParamsModelIntegrationMetadata) Get() (v *ConnectorAct
 
 // Or returns value if set, or given parameter if does not.
 func (o OptConnectorActionParamsModelIntegrationMetadata) Or(d *ConnectorActionParamsModelIntegrationMetadata) *ConnectorActionParamsModelIntegrationMetadata {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptConnectorActionParamsModelSecretConfig returns new OptConnectorActionParamsModelSecretConfig with value set to v.
-func NewOptConnectorActionParamsModelSecretConfig(v *ConnectorActionParamsModelSecretConfig) OptConnectorActionParamsModelSecretConfig {
-	return OptConnectorActionParamsModelSecretConfig{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptConnectorActionParamsModelSecretConfig is optional *ConnectorActionParamsModelSecretConfig.
-type OptConnectorActionParamsModelSecretConfig struct {
-	Value *ConnectorActionParamsModelSecretConfig
-	Set   bool
-}
-
-// IsSet returns true if OptConnectorActionParamsModelSecretConfig was set.
-func (o OptConnectorActionParamsModelSecretConfig) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptConnectorActionParamsModelSecretConfig) Reset() {
-	var v *ConnectorActionParamsModelSecretConfig
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptConnectorActionParamsModelSecretConfig) SetTo(v *ConnectorActionParamsModelSecretConfig) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptConnectorActionParamsModelSecretConfig) Get() (v *ConnectorActionParamsModelSecretConfig, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptConnectorActionParamsModelSecretConfig) Or(d *ConnectorActionParamsModelSecretConfig) *ConnectorActionParamsModelSecretConfig {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptCreateIntegrationSecretConfig returns new OptCreateIntegrationSecretConfig with value set to v.
-func NewOptCreateIntegrationSecretConfig(v *CreateIntegrationSecretConfig) OptCreateIntegrationSecretConfig {
-	return OptCreateIntegrationSecretConfig{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptCreateIntegrationSecretConfig is optional *CreateIntegrationSecretConfig.
-type OptCreateIntegrationSecretConfig struct {
-	Value *CreateIntegrationSecretConfig
-	Set   bool
-}
-
-// IsSet returns true if OptCreateIntegrationSecretConfig was set.
-func (o OptCreateIntegrationSecretConfig) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptCreateIntegrationSecretConfig) Reset() {
-	var v *CreateIntegrationSecretConfig
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptCreateIntegrationSecretConfig) SetTo(v *CreateIntegrationSecretConfig) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptCreateIntegrationSecretConfig) Get() (v *CreateIntegrationSecretConfig, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptCreateIntegrationSecretConfig) Or(d *CreateIntegrationSecretConfig) *CreateIntegrationSecretConfig {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -5168,144 +4475,52 @@ func (o OptInt32) Or(d int32) int32 {
 	return d
 }
 
-// NewOptIntegrationConnection returns new OptIntegrationConnection with value set to v.
-func NewOptIntegrationConnection(v *IntegrationConnection) OptIntegrationConnection {
-	return OptIntegrationConnection{
+// NewOptNilAccessFlowSettingsV1 returns new OptNilAccessFlowSettingsV1 with value set to v.
+func NewOptNilAccessFlowSettingsV1(v AccessFlowSettingsV1) OptNilAccessFlowSettingsV1 {
+	return OptNilAccessFlowSettingsV1{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptIntegrationConnection is optional *IntegrationConnection.
-type OptIntegrationConnection struct {
-	Value *IntegrationConnection
-	Set   bool
-}
-
-// IsSet returns true if OptIntegrationConnection was set.
-func (o OptIntegrationConnection) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptIntegrationConnection) Reset() {
-	var v *IntegrationConnection
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptIntegrationConnection) SetTo(v *IntegrationConnection) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptIntegrationConnection) Get() (v *IntegrationConnection, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptIntegrationConnection) Or(d *IntegrationConnection) *IntegrationConnection {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptIntegrationSecretConfig returns new OptIntegrationSecretConfig with value set to v.
-func NewOptIntegrationSecretConfig(v *IntegrationSecretConfig) OptIntegrationSecretConfig {
-	return OptIntegrationSecretConfig{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptIntegrationSecretConfig is optional *IntegrationSecretConfig.
-type OptIntegrationSecretConfig struct {
-	Value *IntegrationSecretConfig
-	Set   bool
-}
-
-// IsSet returns true if OptIntegrationSecretConfig was set.
-func (o OptIntegrationSecretConfig) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptIntegrationSecretConfig) Reset() {
-	var v *IntegrationSecretConfig
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptIntegrationSecretConfig) SetTo(v *IntegrationSecretConfig) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptIntegrationSecretConfig) Get() (v *IntegrationSecretConfig, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptIntegrationSecretConfig) Or(d *IntegrationSecretConfig) *IntegrationSecretConfig {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilAccessBundleAccessTargetPublicV2ModelAccessScope returns new OptNilAccessBundleAccessTargetPublicV2ModelAccessScope with value set to v.
-func NewOptNilAccessBundleAccessTargetPublicV2ModelAccessScope(v AccessBundleAccessTargetPublicV2ModelAccessScope) OptNilAccessBundleAccessTargetPublicV2ModelAccessScope {
-	return OptNilAccessBundleAccessTargetPublicV2ModelAccessScope{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilAccessBundleAccessTargetPublicV2ModelAccessScope is optional nullable AccessBundleAccessTargetPublicV2ModelAccessScope.
-type OptNilAccessBundleAccessTargetPublicV2ModelAccessScope struct {
-	Value AccessBundleAccessTargetPublicV2ModelAccessScope
+// OptNilAccessFlowSettingsV1 is optional nullable AccessFlowSettingsV1.
+type OptNilAccessFlowSettingsV1 struct {
+	Value AccessFlowSettingsV1
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilAccessBundleAccessTargetPublicV2ModelAccessScope was set.
-func (o OptNilAccessBundleAccessTargetPublicV2ModelAccessScope) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilAccessFlowSettingsV1 was set.
+func (o OptNilAccessFlowSettingsV1) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilAccessBundleAccessTargetPublicV2ModelAccessScope) Reset() {
-	var v AccessBundleAccessTargetPublicV2ModelAccessScope
+func (o *OptNilAccessFlowSettingsV1) Reset() {
+	var v AccessFlowSettingsV1
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilAccessBundleAccessTargetPublicV2ModelAccessScope) SetTo(v AccessBundleAccessTargetPublicV2ModelAccessScope) {
+func (o *OptNilAccessFlowSettingsV1) SetTo(v AccessFlowSettingsV1) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilAccessBundleAccessTargetPublicV2ModelAccessScope) IsNull() bool { return o.Null }
+func (o OptNilAccessFlowSettingsV1) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilAccessBundleAccessTargetPublicV2ModelAccessScope) SetToNull() {
+func (o *OptNilAccessFlowSettingsV1) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v AccessBundleAccessTargetPublicV2ModelAccessScope
+	var v AccessFlowSettingsV1
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessBundleAccessTargetPublicV2ModelAccessScope) Get() (v AccessBundleAccessTargetPublicV2ModelAccessScope, ok bool) {
+func (o OptNilAccessFlowSettingsV1) Get() (v AccessFlowSettingsV1, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -5316,59 +4531,59 @@ func (o OptNilAccessBundleAccessTargetPublicV2ModelAccessScope) Get() (v AccessB
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilAccessBundleAccessTargetPublicV2ModelAccessScope) Or(d AccessBundleAccessTargetPublicV2ModelAccessScope) AccessBundleAccessTargetPublicV2ModelAccessScope {
+func (o OptNilAccessFlowSettingsV1) Or(d AccessFlowSettingsV1) AccessFlowSettingsV1 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilAccessBundleAccessTargetPublicV2ModelIntegration returns new OptNilAccessBundleAccessTargetPublicV2ModelIntegration with value set to v.
-func NewOptNilAccessBundleAccessTargetPublicV2ModelIntegration(v AccessBundleAccessTargetPublicV2ModelIntegration) OptNilAccessBundleAccessTargetPublicV2ModelIntegration {
-	return OptNilAccessBundleAccessTargetPublicV2ModelIntegration{
+// NewOptNilAccessFlowTimeframePublicV2Model returns new OptNilAccessFlowTimeframePublicV2Model with value set to v.
+func NewOptNilAccessFlowTimeframePublicV2Model(v AccessFlowTimeframePublicV2Model) OptNilAccessFlowTimeframePublicV2Model {
+	return OptNilAccessFlowTimeframePublicV2Model{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilAccessBundleAccessTargetPublicV2ModelIntegration is optional nullable AccessBundleAccessTargetPublicV2ModelIntegration.
-type OptNilAccessBundleAccessTargetPublicV2ModelIntegration struct {
-	Value AccessBundleAccessTargetPublicV2ModelIntegration
+// OptNilAccessFlowTimeframePublicV2Model is optional nullable AccessFlowTimeframePublicV2Model.
+type OptNilAccessFlowTimeframePublicV2Model struct {
+	Value AccessFlowTimeframePublicV2Model
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilAccessBundleAccessTargetPublicV2ModelIntegration was set.
-func (o OptNilAccessBundleAccessTargetPublicV2ModelIntegration) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilAccessFlowTimeframePublicV2Model was set.
+func (o OptNilAccessFlowTimeframePublicV2Model) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilAccessBundleAccessTargetPublicV2ModelIntegration) Reset() {
-	var v AccessBundleAccessTargetPublicV2ModelIntegration
+func (o *OptNilAccessFlowTimeframePublicV2Model) Reset() {
+	var v AccessFlowTimeframePublicV2Model
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilAccessBundleAccessTargetPublicV2ModelIntegration) SetTo(v AccessBundleAccessTargetPublicV2ModelIntegration) {
+func (o *OptNilAccessFlowTimeframePublicV2Model) SetTo(v AccessFlowTimeframePublicV2Model) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilAccessBundleAccessTargetPublicV2ModelIntegration) IsNull() bool { return o.Null }
+func (o OptNilAccessFlowTimeframePublicV2Model) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilAccessBundleAccessTargetPublicV2ModelIntegration) SetToNull() {
+func (o *OptNilAccessFlowTimeframePublicV2Model) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v AccessBundleAccessTargetPublicV2ModelIntegration
+	var v AccessFlowTimeframePublicV2Model
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessBundleAccessTargetPublicV2ModelIntegration) Get() (v AccessBundleAccessTargetPublicV2ModelIntegration, ok bool) {
+func (o OptNilAccessFlowTimeframePublicV2Model) Get() (v AccessFlowTimeframePublicV2Model, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -5379,59 +4594,59 @@ func (o OptNilAccessBundleAccessTargetPublicV2ModelIntegration) Get() (v AccessB
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilAccessBundleAccessTargetPublicV2ModelIntegration) Or(d AccessBundleAccessTargetPublicV2ModelIntegration) AccessBundleAccessTargetPublicV2ModelIntegration {
+func (o OptNilAccessFlowTimeframePublicV2Model) Or(d AccessFlowTimeframePublicV2Model) AccessFlowTimeframePublicV2Model {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope returns new OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope with value set to v.
-func NewOptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope(v AccessBundleAccessTargetUpsertPublicV2ModelAccessScope) OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope {
-	return OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope{
+// NewOptNilAccessFlowTriggerV1 returns new OptNilAccessFlowTriggerV1 with value set to v.
+func NewOptNilAccessFlowTriggerV1(v AccessFlowTriggerV1) OptNilAccessFlowTriggerV1 {
+	return OptNilAccessFlowTriggerV1{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope is optional nullable AccessBundleAccessTargetUpsertPublicV2ModelAccessScope.
-type OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope struct {
-	Value AccessBundleAccessTargetUpsertPublicV2ModelAccessScope
+// OptNilAccessFlowTriggerV1 is optional nullable AccessFlowTriggerV1.
+type OptNilAccessFlowTriggerV1 struct {
+	Value AccessFlowTriggerV1
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope was set.
-func (o OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilAccessFlowTriggerV1 was set.
+func (o OptNilAccessFlowTriggerV1) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope) Reset() {
-	var v AccessBundleAccessTargetUpsertPublicV2ModelAccessScope
+func (o *OptNilAccessFlowTriggerV1) Reset() {
+	var v AccessFlowTriggerV1
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope) SetTo(v AccessBundleAccessTargetUpsertPublicV2ModelAccessScope) {
+func (o *OptNilAccessFlowTriggerV1) SetTo(v AccessFlowTriggerV1) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope) IsNull() bool { return o.Null }
+func (o OptNilAccessFlowTriggerV1) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope) SetToNull() {
+func (o *OptNilAccessFlowTriggerV1) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v AccessBundleAccessTargetUpsertPublicV2ModelAccessScope
+	var v AccessFlowTriggerV1
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope) Get() (v AccessBundleAccessTargetUpsertPublicV2ModelAccessScope, ok bool) {
+func (o OptNilAccessFlowTriggerV1) Get() (v AccessFlowTriggerV1, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -5442,59 +4657,59 @@ func (o OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope) Get() (v A
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilAccessBundleAccessTargetUpsertPublicV2ModelAccessScope) Or(d AccessBundleAccessTargetUpsertPublicV2ModelAccessScope) AccessBundleAccessTargetUpsertPublicV2ModelAccessScope {
+func (o OptNilAccessFlowTriggerV1) Or(d AccessFlowTriggerV1) AccessFlowTriggerV1 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration returns new OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration with value set to v.
-func NewOptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration(v AccessBundleAccessTargetUpsertPublicV2ModelIntegration) OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration {
-	return OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration{
+// NewOptNilAccessScopeAccessTargetPublicV2Model returns new OptNilAccessScopeAccessTargetPublicV2Model with value set to v.
+func NewOptNilAccessScopeAccessTargetPublicV2Model(v AccessScopeAccessTargetPublicV2Model) OptNilAccessScopeAccessTargetPublicV2Model {
+	return OptNilAccessScopeAccessTargetPublicV2Model{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration is optional nullable AccessBundleAccessTargetUpsertPublicV2ModelIntegration.
-type OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration struct {
-	Value AccessBundleAccessTargetUpsertPublicV2ModelIntegration
+// OptNilAccessScopeAccessTargetPublicV2Model is optional nullable AccessScopeAccessTargetPublicV2Model.
+type OptNilAccessScopeAccessTargetPublicV2Model struct {
+	Value AccessScopeAccessTargetPublicV2Model
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration was set.
-func (o OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilAccessScopeAccessTargetPublicV2Model was set.
+func (o OptNilAccessScopeAccessTargetPublicV2Model) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration) Reset() {
-	var v AccessBundleAccessTargetUpsertPublicV2ModelIntegration
+func (o *OptNilAccessScopeAccessTargetPublicV2Model) Reset() {
+	var v AccessScopeAccessTargetPublicV2Model
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration) SetTo(v AccessBundleAccessTargetUpsertPublicV2ModelIntegration) {
+func (o *OptNilAccessScopeAccessTargetPublicV2Model) SetTo(v AccessScopeAccessTargetPublicV2Model) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration) IsNull() bool { return o.Null }
+func (o OptNilAccessScopeAccessTargetPublicV2Model) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration) SetToNull() {
+func (o *OptNilAccessScopeAccessTargetPublicV2Model) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v AccessBundleAccessTargetUpsertPublicV2ModelIntegration
+	var v AccessScopeAccessTargetPublicV2Model
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration) Get() (v AccessBundleAccessTargetUpsertPublicV2ModelIntegration, ok bool) {
+func (o OptNilAccessScopeAccessTargetPublicV2Model) Get() (v AccessScopeAccessTargetPublicV2Model, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -5505,59 +4720,59 @@ func (o OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration) Get() (v A
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilAccessBundleAccessTargetUpsertPublicV2ModelIntegration) Or(d AccessBundleAccessTargetUpsertPublicV2ModelIntegration) AccessBundleAccessTargetUpsertPublicV2ModelIntegration {
+func (o OptNilAccessScopeAccessTargetPublicV2Model) Or(d AccessScopeAccessTargetPublicV2Model) AccessScopeAccessTargetPublicV2Model {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilAccessFlowPublicV2ModelApproverPolicy returns new OptNilAccessFlowPublicV2ModelApproverPolicy with value set to v.
-func NewOptNilAccessFlowPublicV2ModelApproverPolicy(v AccessFlowPublicV2ModelApproverPolicy) OptNilAccessFlowPublicV2ModelApproverPolicy {
-	return OptNilAccessFlowPublicV2ModelApproverPolicy{
+// NewOptNilAccessScopeAccessTargetUpsertPublicV2Model returns new OptNilAccessScopeAccessTargetUpsertPublicV2Model with value set to v.
+func NewOptNilAccessScopeAccessTargetUpsertPublicV2Model(v AccessScopeAccessTargetUpsertPublicV2Model) OptNilAccessScopeAccessTargetUpsertPublicV2Model {
+	return OptNilAccessScopeAccessTargetUpsertPublicV2Model{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilAccessFlowPublicV2ModelApproverPolicy is optional nullable AccessFlowPublicV2ModelApproverPolicy.
-type OptNilAccessFlowPublicV2ModelApproverPolicy struct {
-	Value AccessFlowPublicV2ModelApproverPolicy
+// OptNilAccessScopeAccessTargetUpsertPublicV2Model is optional nullable AccessScopeAccessTargetUpsertPublicV2Model.
+type OptNilAccessScopeAccessTargetUpsertPublicV2Model struct {
+	Value AccessScopeAccessTargetUpsertPublicV2Model
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilAccessFlowPublicV2ModelApproverPolicy was set.
-func (o OptNilAccessFlowPublicV2ModelApproverPolicy) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilAccessScopeAccessTargetUpsertPublicV2Model was set.
+func (o OptNilAccessScopeAccessTargetUpsertPublicV2Model) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilAccessFlowPublicV2ModelApproverPolicy) Reset() {
-	var v AccessFlowPublicV2ModelApproverPolicy
+func (o *OptNilAccessScopeAccessTargetUpsertPublicV2Model) Reset() {
+	var v AccessScopeAccessTargetUpsertPublicV2Model
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilAccessFlowPublicV2ModelApproverPolicy) SetTo(v AccessFlowPublicV2ModelApproverPolicy) {
+func (o *OptNilAccessScopeAccessTargetUpsertPublicV2Model) SetTo(v AccessScopeAccessTargetUpsertPublicV2Model) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilAccessFlowPublicV2ModelApproverPolicy) IsNull() bool { return o.Null }
+func (o OptNilAccessScopeAccessTargetUpsertPublicV2Model) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilAccessFlowPublicV2ModelApproverPolicy) SetToNull() {
+func (o *OptNilAccessScopeAccessTargetUpsertPublicV2Model) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v AccessFlowPublicV2ModelApproverPolicy
+	var v AccessScopeAccessTargetUpsertPublicV2Model
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessFlowPublicV2ModelApproverPolicy) Get() (v AccessFlowPublicV2ModelApproverPolicy, ok bool) {
+func (o OptNilAccessScopeAccessTargetUpsertPublicV2Model) Get() (v AccessScopeAccessTargetUpsertPublicV2Model, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -5568,448 +4783,7 @@ func (o OptNilAccessFlowPublicV2ModelApproverPolicy) Get() (v AccessFlowPublicV2
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilAccessFlowPublicV2ModelApproverPolicy) Or(d AccessFlowPublicV2ModelApproverPolicy) AccessFlowPublicV2ModelApproverPolicy {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilAccessFlowPublicV2ModelTimeframe returns new OptNilAccessFlowPublicV2ModelTimeframe with value set to v.
-func NewOptNilAccessFlowPublicV2ModelTimeframe(v AccessFlowPublicV2ModelTimeframe) OptNilAccessFlowPublicV2ModelTimeframe {
-	return OptNilAccessFlowPublicV2ModelTimeframe{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilAccessFlowPublicV2ModelTimeframe is optional nullable AccessFlowPublicV2ModelTimeframe.
-type OptNilAccessFlowPublicV2ModelTimeframe struct {
-	Value AccessFlowPublicV2ModelTimeframe
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilAccessFlowPublicV2ModelTimeframe was set.
-func (o OptNilAccessFlowPublicV2ModelTimeframe) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilAccessFlowPublicV2ModelTimeframe) Reset() {
-	var v AccessFlowPublicV2ModelTimeframe
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilAccessFlowPublicV2ModelTimeframe) SetTo(v AccessFlowPublicV2ModelTimeframe) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilAccessFlowPublicV2ModelTimeframe) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilAccessFlowPublicV2ModelTimeframe) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v AccessFlowPublicV2ModelTimeframe
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessFlowPublicV2ModelTimeframe) Get() (v AccessFlowPublicV2ModelTimeframe, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilAccessFlowPublicV2ModelTimeframe) Or(d AccessFlowPublicV2ModelTimeframe) AccessFlowPublicV2ModelTimeframe {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilAccessFlowTriggerV1Timeframe returns new OptNilAccessFlowTriggerV1Timeframe with value set to v.
-func NewOptNilAccessFlowTriggerV1Timeframe(v AccessFlowTriggerV1Timeframe) OptNilAccessFlowTriggerV1Timeframe {
-	return OptNilAccessFlowTriggerV1Timeframe{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilAccessFlowTriggerV1Timeframe is optional nullable AccessFlowTriggerV1Timeframe.
-type OptNilAccessFlowTriggerV1Timeframe struct {
-	Value AccessFlowTriggerV1Timeframe
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilAccessFlowTriggerV1Timeframe was set.
-func (o OptNilAccessFlowTriggerV1Timeframe) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilAccessFlowTriggerV1Timeframe) Reset() {
-	var v AccessFlowTriggerV1Timeframe
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilAccessFlowTriggerV1Timeframe) SetTo(v AccessFlowTriggerV1Timeframe) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilAccessFlowTriggerV1Timeframe) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilAccessFlowTriggerV1Timeframe) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v AccessFlowTriggerV1Timeframe
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessFlowTriggerV1Timeframe) Get() (v AccessFlowTriggerV1Timeframe, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilAccessFlowTriggerV1Timeframe) Or(d AccessFlowTriggerV1Timeframe) AccessFlowTriggerV1Timeframe {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilAccessFlowUpsertPublicV2ModelApproverPolicy returns new OptNilAccessFlowUpsertPublicV2ModelApproverPolicy with value set to v.
-func NewOptNilAccessFlowUpsertPublicV2ModelApproverPolicy(v AccessFlowUpsertPublicV2ModelApproverPolicy) OptNilAccessFlowUpsertPublicV2ModelApproverPolicy {
-	return OptNilAccessFlowUpsertPublicV2ModelApproverPolicy{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilAccessFlowUpsertPublicV2ModelApproverPolicy is optional nullable AccessFlowUpsertPublicV2ModelApproverPolicy.
-type OptNilAccessFlowUpsertPublicV2ModelApproverPolicy struct {
-	Value AccessFlowUpsertPublicV2ModelApproverPolicy
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilAccessFlowUpsertPublicV2ModelApproverPolicy was set.
-func (o OptNilAccessFlowUpsertPublicV2ModelApproverPolicy) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilAccessFlowUpsertPublicV2ModelApproverPolicy) Reset() {
-	var v AccessFlowUpsertPublicV2ModelApproverPolicy
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilAccessFlowUpsertPublicV2ModelApproverPolicy) SetTo(v AccessFlowUpsertPublicV2ModelApproverPolicy) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilAccessFlowUpsertPublicV2ModelApproverPolicy) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilAccessFlowUpsertPublicV2ModelApproverPolicy) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v AccessFlowUpsertPublicV2ModelApproverPolicy
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessFlowUpsertPublicV2ModelApproverPolicy) Get() (v AccessFlowUpsertPublicV2ModelApproverPolicy, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilAccessFlowUpsertPublicV2ModelApproverPolicy) Or(d AccessFlowUpsertPublicV2ModelApproverPolicy) AccessFlowUpsertPublicV2ModelApproverPolicy {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilAccessFlowUpsertPublicV2ModelTimeframe returns new OptNilAccessFlowUpsertPublicV2ModelTimeframe with value set to v.
-func NewOptNilAccessFlowUpsertPublicV2ModelTimeframe(v AccessFlowUpsertPublicV2ModelTimeframe) OptNilAccessFlowUpsertPublicV2ModelTimeframe {
-	return OptNilAccessFlowUpsertPublicV2ModelTimeframe{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilAccessFlowUpsertPublicV2ModelTimeframe is optional nullable AccessFlowUpsertPublicV2ModelTimeframe.
-type OptNilAccessFlowUpsertPublicV2ModelTimeframe struct {
-	Value AccessFlowUpsertPublicV2ModelTimeframe
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilAccessFlowUpsertPublicV2ModelTimeframe was set.
-func (o OptNilAccessFlowUpsertPublicV2ModelTimeframe) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilAccessFlowUpsertPublicV2ModelTimeframe) Reset() {
-	var v AccessFlowUpsertPublicV2ModelTimeframe
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilAccessFlowUpsertPublicV2ModelTimeframe) SetTo(v AccessFlowUpsertPublicV2ModelTimeframe) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilAccessFlowUpsertPublicV2ModelTimeframe) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilAccessFlowUpsertPublicV2ModelTimeframe) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v AccessFlowUpsertPublicV2ModelTimeframe
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessFlowUpsertPublicV2ModelTimeframe) Get() (v AccessFlowUpsertPublicV2ModelTimeframe, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilAccessFlowUpsertPublicV2ModelTimeframe) Or(d AccessFlowUpsertPublicV2ModelTimeframe) AccessFlowUpsertPublicV2ModelTimeframe {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilAccessFlowV1Settings returns new OptNilAccessFlowV1Settings with value set to v.
-func NewOptNilAccessFlowV1Settings(v AccessFlowV1Settings) OptNilAccessFlowV1Settings {
-	return OptNilAccessFlowV1Settings{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilAccessFlowV1Settings is optional nullable AccessFlowV1Settings.
-type OptNilAccessFlowV1Settings struct {
-	Value AccessFlowV1Settings
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilAccessFlowV1Settings was set.
-func (o OptNilAccessFlowV1Settings) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilAccessFlowV1Settings) Reset() {
-	var v AccessFlowV1Settings
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilAccessFlowV1Settings) SetTo(v AccessFlowV1Settings) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilAccessFlowV1Settings) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilAccessFlowV1Settings) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v AccessFlowV1Settings
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessFlowV1Settings) Get() (v AccessFlowV1Settings, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilAccessFlowV1Settings) Or(d AccessFlowV1Settings) AccessFlowV1Settings {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilAccessRequestV4Bundle returns new OptNilAccessRequestV4Bundle with value set to v.
-func NewOptNilAccessRequestV4Bundle(v AccessRequestV4Bundle) OptNilAccessRequestV4Bundle {
-	return OptNilAccessRequestV4Bundle{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilAccessRequestV4Bundle is optional nullable AccessRequestV4Bundle.
-type OptNilAccessRequestV4Bundle struct {
-	Value AccessRequestV4Bundle
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilAccessRequestV4Bundle was set.
-func (o OptNilAccessRequestV4Bundle) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilAccessRequestV4Bundle) Reset() {
-	var v AccessRequestV4Bundle
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilAccessRequestV4Bundle) SetTo(v AccessRequestV4Bundle) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilAccessRequestV4Bundle) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilAccessRequestV4Bundle) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v AccessRequestV4Bundle
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessRequestV4Bundle) Get() (v AccessRequestV4Bundle, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilAccessRequestV4Bundle) Or(d AccessRequestV4Bundle) AccessRequestV4Bundle {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilAccessSessionDetailsV1Link returns new OptNilAccessSessionDetailsV1Link with value set to v.
-func NewOptNilAccessSessionDetailsV1Link(v AccessSessionDetailsV1Link) OptNilAccessSessionDetailsV1Link {
-	return OptNilAccessSessionDetailsV1Link{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilAccessSessionDetailsV1Link is optional nullable AccessSessionDetailsV1Link.
-type OptNilAccessSessionDetailsV1Link struct {
-	Value AccessSessionDetailsV1Link
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilAccessSessionDetailsV1Link was set.
-func (o OptNilAccessSessionDetailsV1Link) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilAccessSessionDetailsV1Link) Reset() {
-	var v AccessSessionDetailsV1Link
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilAccessSessionDetailsV1Link) SetTo(v AccessSessionDetailsV1Link) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilAccessSessionDetailsV1Link) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilAccessSessionDetailsV1Link) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v AccessSessionDetailsV1Link
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessSessionDetailsV1Link) Get() (v AccessSessionDetailsV1Link, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilAccessSessionDetailsV1Link) Or(d AccessSessionDetailsV1Link) AccessSessionDetailsV1Link {
+func (o OptNilAccessScopeAccessTargetUpsertPublicV2Model) Or(d AccessScopeAccessTargetUpsertPublicV2Model) AccessScopeAccessTargetUpsertPublicV2Model {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -6205,52 +4979,52 @@ func (o OptNilAccessTargetIntegrationV1Array) Or(d []AccessTargetIntegrationV1) 
 	return d
 }
 
-// NewOptNilAccessTargetPublicV2ModelAccessScope returns new OptNilAccessTargetPublicV2ModelAccessScope with value set to v.
-func NewOptNilAccessTargetPublicV2ModelAccessScope(v AccessTargetPublicV2ModelAccessScope) OptNilAccessTargetPublicV2ModelAccessScope {
-	return OptNilAccessTargetPublicV2ModelAccessScope{
+// NewOptNilApiInstant returns new OptNilApiInstant with value set to v.
+func NewOptNilApiInstant(v ApiInstant) OptNilApiInstant {
+	return OptNilApiInstant{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilAccessTargetPublicV2ModelAccessScope is optional nullable AccessTargetPublicV2ModelAccessScope.
-type OptNilAccessTargetPublicV2ModelAccessScope struct {
-	Value AccessTargetPublicV2ModelAccessScope
+// OptNilApiInstant is optional nullable ApiInstant.
+type OptNilApiInstant struct {
+	Value ApiInstant
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilAccessTargetPublicV2ModelAccessScope was set.
-func (o OptNilAccessTargetPublicV2ModelAccessScope) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilApiInstant was set.
+func (o OptNilApiInstant) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilAccessTargetPublicV2ModelAccessScope) Reset() {
-	var v AccessTargetPublicV2ModelAccessScope
+func (o *OptNilApiInstant) Reset() {
+	var v ApiInstant
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilAccessTargetPublicV2ModelAccessScope) SetTo(v AccessTargetPublicV2ModelAccessScope) {
+func (o *OptNilApiInstant) SetTo(v ApiInstant) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilAccessTargetPublicV2ModelAccessScope) IsNull() bool { return o.Null }
+func (o OptNilApiInstant) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilAccessTargetPublicV2ModelAccessScope) SetToNull() {
+func (o *OptNilApiInstant) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v AccessTargetPublicV2ModelAccessScope
+	var v ApiInstant
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessTargetPublicV2ModelAccessScope) Get() (v AccessTargetPublicV2ModelAccessScope, ok bool) {
+func (o OptNilApiInstant) Get() (v ApiInstant, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -6261,59 +5035,59 @@ func (o OptNilAccessTargetPublicV2ModelAccessScope) Get() (v AccessTargetPublicV
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilAccessTargetPublicV2ModelAccessScope) Or(d AccessTargetPublicV2ModelAccessScope) AccessTargetPublicV2ModelAccessScope {
+func (o OptNilApiInstant) Or(d ApiInstant) ApiInstant {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilAccessTargetPublicV2ModelBundle returns new OptNilAccessTargetPublicV2ModelBundle with value set to v.
-func NewOptNilAccessTargetPublicV2ModelBundle(v AccessTargetPublicV2ModelBundle) OptNilAccessTargetPublicV2ModelBundle {
-	return OptNilAccessTargetPublicV2ModelBundle{
+// NewOptNilAponoSecretConfigV4 returns new OptNilAponoSecretConfigV4 with value set to v.
+func NewOptNilAponoSecretConfigV4(v AponoSecretConfigV4) OptNilAponoSecretConfigV4 {
+	return OptNilAponoSecretConfigV4{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilAccessTargetPublicV2ModelBundle is optional nullable AccessTargetPublicV2ModelBundle.
-type OptNilAccessTargetPublicV2ModelBundle struct {
-	Value AccessTargetPublicV2ModelBundle
+// OptNilAponoSecretConfigV4 is optional nullable AponoSecretConfigV4.
+type OptNilAponoSecretConfigV4 struct {
+	Value AponoSecretConfigV4
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilAccessTargetPublicV2ModelBundle was set.
-func (o OptNilAccessTargetPublicV2ModelBundle) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilAponoSecretConfigV4 was set.
+func (o OptNilAponoSecretConfigV4) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilAccessTargetPublicV2ModelBundle) Reset() {
-	var v AccessTargetPublicV2ModelBundle
+func (o *OptNilAponoSecretConfigV4) Reset() {
+	var v AponoSecretConfigV4
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilAccessTargetPublicV2ModelBundle) SetTo(v AccessTargetPublicV2ModelBundle) {
+func (o *OptNilAponoSecretConfigV4) SetTo(v AponoSecretConfigV4) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilAccessTargetPublicV2ModelBundle) IsNull() bool { return o.Null }
+func (o OptNilAponoSecretConfigV4) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilAccessTargetPublicV2ModelBundle) SetToNull() {
+func (o *OptNilAponoSecretConfigV4) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v AccessTargetPublicV2ModelBundle
+	var v AponoSecretConfigV4
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessTargetPublicV2ModelBundle) Get() (v AccessTargetPublicV2ModelBundle, ok bool) {
+func (o OptNilAponoSecretConfigV4) Get() (v AponoSecretConfigV4, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -6324,59 +5098,59 @@ func (o OptNilAccessTargetPublicV2ModelBundle) Get() (v AccessTargetPublicV2Mode
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilAccessTargetPublicV2ModelBundle) Or(d AccessTargetPublicV2ModelBundle) AccessTargetPublicV2ModelBundle {
+func (o OptNilAponoSecretConfigV4) Or(d AponoSecretConfigV4) AponoSecretConfigV4 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilAccessTargetPublicV2ModelIntegration returns new OptNilAccessTargetPublicV2ModelIntegration with value set to v.
-func NewOptNilAccessTargetPublicV2ModelIntegration(v AccessTargetPublicV2ModelIntegration) OptNilAccessTargetPublicV2ModelIntegration {
-	return OptNilAccessTargetPublicV2ModelIntegration{
+// NewOptNilApproverPolicyPublicV2Model returns new OptNilApproverPolicyPublicV2Model with value set to v.
+func NewOptNilApproverPolicyPublicV2Model(v ApproverPolicyPublicV2Model) OptNilApproverPolicyPublicV2Model {
+	return OptNilApproverPolicyPublicV2Model{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilAccessTargetPublicV2ModelIntegration is optional nullable AccessTargetPublicV2ModelIntegration.
-type OptNilAccessTargetPublicV2ModelIntegration struct {
-	Value AccessTargetPublicV2ModelIntegration
+// OptNilApproverPolicyPublicV2Model is optional nullable ApproverPolicyPublicV2Model.
+type OptNilApproverPolicyPublicV2Model struct {
+	Value ApproverPolicyPublicV2Model
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilAccessTargetPublicV2ModelIntegration was set.
-func (o OptNilAccessTargetPublicV2ModelIntegration) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilApproverPolicyPublicV2Model was set.
+func (o OptNilApproverPolicyPublicV2Model) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilAccessTargetPublicV2ModelIntegration) Reset() {
-	var v AccessTargetPublicV2ModelIntegration
+func (o *OptNilApproverPolicyPublicV2Model) Reset() {
+	var v ApproverPolicyPublicV2Model
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilAccessTargetPublicV2ModelIntegration) SetTo(v AccessTargetPublicV2ModelIntegration) {
+func (o *OptNilApproverPolicyPublicV2Model) SetTo(v ApproverPolicyPublicV2Model) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilAccessTargetPublicV2ModelIntegration) IsNull() bool { return o.Null }
+func (o OptNilApproverPolicyPublicV2Model) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilAccessTargetPublicV2ModelIntegration) SetToNull() {
+func (o *OptNilApproverPolicyPublicV2Model) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v AccessTargetPublicV2ModelIntegration
+	var v ApproverPolicyPublicV2Model
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessTargetPublicV2ModelIntegration) Get() (v AccessTargetPublicV2ModelIntegration, ok bool) {
+func (o OptNilApproverPolicyPublicV2Model) Get() (v ApproverPolicyPublicV2Model, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -6387,59 +5161,59 @@ func (o OptNilAccessTargetPublicV2ModelIntegration) Get() (v AccessTargetPublicV
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilAccessTargetPublicV2ModelIntegration) Or(d AccessTargetPublicV2ModelIntegration) AccessTargetPublicV2ModelIntegration {
+func (o OptNilApproverPolicyPublicV2Model) Or(d ApproverPolicyPublicV2Model) ApproverPolicyPublicV2Model {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilAccessTargetUpsertPublicV2ModelAccessScope returns new OptNilAccessTargetUpsertPublicV2ModelAccessScope with value set to v.
-func NewOptNilAccessTargetUpsertPublicV2ModelAccessScope(v AccessTargetUpsertPublicV2ModelAccessScope) OptNilAccessTargetUpsertPublicV2ModelAccessScope {
-	return OptNilAccessTargetUpsertPublicV2ModelAccessScope{
+// NewOptNilApproverPolicyUpsertPublicV2Model returns new OptNilApproverPolicyUpsertPublicV2Model with value set to v.
+func NewOptNilApproverPolicyUpsertPublicV2Model(v ApproverPolicyUpsertPublicV2Model) OptNilApproverPolicyUpsertPublicV2Model {
+	return OptNilApproverPolicyUpsertPublicV2Model{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilAccessTargetUpsertPublicV2ModelAccessScope is optional nullable AccessTargetUpsertPublicV2ModelAccessScope.
-type OptNilAccessTargetUpsertPublicV2ModelAccessScope struct {
-	Value AccessTargetUpsertPublicV2ModelAccessScope
+// OptNilApproverPolicyUpsertPublicV2Model is optional nullable ApproverPolicyUpsertPublicV2Model.
+type OptNilApproverPolicyUpsertPublicV2Model struct {
+	Value ApproverPolicyUpsertPublicV2Model
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilAccessTargetUpsertPublicV2ModelAccessScope was set.
-func (o OptNilAccessTargetUpsertPublicV2ModelAccessScope) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilApproverPolicyUpsertPublicV2Model was set.
+func (o OptNilApproverPolicyUpsertPublicV2Model) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilAccessTargetUpsertPublicV2ModelAccessScope) Reset() {
-	var v AccessTargetUpsertPublicV2ModelAccessScope
+func (o *OptNilApproverPolicyUpsertPublicV2Model) Reset() {
+	var v ApproverPolicyUpsertPublicV2Model
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilAccessTargetUpsertPublicV2ModelAccessScope) SetTo(v AccessTargetUpsertPublicV2ModelAccessScope) {
+func (o *OptNilApproverPolicyUpsertPublicV2Model) SetTo(v ApproverPolicyUpsertPublicV2Model) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilAccessTargetUpsertPublicV2ModelAccessScope) IsNull() bool { return o.Null }
+func (o OptNilApproverPolicyUpsertPublicV2Model) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilAccessTargetUpsertPublicV2ModelAccessScope) SetToNull() {
+func (o *OptNilApproverPolicyUpsertPublicV2Model) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v AccessTargetUpsertPublicV2ModelAccessScope
+	var v ApproverPolicyUpsertPublicV2Model
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessTargetUpsertPublicV2ModelAccessScope) Get() (v AccessTargetUpsertPublicV2ModelAccessScope, ok bool) {
+func (o OptNilApproverPolicyUpsertPublicV2Model) Get() (v ApproverPolicyUpsertPublicV2Model, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -6450,133 +5224,7 @@ func (o OptNilAccessTargetUpsertPublicV2ModelAccessScope) Get() (v AccessTargetU
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilAccessTargetUpsertPublicV2ModelAccessScope) Or(d AccessTargetUpsertPublicV2ModelAccessScope) AccessTargetUpsertPublicV2ModelAccessScope {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilAccessTargetUpsertPublicV2ModelBundle returns new OptNilAccessTargetUpsertPublicV2ModelBundle with value set to v.
-func NewOptNilAccessTargetUpsertPublicV2ModelBundle(v AccessTargetUpsertPublicV2ModelBundle) OptNilAccessTargetUpsertPublicV2ModelBundle {
-	return OptNilAccessTargetUpsertPublicV2ModelBundle{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilAccessTargetUpsertPublicV2ModelBundle is optional nullable AccessTargetUpsertPublicV2ModelBundle.
-type OptNilAccessTargetUpsertPublicV2ModelBundle struct {
-	Value AccessTargetUpsertPublicV2ModelBundle
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilAccessTargetUpsertPublicV2ModelBundle was set.
-func (o OptNilAccessTargetUpsertPublicV2ModelBundle) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilAccessTargetUpsertPublicV2ModelBundle) Reset() {
-	var v AccessTargetUpsertPublicV2ModelBundle
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilAccessTargetUpsertPublicV2ModelBundle) SetTo(v AccessTargetUpsertPublicV2ModelBundle) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilAccessTargetUpsertPublicV2ModelBundle) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilAccessTargetUpsertPublicV2ModelBundle) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v AccessTargetUpsertPublicV2ModelBundle
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessTargetUpsertPublicV2ModelBundle) Get() (v AccessTargetUpsertPublicV2ModelBundle, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilAccessTargetUpsertPublicV2ModelBundle) Or(d AccessTargetUpsertPublicV2ModelBundle) AccessTargetUpsertPublicV2ModelBundle {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilAccessTargetUpsertPublicV2ModelIntegration returns new OptNilAccessTargetUpsertPublicV2ModelIntegration with value set to v.
-func NewOptNilAccessTargetUpsertPublicV2ModelIntegration(v AccessTargetUpsertPublicV2ModelIntegration) OptNilAccessTargetUpsertPublicV2ModelIntegration {
-	return OptNilAccessTargetUpsertPublicV2ModelIntegration{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilAccessTargetUpsertPublicV2ModelIntegration is optional nullable AccessTargetUpsertPublicV2ModelIntegration.
-type OptNilAccessTargetUpsertPublicV2ModelIntegration struct {
-	Value AccessTargetUpsertPublicV2ModelIntegration
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilAccessTargetUpsertPublicV2ModelIntegration was set.
-func (o OptNilAccessTargetUpsertPublicV2ModelIntegration) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilAccessTargetUpsertPublicV2ModelIntegration) Reset() {
-	var v AccessTargetUpsertPublicV2ModelIntegration
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilAccessTargetUpsertPublicV2ModelIntegration) SetTo(v AccessTargetUpsertPublicV2ModelIntegration) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilAccessTargetUpsertPublicV2ModelIntegration) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilAccessTargetUpsertPublicV2ModelIntegration) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v AccessTargetUpsertPublicV2ModelIntegration
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilAccessTargetUpsertPublicV2ModelIntegration) Get() (v AccessTargetUpsertPublicV2ModelIntegration, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilAccessTargetUpsertPublicV2ModelIntegration) Or(d AccessTargetUpsertPublicV2ModelIntegration) AccessTargetUpsertPublicV2ModelIntegration {
+func (o OptNilApproverPolicyUpsertPublicV2Model) Or(d ApproverPolicyUpsertPublicV2Model) ApproverPolicyUpsertPublicV2Model {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -6646,6 +5294,132 @@ func (o OptNilApproverV1Array) Or(d []ApproverV1) []ApproverV1 {
 	return d
 }
 
+// NewOptNilAwsSecretConfigV4 returns new OptNilAwsSecretConfigV4 with value set to v.
+func NewOptNilAwsSecretConfigV4(v AwsSecretConfigV4) OptNilAwsSecretConfigV4 {
+	return OptNilAwsSecretConfigV4{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilAwsSecretConfigV4 is optional nullable AwsSecretConfigV4.
+type OptNilAwsSecretConfigV4 struct {
+	Value AwsSecretConfigV4
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilAwsSecretConfigV4 was set.
+func (o OptNilAwsSecretConfigV4) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilAwsSecretConfigV4) Reset() {
+	var v AwsSecretConfigV4
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilAwsSecretConfigV4) SetTo(v AwsSecretConfigV4) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilAwsSecretConfigV4) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilAwsSecretConfigV4) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v AwsSecretConfigV4
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilAwsSecretConfigV4) Get() (v AwsSecretConfigV4, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilAwsSecretConfigV4) Or(d AwsSecretConfigV4) AwsSecretConfigV4 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilAzureSecretConfigV4 returns new OptNilAzureSecretConfigV4 with value set to v.
+func NewOptNilAzureSecretConfigV4(v AzureSecretConfigV4) OptNilAzureSecretConfigV4 {
+	return OptNilAzureSecretConfigV4{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilAzureSecretConfigV4 is optional nullable AzureSecretConfigV4.
+type OptNilAzureSecretConfigV4 struct {
+	Value AzureSecretConfigV4
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilAzureSecretConfigV4 was set.
+func (o OptNilAzureSecretConfigV4) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilAzureSecretConfigV4) Reset() {
+	var v AzureSecretConfigV4
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilAzureSecretConfigV4) SetTo(v AzureSecretConfigV4) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilAzureSecretConfigV4) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilAzureSecretConfigV4) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v AzureSecretConfigV4
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilAzureSecretConfigV4) Get() (v AzureSecretConfigV4, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilAzureSecretConfigV4) Or(d AzureSecretConfigV4) AzureSecretConfigV4 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptNilBool returns new OptNilBool with value set to v.
 func NewOptNilBool(v bool) OptNilBool {
 	return OptNilBool{
@@ -6709,52 +5483,52 @@ func (o OptNilBool) Or(d bool) bool {
 	return d
 }
 
-// NewOptNilConnectorSessionMetadataV3CloudProviderMetadata returns new OptNilConnectorSessionMetadataV3CloudProviderMetadata with value set to v.
-func NewOptNilConnectorSessionMetadataV3CloudProviderMetadata(v ConnectorSessionMetadataV3CloudProviderMetadata) OptNilConnectorSessionMetadataV3CloudProviderMetadata {
-	return OptNilConnectorSessionMetadataV3CloudProviderMetadata{
+// NewOptNilBundleAccessTargetPublicV2Model returns new OptNilBundleAccessTargetPublicV2Model with value set to v.
+func NewOptNilBundleAccessTargetPublicV2Model(v BundleAccessTargetPublicV2Model) OptNilBundleAccessTargetPublicV2Model {
+	return OptNilBundleAccessTargetPublicV2Model{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilConnectorSessionMetadataV3CloudProviderMetadata is optional nullable ConnectorSessionMetadataV3CloudProviderMetadata.
-type OptNilConnectorSessionMetadataV3CloudProviderMetadata struct {
-	Value ConnectorSessionMetadataV3CloudProviderMetadata
+// OptNilBundleAccessTargetPublicV2Model is optional nullable BundleAccessTargetPublicV2Model.
+type OptNilBundleAccessTargetPublicV2Model struct {
+	Value BundleAccessTargetPublicV2Model
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilConnectorSessionMetadataV3CloudProviderMetadata was set.
-func (o OptNilConnectorSessionMetadataV3CloudProviderMetadata) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilBundleAccessTargetPublicV2Model was set.
+func (o OptNilBundleAccessTargetPublicV2Model) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilConnectorSessionMetadataV3CloudProviderMetadata) Reset() {
-	var v ConnectorSessionMetadataV3CloudProviderMetadata
+func (o *OptNilBundleAccessTargetPublicV2Model) Reset() {
+	var v BundleAccessTargetPublicV2Model
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilConnectorSessionMetadataV3CloudProviderMetadata) SetTo(v ConnectorSessionMetadataV3CloudProviderMetadata) {
+func (o *OptNilBundleAccessTargetPublicV2Model) SetTo(v BundleAccessTargetPublicV2Model) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilConnectorSessionMetadataV3CloudProviderMetadata) IsNull() bool { return o.Null }
+func (o OptNilBundleAccessTargetPublicV2Model) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilConnectorSessionMetadataV3CloudProviderMetadata) SetToNull() {
+func (o *OptNilBundleAccessTargetPublicV2Model) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v ConnectorSessionMetadataV3CloudProviderMetadata
+	var v BundleAccessTargetPublicV2Model
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilConnectorSessionMetadataV3CloudProviderMetadata) Get() (v ConnectorSessionMetadataV3CloudProviderMetadata, ok bool) {
+func (o OptNilBundleAccessTargetPublicV2Model) Get() (v BundleAccessTargetPublicV2Model, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -6765,7 +5539,196 @@ func (o OptNilConnectorSessionMetadataV3CloudProviderMetadata) Get() (v Connecto
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilConnectorSessionMetadataV3CloudProviderMetadata) Or(d ConnectorSessionMetadataV3CloudProviderMetadata) ConnectorSessionMetadataV3CloudProviderMetadata {
+func (o OptNilBundleAccessTargetPublicV2Model) Or(d BundleAccessTargetPublicV2Model) BundleAccessTargetPublicV2Model {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilBundleAccessTargetUpsertPublicV2Model returns new OptNilBundleAccessTargetUpsertPublicV2Model with value set to v.
+func NewOptNilBundleAccessTargetUpsertPublicV2Model(v BundleAccessTargetUpsertPublicV2Model) OptNilBundleAccessTargetUpsertPublicV2Model {
+	return OptNilBundleAccessTargetUpsertPublicV2Model{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilBundleAccessTargetUpsertPublicV2Model is optional nullable BundleAccessTargetUpsertPublicV2Model.
+type OptNilBundleAccessTargetUpsertPublicV2Model struct {
+	Value BundleAccessTargetUpsertPublicV2Model
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilBundleAccessTargetUpsertPublicV2Model was set.
+func (o OptNilBundleAccessTargetUpsertPublicV2Model) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilBundleAccessTargetUpsertPublicV2Model) Reset() {
+	var v BundleAccessTargetUpsertPublicV2Model
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilBundleAccessTargetUpsertPublicV2Model) SetTo(v BundleAccessTargetUpsertPublicV2Model) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilBundleAccessTargetUpsertPublicV2Model) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilBundleAccessTargetUpsertPublicV2Model) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v BundleAccessTargetUpsertPublicV2Model
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilBundleAccessTargetUpsertPublicV2Model) Get() (v BundleAccessTargetUpsertPublicV2Model, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilBundleAccessTargetUpsertPublicV2Model) Or(d BundleAccessTargetUpsertPublicV2Model) BundleAccessTargetUpsertPublicV2Model {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilBundlePartialV4 returns new OptNilBundlePartialV4 with value set to v.
+func NewOptNilBundlePartialV4(v BundlePartialV4) OptNilBundlePartialV4 {
+	return OptNilBundlePartialV4{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilBundlePartialV4 is optional nullable BundlePartialV4.
+type OptNilBundlePartialV4 struct {
+	Value BundlePartialV4
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilBundlePartialV4 was set.
+func (o OptNilBundlePartialV4) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilBundlePartialV4) Reset() {
+	var v BundlePartialV4
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilBundlePartialV4) SetTo(v BundlePartialV4) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilBundlePartialV4) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilBundlePartialV4) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v BundlePartialV4
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilBundlePartialV4) Get() (v BundlePartialV4, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilBundlePartialV4) Or(d BundlePartialV4) BundlePartialV4 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilConnectorSessionsCloudProviderMetadataV3 returns new OptNilConnectorSessionsCloudProviderMetadataV3 with value set to v.
+func NewOptNilConnectorSessionsCloudProviderMetadataV3(v ConnectorSessionsCloudProviderMetadataV3) OptNilConnectorSessionsCloudProviderMetadataV3 {
+	return OptNilConnectorSessionsCloudProviderMetadataV3{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilConnectorSessionsCloudProviderMetadataV3 is optional nullable ConnectorSessionsCloudProviderMetadataV3.
+type OptNilConnectorSessionsCloudProviderMetadataV3 struct {
+	Value ConnectorSessionsCloudProviderMetadataV3
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilConnectorSessionsCloudProviderMetadataV3 was set.
+func (o OptNilConnectorSessionsCloudProviderMetadataV3) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilConnectorSessionsCloudProviderMetadataV3) Reset() {
+	var v ConnectorSessionsCloudProviderMetadataV3
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilConnectorSessionsCloudProviderMetadataV3) SetTo(v ConnectorSessionsCloudProviderMetadataV3) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilConnectorSessionsCloudProviderMetadataV3) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilConnectorSessionsCloudProviderMetadataV3) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v ConnectorSessionsCloudProviderMetadataV3
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilConnectorSessionsCloudProviderMetadataV3) Get() (v ConnectorSessionsCloudProviderMetadataV3, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilConnectorSessionsCloudProviderMetadataV3) Or(d ConnectorSessionsCloudProviderMetadataV3) ConnectorSessionsCloudProviderMetadataV3 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -6835,52 +5798,52 @@ func (o OptNilCreateAccessRequestEntitlementV4Array) Or(d []CreateAccessRequestE
 	return d
 }
 
-// NewOptNilCreateIntegrationV4Owner returns new OptNilCreateIntegrationV4Owner with value set to v.
-func NewOptNilCreateIntegrationV4Owner(v CreateIntegrationV4Owner) OptNilCreateIntegrationV4Owner {
-	return OptNilCreateIntegrationV4Owner{
+// NewOptNilGcpSecretConfigV4 returns new OptNilGcpSecretConfigV4 with value set to v.
+func NewOptNilGcpSecretConfigV4(v GcpSecretConfigV4) OptNilGcpSecretConfigV4 {
+	return OptNilGcpSecretConfigV4{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilCreateIntegrationV4Owner is optional nullable CreateIntegrationV4Owner.
-type OptNilCreateIntegrationV4Owner struct {
-	Value CreateIntegrationV4Owner
+// OptNilGcpSecretConfigV4 is optional nullable GcpSecretConfigV4.
+type OptNilGcpSecretConfigV4 struct {
+	Value GcpSecretConfigV4
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilCreateIntegrationV4Owner was set.
-func (o OptNilCreateIntegrationV4Owner) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilGcpSecretConfigV4 was set.
+func (o OptNilGcpSecretConfigV4) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilCreateIntegrationV4Owner) Reset() {
-	var v CreateIntegrationV4Owner
+func (o *OptNilGcpSecretConfigV4) Reset() {
+	var v GcpSecretConfigV4
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilCreateIntegrationV4Owner) SetTo(v CreateIntegrationV4Owner) {
+func (o *OptNilGcpSecretConfigV4) SetTo(v GcpSecretConfigV4) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilCreateIntegrationV4Owner) IsNull() bool { return o.Null }
+func (o OptNilGcpSecretConfigV4) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilCreateIntegrationV4Owner) SetToNull() {
+func (o *OptNilGcpSecretConfigV4) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v CreateIntegrationV4Owner
+	var v GcpSecretConfigV4
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilCreateIntegrationV4Owner) Get() (v CreateIntegrationV4Owner, ok bool) {
+func (o OptNilGcpSecretConfigV4) Get() (v GcpSecretConfigV4, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -6891,574 +5854,7 @@ func (o OptNilCreateIntegrationV4Owner) Get() (v CreateIntegrationV4Owner, ok bo
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilCreateIntegrationV4Owner) Or(d CreateIntegrationV4Owner) CreateIntegrationV4Owner {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilCreateIntegrationV4OwnersMapping returns new OptNilCreateIntegrationV4OwnersMapping with value set to v.
-func NewOptNilCreateIntegrationV4OwnersMapping(v CreateIntegrationV4OwnersMapping) OptNilCreateIntegrationV4OwnersMapping {
-	return OptNilCreateIntegrationV4OwnersMapping{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilCreateIntegrationV4OwnersMapping is optional nullable CreateIntegrationV4OwnersMapping.
-type OptNilCreateIntegrationV4OwnersMapping struct {
-	Value CreateIntegrationV4OwnersMapping
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilCreateIntegrationV4OwnersMapping was set.
-func (o OptNilCreateIntegrationV4OwnersMapping) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilCreateIntegrationV4OwnersMapping) Reset() {
-	var v CreateIntegrationV4OwnersMapping
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilCreateIntegrationV4OwnersMapping) SetTo(v CreateIntegrationV4OwnersMapping) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilCreateIntegrationV4OwnersMapping) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilCreateIntegrationV4OwnersMapping) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v CreateIntegrationV4OwnersMapping
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilCreateIntegrationV4OwnersMapping) Get() (v CreateIntegrationV4OwnersMapping, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilCreateIntegrationV4OwnersMapping) Or(d CreateIntegrationV4OwnersMapping) CreateIntegrationV4OwnersMapping {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilCreateIntegrationV4SecretStoreConfig returns new OptNilCreateIntegrationV4SecretStoreConfig with value set to v.
-func NewOptNilCreateIntegrationV4SecretStoreConfig(v CreateIntegrationV4SecretStoreConfig) OptNilCreateIntegrationV4SecretStoreConfig {
-	return OptNilCreateIntegrationV4SecretStoreConfig{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilCreateIntegrationV4SecretStoreConfig is optional nullable CreateIntegrationV4SecretStoreConfig.
-type OptNilCreateIntegrationV4SecretStoreConfig struct {
-	Value CreateIntegrationV4SecretStoreConfig
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilCreateIntegrationV4SecretStoreConfig was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfig) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilCreateIntegrationV4SecretStoreConfig) Reset() {
-	var v CreateIntegrationV4SecretStoreConfig
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilCreateIntegrationV4SecretStoreConfig) SetTo(v CreateIntegrationV4SecretStoreConfig) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilCreateIntegrationV4SecretStoreConfig) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilCreateIntegrationV4SecretStoreConfig) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v CreateIntegrationV4SecretStoreConfig
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfig) Get() (v CreateIntegrationV4SecretStoreConfig, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilCreateIntegrationV4SecretStoreConfig) Or(d CreateIntegrationV4SecretStoreConfig) CreateIntegrationV4SecretStoreConfig {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilCreateIntegrationV4SecretStoreConfigAWS returns new OptNilCreateIntegrationV4SecretStoreConfigAWS with value set to v.
-func NewOptNilCreateIntegrationV4SecretStoreConfigAWS(v CreateIntegrationV4SecretStoreConfigAWS) OptNilCreateIntegrationV4SecretStoreConfigAWS {
-	return OptNilCreateIntegrationV4SecretStoreConfigAWS{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilCreateIntegrationV4SecretStoreConfigAWS is optional nullable CreateIntegrationV4SecretStoreConfigAWS.
-type OptNilCreateIntegrationV4SecretStoreConfigAWS struct {
-	Value CreateIntegrationV4SecretStoreConfigAWS
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilCreateIntegrationV4SecretStoreConfigAWS was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfigAWS) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigAWS) Reset() {
-	var v CreateIntegrationV4SecretStoreConfigAWS
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigAWS) SetTo(v CreateIntegrationV4SecretStoreConfigAWS) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilCreateIntegrationV4SecretStoreConfigAWS) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigAWS) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v CreateIntegrationV4SecretStoreConfigAWS
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfigAWS) Get() (v CreateIntegrationV4SecretStoreConfigAWS, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilCreateIntegrationV4SecretStoreConfigAWS) Or(d CreateIntegrationV4SecretStoreConfigAWS) CreateIntegrationV4SecretStoreConfigAWS {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilCreateIntegrationV4SecretStoreConfigAzure returns new OptNilCreateIntegrationV4SecretStoreConfigAzure with value set to v.
-func NewOptNilCreateIntegrationV4SecretStoreConfigAzure(v CreateIntegrationV4SecretStoreConfigAzure) OptNilCreateIntegrationV4SecretStoreConfigAzure {
-	return OptNilCreateIntegrationV4SecretStoreConfigAzure{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilCreateIntegrationV4SecretStoreConfigAzure is optional nullable CreateIntegrationV4SecretStoreConfigAzure.
-type OptNilCreateIntegrationV4SecretStoreConfigAzure struct {
-	Value CreateIntegrationV4SecretStoreConfigAzure
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilCreateIntegrationV4SecretStoreConfigAzure was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfigAzure) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigAzure) Reset() {
-	var v CreateIntegrationV4SecretStoreConfigAzure
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigAzure) SetTo(v CreateIntegrationV4SecretStoreConfigAzure) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilCreateIntegrationV4SecretStoreConfigAzure) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigAzure) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v CreateIntegrationV4SecretStoreConfigAzure
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfigAzure) Get() (v CreateIntegrationV4SecretStoreConfigAzure, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilCreateIntegrationV4SecretStoreConfigAzure) Or(d CreateIntegrationV4SecretStoreConfigAzure) CreateIntegrationV4SecretStoreConfigAzure {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilCreateIntegrationV4SecretStoreConfigGcp returns new OptNilCreateIntegrationV4SecretStoreConfigGcp with value set to v.
-func NewOptNilCreateIntegrationV4SecretStoreConfigGcp(v CreateIntegrationV4SecretStoreConfigGcp) OptNilCreateIntegrationV4SecretStoreConfigGcp {
-	return OptNilCreateIntegrationV4SecretStoreConfigGcp{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilCreateIntegrationV4SecretStoreConfigGcp is optional nullable CreateIntegrationV4SecretStoreConfigGcp.
-type OptNilCreateIntegrationV4SecretStoreConfigGcp struct {
-	Value CreateIntegrationV4SecretStoreConfigGcp
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilCreateIntegrationV4SecretStoreConfigGcp was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfigGcp) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigGcp) Reset() {
-	var v CreateIntegrationV4SecretStoreConfigGcp
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigGcp) SetTo(v CreateIntegrationV4SecretStoreConfigGcp) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilCreateIntegrationV4SecretStoreConfigGcp) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigGcp) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v CreateIntegrationV4SecretStoreConfigGcp
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfigGcp) Get() (v CreateIntegrationV4SecretStoreConfigGcp, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilCreateIntegrationV4SecretStoreConfigGcp) Or(d CreateIntegrationV4SecretStoreConfigGcp) CreateIntegrationV4SecretStoreConfigGcp {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilCreateIntegrationV4SecretStoreConfigHashicorpVault returns new OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault with value set to v.
-func NewOptNilCreateIntegrationV4SecretStoreConfigHashicorpVault(v CreateIntegrationV4SecretStoreConfigHashicorpVault) OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault {
-	return OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault is optional nullable CreateIntegrationV4SecretStoreConfigHashicorpVault.
-type OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault struct {
-	Value CreateIntegrationV4SecretStoreConfigHashicorpVault
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault) Reset() {
-	var v CreateIntegrationV4SecretStoreConfigHashicorpVault
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault) SetTo(v CreateIntegrationV4SecretStoreConfigHashicorpVault) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v CreateIntegrationV4SecretStoreConfigHashicorpVault
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault) Get() (v CreateIntegrationV4SecretStoreConfigHashicorpVault, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilCreateIntegrationV4SecretStoreConfigHashicorpVault) Or(d CreateIntegrationV4SecretStoreConfigHashicorpVault) CreateIntegrationV4SecretStoreConfigHashicorpVault {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilCreateIntegrationV4SecretStoreConfigKubernetes returns new OptNilCreateIntegrationV4SecretStoreConfigKubernetes with value set to v.
-func NewOptNilCreateIntegrationV4SecretStoreConfigKubernetes(v CreateIntegrationV4SecretStoreConfigKubernetes) OptNilCreateIntegrationV4SecretStoreConfigKubernetes {
-	return OptNilCreateIntegrationV4SecretStoreConfigKubernetes{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilCreateIntegrationV4SecretStoreConfigKubernetes is optional nullable CreateIntegrationV4SecretStoreConfigKubernetes.
-type OptNilCreateIntegrationV4SecretStoreConfigKubernetes struct {
-	Value CreateIntegrationV4SecretStoreConfigKubernetes
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilCreateIntegrationV4SecretStoreConfigKubernetes was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfigKubernetes) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigKubernetes) Reset() {
-	var v CreateIntegrationV4SecretStoreConfigKubernetes
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigKubernetes) SetTo(v CreateIntegrationV4SecretStoreConfigKubernetes) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilCreateIntegrationV4SecretStoreConfigKubernetes) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilCreateIntegrationV4SecretStoreConfigKubernetes) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v CreateIntegrationV4SecretStoreConfigKubernetes
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilCreateIntegrationV4SecretStoreConfigKubernetes) Get() (v CreateIntegrationV4SecretStoreConfigKubernetes, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilCreateIntegrationV4SecretStoreConfigKubernetes) Or(d CreateIntegrationV4SecretStoreConfigKubernetes) CreateIntegrationV4SecretStoreConfigKubernetes {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilDateTime returns new OptNilDateTime with value set to v.
-func NewOptNilDateTime(v time.Time) OptNilDateTime {
-	return OptNilDateTime{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilDateTime is optional nullable time.Time.
-type OptNilDateTime struct {
-	Value time.Time
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilDateTime was set.
-func (o OptNilDateTime) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilDateTime) Reset() {
-	var v time.Time
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilDateTime) SetTo(v time.Time) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilDateTime) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilDateTime) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v time.Time
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilDateTime) Get() (v time.Time, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilDateTime) Or(d time.Time) time.Time {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilFloat64 returns new OptNilFloat64 with value set to v.
-func NewOptNilFloat64(v float64) OptNilFloat64 {
-	return OptNilFloat64{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilFloat64 is optional nullable float64.
-type OptNilFloat64 struct {
-	Value float64
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilFloat64 was set.
-func (o OptNilFloat64) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilFloat64) Reset() {
-	var v float64
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilFloat64) SetTo(v float64) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilFloat64) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilFloat64) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v float64
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilFloat64) Get() (v float64, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilFloat64) Or(d float64) float64 {
+func (o OptNilGcpSecretConfigV4) Or(d GcpSecretConfigV4) GcpSecretConfigV4 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -7522,6 +5918,132 @@ func (o OptNilGranteeV1Array) Get() (v []GranteeV1, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptNilGranteeV1Array) Or(d []GranteeV1) []GranteeV1 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilHashicorpVaultSecretConfigV4 returns new OptNilHashicorpVaultSecretConfigV4 with value set to v.
+func NewOptNilHashicorpVaultSecretConfigV4(v HashicorpVaultSecretConfigV4) OptNilHashicorpVaultSecretConfigV4 {
+	return OptNilHashicorpVaultSecretConfigV4{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilHashicorpVaultSecretConfigV4 is optional nullable HashicorpVaultSecretConfigV4.
+type OptNilHashicorpVaultSecretConfigV4 struct {
+	Value HashicorpVaultSecretConfigV4
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilHashicorpVaultSecretConfigV4 was set.
+func (o OptNilHashicorpVaultSecretConfigV4) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilHashicorpVaultSecretConfigV4) Reset() {
+	var v HashicorpVaultSecretConfigV4
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilHashicorpVaultSecretConfigV4) SetTo(v HashicorpVaultSecretConfigV4) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilHashicorpVaultSecretConfigV4) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilHashicorpVaultSecretConfigV4) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v HashicorpVaultSecretConfigV4
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilHashicorpVaultSecretConfigV4) Get() (v HashicorpVaultSecretConfigV4, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilHashicorpVaultSecretConfigV4) Or(d HashicorpVaultSecretConfigV4) HashicorpVaultSecretConfigV4 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilInstant returns new OptNilInstant with value set to v.
+func NewOptNilInstant(v Instant) OptNilInstant {
+	return OptNilInstant{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilInstant is optional nullable Instant.
+type OptNilInstant struct {
+	Value Instant
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilInstant was set.
+func (o OptNilInstant) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilInstant) Reset() {
+	var v Instant
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilInstant) SetTo(v Instant) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilInstant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilInstant) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v Instant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilInstant) Get() (v Instant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilInstant) Or(d Instant) Instant {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -7654,52 +6176,52 @@ func (o OptNilInt64) Or(d int64) int64 {
 	return d
 }
 
-// NewOptNilIntegrationV4Owner returns new OptNilIntegrationV4Owner with value set to v.
-func NewOptNilIntegrationV4Owner(v IntegrationV4Owner) OptNilIntegrationV4Owner {
-	return OptNilIntegrationV4Owner{
+// NewOptNilIntegrationAccessTargetPublicV2Model returns new OptNilIntegrationAccessTargetPublicV2Model with value set to v.
+func NewOptNilIntegrationAccessTargetPublicV2Model(v IntegrationAccessTargetPublicV2Model) OptNilIntegrationAccessTargetPublicV2Model {
+	return OptNilIntegrationAccessTargetPublicV2Model{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilIntegrationV4Owner is optional nullable IntegrationV4Owner.
-type OptNilIntegrationV4Owner struct {
-	Value IntegrationV4Owner
+// OptNilIntegrationAccessTargetPublicV2Model is optional nullable IntegrationAccessTargetPublicV2Model.
+type OptNilIntegrationAccessTargetPublicV2Model struct {
+	Value IntegrationAccessTargetPublicV2Model
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilIntegrationV4Owner was set.
-func (o OptNilIntegrationV4Owner) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilIntegrationAccessTargetPublicV2Model was set.
+func (o OptNilIntegrationAccessTargetPublicV2Model) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilIntegrationV4Owner) Reset() {
-	var v IntegrationV4Owner
+func (o *OptNilIntegrationAccessTargetPublicV2Model) Reset() {
+	var v IntegrationAccessTargetPublicV2Model
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilIntegrationV4Owner) SetTo(v IntegrationV4Owner) {
+func (o *OptNilIntegrationAccessTargetPublicV2Model) SetTo(v IntegrationAccessTargetPublicV2Model) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilIntegrationV4Owner) IsNull() bool { return o.Null }
+func (o OptNilIntegrationAccessTargetPublicV2Model) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilIntegrationV4Owner) SetToNull() {
+func (o *OptNilIntegrationAccessTargetPublicV2Model) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v IntegrationV4Owner
+	var v IntegrationAccessTargetPublicV2Model
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilIntegrationV4Owner) Get() (v IntegrationV4Owner, ok bool) {
+func (o OptNilIntegrationAccessTargetPublicV2Model) Get() (v IntegrationAccessTargetPublicV2Model, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -7710,59 +6232,59 @@ func (o OptNilIntegrationV4Owner) Get() (v IntegrationV4Owner, ok bool) {
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilIntegrationV4Owner) Or(d IntegrationV4Owner) IntegrationV4Owner {
+func (o OptNilIntegrationAccessTargetPublicV2Model) Or(d IntegrationAccessTargetPublicV2Model) IntegrationAccessTargetPublicV2Model {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilIntegrationV4OwnersMapping returns new OptNilIntegrationV4OwnersMapping with value set to v.
-func NewOptNilIntegrationV4OwnersMapping(v IntegrationV4OwnersMapping) OptNilIntegrationV4OwnersMapping {
-	return OptNilIntegrationV4OwnersMapping{
+// NewOptNilIntegrationAccessTargetUpsertPublicV2Model returns new OptNilIntegrationAccessTargetUpsertPublicV2Model with value set to v.
+func NewOptNilIntegrationAccessTargetUpsertPublicV2Model(v IntegrationAccessTargetUpsertPublicV2Model) OptNilIntegrationAccessTargetUpsertPublicV2Model {
+	return OptNilIntegrationAccessTargetUpsertPublicV2Model{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilIntegrationV4OwnersMapping is optional nullable IntegrationV4OwnersMapping.
-type OptNilIntegrationV4OwnersMapping struct {
-	Value IntegrationV4OwnersMapping
+// OptNilIntegrationAccessTargetUpsertPublicV2Model is optional nullable IntegrationAccessTargetUpsertPublicV2Model.
+type OptNilIntegrationAccessTargetUpsertPublicV2Model struct {
+	Value IntegrationAccessTargetUpsertPublicV2Model
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilIntegrationV4OwnersMapping was set.
-func (o OptNilIntegrationV4OwnersMapping) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilIntegrationAccessTargetUpsertPublicV2Model was set.
+func (o OptNilIntegrationAccessTargetUpsertPublicV2Model) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilIntegrationV4OwnersMapping) Reset() {
-	var v IntegrationV4OwnersMapping
+func (o *OptNilIntegrationAccessTargetUpsertPublicV2Model) Reset() {
+	var v IntegrationAccessTargetUpsertPublicV2Model
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilIntegrationV4OwnersMapping) SetTo(v IntegrationV4OwnersMapping) {
+func (o *OptNilIntegrationAccessTargetUpsertPublicV2Model) SetTo(v IntegrationAccessTargetUpsertPublicV2Model) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilIntegrationV4OwnersMapping) IsNull() bool { return o.Null }
+func (o OptNilIntegrationAccessTargetUpsertPublicV2Model) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilIntegrationV4OwnersMapping) SetToNull() {
+func (o *OptNilIntegrationAccessTargetUpsertPublicV2Model) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v IntegrationV4OwnersMapping
+	var v IntegrationAccessTargetUpsertPublicV2Model
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilIntegrationV4OwnersMapping) Get() (v IntegrationV4OwnersMapping, ok bool) {
+func (o OptNilIntegrationAccessTargetUpsertPublicV2Model) Get() (v IntegrationAccessTargetUpsertPublicV2Model, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -7773,59 +6295,59 @@ func (o OptNilIntegrationV4OwnersMapping) Get() (v IntegrationV4OwnersMapping, o
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilIntegrationV4OwnersMapping) Or(d IntegrationV4OwnersMapping) IntegrationV4OwnersMapping {
+func (o OptNilIntegrationAccessTargetUpsertPublicV2Model) Or(d IntegrationAccessTargetUpsertPublicV2Model) IntegrationAccessTargetUpsertPublicV2Model {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilIntegrationV4SecretStoreConfig returns new OptNilIntegrationV4SecretStoreConfig with value set to v.
-func NewOptNilIntegrationV4SecretStoreConfig(v IntegrationV4SecretStoreConfig) OptNilIntegrationV4SecretStoreConfig {
-	return OptNilIntegrationV4SecretStoreConfig{
+// NewOptNilKubernetesSecretConfigV4 returns new OptNilKubernetesSecretConfigV4 with value set to v.
+func NewOptNilKubernetesSecretConfigV4(v KubernetesSecretConfigV4) OptNilKubernetesSecretConfigV4 {
+	return OptNilKubernetesSecretConfigV4{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilIntegrationV4SecretStoreConfig is optional nullable IntegrationV4SecretStoreConfig.
-type OptNilIntegrationV4SecretStoreConfig struct {
-	Value IntegrationV4SecretStoreConfig
+// OptNilKubernetesSecretConfigV4 is optional nullable KubernetesSecretConfigV4.
+type OptNilKubernetesSecretConfigV4 struct {
+	Value KubernetesSecretConfigV4
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilIntegrationV4SecretStoreConfig was set.
-func (o OptNilIntegrationV4SecretStoreConfig) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilKubernetesSecretConfigV4 was set.
+func (o OptNilKubernetesSecretConfigV4) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilIntegrationV4SecretStoreConfig) Reset() {
-	var v IntegrationV4SecretStoreConfig
+func (o *OptNilKubernetesSecretConfigV4) Reset() {
+	var v KubernetesSecretConfigV4
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilIntegrationV4SecretStoreConfig) SetTo(v IntegrationV4SecretStoreConfig) {
+func (o *OptNilKubernetesSecretConfigV4) SetTo(v KubernetesSecretConfigV4) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilIntegrationV4SecretStoreConfig) IsNull() bool { return o.Null }
+func (o OptNilKubernetesSecretConfigV4) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilIntegrationV4SecretStoreConfig) SetToNull() {
+func (o *OptNilKubernetesSecretConfigV4) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v IntegrationV4SecretStoreConfig
+	var v KubernetesSecretConfigV4
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilIntegrationV4SecretStoreConfig) Get() (v IntegrationV4SecretStoreConfig, ok bool) {
+func (o OptNilKubernetesSecretConfigV4) Get() (v KubernetesSecretConfigV4, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -7836,59 +6358,59 @@ func (o OptNilIntegrationV4SecretStoreConfig) Get() (v IntegrationV4SecretStoreC
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilIntegrationV4SecretStoreConfig) Or(d IntegrationV4SecretStoreConfig) IntegrationV4SecretStoreConfig {
+func (o OptNilKubernetesSecretConfigV4) Or(d KubernetesSecretConfigV4) KubernetesSecretConfigV4 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilIntegrationV4SecretStoreConfigAWS returns new OptNilIntegrationV4SecretStoreConfigAWS with value set to v.
-func NewOptNilIntegrationV4SecretStoreConfigAWS(v IntegrationV4SecretStoreConfigAWS) OptNilIntegrationV4SecretStoreConfigAWS {
-	return OptNilIntegrationV4SecretStoreConfigAWS{
+// NewOptNilLinkV1 returns new OptNilLinkV1 with value set to v.
+func NewOptNilLinkV1(v LinkV1) OptNilLinkV1 {
+	return OptNilLinkV1{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilIntegrationV4SecretStoreConfigAWS is optional nullable IntegrationV4SecretStoreConfigAWS.
-type OptNilIntegrationV4SecretStoreConfigAWS struct {
-	Value IntegrationV4SecretStoreConfigAWS
+// OptNilLinkV1 is optional nullable LinkV1.
+type OptNilLinkV1 struct {
+	Value LinkV1
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilIntegrationV4SecretStoreConfigAWS was set.
-func (o OptNilIntegrationV4SecretStoreConfigAWS) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilLinkV1 was set.
+func (o OptNilLinkV1) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilIntegrationV4SecretStoreConfigAWS) Reset() {
-	var v IntegrationV4SecretStoreConfigAWS
+func (o *OptNilLinkV1) Reset() {
+	var v LinkV1
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilIntegrationV4SecretStoreConfigAWS) SetTo(v IntegrationV4SecretStoreConfigAWS) {
+func (o *OptNilLinkV1) SetTo(v LinkV1) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilIntegrationV4SecretStoreConfigAWS) IsNull() bool { return o.Null }
+func (o OptNilLinkV1) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilIntegrationV4SecretStoreConfigAWS) SetToNull() {
+func (o *OptNilLinkV1) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v IntegrationV4SecretStoreConfigAWS
+	var v LinkV1
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilIntegrationV4SecretStoreConfigAWS) Get() (v IntegrationV4SecretStoreConfigAWS, ok bool) {
+func (o OptNilLinkV1) Get() (v LinkV1, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -7899,59 +6421,59 @@ func (o OptNilIntegrationV4SecretStoreConfigAWS) Get() (v IntegrationV4SecretSto
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilIntegrationV4SecretStoreConfigAWS) Or(d IntegrationV4SecretStoreConfigAWS) IntegrationV4SecretStoreConfigAWS {
+func (o OptNilLinkV1) Or(d LinkV1) LinkV1 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilIntegrationV4SecretStoreConfigApono returns new OptNilIntegrationV4SecretStoreConfigApono with value set to v.
-func NewOptNilIntegrationV4SecretStoreConfigApono(v IntegrationV4SecretStoreConfigApono) OptNilIntegrationV4SecretStoreConfigApono {
-	return OptNilIntegrationV4SecretStoreConfigApono{
+// NewOptNilOwnerMappingV4 returns new OptNilOwnerMappingV4 with value set to v.
+func NewOptNilOwnerMappingV4(v OwnerMappingV4) OptNilOwnerMappingV4 {
+	return OptNilOwnerMappingV4{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilIntegrationV4SecretStoreConfigApono is optional nullable IntegrationV4SecretStoreConfigApono.
-type OptNilIntegrationV4SecretStoreConfigApono struct {
-	Value IntegrationV4SecretStoreConfigApono
+// OptNilOwnerMappingV4 is optional nullable OwnerMappingV4.
+type OptNilOwnerMappingV4 struct {
+	Value OwnerMappingV4
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilIntegrationV4SecretStoreConfigApono was set.
-func (o OptNilIntegrationV4SecretStoreConfigApono) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilOwnerMappingV4 was set.
+func (o OptNilOwnerMappingV4) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilIntegrationV4SecretStoreConfigApono) Reset() {
-	var v IntegrationV4SecretStoreConfigApono
+func (o *OptNilOwnerMappingV4) Reset() {
+	var v OwnerMappingV4
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilIntegrationV4SecretStoreConfigApono) SetTo(v IntegrationV4SecretStoreConfigApono) {
+func (o *OptNilOwnerMappingV4) SetTo(v OwnerMappingV4) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilIntegrationV4SecretStoreConfigApono) IsNull() bool { return o.Null }
+func (o OptNilOwnerMappingV4) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilIntegrationV4SecretStoreConfigApono) SetToNull() {
+func (o *OptNilOwnerMappingV4) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v IntegrationV4SecretStoreConfigApono
+	var v OwnerMappingV4
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilIntegrationV4SecretStoreConfigApono) Get() (v IntegrationV4SecretStoreConfigApono, ok bool) {
+func (o OptNilOwnerMappingV4) Get() (v OwnerMappingV4, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -7962,59 +6484,59 @@ func (o OptNilIntegrationV4SecretStoreConfigApono) Get() (v IntegrationV4SecretS
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilIntegrationV4SecretStoreConfigApono) Or(d IntegrationV4SecretStoreConfigApono) IntegrationV4SecretStoreConfigApono {
+func (o OptNilOwnerMappingV4) Or(d OwnerMappingV4) OwnerMappingV4 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilIntegrationV4SecretStoreConfigAzure returns new OptNilIntegrationV4SecretStoreConfigAzure with value set to v.
-func NewOptNilIntegrationV4SecretStoreConfigAzure(v IntegrationV4SecretStoreConfigAzure) OptNilIntegrationV4SecretStoreConfigAzure {
-	return OptNilIntegrationV4SecretStoreConfigAzure{
+// NewOptNilOwnerV4 returns new OptNilOwnerV4 with value set to v.
+func NewOptNilOwnerV4(v OwnerV4) OptNilOwnerV4 {
+	return OptNilOwnerV4{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilIntegrationV4SecretStoreConfigAzure is optional nullable IntegrationV4SecretStoreConfigAzure.
-type OptNilIntegrationV4SecretStoreConfigAzure struct {
-	Value IntegrationV4SecretStoreConfigAzure
+// OptNilOwnerV4 is optional nullable OwnerV4.
+type OptNilOwnerV4 struct {
+	Value OwnerV4
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilIntegrationV4SecretStoreConfigAzure was set.
-func (o OptNilIntegrationV4SecretStoreConfigAzure) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilOwnerV4 was set.
+func (o OptNilOwnerV4) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilIntegrationV4SecretStoreConfigAzure) Reset() {
-	var v IntegrationV4SecretStoreConfigAzure
+func (o *OptNilOwnerV4) Reset() {
+	var v OwnerV4
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilIntegrationV4SecretStoreConfigAzure) SetTo(v IntegrationV4SecretStoreConfigAzure) {
+func (o *OptNilOwnerV4) SetTo(v OwnerV4) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilIntegrationV4SecretStoreConfigAzure) IsNull() bool { return o.Null }
+func (o OptNilOwnerV4) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilIntegrationV4SecretStoreConfigAzure) SetToNull() {
+func (o *OptNilOwnerV4) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v IntegrationV4SecretStoreConfigAzure
+	var v OwnerV4
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilIntegrationV4SecretStoreConfigAzure) Get() (v IntegrationV4SecretStoreConfigAzure, ok bool) {
+func (o OptNilOwnerV4) Get() (v OwnerV4, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -8025,196 +6547,7 @@ func (o OptNilIntegrationV4SecretStoreConfigAzure) Get() (v IntegrationV4SecretS
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilIntegrationV4SecretStoreConfigAzure) Or(d IntegrationV4SecretStoreConfigAzure) IntegrationV4SecretStoreConfigAzure {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilIntegrationV4SecretStoreConfigGcp returns new OptNilIntegrationV4SecretStoreConfigGcp with value set to v.
-func NewOptNilIntegrationV4SecretStoreConfigGcp(v IntegrationV4SecretStoreConfigGcp) OptNilIntegrationV4SecretStoreConfigGcp {
-	return OptNilIntegrationV4SecretStoreConfigGcp{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilIntegrationV4SecretStoreConfigGcp is optional nullable IntegrationV4SecretStoreConfigGcp.
-type OptNilIntegrationV4SecretStoreConfigGcp struct {
-	Value IntegrationV4SecretStoreConfigGcp
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilIntegrationV4SecretStoreConfigGcp was set.
-func (o OptNilIntegrationV4SecretStoreConfigGcp) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilIntegrationV4SecretStoreConfigGcp) Reset() {
-	var v IntegrationV4SecretStoreConfigGcp
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilIntegrationV4SecretStoreConfigGcp) SetTo(v IntegrationV4SecretStoreConfigGcp) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilIntegrationV4SecretStoreConfigGcp) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilIntegrationV4SecretStoreConfigGcp) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v IntegrationV4SecretStoreConfigGcp
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilIntegrationV4SecretStoreConfigGcp) Get() (v IntegrationV4SecretStoreConfigGcp, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilIntegrationV4SecretStoreConfigGcp) Or(d IntegrationV4SecretStoreConfigGcp) IntegrationV4SecretStoreConfigGcp {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilIntegrationV4SecretStoreConfigHashicorpVault returns new OptNilIntegrationV4SecretStoreConfigHashicorpVault with value set to v.
-func NewOptNilIntegrationV4SecretStoreConfigHashicorpVault(v IntegrationV4SecretStoreConfigHashicorpVault) OptNilIntegrationV4SecretStoreConfigHashicorpVault {
-	return OptNilIntegrationV4SecretStoreConfigHashicorpVault{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilIntegrationV4SecretStoreConfigHashicorpVault is optional nullable IntegrationV4SecretStoreConfigHashicorpVault.
-type OptNilIntegrationV4SecretStoreConfigHashicorpVault struct {
-	Value IntegrationV4SecretStoreConfigHashicorpVault
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilIntegrationV4SecretStoreConfigHashicorpVault was set.
-func (o OptNilIntegrationV4SecretStoreConfigHashicorpVault) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilIntegrationV4SecretStoreConfigHashicorpVault) Reset() {
-	var v IntegrationV4SecretStoreConfigHashicorpVault
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilIntegrationV4SecretStoreConfigHashicorpVault) SetTo(v IntegrationV4SecretStoreConfigHashicorpVault) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilIntegrationV4SecretStoreConfigHashicorpVault) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilIntegrationV4SecretStoreConfigHashicorpVault) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v IntegrationV4SecretStoreConfigHashicorpVault
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilIntegrationV4SecretStoreConfigHashicorpVault) Get() (v IntegrationV4SecretStoreConfigHashicorpVault, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilIntegrationV4SecretStoreConfigHashicorpVault) Or(d IntegrationV4SecretStoreConfigHashicorpVault) IntegrationV4SecretStoreConfigHashicorpVault {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilIntegrationV4SecretStoreConfigKubernetes returns new OptNilIntegrationV4SecretStoreConfigKubernetes with value set to v.
-func NewOptNilIntegrationV4SecretStoreConfigKubernetes(v IntegrationV4SecretStoreConfigKubernetes) OptNilIntegrationV4SecretStoreConfigKubernetes {
-	return OptNilIntegrationV4SecretStoreConfigKubernetes{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilIntegrationV4SecretStoreConfigKubernetes is optional nullable IntegrationV4SecretStoreConfigKubernetes.
-type OptNilIntegrationV4SecretStoreConfigKubernetes struct {
-	Value IntegrationV4SecretStoreConfigKubernetes
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilIntegrationV4SecretStoreConfigKubernetes was set.
-func (o OptNilIntegrationV4SecretStoreConfigKubernetes) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilIntegrationV4SecretStoreConfigKubernetes) Reset() {
-	var v IntegrationV4SecretStoreConfigKubernetes
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilIntegrationV4SecretStoreConfigKubernetes) SetTo(v IntegrationV4SecretStoreConfigKubernetes) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilIntegrationV4SecretStoreConfigKubernetes) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilIntegrationV4SecretStoreConfigKubernetes) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v IntegrationV4SecretStoreConfigKubernetes
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilIntegrationV4SecretStoreConfigKubernetes) Get() (v IntegrationV4SecretStoreConfigKubernetes, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilIntegrationV4SecretStoreConfigKubernetes) Or(d IntegrationV4SecretStoreConfigKubernetes) IntegrationV4SecretStoreConfigKubernetes {
+func (o OptNilOwnerV4) Or(d OwnerV4) OwnerV4 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -8347,6 +6680,132 @@ func (o OptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray) Or(d []Re
 	return d
 }
 
+// NewOptNilSecretConfig returns new OptNilSecretConfig with value set to v.
+func NewOptNilSecretConfig(v SecretConfig) OptNilSecretConfig {
+	return OptNilSecretConfig{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilSecretConfig is optional nullable SecretConfig.
+type OptNilSecretConfig struct {
+	Value SecretConfig
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilSecretConfig was set.
+func (o OptNilSecretConfig) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilSecretConfig) Reset() {
+	var v SecretConfig
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilSecretConfig) SetTo(v SecretConfig) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilSecretConfig) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilSecretConfig) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v SecretConfig
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilSecretConfig) Get() (v SecretConfig, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilSecretConfig) Or(d SecretConfig) SecretConfig {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilSecretStoreConfigV4 returns new OptNilSecretStoreConfigV4 with value set to v.
+func NewOptNilSecretStoreConfigV4(v SecretStoreConfigV4) OptNilSecretStoreConfigV4 {
+	return OptNilSecretStoreConfigV4{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilSecretStoreConfigV4 is optional nullable SecretStoreConfigV4.
+type OptNilSecretStoreConfigV4 struct {
+	Value SecretStoreConfigV4
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilSecretStoreConfigV4 was set.
+func (o OptNilSecretStoreConfigV4) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilSecretStoreConfigV4) Reset() {
+	var v SecretStoreConfigV4
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilSecretStoreConfigV4) SetTo(v SecretStoreConfigV4) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilSecretStoreConfigV4) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilSecretStoreConfigV4) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v SecretStoreConfigV4
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilSecretStoreConfigV4) Get() (v SecretStoreConfigV4, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilSecretStoreConfigV4) Or(d SecretStoreConfigV4) SecretStoreConfigV4 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptNilString returns new OptNilString with value set to v.
 func NewOptNilString(v string) OptNilString {
 	return OptNilString{
@@ -8473,52 +6932,52 @@ func (o OptNilStringArray) Or(d []string) []string {
 	return d
 }
 
-// NewOptNilUpdateAccessFlowV1Settings returns new OptNilUpdateAccessFlowV1Settings with value set to v.
-func NewOptNilUpdateAccessFlowV1Settings(v UpdateAccessFlowV1Settings) OptNilUpdateAccessFlowV1Settings {
-	return OptNilUpdateAccessFlowV1Settings{
+// NewOptNilTimeframeV1 returns new OptNilTimeframeV1 with value set to v.
+func NewOptNilTimeframeV1(v TimeframeV1) OptNilTimeframeV1 {
+	return OptNilTimeframeV1{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilUpdateAccessFlowV1Settings is optional nullable UpdateAccessFlowV1Settings.
-type OptNilUpdateAccessFlowV1Settings struct {
-	Value UpdateAccessFlowV1Settings
+// OptNilTimeframeV1 is optional nullable TimeframeV1.
+type OptNilTimeframeV1 struct {
+	Value TimeframeV1
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilUpdateAccessFlowV1Settings was set.
-func (o OptNilUpdateAccessFlowV1Settings) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilTimeframeV1 was set.
+func (o OptNilTimeframeV1) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilUpdateAccessFlowV1Settings) Reset() {
-	var v UpdateAccessFlowV1Settings
+func (o *OptNilTimeframeV1) Reset() {
+	var v TimeframeV1
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilUpdateAccessFlowV1Settings) SetTo(v UpdateAccessFlowV1Settings) {
+func (o *OptNilTimeframeV1) SetTo(v TimeframeV1) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilUpdateAccessFlowV1Settings) IsNull() bool { return o.Null }
+func (o OptNilTimeframeV1) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilUpdateAccessFlowV1Settings) SetToNull() {
+func (o *OptNilTimeframeV1) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v UpdateAccessFlowV1Settings
+	var v TimeframeV1
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateAccessFlowV1Settings) Get() (v UpdateAccessFlowV1Settings, ok bool) {
+func (o OptNilTimeframeV1) Get() (v TimeframeV1, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -8529,59 +6988,59 @@ func (o OptNilUpdateAccessFlowV1Settings) Get() (v UpdateAccessFlowV1Settings, o
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateAccessFlowV1Settings) Or(d UpdateAccessFlowV1Settings) UpdateAccessFlowV1Settings {
+func (o OptNilTimeframeV1) Or(d TimeframeV1) TimeframeV1 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilUpdateAccessFlowV1Trigger returns new OptNilUpdateAccessFlowV1Trigger with value set to v.
-func NewOptNilUpdateAccessFlowV1Trigger(v UpdateAccessFlowV1Trigger) OptNilUpdateAccessFlowV1Trigger {
-	return OptNilUpdateAccessFlowV1Trigger{
+// NewOptNilUpsertOwnerMappingV4 returns new OptNilUpsertOwnerMappingV4 with value set to v.
+func NewOptNilUpsertOwnerMappingV4(v UpsertOwnerMappingV4) OptNilUpsertOwnerMappingV4 {
+	return OptNilUpsertOwnerMappingV4{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilUpdateAccessFlowV1Trigger is optional nullable UpdateAccessFlowV1Trigger.
-type OptNilUpdateAccessFlowV1Trigger struct {
-	Value UpdateAccessFlowV1Trigger
+// OptNilUpsertOwnerMappingV4 is optional nullable UpsertOwnerMappingV4.
+type OptNilUpsertOwnerMappingV4 struct {
+	Value UpsertOwnerMappingV4
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilUpdateAccessFlowV1Trigger was set.
-func (o OptNilUpdateAccessFlowV1Trigger) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilUpsertOwnerMappingV4 was set.
+func (o OptNilUpsertOwnerMappingV4) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilUpdateAccessFlowV1Trigger) Reset() {
-	var v UpdateAccessFlowV1Trigger
+func (o *OptNilUpsertOwnerMappingV4) Reset() {
+	var v UpsertOwnerMappingV4
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilUpdateAccessFlowV1Trigger) SetTo(v UpdateAccessFlowV1Trigger) {
+func (o *OptNilUpsertOwnerMappingV4) SetTo(v UpsertOwnerMappingV4) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilUpdateAccessFlowV1Trigger) IsNull() bool { return o.Null }
+func (o OptNilUpsertOwnerMappingV4) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilUpdateAccessFlowV1Trigger) SetToNull() {
+func (o *OptNilUpsertOwnerMappingV4) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v UpdateAccessFlowV1Trigger
+	var v UpsertOwnerMappingV4
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateAccessFlowV1Trigger) Get() (v UpdateAccessFlowV1Trigger, ok bool) {
+func (o OptNilUpsertOwnerMappingV4) Get() (v UpsertOwnerMappingV4, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -8592,59 +7051,59 @@ func (o OptNilUpdateAccessFlowV1Trigger) Get() (v UpdateAccessFlowV1Trigger, ok 
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateAccessFlowV1Trigger) Or(d UpdateAccessFlowV1Trigger) UpdateAccessFlowV1Trigger {
+func (o OptNilUpsertOwnerMappingV4) Or(d UpsertOwnerMappingV4) UpsertOwnerMappingV4 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilUpdateAccessFlowV1TriggerTimeframe returns new OptNilUpdateAccessFlowV1TriggerTimeframe with value set to v.
-func NewOptNilUpdateAccessFlowV1TriggerTimeframe(v UpdateAccessFlowV1TriggerTimeframe) OptNilUpdateAccessFlowV1TriggerTimeframe {
-	return OptNilUpdateAccessFlowV1TriggerTimeframe{
+// NewOptNilUpsertOwnerV4 returns new OptNilUpsertOwnerV4 with value set to v.
+func NewOptNilUpsertOwnerV4(v UpsertOwnerV4) OptNilUpsertOwnerV4 {
+	return OptNilUpsertOwnerV4{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilUpdateAccessFlowV1TriggerTimeframe is optional nullable UpdateAccessFlowV1TriggerTimeframe.
-type OptNilUpdateAccessFlowV1TriggerTimeframe struct {
-	Value UpdateAccessFlowV1TriggerTimeframe
+// OptNilUpsertOwnerV4 is optional nullable UpsertOwnerV4.
+type OptNilUpsertOwnerV4 struct {
+	Value UpsertOwnerV4
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilUpdateAccessFlowV1TriggerTimeframe was set.
-func (o OptNilUpdateAccessFlowV1TriggerTimeframe) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilUpsertOwnerV4 was set.
+func (o OptNilUpsertOwnerV4) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilUpdateAccessFlowV1TriggerTimeframe) Reset() {
-	var v UpdateAccessFlowV1TriggerTimeframe
+func (o *OptNilUpsertOwnerV4) Reset() {
+	var v UpsertOwnerV4
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilUpdateAccessFlowV1TriggerTimeframe) SetTo(v UpdateAccessFlowV1TriggerTimeframe) {
+func (o *OptNilUpsertOwnerV4) SetTo(v UpsertOwnerV4) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilUpdateAccessFlowV1TriggerTimeframe) IsNull() bool { return o.Null }
+func (o OptNilUpsertOwnerV4) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilUpdateAccessFlowV1TriggerTimeframe) SetToNull() {
+func (o *OptNilUpsertOwnerV4) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v UpdateAccessFlowV1TriggerTimeframe
+	var v UpsertOwnerV4
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateAccessFlowV1TriggerTimeframe) Get() (v UpdateAccessFlowV1TriggerTimeframe, ok bool) {
+func (o OptNilUpsertOwnerV4) Get() (v UpsertOwnerV4, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -8655,59 +7114,59 @@ func (o OptNilUpdateAccessFlowV1TriggerTimeframe) Get() (v UpdateAccessFlowV1Tri
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateAccessFlowV1TriggerTimeframe) Or(d UpdateAccessFlowV1TriggerTimeframe) UpdateAccessFlowV1TriggerTimeframe {
+func (o OptNilUpsertOwnerV4) Or(d UpsertOwnerV4) UpsertOwnerV4 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptNilUpdateIntegrationV4Owner returns new OptNilUpdateIntegrationV4Owner with value set to v.
-func NewOptNilUpdateIntegrationV4Owner(v UpdateIntegrationV4Owner) OptNilUpdateIntegrationV4Owner {
-	return OptNilUpdateIntegrationV4Owner{
+// NewOptNilUpsertSecretStoreConfigV4 returns new OptNilUpsertSecretStoreConfigV4 with value set to v.
+func NewOptNilUpsertSecretStoreConfigV4(v UpsertSecretStoreConfigV4) OptNilUpsertSecretStoreConfigV4 {
+	return OptNilUpsertSecretStoreConfigV4{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptNilUpdateIntegrationV4Owner is optional nullable UpdateIntegrationV4Owner.
-type OptNilUpdateIntegrationV4Owner struct {
-	Value UpdateIntegrationV4Owner
+// OptNilUpsertSecretStoreConfigV4 is optional nullable UpsertSecretStoreConfigV4.
+type OptNilUpsertSecretStoreConfigV4 struct {
+	Value UpsertSecretStoreConfigV4
 	Set   bool
 	Null  bool
 }
 
-// IsSet returns true if OptNilUpdateIntegrationV4Owner was set.
-func (o OptNilUpdateIntegrationV4Owner) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilUpsertSecretStoreConfigV4 was set.
+func (o OptNilUpsertSecretStoreConfigV4) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptNilUpdateIntegrationV4Owner) Reset() {
-	var v UpdateIntegrationV4Owner
+func (o *OptNilUpsertSecretStoreConfigV4) Reset() {
+	var v UpsertSecretStoreConfigV4
 	o.Value = v
 	o.Set = false
 	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptNilUpdateIntegrationV4Owner) SetTo(v UpdateIntegrationV4Owner) {
+func (o *OptNilUpsertSecretStoreConfigV4) SetTo(v UpsertSecretStoreConfigV4) {
 	o.Set = true
 	o.Null = false
 	o.Value = v
 }
 
 // IsNull returns true if value is Null.
-func (o OptNilUpdateIntegrationV4Owner) IsNull() bool { return o.Null }
+func (o OptNilUpsertSecretStoreConfigV4) IsNull() bool { return o.Null }
 
 // SetToNull sets value to null.
-func (o *OptNilUpdateIntegrationV4Owner) SetToNull() {
+func (o *OptNilUpsertSecretStoreConfigV4) SetToNull() {
 	o.Set = true
 	o.Null = true
-	var v UpdateIntegrationV4Owner
+	var v UpsertSecretStoreConfigV4
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateIntegrationV4Owner) Get() (v UpdateIntegrationV4Owner, ok bool) {
+func (o OptNilUpsertSecretStoreConfigV4) Get() (v UpsertSecretStoreConfigV4, ok bool) {
 	if o.Null {
 		return v, false
 	}
@@ -8718,511 +7177,7 @@ func (o OptNilUpdateIntegrationV4Owner) Get() (v UpdateIntegrationV4Owner, ok bo
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateIntegrationV4Owner) Or(d UpdateIntegrationV4Owner) UpdateIntegrationV4Owner {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilUpdateIntegrationV4OwnersMapping returns new OptNilUpdateIntegrationV4OwnersMapping with value set to v.
-func NewOptNilUpdateIntegrationV4OwnersMapping(v UpdateIntegrationV4OwnersMapping) OptNilUpdateIntegrationV4OwnersMapping {
-	return OptNilUpdateIntegrationV4OwnersMapping{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilUpdateIntegrationV4OwnersMapping is optional nullable UpdateIntegrationV4OwnersMapping.
-type OptNilUpdateIntegrationV4OwnersMapping struct {
-	Value UpdateIntegrationV4OwnersMapping
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilUpdateIntegrationV4OwnersMapping was set.
-func (o OptNilUpdateIntegrationV4OwnersMapping) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilUpdateIntegrationV4OwnersMapping) Reset() {
-	var v UpdateIntegrationV4OwnersMapping
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilUpdateIntegrationV4OwnersMapping) SetTo(v UpdateIntegrationV4OwnersMapping) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilUpdateIntegrationV4OwnersMapping) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilUpdateIntegrationV4OwnersMapping) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v UpdateIntegrationV4OwnersMapping
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateIntegrationV4OwnersMapping) Get() (v UpdateIntegrationV4OwnersMapping, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateIntegrationV4OwnersMapping) Or(d UpdateIntegrationV4OwnersMapping) UpdateIntegrationV4OwnersMapping {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilUpdateIntegrationV4SecretStoreConfig returns new OptNilUpdateIntegrationV4SecretStoreConfig with value set to v.
-func NewOptNilUpdateIntegrationV4SecretStoreConfig(v UpdateIntegrationV4SecretStoreConfig) OptNilUpdateIntegrationV4SecretStoreConfig {
-	return OptNilUpdateIntegrationV4SecretStoreConfig{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilUpdateIntegrationV4SecretStoreConfig is optional nullable UpdateIntegrationV4SecretStoreConfig.
-type OptNilUpdateIntegrationV4SecretStoreConfig struct {
-	Value UpdateIntegrationV4SecretStoreConfig
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilUpdateIntegrationV4SecretStoreConfig was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfig) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfig) Reset() {
-	var v UpdateIntegrationV4SecretStoreConfig
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfig) SetTo(v UpdateIntegrationV4SecretStoreConfig) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilUpdateIntegrationV4SecretStoreConfig) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfig) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v UpdateIntegrationV4SecretStoreConfig
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfig) Get() (v UpdateIntegrationV4SecretStoreConfig, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateIntegrationV4SecretStoreConfig) Or(d UpdateIntegrationV4SecretStoreConfig) UpdateIntegrationV4SecretStoreConfig {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilUpdateIntegrationV4SecretStoreConfigAWS returns new OptNilUpdateIntegrationV4SecretStoreConfigAWS with value set to v.
-func NewOptNilUpdateIntegrationV4SecretStoreConfigAWS(v UpdateIntegrationV4SecretStoreConfigAWS) OptNilUpdateIntegrationV4SecretStoreConfigAWS {
-	return OptNilUpdateIntegrationV4SecretStoreConfigAWS{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilUpdateIntegrationV4SecretStoreConfigAWS is optional nullable UpdateIntegrationV4SecretStoreConfigAWS.
-type OptNilUpdateIntegrationV4SecretStoreConfigAWS struct {
-	Value UpdateIntegrationV4SecretStoreConfigAWS
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilUpdateIntegrationV4SecretStoreConfigAWS was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigAWS) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigAWS) Reset() {
-	var v UpdateIntegrationV4SecretStoreConfigAWS
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigAWS) SetTo(v UpdateIntegrationV4SecretStoreConfigAWS) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigAWS) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigAWS) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v UpdateIntegrationV4SecretStoreConfigAWS
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigAWS) Get() (v UpdateIntegrationV4SecretStoreConfigAWS, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigAWS) Or(d UpdateIntegrationV4SecretStoreConfigAWS) UpdateIntegrationV4SecretStoreConfigAWS {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilUpdateIntegrationV4SecretStoreConfigAzure returns new OptNilUpdateIntegrationV4SecretStoreConfigAzure with value set to v.
-func NewOptNilUpdateIntegrationV4SecretStoreConfigAzure(v UpdateIntegrationV4SecretStoreConfigAzure) OptNilUpdateIntegrationV4SecretStoreConfigAzure {
-	return OptNilUpdateIntegrationV4SecretStoreConfigAzure{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilUpdateIntegrationV4SecretStoreConfigAzure is optional nullable UpdateIntegrationV4SecretStoreConfigAzure.
-type OptNilUpdateIntegrationV4SecretStoreConfigAzure struct {
-	Value UpdateIntegrationV4SecretStoreConfigAzure
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilUpdateIntegrationV4SecretStoreConfigAzure was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigAzure) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigAzure) Reset() {
-	var v UpdateIntegrationV4SecretStoreConfigAzure
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigAzure) SetTo(v UpdateIntegrationV4SecretStoreConfigAzure) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigAzure) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigAzure) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v UpdateIntegrationV4SecretStoreConfigAzure
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigAzure) Get() (v UpdateIntegrationV4SecretStoreConfigAzure, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigAzure) Or(d UpdateIntegrationV4SecretStoreConfigAzure) UpdateIntegrationV4SecretStoreConfigAzure {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilUpdateIntegrationV4SecretStoreConfigGcp returns new OptNilUpdateIntegrationV4SecretStoreConfigGcp with value set to v.
-func NewOptNilUpdateIntegrationV4SecretStoreConfigGcp(v UpdateIntegrationV4SecretStoreConfigGcp) OptNilUpdateIntegrationV4SecretStoreConfigGcp {
-	return OptNilUpdateIntegrationV4SecretStoreConfigGcp{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilUpdateIntegrationV4SecretStoreConfigGcp is optional nullable UpdateIntegrationV4SecretStoreConfigGcp.
-type OptNilUpdateIntegrationV4SecretStoreConfigGcp struct {
-	Value UpdateIntegrationV4SecretStoreConfigGcp
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilUpdateIntegrationV4SecretStoreConfigGcp was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigGcp) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigGcp) Reset() {
-	var v UpdateIntegrationV4SecretStoreConfigGcp
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigGcp) SetTo(v UpdateIntegrationV4SecretStoreConfigGcp) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigGcp) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigGcp) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v UpdateIntegrationV4SecretStoreConfigGcp
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigGcp) Get() (v UpdateIntegrationV4SecretStoreConfigGcp, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigGcp) Or(d UpdateIntegrationV4SecretStoreConfigGcp) UpdateIntegrationV4SecretStoreConfigGcp {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault returns new OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault with value set to v.
-func NewOptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault(v UpdateIntegrationV4SecretStoreConfigHashicorpVault) OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault {
-	return OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault is optional nullable UpdateIntegrationV4SecretStoreConfigHashicorpVault.
-type OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault struct {
-	Value UpdateIntegrationV4SecretStoreConfigHashicorpVault
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault) Reset() {
-	var v UpdateIntegrationV4SecretStoreConfigHashicorpVault
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault) SetTo(v UpdateIntegrationV4SecretStoreConfigHashicorpVault) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v UpdateIntegrationV4SecretStoreConfigHashicorpVault
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault) Get() (v UpdateIntegrationV4SecretStoreConfigHashicorpVault, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault) Or(d UpdateIntegrationV4SecretStoreConfigHashicorpVault) UpdateIntegrationV4SecretStoreConfigHashicorpVault {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilUpdateIntegrationV4SecretStoreConfigKubernetes returns new OptNilUpdateIntegrationV4SecretStoreConfigKubernetes with value set to v.
-func NewOptNilUpdateIntegrationV4SecretStoreConfigKubernetes(v UpdateIntegrationV4SecretStoreConfigKubernetes) OptNilUpdateIntegrationV4SecretStoreConfigKubernetes {
-	return OptNilUpdateIntegrationV4SecretStoreConfigKubernetes{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilUpdateIntegrationV4SecretStoreConfigKubernetes is optional nullable UpdateIntegrationV4SecretStoreConfigKubernetes.
-type OptNilUpdateIntegrationV4SecretStoreConfigKubernetes struct {
-	Value UpdateIntegrationV4SecretStoreConfigKubernetes
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilUpdateIntegrationV4SecretStoreConfigKubernetes was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigKubernetes) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigKubernetes) Reset() {
-	var v UpdateIntegrationV4SecretStoreConfigKubernetes
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigKubernetes) SetTo(v UpdateIntegrationV4SecretStoreConfigKubernetes) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigKubernetes) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilUpdateIntegrationV4SecretStoreConfigKubernetes) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v UpdateIntegrationV4SecretStoreConfigKubernetes
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigKubernetes) Get() (v UpdateIntegrationV4SecretStoreConfigKubernetes, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilUpdateIntegrationV4SecretStoreConfigKubernetes) Or(d UpdateIntegrationV4SecretStoreConfigKubernetes) UpdateIntegrationV4SecretStoreConfigKubernetes {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptNilUpsertAccessFlowV1Settings returns new OptNilUpsertAccessFlowV1Settings with value set to v.
-func NewOptNilUpsertAccessFlowV1Settings(v UpsertAccessFlowV1Settings) OptNilUpsertAccessFlowV1Settings {
-	return OptNilUpsertAccessFlowV1Settings{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilUpsertAccessFlowV1Settings is optional nullable UpsertAccessFlowV1Settings.
-type OptNilUpsertAccessFlowV1Settings struct {
-	Value UpsertAccessFlowV1Settings
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilUpsertAccessFlowV1Settings was set.
-func (o OptNilUpsertAccessFlowV1Settings) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilUpsertAccessFlowV1Settings) Reset() {
-	var v UpsertAccessFlowV1Settings
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilUpsertAccessFlowV1Settings) SetTo(v UpsertAccessFlowV1Settings) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilUpsertAccessFlowV1Settings) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilUpsertAccessFlowV1Settings) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v UpsertAccessFlowV1Settings
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilUpsertAccessFlowV1Settings) Get() (v UpsertAccessFlowV1Settings, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilUpsertAccessFlowV1Settings) Or(d UpsertAccessFlowV1Settings) UpsertAccessFlowV1Settings {
+func (o OptNilUpsertSecretStoreConfigV4) Or(d UpsertSecretStoreConfigV4) UpsertSecretStoreConfigV4 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -9292,38 +7247,38 @@ func (o OptNilUserV3Attributes) Or(d UserV3Attributes) UserV3Attributes {
 	return d
 }
 
-// NewOptUpdateIntegrationSecretConfig returns new OptUpdateIntegrationSecretConfig with value set to v.
-func NewOptUpdateIntegrationSecretConfig(v *UpdateIntegrationSecretConfig) OptUpdateIntegrationSecretConfig {
-	return OptUpdateIntegrationSecretConfig{
+// NewOptSecretConfig1 returns new OptSecretConfig1 with value set to v.
+func NewOptSecretConfig1(v *SecretConfig1) OptSecretConfig1 {
+	return OptSecretConfig1{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptUpdateIntegrationSecretConfig is optional *UpdateIntegrationSecretConfig.
-type OptUpdateIntegrationSecretConfig struct {
-	Value *UpdateIntegrationSecretConfig
+// OptSecretConfig1 is optional *SecretConfig1.
+type OptSecretConfig1 struct {
+	Value *SecretConfig1
 	Set   bool
 }
 
-// IsSet returns true if OptUpdateIntegrationSecretConfig was set.
-func (o OptUpdateIntegrationSecretConfig) IsSet() bool { return o.Set }
+// IsSet returns true if OptSecretConfig1 was set.
+func (o OptSecretConfig1) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptUpdateIntegrationSecretConfig) Reset() {
-	var v *UpdateIntegrationSecretConfig
+func (o *OptSecretConfig1) Reset() {
+	var v *SecretConfig1
 	o.Value = v
 	o.Set = false
 }
 
 // SetTo sets value to v.
-func (o *OptUpdateIntegrationSecretConfig) SetTo(v *UpdateIntegrationSecretConfig) {
+func (o *OptSecretConfig1) SetTo(v *SecretConfig1) {
 	o.Set = true
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptUpdateIntegrationSecretConfig) Get() (v *UpdateIntegrationSecretConfig, ok bool) {
+func (o OptSecretConfig1) Get() (v *SecretConfig1, ok bool) {
 	if !o.Set {
 		return v, false
 	}
@@ -9331,11 +7286,107 @@ func (o OptUpdateIntegrationSecretConfig) Get() (v *UpdateIntegrationSecretConfi
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptUpdateIntegrationSecretConfig) Or(d *UpdateIntegrationSecretConfig) *UpdateIntegrationSecretConfig {
+func (o OptSecretConfig1) Or(d *SecretConfig1) *SecretConfig1 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
+}
+
+// Ref: #/components/schemas/OwnerMappingV4
+type OwnerMappingV4 struct {
+	KeyName               string       `json:"key_name"`
+	AttributeType         string       `json:"attribute_type"`
+	SourceIntegrationID   OptNilString `json:"source_integration_id"`
+	SourceIntegrationName OptNilString `json:"source_integration_name"`
+}
+
+// GetKeyName returns the value of KeyName.
+func (s *OwnerMappingV4) GetKeyName() string {
+	return s.KeyName
+}
+
+// GetAttributeType returns the value of AttributeType.
+func (s *OwnerMappingV4) GetAttributeType() string {
+	return s.AttributeType
+}
+
+// GetSourceIntegrationID returns the value of SourceIntegrationID.
+func (s *OwnerMappingV4) GetSourceIntegrationID() OptNilString {
+	return s.SourceIntegrationID
+}
+
+// GetSourceIntegrationName returns the value of SourceIntegrationName.
+func (s *OwnerMappingV4) GetSourceIntegrationName() OptNilString {
+	return s.SourceIntegrationName
+}
+
+// SetKeyName sets the value of KeyName.
+func (s *OwnerMappingV4) SetKeyName(val string) {
+	s.KeyName = val
+}
+
+// SetAttributeType sets the value of AttributeType.
+func (s *OwnerMappingV4) SetAttributeType(val string) {
+	s.AttributeType = val
+}
+
+// SetSourceIntegrationID sets the value of SourceIntegrationID.
+func (s *OwnerMappingV4) SetSourceIntegrationID(val OptNilString) {
+	s.SourceIntegrationID = val
+}
+
+// SetSourceIntegrationName sets the value of SourceIntegrationName.
+func (s *OwnerMappingV4) SetSourceIntegrationName(val OptNilString) {
+	s.SourceIntegrationName = val
+}
+
+// Ref: #/components/schemas/OwnerV4
+type OwnerV4 struct {
+	AttributeType         string       `json:"attribute_type"`
+	AttributeValue        []string     `json:"attribute_value"`
+	SourceIntegrationID   OptNilString `json:"source_integration_id"`
+	SourceIntegrationName OptNilString `json:"source_integration_name"`
+}
+
+// GetAttributeType returns the value of AttributeType.
+func (s *OwnerV4) GetAttributeType() string {
+	return s.AttributeType
+}
+
+// GetAttributeValue returns the value of AttributeValue.
+func (s *OwnerV4) GetAttributeValue() []string {
+	return s.AttributeValue
+}
+
+// GetSourceIntegrationID returns the value of SourceIntegrationID.
+func (s *OwnerV4) GetSourceIntegrationID() OptNilString {
+	return s.SourceIntegrationID
+}
+
+// GetSourceIntegrationName returns the value of SourceIntegrationName.
+func (s *OwnerV4) GetSourceIntegrationName() OptNilString {
+	return s.SourceIntegrationName
+}
+
+// SetAttributeType sets the value of AttributeType.
+func (s *OwnerV4) SetAttributeType(val string) {
+	s.AttributeType = val
+}
+
+// SetAttributeValue sets the value of AttributeValue.
+func (s *OwnerV4) SetAttributeValue(val []string) {
+	s.AttributeValue = val
+}
+
+// SetSourceIntegrationID sets the value of SourceIntegrationID.
+func (s *OwnerV4) SetSourceIntegrationID(val OptNilString) {
+	s.SourceIntegrationID = val
+}
+
+// SetSourceIntegrationName sets the value of SourceIntegrationName.
+func (s *OwnerV4) SetSourceIntegrationName(val OptNilString) {
+	s.SourceIntegrationName = val
 }
 
 // Ref: #/components/schemas/PaginatedResponseAccessBundleV1Model
@@ -10656,6 +8707,93 @@ func (s *ResourcesScopeIntegrationAccessTargetPublicV2Model) SetValues(val []str
 	s.Values = val
 }
 
+// Ref: #/components/schemas/SecretConfig
+type SecretConfig map[string]SecretConfigItem
+
+func (s *SecretConfig) init() SecretConfig {
+	m := *s
+	if m == nil {
+		m = map[string]SecretConfigItem{}
+		*s = m
+	}
+	return m
+}
+
+// Ref: #/components/schemas/SecretConfig1
+type SecretConfig1 struct{}
+
+type SecretConfigItem struct{}
+
+// Ref: #/components/schemas/SecretStoreConfigV4
+type SecretStoreConfigV4 struct {
+	AWS            OptNilAwsSecretConfigV4            `json:"aws"`
+	Gcp            OptNilGcpSecretConfigV4            `json:"gcp"`
+	Kubernetes     OptNilKubernetesSecretConfigV4     `json:"kubernetes"`
+	Azure          OptNilAzureSecretConfigV4          `json:"azure"`
+	HashicorpVault OptNilHashicorpVaultSecretConfigV4 `json:"hashicorp_vault"`
+	Apono          OptNilAponoSecretConfigV4          `json:"apono"`
+}
+
+// GetAWS returns the value of AWS.
+func (s *SecretStoreConfigV4) GetAWS() OptNilAwsSecretConfigV4 {
+	return s.AWS
+}
+
+// GetGcp returns the value of Gcp.
+func (s *SecretStoreConfigV4) GetGcp() OptNilGcpSecretConfigV4 {
+	return s.Gcp
+}
+
+// GetKubernetes returns the value of Kubernetes.
+func (s *SecretStoreConfigV4) GetKubernetes() OptNilKubernetesSecretConfigV4 {
+	return s.Kubernetes
+}
+
+// GetAzure returns the value of Azure.
+func (s *SecretStoreConfigV4) GetAzure() OptNilAzureSecretConfigV4 {
+	return s.Azure
+}
+
+// GetHashicorpVault returns the value of HashicorpVault.
+func (s *SecretStoreConfigV4) GetHashicorpVault() OptNilHashicorpVaultSecretConfigV4 {
+	return s.HashicorpVault
+}
+
+// GetApono returns the value of Apono.
+func (s *SecretStoreConfigV4) GetApono() OptNilAponoSecretConfigV4 {
+	return s.Apono
+}
+
+// SetAWS sets the value of AWS.
+func (s *SecretStoreConfigV4) SetAWS(val OptNilAwsSecretConfigV4) {
+	s.AWS = val
+}
+
+// SetGcp sets the value of Gcp.
+func (s *SecretStoreConfigV4) SetGcp(val OptNilGcpSecretConfigV4) {
+	s.Gcp = val
+}
+
+// SetKubernetes sets the value of Kubernetes.
+func (s *SecretStoreConfigV4) SetKubernetes(val OptNilKubernetesSecretConfigV4) {
+	s.Kubernetes = val
+}
+
+// SetAzure sets the value of Azure.
+func (s *SecretStoreConfigV4) SetAzure(val OptNilAzureSecretConfigV4) {
+	s.Azure = val
+}
+
+// SetHashicorpVault sets the value of HashicorpVault.
+func (s *SecretStoreConfigV4) SetHashicorpVault(val OptNilHashicorpVaultSecretConfigV4) {
+	s.HashicorpVault = val
+}
+
+// SetApono sets the value of Apono.
+func (s *SecretStoreConfigV4) SetApono(val OptNilAponoSecretConfigV4) {
+	s.Apono = val
+}
+
 // Ref: #/components/schemas/SelectableIntegration
 type SelectableIntegration struct {
 	ID string `json:"id"`
@@ -10797,6 +8935,54 @@ func (s *TagV1) SetValue(val string) {
 	s.Value = val
 }
 
+// Ref: #/components/schemas/TimeframeV1
+type TimeframeV1 struct {
+	StartOfDayTimeInSeconds int64       `json:"start_of_day_time_in_seconds"`
+	EndOfDayTimeInSeconds   int64       `json:"end_of_day_time_in_seconds"`
+	DaysInWeek              []DayOfWeek `json:"days_in_week"`
+	TimeZone                string      `json:"time_zone"`
+}
+
+// GetStartOfDayTimeInSeconds returns the value of StartOfDayTimeInSeconds.
+func (s *TimeframeV1) GetStartOfDayTimeInSeconds() int64 {
+	return s.StartOfDayTimeInSeconds
+}
+
+// GetEndOfDayTimeInSeconds returns the value of EndOfDayTimeInSeconds.
+func (s *TimeframeV1) GetEndOfDayTimeInSeconds() int64 {
+	return s.EndOfDayTimeInSeconds
+}
+
+// GetDaysInWeek returns the value of DaysInWeek.
+func (s *TimeframeV1) GetDaysInWeek() []DayOfWeek {
+	return s.DaysInWeek
+}
+
+// GetTimeZone returns the value of TimeZone.
+func (s *TimeframeV1) GetTimeZone() string {
+	return s.TimeZone
+}
+
+// SetStartOfDayTimeInSeconds sets the value of StartOfDayTimeInSeconds.
+func (s *TimeframeV1) SetStartOfDayTimeInSeconds(val int64) {
+	s.StartOfDayTimeInSeconds = val
+}
+
+// SetEndOfDayTimeInSeconds sets the value of EndOfDayTimeInSeconds.
+func (s *TimeframeV1) SetEndOfDayTimeInSeconds(val int64) {
+	s.EndOfDayTimeInSeconds = val
+}
+
+// SetDaysInWeek sets the value of DaysInWeek.
+func (s *TimeframeV1) SetDaysInWeek(val []DayOfWeek) {
+	s.DaysInWeek = val
+}
+
+// SetTimeZone sets the value of TimeZone.
+func (s *TimeframeV1) SetTimeZone(val string) {
+	s.TimeZone = val
+}
+
 // Ref: #/components/schemas/UpdateAccessBundleV1
 type UpdateAccessBundleV1 struct {
 	Name               OptNilString                         `json:"name"`
@@ -10827,13 +9013,13 @@ func (s *UpdateAccessBundleV1) SetIntegrationTargets(val OptNilAccessTargetInteg
 type UpdateAccessFlowV1 struct {
 	Name               OptNilString                         `json:"name"`
 	Active             OptNilBool                           `json:"active"`
-	Trigger            OptNilUpdateAccessFlowV1Trigger      `json:"trigger"`
+	Trigger            OptNilAccessFlowTriggerV1            `json:"trigger"`
 	Grantees           OptNilGranteeV1Array                 `json:"grantees"`
 	IntegrationTargets OptNilAccessTargetIntegrationV1Array `json:"integration_targets"`
 	BundleTargets      OptNilAccessTargetBundleV1Array      `json:"bundle_targets"`
 	Approvers          OptNilApproverV1Array                `json:"approvers"`
 	RevokeAfterInSec   OptNilInt32                          `json:"revoke_after_in_sec"`
-	Settings           OptNilUpdateAccessFlowV1Settings     `json:"settings"`
+	Settings           OptNilAccessFlowSettingsV1           `json:"settings"`
 }
 
 // GetName returns the value of Name.
@@ -10847,7 +9033,7 @@ func (s *UpdateAccessFlowV1) GetActive() OptNilBool {
 }
 
 // GetTrigger returns the value of Trigger.
-func (s *UpdateAccessFlowV1) GetTrigger() OptNilUpdateAccessFlowV1Trigger {
+func (s *UpdateAccessFlowV1) GetTrigger() OptNilAccessFlowTriggerV1 {
 	return s.Trigger
 }
 
@@ -10877,7 +9063,7 @@ func (s *UpdateAccessFlowV1) GetRevokeAfterInSec() OptNilInt32 {
 }
 
 // GetSettings returns the value of Settings.
-func (s *UpdateAccessFlowV1) GetSettings() OptNilUpdateAccessFlowV1Settings {
+func (s *UpdateAccessFlowV1) GetSettings() OptNilAccessFlowSettingsV1 {
 	return s.Settings
 }
 
@@ -10892,7 +9078,7 @@ func (s *UpdateAccessFlowV1) SetActive(val OptNilBool) {
 }
 
 // SetTrigger sets the value of Trigger.
-func (s *UpdateAccessFlowV1) SetTrigger(val OptNilUpdateAccessFlowV1Trigger) {
+func (s *UpdateAccessFlowV1) SetTrigger(val OptNilAccessFlowTriggerV1) {
 	s.Trigger = val
 }
 
@@ -10922,127 +9108,8 @@ func (s *UpdateAccessFlowV1) SetRevokeAfterInSec(val OptNilInt32) {
 }
 
 // SetSettings sets the value of Settings.
-func (s *UpdateAccessFlowV1) SetSettings(val OptNilUpdateAccessFlowV1Settings) {
+func (s *UpdateAccessFlowV1) SetSettings(val OptNilAccessFlowSettingsV1) {
 	s.Settings = val
-}
-
-type UpdateAccessFlowV1Settings struct {
-	RequireJustificationOnRequestAgain OptNilBool `json:"require_justification_on_request_again"`
-	RequireAllApprovers                OptNilBool `json:"require_all_approvers"`
-	RequireApproverJustification       OptNilBool `json:"require_approver_justification"`
-	ApproverCannotApproveHimself       OptNilBool `json:"approver_cannot_approve_himself"`
-}
-
-// GetRequireJustificationOnRequestAgain returns the value of RequireJustificationOnRequestAgain.
-func (s *UpdateAccessFlowV1Settings) GetRequireJustificationOnRequestAgain() OptNilBool {
-	return s.RequireJustificationOnRequestAgain
-}
-
-// GetRequireAllApprovers returns the value of RequireAllApprovers.
-func (s *UpdateAccessFlowV1Settings) GetRequireAllApprovers() OptNilBool {
-	return s.RequireAllApprovers
-}
-
-// GetRequireApproverJustification returns the value of RequireApproverJustification.
-func (s *UpdateAccessFlowV1Settings) GetRequireApproverJustification() OptNilBool {
-	return s.RequireApproverJustification
-}
-
-// GetApproverCannotApproveHimself returns the value of ApproverCannotApproveHimself.
-func (s *UpdateAccessFlowV1Settings) GetApproverCannotApproveHimself() OptNilBool {
-	return s.ApproverCannotApproveHimself
-}
-
-// SetRequireJustificationOnRequestAgain sets the value of RequireJustificationOnRequestAgain.
-func (s *UpdateAccessFlowV1Settings) SetRequireJustificationOnRequestAgain(val OptNilBool) {
-	s.RequireJustificationOnRequestAgain = val
-}
-
-// SetRequireAllApprovers sets the value of RequireAllApprovers.
-func (s *UpdateAccessFlowV1Settings) SetRequireAllApprovers(val OptNilBool) {
-	s.RequireAllApprovers = val
-}
-
-// SetRequireApproverJustification sets the value of RequireApproverJustification.
-func (s *UpdateAccessFlowV1Settings) SetRequireApproverJustification(val OptNilBool) {
-	s.RequireApproverJustification = val
-}
-
-// SetApproverCannotApproveHimself sets the value of ApproverCannotApproveHimself.
-func (s *UpdateAccessFlowV1Settings) SetApproverCannotApproveHimself(val OptNilBool) {
-	s.ApproverCannotApproveHimself = val
-}
-
-type UpdateAccessFlowV1Trigger struct {
-	Type      string                                   `json:"type"`
-	Timeframe OptNilUpdateAccessFlowV1TriggerTimeframe `json:"timeframe"`
-}
-
-// GetType returns the value of Type.
-func (s *UpdateAccessFlowV1Trigger) GetType() string {
-	return s.Type
-}
-
-// GetTimeframe returns the value of Timeframe.
-func (s *UpdateAccessFlowV1Trigger) GetTimeframe() OptNilUpdateAccessFlowV1TriggerTimeframe {
-	return s.Timeframe
-}
-
-// SetType sets the value of Type.
-func (s *UpdateAccessFlowV1Trigger) SetType(val string) {
-	s.Type = val
-}
-
-// SetTimeframe sets the value of Timeframe.
-func (s *UpdateAccessFlowV1Trigger) SetTimeframe(val OptNilUpdateAccessFlowV1TriggerTimeframe) {
-	s.Timeframe = val
-}
-
-type UpdateAccessFlowV1TriggerTimeframe struct {
-	StartOfDayTimeInSeconds int64       `json:"start_of_day_time_in_seconds"`
-	EndOfDayTimeInSeconds   int64       `json:"end_of_day_time_in_seconds"`
-	DaysInWeek              []DayOfWeek `json:"days_in_week"`
-	TimeZone                string      `json:"time_zone"`
-}
-
-// GetStartOfDayTimeInSeconds returns the value of StartOfDayTimeInSeconds.
-func (s *UpdateAccessFlowV1TriggerTimeframe) GetStartOfDayTimeInSeconds() int64 {
-	return s.StartOfDayTimeInSeconds
-}
-
-// GetEndOfDayTimeInSeconds returns the value of EndOfDayTimeInSeconds.
-func (s *UpdateAccessFlowV1TriggerTimeframe) GetEndOfDayTimeInSeconds() int64 {
-	return s.EndOfDayTimeInSeconds
-}
-
-// GetDaysInWeek returns the value of DaysInWeek.
-func (s *UpdateAccessFlowV1TriggerTimeframe) GetDaysInWeek() []DayOfWeek {
-	return s.DaysInWeek
-}
-
-// GetTimeZone returns the value of TimeZone.
-func (s *UpdateAccessFlowV1TriggerTimeframe) GetTimeZone() string {
-	return s.TimeZone
-}
-
-// SetStartOfDayTimeInSeconds sets the value of StartOfDayTimeInSeconds.
-func (s *UpdateAccessFlowV1TriggerTimeframe) SetStartOfDayTimeInSeconds(val int64) {
-	s.StartOfDayTimeInSeconds = val
-}
-
-// SetEndOfDayTimeInSeconds sets the value of EndOfDayTimeInSeconds.
-func (s *UpdateAccessFlowV1TriggerTimeframe) SetEndOfDayTimeInSeconds(val int64) {
-	s.EndOfDayTimeInSeconds = val
-}
-
-// SetDaysInWeek sets the value of DaysInWeek.
-func (s *UpdateAccessFlowV1TriggerTimeframe) SetDaysInWeek(val []DayOfWeek) {
-	s.DaysInWeek = val
-}
-
-// SetTimeZone sets the value of TimeZone.
-func (s *UpdateAccessFlowV1TriggerTimeframe) SetTimeZone(val string) {
-	s.TimeZone = val
 }
 
 // Ref: #/components/schemas/UpdateGroupMembersV1
@@ -11080,12 +9147,12 @@ func (s *UpdateGroupV1) SetName(val string) {
 
 // Ref: #/components/schemas/UpdateIntegration
 type UpdateIntegration struct {
-	Name                   string                           `json:"name"`
-	ProvisionerID          OptNilString                     `json:"provisioner_id"`
-	Metadata               UpdateIntegrationMetadata        `json:"metadata"`
-	SecretConfig           OptUpdateIntegrationSecretConfig `json:"secret_config"`
-	ConnectedResourceTypes OptNilStringArray                `json:"connected_resource_types"`
-	CustomAccessDetails    OptNilString                     `json:"custom_access_details"`
+	Name                   string                    `json:"name"`
+	ProvisionerID          OptNilString              `json:"provisioner_id"`
+	Metadata               UpdateIntegrationMetadata `json:"metadata"`
+	SecretConfig           OptNilSecretConfig        `json:"secret_config"`
+	ConnectedResourceTypes OptNilStringArray         `json:"connected_resource_types"`
+	CustomAccessDetails    OptNilString              `json:"custom_access_details"`
 }
 
 // GetName returns the value of Name.
@@ -11104,7 +9171,7 @@ func (s *UpdateIntegration) GetMetadata() UpdateIntegrationMetadata {
 }
 
 // GetSecretConfig returns the value of SecretConfig.
-func (s *UpdateIntegration) GetSecretConfig() OptUpdateIntegrationSecretConfig {
+func (s *UpdateIntegration) GetSecretConfig() OptNilSecretConfig {
 	return s.SecretConfig
 }
 
@@ -11134,7 +9201,7 @@ func (s *UpdateIntegration) SetMetadata(val UpdateIntegrationMetadata) {
 }
 
 // SetSecretConfig sets the value of SecretConfig.
-func (s *UpdateIntegration) SetSecretConfig(val OptUpdateIntegrationSecretConfig) {
+func (s *UpdateIntegration) SetSecretConfig(val OptNilSecretConfig) {
 	s.SecretConfig = val
 }
 
@@ -11150,17 +9217,15 @@ func (s *UpdateIntegration) SetCustomAccessDetails(val OptNilString) {
 
 type UpdateIntegrationMetadata struct{}
 
-type UpdateIntegrationSecretConfig struct{}
-
 // Ref: #/components/schemas/UpdateIntegrationV4
 type UpdateIntegrationV4 struct {
-	Name                   string                                     `json:"name"`
-	IntegrationConfig      JsonMapModel                               `json:"integration_config"`
-	SecretStoreConfig      OptNilUpdateIntegrationV4SecretStoreConfig `json:"secret_store_config"`
-	ConnectedResourceTypes OptNilStringArray                          `json:"connected_resource_types"`
-	CustomAccessDetails    OptNilString                               `json:"custom_access_details"`
-	Owner                  OptNilUpdateIntegrationV4Owner             `json:"owner"`
-	OwnersMapping          OptNilUpdateIntegrationV4OwnersMapping     `json:"owners_mapping"`
+	Name                   string                          `json:"name"`
+	IntegrationConfig      JsonMapModel                    `json:"integration_config"`
+	SecretStoreConfig      OptNilUpsertSecretStoreConfigV4 `json:"secret_store_config"`
+	ConnectedResourceTypes OptNilStringArray               `json:"connected_resource_types"`
+	CustomAccessDetails    OptNilString                    `json:"custom_access_details"`
+	Owner                  OptNilUpsertOwnerV4             `json:"owner"`
+	OwnersMapping          OptNilUpsertOwnerMappingV4      `json:"owners_mapping"`
 }
 
 // GetName returns the value of Name.
@@ -11174,7 +9239,7 @@ func (s *UpdateIntegrationV4) GetIntegrationConfig() JsonMapModel {
 }
 
 // GetSecretStoreConfig returns the value of SecretStoreConfig.
-func (s *UpdateIntegrationV4) GetSecretStoreConfig() OptNilUpdateIntegrationV4SecretStoreConfig {
+func (s *UpdateIntegrationV4) GetSecretStoreConfig() OptNilUpsertSecretStoreConfigV4 {
 	return s.SecretStoreConfig
 }
 
@@ -11189,12 +9254,12 @@ func (s *UpdateIntegrationV4) GetCustomAccessDetails() OptNilString {
 }
 
 // GetOwner returns the value of Owner.
-func (s *UpdateIntegrationV4) GetOwner() OptNilUpdateIntegrationV4Owner {
+func (s *UpdateIntegrationV4) GetOwner() OptNilUpsertOwnerV4 {
 	return s.Owner
 }
 
 // GetOwnersMapping returns the value of OwnersMapping.
-func (s *UpdateIntegrationV4) GetOwnersMapping() OptNilUpdateIntegrationV4OwnersMapping {
+func (s *UpdateIntegrationV4) GetOwnersMapping() OptNilUpsertOwnerMappingV4 {
 	return s.OwnersMapping
 }
 
@@ -11209,7 +9274,7 @@ func (s *UpdateIntegrationV4) SetIntegrationConfig(val JsonMapModel) {
 }
 
 // SetSecretStoreConfig sets the value of SecretStoreConfig.
-func (s *UpdateIntegrationV4) SetSecretStoreConfig(val OptNilUpdateIntegrationV4SecretStoreConfig) {
+func (s *UpdateIntegrationV4) SetSecretStoreConfig(val OptNilUpsertSecretStoreConfigV4) {
 	s.SecretStoreConfig = val
 }
 
@@ -11224,268 +9289,13 @@ func (s *UpdateIntegrationV4) SetCustomAccessDetails(val OptNilString) {
 }
 
 // SetOwner sets the value of Owner.
-func (s *UpdateIntegrationV4) SetOwner(val OptNilUpdateIntegrationV4Owner) {
+func (s *UpdateIntegrationV4) SetOwner(val OptNilUpsertOwnerV4) {
 	s.Owner = val
 }
 
 // SetOwnersMapping sets the value of OwnersMapping.
-func (s *UpdateIntegrationV4) SetOwnersMapping(val OptNilUpdateIntegrationV4OwnersMapping) {
+func (s *UpdateIntegrationV4) SetOwnersMapping(val OptNilUpsertOwnerMappingV4) {
 	s.OwnersMapping = val
-}
-
-type UpdateIntegrationV4Owner struct {
-	AttributeType              string       `json:"attribute_type"`
-	AttributeValue             []string     `json:"attribute_value"`
-	SourceIntegrationReference OptNilString `json:"source_integration_reference"`
-}
-
-// GetAttributeType returns the value of AttributeType.
-func (s *UpdateIntegrationV4Owner) GetAttributeType() string {
-	return s.AttributeType
-}
-
-// GetAttributeValue returns the value of AttributeValue.
-func (s *UpdateIntegrationV4Owner) GetAttributeValue() []string {
-	return s.AttributeValue
-}
-
-// GetSourceIntegrationReference returns the value of SourceIntegrationReference.
-func (s *UpdateIntegrationV4Owner) GetSourceIntegrationReference() OptNilString {
-	return s.SourceIntegrationReference
-}
-
-// SetAttributeType sets the value of AttributeType.
-func (s *UpdateIntegrationV4Owner) SetAttributeType(val string) {
-	s.AttributeType = val
-}
-
-// SetAttributeValue sets the value of AttributeValue.
-func (s *UpdateIntegrationV4Owner) SetAttributeValue(val []string) {
-	s.AttributeValue = val
-}
-
-// SetSourceIntegrationReference sets the value of SourceIntegrationReference.
-func (s *UpdateIntegrationV4Owner) SetSourceIntegrationReference(val OptNilString) {
-	s.SourceIntegrationReference = val
-}
-
-type UpdateIntegrationV4OwnersMapping struct {
-	KeyName                    string       `json:"key_name"`
-	AttributeType              string       `json:"attribute_type"`
-	SourceIntegrationReference OptNilString `json:"source_integration_reference"`
-}
-
-// GetKeyName returns the value of KeyName.
-func (s *UpdateIntegrationV4OwnersMapping) GetKeyName() string {
-	return s.KeyName
-}
-
-// GetAttributeType returns the value of AttributeType.
-func (s *UpdateIntegrationV4OwnersMapping) GetAttributeType() string {
-	return s.AttributeType
-}
-
-// GetSourceIntegrationReference returns the value of SourceIntegrationReference.
-func (s *UpdateIntegrationV4OwnersMapping) GetSourceIntegrationReference() OptNilString {
-	return s.SourceIntegrationReference
-}
-
-// SetKeyName sets the value of KeyName.
-func (s *UpdateIntegrationV4OwnersMapping) SetKeyName(val string) {
-	s.KeyName = val
-}
-
-// SetAttributeType sets the value of AttributeType.
-func (s *UpdateIntegrationV4OwnersMapping) SetAttributeType(val string) {
-	s.AttributeType = val
-}
-
-// SetSourceIntegrationReference sets the value of SourceIntegrationReference.
-func (s *UpdateIntegrationV4OwnersMapping) SetSourceIntegrationReference(val OptNilString) {
-	s.SourceIntegrationReference = val
-}
-
-type UpdateIntegrationV4SecretStoreConfig struct {
-	AWS            OptNilUpdateIntegrationV4SecretStoreConfigAWS            `json:"aws"`
-	Gcp            OptNilUpdateIntegrationV4SecretStoreConfigGcp            `json:"gcp"`
-	Kubernetes     OptNilUpdateIntegrationV4SecretStoreConfigKubernetes     `json:"kubernetes"`
-	Azure          OptNilUpdateIntegrationV4SecretStoreConfigAzure          `json:"azure"`
-	HashicorpVault OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault `json:"hashicorp_vault"`
-}
-
-// GetAWS returns the value of AWS.
-func (s *UpdateIntegrationV4SecretStoreConfig) GetAWS() OptNilUpdateIntegrationV4SecretStoreConfigAWS {
-	return s.AWS
-}
-
-// GetGcp returns the value of Gcp.
-func (s *UpdateIntegrationV4SecretStoreConfig) GetGcp() OptNilUpdateIntegrationV4SecretStoreConfigGcp {
-	return s.Gcp
-}
-
-// GetKubernetes returns the value of Kubernetes.
-func (s *UpdateIntegrationV4SecretStoreConfig) GetKubernetes() OptNilUpdateIntegrationV4SecretStoreConfigKubernetes {
-	return s.Kubernetes
-}
-
-// GetAzure returns the value of Azure.
-func (s *UpdateIntegrationV4SecretStoreConfig) GetAzure() OptNilUpdateIntegrationV4SecretStoreConfigAzure {
-	return s.Azure
-}
-
-// GetHashicorpVault returns the value of HashicorpVault.
-func (s *UpdateIntegrationV4SecretStoreConfig) GetHashicorpVault() OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault {
-	return s.HashicorpVault
-}
-
-// SetAWS sets the value of AWS.
-func (s *UpdateIntegrationV4SecretStoreConfig) SetAWS(val OptNilUpdateIntegrationV4SecretStoreConfigAWS) {
-	s.AWS = val
-}
-
-// SetGcp sets the value of Gcp.
-func (s *UpdateIntegrationV4SecretStoreConfig) SetGcp(val OptNilUpdateIntegrationV4SecretStoreConfigGcp) {
-	s.Gcp = val
-}
-
-// SetKubernetes sets the value of Kubernetes.
-func (s *UpdateIntegrationV4SecretStoreConfig) SetKubernetes(val OptNilUpdateIntegrationV4SecretStoreConfigKubernetes) {
-	s.Kubernetes = val
-}
-
-// SetAzure sets the value of Azure.
-func (s *UpdateIntegrationV4SecretStoreConfig) SetAzure(val OptNilUpdateIntegrationV4SecretStoreConfigAzure) {
-	s.Azure = val
-}
-
-// SetHashicorpVault sets the value of HashicorpVault.
-func (s *UpdateIntegrationV4SecretStoreConfig) SetHashicorpVault(val OptNilUpdateIntegrationV4SecretStoreConfigHashicorpVault) {
-	s.HashicorpVault = val
-}
-
-type UpdateIntegrationV4SecretStoreConfigAWS struct {
-	Region   string `json:"region"`
-	SecretID string `json:"secret_id"`
-}
-
-// GetRegion returns the value of Region.
-func (s *UpdateIntegrationV4SecretStoreConfigAWS) GetRegion() string {
-	return s.Region
-}
-
-// GetSecretID returns the value of SecretID.
-func (s *UpdateIntegrationV4SecretStoreConfigAWS) GetSecretID() string {
-	return s.SecretID
-}
-
-// SetRegion sets the value of Region.
-func (s *UpdateIntegrationV4SecretStoreConfigAWS) SetRegion(val string) {
-	s.Region = val
-}
-
-// SetSecretID sets the value of SecretID.
-func (s *UpdateIntegrationV4SecretStoreConfigAWS) SetSecretID(val string) {
-	s.SecretID = val
-}
-
-type UpdateIntegrationV4SecretStoreConfigAzure struct {
-	VaultURL string `json:"vault_url"`
-	Name     string `json:"name"`
-}
-
-// GetVaultURL returns the value of VaultURL.
-func (s *UpdateIntegrationV4SecretStoreConfigAzure) GetVaultURL() string {
-	return s.VaultURL
-}
-
-// GetName returns the value of Name.
-func (s *UpdateIntegrationV4SecretStoreConfigAzure) GetName() string {
-	return s.Name
-}
-
-// SetVaultURL sets the value of VaultURL.
-func (s *UpdateIntegrationV4SecretStoreConfigAzure) SetVaultURL(val string) {
-	s.VaultURL = val
-}
-
-// SetName sets the value of Name.
-func (s *UpdateIntegrationV4SecretStoreConfigAzure) SetName(val string) {
-	s.Name = val
-}
-
-type UpdateIntegrationV4SecretStoreConfigGcp struct {
-	Project  string `json:"project"`
-	SecretID string `json:"secret_id"`
-}
-
-// GetProject returns the value of Project.
-func (s *UpdateIntegrationV4SecretStoreConfigGcp) GetProject() string {
-	return s.Project
-}
-
-// GetSecretID returns the value of SecretID.
-func (s *UpdateIntegrationV4SecretStoreConfigGcp) GetSecretID() string {
-	return s.SecretID
-}
-
-// SetProject sets the value of Project.
-func (s *UpdateIntegrationV4SecretStoreConfigGcp) SetProject(val string) {
-	s.Project = val
-}
-
-// SetSecretID sets the value of SecretID.
-func (s *UpdateIntegrationV4SecretStoreConfigGcp) SetSecretID(val string) {
-	s.SecretID = val
-}
-
-type UpdateIntegrationV4SecretStoreConfigHashicorpVault struct {
-	SecretEngine string `json:"secret_engine"`
-	Path         string `json:"path"`
-}
-
-// GetSecretEngine returns the value of SecretEngine.
-func (s *UpdateIntegrationV4SecretStoreConfigHashicorpVault) GetSecretEngine() string {
-	return s.SecretEngine
-}
-
-// GetPath returns the value of Path.
-func (s *UpdateIntegrationV4SecretStoreConfigHashicorpVault) GetPath() string {
-	return s.Path
-}
-
-// SetSecretEngine sets the value of SecretEngine.
-func (s *UpdateIntegrationV4SecretStoreConfigHashicorpVault) SetSecretEngine(val string) {
-	s.SecretEngine = val
-}
-
-// SetPath sets the value of Path.
-func (s *UpdateIntegrationV4SecretStoreConfigHashicorpVault) SetPath(val string) {
-	s.Path = val
-}
-
-type UpdateIntegrationV4SecretStoreConfigKubernetes struct {
-	Namespace string `json:"namespace"`
-	Name      string `json:"name"`
-}
-
-// GetNamespace returns the value of Namespace.
-func (s *UpdateIntegrationV4SecretStoreConfigKubernetes) GetNamespace() string {
-	return s.Namespace
-}
-
-// GetName returns the value of Name.
-func (s *UpdateIntegrationV4SecretStoreConfigKubernetes) GetName() string {
-	return s.Name
-}
-
-// SetNamespace sets the value of Namespace.
-func (s *UpdateIntegrationV4SecretStoreConfigKubernetes) SetNamespace(val string) {
-	s.Namespace = val
-}
-
-// SetName sets the value of Name.
-func (s *UpdateIntegrationV4SecretStoreConfigKubernetes) SetName(val string) {
-	s.Name = val
 }
 
 // Ref: #/components/schemas/UpdateResourceUserTagsRequest
@@ -11550,7 +9360,7 @@ type UpsertAccessFlowV1 struct {
 	BundleTargets      OptNilAccessTargetBundleV1Array      `json:"bundle_targets"`
 	Approvers          OptNilApproverV1Array                `json:"approvers"`
 	RevokeAfterInSec   int32                                `json:"revoke_after_in_sec"`
-	Settings           OptNilUpsertAccessFlowV1Settings     `json:"settings"`
+	Settings           OptNilAccessFlowSettingsV1           `json:"settings"`
 }
 
 // GetName returns the value of Name.
@@ -11594,7 +9404,7 @@ func (s *UpsertAccessFlowV1) GetRevokeAfterInSec() int32 {
 }
 
 // GetSettings returns the value of Settings.
-func (s *UpsertAccessFlowV1) GetSettings() OptNilUpsertAccessFlowV1Settings {
+func (s *UpsertAccessFlowV1) GetSettings() OptNilAccessFlowSettingsV1 {
 	return s.Settings
 }
 
@@ -11639,55 +9449,8 @@ func (s *UpsertAccessFlowV1) SetRevokeAfterInSec(val int32) {
 }
 
 // SetSettings sets the value of Settings.
-func (s *UpsertAccessFlowV1) SetSettings(val OptNilUpsertAccessFlowV1Settings) {
+func (s *UpsertAccessFlowV1) SetSettings(val OptNilAccessFlowSettingsV1) {
 	s.Settings = val
-}
-
-type UpsertAccessFlowV1Settings struct {
-	RequireJustificationOnRequestAgain OptNilBool `json:"require_justification_on_request_again"`
-	RequireAllApprovers                OptNilBool `json:"require_all_approvers"`
-	RequireApproverJustification       OptNilBool `json:"require_approver_justification"`
-	ApproverCannotApproveHimself       OptNilBool `json:"approver_cannot_approve_himself"`
-}
-
-// GetRequireJustificationOnRequestAgain returns the value of RequireJustificationOnRequestAgain.
-func (s *UpsertAccessFlowV1Settings) GetRequireJustificationOnRequestAgain() OptNilBool {
-	return s.RequireJustificationOnRequestAgain
-}
-
-// GetRequireAllApprovers returns the value of RequireAllApprovers.
-func (s *UpsertAccessFlowV1Settings) GetRequireAllApprovers() OptNilBool {
-	return s.RequireAllApprovers
-}
-
-// GetRequireApproverJustification returns the value of RequireApproverJustification.
-func (s *UpsertAccessFlowV1Settings) GetRequireApproverJustification() OptNilBool {
-	return s.RequireApproverJustification
-}
-
-// GetApproverCannotApproveHimself returns the value of ApproverCannotApproveHimself.
-func (s *UpsertAccessFlowV1Settings) GetApproverCannotApproveHimself() OptNilBool {
-	return s.ApproverCannotApproveHimself
-}
-
-// SetRequireJustificationOnRequestAgain sets the value of RequireJustificationOnRequestAgain.
-func (s *UpsertAccessFlowV1Settings) SetRequireJustificationOnRequestAgain(val OptNilBool) {
-	s.RequireJustificationOnRequestAgain = val
-}
-
-// SetRequireAllApprovers sets the value of RequireAllApprovers.
-func (s *UpsertAccessFlowV1Settings) SetRequireAllApprovers(val OptNilBool) {
-	s.RequireAllApprovers = val
-}
-
-// SetRequireApproverJustification sets the value of RequireApproverJustification.
-func (s *UpsertAccessFlowV1Settings) SetRequireApproverJustification(val OptNilBool) {
-	s.RequireApproverJustification = val
-}
-
-// SetApproverCannotApproveHimself sets the value of ApproverCannotApproveHimself.
-func (s *UpsertAccessFlowV1Settings) SetApproverCannotApproveHimself(val OptNilBool) {
-	s.ApproverCannotApproveHimself = val
 }
 
 // Ref: #/components/schemas/UpsertAccessScopeV1
@@ -11782,6 +9545,139 @@ func (s *UpsertErrorModel) SetErrorCode(val string) {
 // SetErrorDetails sets the value of ErrorDetails.
 func (s *UpsertErrorModel) SetErrorDetails(val string) {
 	s.ErrorDetails = val
+}
+
+// Ref: #/components/schemas/UpsertOwnerMappingV4
+type UpsertOwnerMappingV4 struct {
+	KeyName                    string       `json:"key_name"`
+	AttributeType              string       `json:"attribute_type"`
+	SourceIntegrationReference OptNilString `json:"source_integration_reference"`
+}
+
+// GetKeyName returns the value of KeyName.
+func (s *UpsertOwnerMappingV4) GetKeyName() string {
+	return s.KeyName
+}
+
+// GetAttributeType returns the value of AttributeType.
+func (s *UpsertOwnerMappingV4) GetAttributeType() string {
+	return s.AttributeType
+}
+
+// GetSourceIntegrationReference returns the value of SourceIntegrationReference.
+func (s *UpsertOwnerMappingV4) GetSourceIntegrationReference() OptNilString {
+	return s.SourceIntegrationReference
+}
+
+// SetKeyName sets the value of KeyName.
+func (s *UpsertOwnerMappingV4) SetKeyName(val string) {
+	s.KeyName = val
+}
+
+// SetAttributeType sets the value of AttributeType.
+func (s *UpsertOwnerMappingV4) SetAttributeType(val string) {
+	s.AttributeType = val
+}
+
+// SetSourceIntegrationReference sets the value of SourceIntegrationReference.
+func (s *UpsertOwnerMappingV4) SetSourceIntegrationReference(val OptNilString) {
+	s.SourceIntegrationReference = val
+}
+
+// Ref: #/components/schemas/UpsertOwnerV4
+type UpsertOwnerV4 struct {
+	AttributeType              string       `json:"attribute_type"`
+	AttributeValue             []string     `json:"attribute_value"`
+	SourceIntegrationReference OptNilString `json:"source_integration_reference"`
+}
+
+// GetAttributeType returns the value of AttributeType.
+func (s *UpsertOwnerV4) GetAttributeType() string {
+	return s.AttributeType
+}
+
+// GetAttributeValue returns the value of AttributeValue.
+func (s *UpsertOwnerV4) GetAttributeValue() []string {
+	return s.AttributeValue
+}
+
+// GetSourceIntegrationReference returns the value of SourceIntegrationReference.
+func (s *UpsertOwnerV4) GetSourceIntegrationReference() OptNilString {
+	return s.SourceIntegrationReference
+}
+
+// SetAttributeType sets the value of AttributeType.
+func (s *UpsertOwnerV4) SetAttributeType(val string) {
+	s.AttributeType = val
+}
+
+// SetAttributeValue sets the value of AttributeValue.
+func (s *UpsertOwnerV4) SetAttributeValue(val []string) {
+	s.AttributeValue = val
+}
+
+// SetSourceIntegrationReference sets the value of SourceIntegrationReference.
+func (s *UpsertOwnerV4) SetSourceIntegrationReference(val OptNilString) {
+	s.SourceIntegrationReference = val
+}
+
+// Ref: #/components/schemas/UpsertSecretStoreConfigV4
+type UpsertSecretStoreConfigV4 struct {
+	AWS            OptNilAwsSecretConfigV4            `json:"aws"`
+	Gcp            OptNilGcpSecretConfigV4            `json:"gcp"`
+	Kubernetes     OptNilKubernetesSecretConfigV4     `json:"kubernetes"`
+	Azure          OptNilAzureSecretConfigV4          `json:"azure"`
+	HashicorpVault OptNilHashicorpVaultSecretConfigV4 `json:"hashicorp_vault"`
+}
+
+// GetAWS returns the value of AWS.
+func (s *UpsertSecretStoreConfigV4) GetAWS() OptNilAwsSecretConfigV4 {
+	return s.AWS
+}
+
+// GetGcp returns the value of Gcp.
+func (s *UpsertSecretStoreConfigV4) GetGcp() OptNilGcpSecretConfigV4 {
+	return s.Gcp
+}
+
+// GetKubernetes returns the value of Kubernetes.
+func (s *UpsertSecretStoreConfigV4) GetKubernetes() OptNilKubernetesSecretConfigV4 {
+	return s.Kubernetes
+}
+
+// GetAzure returns the value of Azure.
+func (s *UpsertSecretStoreConfigV4) GetAzure() OptNilAzureSecretConfigV4 {
+	return s.Azure
+}
+
+// GetHashicorpVault returns the value of HashicorpVault.
+func (s *UpsertSecretStoreConfigV4) GetHashicorpVault() OptNilHashicorpVaultSecretConfigV4 {
+	return s.HashicorpVault
+}
+
+// SetAWS sets the value of AWS.
+func (s *UpsertSecretStoreConfigV4) SetAWS(val OptNilAwsSecretConfigV4) {
+	s.AWS = val
+}
+
+// SetGcp sets the value of Gcp.
+func (s *UpsertSecretStoreConfigV4) SetGcp(val OptNilGcpSecretConfigV4) {
+	s.Gcp = val
+}
+
+// SetKubernetes sets the value of Kubernetes.
+func (s *UpsertSecretStoreConfigV4) SetKubernetes(val OptNilKubernetesSecretConfigV4) {
+	s.Kubernetes = val
+}
+
+// SetAzure sets the value of Azure.
+func (s *UpsertSecretStoreConfigV4) SetAzure(val OptNilAzureSecretConfigV4) {
+	s.Azure = val
+}
+
+// SetHashicorpVault sets the value of HashicorpVault.
+func (s *UpsertSecretStoreConfigV4) SetHashicorpVault(val OptNilHashicorpVaultSecretConfigV4) {
+	s.HashicorpVault = val
 }
 
 // Ref: #/components/schemas/UserModel

@@ -239,17 +239,11 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 	t.Run("minimal fields", func(t *testing.T) {
 		integration := &client.IntegrationV4{
-			ID:   "integration-id",
-			Name: "test-integration",
-			Type: "postgres",
-			ConnectorID: client.OptNilString{
-				Value: "connector-id",
-				Set:   true,
-			},
-			ConnectedResourceTypes: client.OptNilStringArray{
-				Value: []string{"database"},
-				Set:   true,
-			},
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database"}),
 		}
 
 		model, err := ResourceIntegrationToModel(ctx, integration)
@@ -269,17 +263,11 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 	t.Run("with connected resource types", func(t *testing.T) {
 		integration := &client.IntegrationV4{
-			ID:   "integration-id",
-			Name: "test-integration",
-			Type: "postgres",
-			ConnectorID: client.OptNilString{
-				Value: "connector-id",
-				Set:   true,
-			},
-			ConnectedResourceTypes: client.OptNilStringArray{
-				Value: []string{"database", "schema"},
-				Set:   true,
-			},
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database", "schema"}),
 		}
 
 		model, err := ResourceIntegrationToModel(ctx, integration)
@@ -295,17 +283,11 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 	t.Run("with integration config", func(t *testing.T) {
 		integration := &client.IntegrationV4{
-			ID:   "integration-id",
-			Name: "test-integration",
-			Type: "postgres",
-			ConnectorID: client.OptNilString{
-				Value: "connector-id",
-				Set:   true,
-			},
-			ConnectedResourceTypes: client.OptNilStringArray{
-				Value: []string{"database"},
-				Set:   true,
-			},
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database"}),
 			IntegrationConfig: map[string]jx.Raw{
 				"host":     jx.Raw("\"" + "localhost" + "\""),
 				"port":     jx.Raw("\"" + "5432" + "\""),
@@ -337,29 +319,21 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 	t.Run("with AWS secret store config", func(t *testing.T) {
 		integration := &client.IntegrationV4{
-			ID:   "integration-id",
-			Name: "test-integration",
-			Type: "postgres",
-			ConnectorID: client.OptNilString{
-				Value: "connector-id",
-				Set:   true,
-			},
-			ConnectedResourceTypes: client.OptNilStringArray{
-				Value: []string{"database"},
-				Set:   true,
-			},
-			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
-				Value: client.IntegrationV4SecretStoreConfig{
-					AWS: client.OptNilIntegrationV4SecretStoreConfigAWS{
-						Value: client.IntegrationV4SecretStoreConfigAWS{
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database"}),
+			SecretStoreConfig: client.NewOptNilSecretStoreConfigV4(
+				client.SecretStoreConfigV4{
+					AWS: client.NewOptNilAwsSecretConfigV4(
+						client.AwsSecretConfigV4{
 							Region:   "us-east-1",
 							SecretID: "secret-id",
 						},
-						Set: true,
-					},
+					),
 				},
-				Set: true,
-			},
+			),
 		}
 
 		model, err := ResourceIntegrationToModel(ctx, integration)
@@ -376,29 +350,21 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 	t.Run("with GCP secret store config", func(t *testing.T) {
 		integration := &client.IntegrationV4{
-			ID:   "integration-id",
-			Name: "test-integration",
-			Type: "postgres",
-			ConnectorID: client.OptNilString{
-				Value: "connector-id",
-				Set:   true,
-			},
-			ConnectedResourceTypes: client.OptNilStringArray{
-				Value: []string{"database"},
-				Set:   true,
-			},
-			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
-				Value: client.IntegrationV4SecretStoreConfig{
-					Gcp: client.OptNilIntegrationV4SecretStoreConfigGcp{
-						Value: client.IntegrationV4SecretStoreConfigGcp{
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database"}),
+			SecretStoreConfig: client.NewOptNilSecretStoreConfigV4(
+				client.SecretStoreConfigV4{
+					Gcp: client.NewOptNilGcpSecretConfigV4(
+						client.GcpSecretConfigV4{
 							Project:  "my-project",
 							SecretID: "secret-id",
 						},
-						Set: true,
-					},
+					),
 				},
-				Set: true,
-			},
+			),
 		}
 
 		model, err := ResourceIntegrationToModel(ctx, integration)
@@ -412,29 +378,21 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 	t.Run("with Azure secret store config", func(t *testing.T) {
 		integration := &client.IntegrationV4{
-			ID:   "integration-id",
-			Name: "test-integration",
-			Type: "postgres",
-			ConnectorID: client.OptNilString{
-				Value: "connector-id",
-				Set:   true,
-			},
-			ConnectedResourceTypes: client.OptNilStringArray{
-				Value: []string{"database"},
-				Set:   true,
-			},
-			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
-				Value: client.IntegrationV4SecretStoreConfig{
-					Azure: client.OptNilIntegrationV4SecretStoreConfigAzure{
-						Value: client.IntegrationV4SecretStoreConfigAzure{
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database"}),
+			SecretStoreConfig: client.NewOptNilSecretStoreConfigV4(
+				client.SecretStoreConfigV4{
+					Azure: client.NewOptNilAzureSecretConfigV4(
+						client.AzureSecretConfigV4{
 							VaultURL: "https://myvault.vault.azure.net",
 							Name:     "secret-name",
 						},
-						Set: true,
-					},
+					),
 				},
-				Set: true,
-			},
+			),
 		}
 
 		model, err := ResourceIntegrationToModel(ctx, integration)
@@ -451,29 +409,21 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 	t.Run("with HashiCorp Vault secret store config", func(t *testing.T) {
 		integration := &client.IntegrationV4{
-			ID:   "integration-id",
-			Name: "test-integration",
-			Type: "postgres",
-			ConnectorID: client.OptNilString{
-				Value: "connector-id",
-				Set:   true,
-			},
-			ConnectedResourceTypes: client.OptNilStringArray{
-				Value: []string{"database"},
-				Set:   true,
-			},
-			SecretStoreConfig: client.OptNilIntegrationV4SecretStoreConfig{
-				Value: client.IntegrationV4SecretStoreConfig{
-					HashicorpVault: client.OptNilIntegrationV4SecretStoreConfigHashicorpVault{
-						Value: client.IntegrationV4SecretStoreConfigHashicorpVault{
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database"}),
+			SecretStoreConfig: client.NewOptNilSecretStoreConfigV4(
+				client.SecretStoreConfigV4{
+					HashicorpVault: client.NewOptNilHashicorpVaultSecretConfigV4(
+						client.HashicorpVaultSecretConfigV4{
 							SecretEngine: "kv",
 							Path:         "secret/data/postgres",
 						},
-						Set: true,
-					},
+					),
 				},
-				Set: true,
-			},
+			),
 		}
 
 		model, err := ResourceIntegrationToModel(ctx, integration)
@@ -490,21 +440,12 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 	t.Run("with custom access details", func(t *testing.T) {
 		integration := &client.IntegrationV4{
-			ID:   "integration-id",
-			Name: "test-integration",
-			Type: "postgres",
-			ConnectorID: client.OptNilString{
-				Value: "connector-id",
-				Set:   true,
-			},
-			ConnectedResourceTypes: client.OptNilStringArray{
-				Value: []string{"database"},
-				Set:   true,
-			},
-			CustomAccessDetails: client.OptNilString{
-				Value: "Use your SSO credentials to login",
-				Set:   true,
-			},
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database"}),
+			CustomAccessDetails:    client.NewOptNilString("Use your SSO credentials to login"),
 		}
 
 		model, err := ResourceIntegrationToModel(ctx, integration)
@@ -515,28 +456,18 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 	t.Run("with owner config", func(t *testing.T) {
 		integration := &client.IntegrationV4{
-			ID:   "integration-id",
-			Name: "test-integration",
-			Type: "postgres",
-			ConnectorID: client.OptNilString{
-				Value: "connector-id",
-				Set:   true,
-			},
-			ConnectedResourceTypes: client.OptNilStringArray{
-				Value: []string{"database"},
-				Set:   true,
-			},
-			Owner: client.OptNilIntegrationV4Owner{
-				Value: client.IntegrationV4Owner{
-					AttributeType:  "user",
-					AttributeValue: []string{"user1", "user2"},
-					SourceIntegrationName: client.OptNilString{
-						Value: "source-integration",
-						Set:   true,
-					},
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database"}),
+			Owner: client.NewOptNilOwnerV4(
+				client.OwnerV4{
+					AttributeType:         "user",
+					AttributeValue:        []string{"user1", "user2"},
+					SourceIntegrationName: client.NewOptNilString("source-integration"),
 				},
-				Set: true,
-			},
+			),
 		}
 
 		model, err := ResourceIntegrationToModel(ctx, integration)
@@ -554,28 +485,18 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 	t.Run("with owners mapping", func(t *testing.T) {
 		integration := &client.IntegrationV4{
-			ID:   "integration-id",
-			Name: "test-integration",
-			Type: "postgres",
-			ConnectorID: client.OptNilString{
-				Value: "connector-id",
-				Set:   true,
-			},
-			ConnectedResourceTypes: client.OptNilStringArray{
-				Value: []string{"database"},
-				Set:   true,
-			},
-			OwnersMapping: client.OptNilIntegrationV4OwnersMapping{
-				Value: client.IntegrationV4OwnersMapping{
-					KeyName:       "owner",
-					AttributeType: "group",
-					SourceIntegrationName: client.OptNilString{
-						Value: "source-integration",
-						Set:   true,
-					},
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database"}),
+			OwnersMapping: client.NewOptNilOwnerMappingV4(
+				client.OwnerMappingV4{
+					KeyName:               "owner",
+					AttributeType:         "group",
+					SourceIntegrationName: client.NewOptNilString("source-integration"),
 				},
-				Set: true,
-			},
+			),
 		}
 
 		model, err := ResourceIntegrationToModel(ctx, integration)

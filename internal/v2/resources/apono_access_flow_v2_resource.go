@@ -7,6 +7,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -159,7 +160,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"integration": getIntegrationTargetSchema(),
+						"integration": schemas.GetIntegrationTargetSchema(),
 						"bundle": schema.SingleNestedAttribute{
 							Description: "Bundle target configuration",
 							Optional:    true,
@@ -170,7 +171,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 								},
 							},
 						},
-						"access_scope": getAccessScopeTargetSchema(),
+						"access_scope": schemas.GetAccessScopeTargetSchema(),
 					},
 				},
 			},
