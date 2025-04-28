@@ -10,8 +10,13 @@ func GetSecretStoreConfigSchema(mode SchemaMode) schema.SingleNestedAttribute {
 	fieldsRequired := mode == ResourceMode
 	fieldsComputed := mode == DataSourceMode
 
+	description := "Configuration for secret management. Only one secret store can be configured at a time."
+	if mode == DataSourceMode {
+		description = "Final applied secret store configuration."
+	}
+
 	return schema.SingleNestedAttribute{
-		Description: "Configuration for secret store.",
+		Description: description,
 		Optional:    true,
 		Computed:    isComputed,
 		Attributes: map[string]schema.Attribute{

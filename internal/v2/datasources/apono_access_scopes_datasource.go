@@ -34,27 +34,27 @@ func (d *AponoAccessScopesDataSource) Metadata(_ context.Context, req datasource
 
 func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves a list of Apono Access Scopes.",
+		Description: "Retrieves existing Apono Access Scopes. This data source can be used to feed existing access scopes into the Access Flow resource.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "Filter access scopes by name, supports wildcards.",
+				Description: "Filters the returned access scopes by their name. Partial matching is supported with asterisks for contains, starts with, and ends with.",
 				Optional:    true,
 			},
 			"access_scopes": schema.SetNestedAttribute{
-				Description: "The list of access scopes.",
+				Description: "A set of access scopes that match the specified criteria.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Description: "The unique identifier of the access scope.",
+							Description: "The unique identifier of the Apono Access Scope.",
 							Computed:    true,
 						},
 						"name": schema.StringAttribute{
-							Description: "The name of the access scope.",
+							Description: "The name of the Apono Access Scope.",
 							Computed:    true,
 						},
 						"query": schema.StringAttribute{
-							Description: "The query expression for the access scope.",
+							Description: "The full query string that is used to define the access scope.",
 							Computed:    true,
 						},
 					},

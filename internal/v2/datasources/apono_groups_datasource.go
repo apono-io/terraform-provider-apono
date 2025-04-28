@@ -29,14 +29,14 @@ func (d *AponoGroupsDataSource) Metadata(_ context.Context, req datasource.Metad
 
 func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves a list of Apono Groups.",
+		Description: "Retrieves existing groups, Apono-managed and IDP-manged groups. Use this data source to reference groups in the Access Flow resource.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "Filter groups by name, supports wildcards.",
+				Description: "Filters by group name.",
 				Optional:    true,
 			},
 			"source_integration": schema.StringAttribute{
-				Description: "Filter groups by source integration name or ID.",
+				Description: "Filter by the source IDP integration name or ID.",
 				Optional:    true,
 			},
 			"groups": schema.SetNestedAttribute{
@@ -45,19 +45,19 @@ func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							Description: "The unique identifier of the group.",
+							Description: "Unique identifier of the group.",
 							Computed:    true,
 						},
 						"name": schema.StringAttribute{
-							Description: "The name of the group.",
+							Description: "Group display name.",
 							Computed:    true,
 						},
 						"source_integration_id": schema.StringAttribute{
-							Description: "The source integration ID.",
+							Description: "ID of the IDP integration from which the group originated, or null.",
 							Computed:    true,
 						},
 						"source_integration_name": schema.StringAttribute{
-							Description: "The source integration name.",
+							Description: "Human‑readable name of the originating IDP integration, or null.",
 							Computed:    true,
 						},
 					},

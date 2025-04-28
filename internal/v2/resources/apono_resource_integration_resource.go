@@ -50,29 +50,29 @@ func (r *AponoResourceIntegrationResource) ConfigValidators(_ context.Context) [
 
 func (r *AponoResourceIntegrationResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages an Apono Resource Integration.",
+		Description: "Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier of the resource integration.",
+				Description: "Unique identifier for the integration.",
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the resource integration.",
+				Description: "Human-readable name for the integration.",
 				Required:    true,
 			},
 			"type": schema.StringAttribute{
-				Description: "The type of the resource integration (e.g., 'postgresql').",
+				Description: `Type of the integration (e.g., "aws-account", "postgresql").`,
 				Required:    true,
 			},
 			"connector_id": schema.StringAttribute{
-				Description: "The ID of the connector to use for this integration.",
+				Description: "ID of the Apono Connector used for the integration.",
 				Required:    true,
 			},
 			"connected_resource_types": schema.ListAttribute{
-				Description: "List of resource types connected through this integration.",
+				Description: "List of resource types for the integration to discover.",
 				ElementType: types.StringType,
 				Required:    true,
 				Validators: []validator.List{
@@ -80,36 +80,36 @@ func (r *AponoResourceIntegrationResource) Schema(_ context.Context, _ resource.
 				},
 			},
 			"integration_config": schema.MapAttribute{
-				Description: "Configuration for the integration as key-value pairs.",
-				ElementType: types.StringType,
-				Required:    true,
+				MarkdownDescription: "Integration-specific configuration that accepts key-value pairs. Refer to the [Integration Configuration documentation](https://docs.apono.io/metadata-for-integration-config) for specific configuration values.",
+				ElementType:         types.StringType,
+				Required:            true,
 			},
 			"secret_store_config": schemas.GetSecretStoreConfigSchema(schemas.ResourceMode),
 			"custom_access_details": schema.StringAttribute{
-				Description: "Custom details for accessing the resource.",
+				Description: "Custom access instructions for end users, displayed in the access details modal.",
 				Optional:    true,
 			},
 			"owner": schema.SingleNestedAttribute{
-				Description: "Owner configuration for the resource integration.",
+				Description: "Apono can use the integration owner for access requests approval if no owner is found. Enter one or more users, groups, shifts or attributes. This field is mandatory when using Resource Owners and serves as a fallback approver if no resource owner is found.",
 				Optional:    true,
 				Attributes: map[string]schema.Attribute{
 					"source_integration_name": schema.StringAttribute{
-						Description: "Name of the source integration.",
+						Description: "Name of the integration from which the type originates from (e.g. “Google Oauth”).",
 						Optional:    true,
 					},
 					"type": schema.StringAttribute{
-						Description: "Type of the owner (e.g., 'user').",
+						Description: "Type of the owner attribute.",
 						Required:    true,
 					},
 					"values": schema.ListAttribute{
-						Description: "List of values for the owner.",
+						Description: "List of values for the ownership assignment.",
 						ElementType: types.StringType,
 						Required:    true,
 					},
 				},
 			},
 			"owners_mapping": schema.SingleNestedAttribute{
-				Description: "Owners mapping configuration.",
+				Description: "Apono will sync each resource's owner from the source integration. Use this for Resource Owner access requests approval.",
 				Optional:    true,
 				Attributes: map[string]schema.Attribute{
 					"source_integration_name": schema.StringAttribute{
@@ -117,11 +117,11 @@ func (r *AponoResourceIntegrationResource) Schema(_ context.Context, _ resource.
 						Optional:    true,
 					},
 					"key_name": schema.StringAttribute{
-						Description: "Name of the key for mapping.",
+						Description: "Attribute key to map owner.",
 						Required:    true,
 					},
 					"attribute_type": schema.StringAttribute{
-						Description: "Type of the attribute (e.g., 'group').",
+						Description: "Type of the attribute.",
 						Required:    true,
 					},
 				},

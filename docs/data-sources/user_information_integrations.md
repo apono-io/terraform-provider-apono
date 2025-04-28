@@ -46,7 +46,7 @@ output "jumpcloud_user_information_integration" {
 Optional:
 
 - `last_sync_time` (String) The timestamp of the last synchronization.
-- `secret_store_config` (Attributes) Configuration for secret store. (see [below for nested schema](#nestedatt--integrations--secret_store_config))
+- `secret_store_config` (Attributes) Final applied secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config))
 
 Read-Only:
 

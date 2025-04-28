@@ -1,0 +1,26 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+  {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Type}}: {{.Name}}
+
+{{ .Description | trimspace }}
+
+## Example Usage
+
+### Exact‑Name Match
+
+{{ tffile "examples/data-sources/apono_groups/exact-name-match.tf" }}
+
+### Name Prefix
+
+{{ tffile "examples/data-sources/apono_groups/name-prefix.tf" }}
+
+### Filter by Source Integration
+
+{{ tffile "examples/data-sources/apono_groups/source-integration.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}
