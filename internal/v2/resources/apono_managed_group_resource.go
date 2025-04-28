@@ -18,24 +18,24 @@ import (
 )
 
 var (
-	_ resource.Resource                = &AponoGroupResource{}
-	_ resource.ResourceWithImportState = &AponoGroupResource{}
+	_ resource.Resource                = &AponoManagedGroupResource{}
+	_ resource.ResourceWithImportState = &AponoManagedGroupResource{}
 )
 
-func NewAponoGroupResource() resource.Resource {
-	return &AponoGroupResource{}
+func NewAponoManagedGroupResource() resource.Resource {
+	return &AponoManagedGroupResource{}
 }
 
-// AponoGroupResource manages Apono Group resources.
-type AponoGroupResource struct {
+// AponoManagedGroupResource manages Apono Group resources.
+type AponoManagedGroupResource struct {
 	client client.Invoker
 }
 
-func (r *AponoGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_group"
+func (r *AponoManagedGroupResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_managed_group"
 }
 
-func (r *AponoGroupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *AponoManagedGroupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Description: "Manages an Apono Group.",
 		Attributes: map[string]schema.Attribute{
@@ -59,11 +59,11 @@ func (r *AponoGroupResource) Schema(_ context.Context, _ resource.SchemaRequest,
 	}
 }
 
-func (r *AponoGroupResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *AponoManagedGroupResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	common.ConfigureResourceClientInvoker(ctx, req, resp, &r.client)
 }
 
-func (r *AponoGroupResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *AponoManagedGroupResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan models.GroupModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -106,7 +106,7 @@ func (r *AponoGroupResource) Create(ctx context.Context, req resource.CreateRequ
 	tflog.Info(ctx, "Created group successfully", map[string]any{"id": result.ID.ValueString()})
 }
 
-func (r *AponoGroupResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *AponoManagedGroupResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state models.GroupModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -152,7 +152,7 @@ func (r *AponoGroupResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 }
 
-func (r *AponoGroupResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *AponoManagedGroupResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var state models.GroupModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -223,7 +223,7 @@ func (r *AponoGroupResource) Update(ctx context.Context, req resource.UpdateRequ
 	tflog.Info(ctx, "Updated group successfully", map[string]any{"id": state.ID.ValueString()})
 }
 
-func (r *AponoGroupResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *AponoManagedGroupResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state models.GroupModel
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -243,6 +243,6 @@ func (r *AponoGroupResource) Delete(ctx context.Context, req resource.DeleteRequ
 	tflog.Info(ctx, "Deleted group successfully", map[string]any{"id": state.ID.ValueString()})
 }
 
-func (r *AponoGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *AponoManagedGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

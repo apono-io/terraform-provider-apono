@@ -13,30 +13,30 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-var _ datasource.DataSource = &AponoManagedGroupsDataSource{}
+var _ datasource.DataSource = &AponoGroupsDataSource{}
 
-func NewAponoManagedGroupsDataSource() datasource.DataSource {
-	return &AponoManagedGroupsDataSource{}
+func NewAponoGroupsDataSource() datasource.DataSource {
+	return &AponoGroupsDataSource{}
 }
 
-type AponoManagedGroupsDataSource struct {
+type AponoGroupsDataSource struct {
 	client client.Invoker
 }
 
-func (d *AponoManagedGroupsDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_managed_groups"
+func (d *AponoGroupsDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_groups"
 }
 
-func (d *AponoManagedGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves a list of Apono Managed Groups.",
+		Description: "Retrieves a list of Apono Groups.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "Filter managed groups by name, supports wildcards.",
+				Description: "Filter groups by name, supports wildcards.",
 				Optional:    true,
 			},
 			"source_integration": schema.StringAttribute{
-				Description: "Filter managed groups by source integration name or ID.",
+				Description: "Filter groups by source integration name or ID.",
 				Optional:    true,
 			},
 			"groups": schema.SetNestedAttribute{
@@ -67,11 +67,11 @@ func (d *AponoManagedGroupsDataSource) Schema(_ context.Context, _ datasource.Sc
 	}
 }
 
-func (d *AponoManagedGroupsDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *AponoGroupsDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	common.ConfigureDataSourceClientInvoker(ctx, req, resp, &d.client)
 }
 
-func (d *AponoManagedGroupsDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+func (d *AponoGroupsDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var config models.GroupsDataModel
 	diags := req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)

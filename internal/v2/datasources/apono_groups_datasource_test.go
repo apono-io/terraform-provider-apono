@@ -9,11 +9,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccAponoManagedGroupsDataSource(t *testing.T) {
+func TestAccAponoGroupsDataSource(t *testing.T) {
 	rName1 := acctest.RandomWithPrefix("tf-acc-test-a")
 	rName2 := acctest.RandomWithPrefix("tf-acc-test-b")
-	dataSourceNameExact := "data.apono_managed_groups.exact"
-	dataSourceNameWildcard := "data.apono_managed_groups.wildcard"
+	dataSourceNameExact := "data.apono_groups.exact"
+	dataSourceNameWildcard := "data.apono_groups.wildcard"
 
 	randomPrefix := acctest.RandomWithPrefix("tf-acc-test-prefix")
 
@@ -22,7 +22,7 @@ func TestAccAponoManagedGroupsDataSource(t *testing.T) {
 		ProtoV6ProviderFactories: testprovider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAponoManagedGroupsDataSourceConfig(rName1, rName2, randomPrefix),
+				Config: testAccAponoGroupsDataSourceConfig(rName1, rName2, randomPrefix),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(dataSourceNameExact, "groups.#", "1"),
 					resource.TestCheckResourceAttr(dataSourceNameExact, "groups.0.name", testcommon.PrefixedName(randomPrefix, rName1)),
@@ -43,20 +43,20 @@ func TestAccAponoManagedGroupsDataSource(t *testing.T) {
 	})
 }
 
-func TestAccAponoManagedGroupsDataSourceWithSourceIntegration(t *testing.T) {
+func TestAccAponoGroupsDataSourceWithSourceIntegration(t *testing.T) {
 	// Skip if not running against test account
 	if !testcommon.IsTestAccount(t) {
 		t.Skip("Skipping test as IS_TEST_ACCOUNT is not set")
 	}
 
-	dataSourceName := "data.apono_managed_groups.by_source_integration"
+	dataSourceName := "data.apono_groups.by_source_integration"
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testcommon.TestAccPreCheck(t) },
 		ProtoV6ProviderFactories: testprovider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAponoManagedGroupsDataSourceConfigWithSourceIntegration(),
+				Config: testAccAponoGroupsDataSourceConfigWithSourceIntegration(),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(dataSourceName, "groups.#", "3"),
 					resource.TestCheckResourceAttrSet(dataSourceName, "groups.0.source_integration_id"),
@@ -71,42 +71,42 @@ func TestAccAponoManagedGroupsDataSourceWithSourceIntegration(t *testing.T) {
 	})
 }
 
-func testAccAponoManagedGroupsDataSourceConfig(name1, name2, randomPrefix string) string {
+func testAccAponoGroupsDataSourceConfig(name1, name2, randomPrefix string) string {
 	prefixedName1 := testcommon.PrefixedName(randomPrefix, name1)
 	prefixedName2 := testcommon.PrefixedName(randomPrefix, name2)
 
 	return `
-resource "apono_group" "test1" {
+resource "apono_managed_group" "test1" {
   name = "` + prefixedName1 + `"
   members = []
 }
 
-resource "apono_group" "test2" {
+resource "apono_managed_group" "test2" {
   name = "` + prefixedName2 + `"
   members = []
 }
 
-data "apono_managed_groups" "exact" {
+data "apono_groups" "exact" {
   name = "` + prefixedName1 + `"
   depends_on = [
-    apono_group.test1,
-    apono_group.test2
+    apono_managed_group.test1,
+    apono_managed_group.test2
   ]
 }
 
-data "apono_managed_groups" "wildcard" {
+data "apono_groups" "wildcard" {
   name = "` + randomPrefix + `*"
   depends_on = [
-    apono_group.test1,
-    apono_group.test2
+    apono_managed_group.test1,
+    apono_managed_group.test2
   ]
 }
 `
 }
 
-func testAccAponoManagedGroupsDataSourceConfigWithSourceIntegration() string {
+func testAccAponoGroupsDataSourceConfigWithSourceIntegration() string {
 	return `
-data "apono_managed_groups" "by_source_integration" {
+data "apono_groups" "by_source_integration" {
   name = "group_*"
   source_integration = "Jumpcloud IDP"
 }
