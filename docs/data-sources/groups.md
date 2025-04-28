@@ -2,35 +2,36 @@
 page_title: "apono_groups Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
-    Retrieves existing groups, Apono-managed and IDP-manged groups. Use this data source to reference groups in the Access Flow resource.
+    Retrieves existing groups, Apono-managed and IDP-managed groups. Use this data source to reference groups in the Access Flow resource.
 ---
 
 # Data Source: apono_groups
 
-Retrieves existing groups, Apono-managed and IDP-manged groups. Use this data source to reference groups in the Access Flow resource.
+Retrieves existing groups, Apono-managed and IDP-managed groups. Use this data source to reference groups in the Access Flow resource.
 
 ## Example Usage
 
-### Retrieve All Access Scopes
+### Exact‑Name Match
 
 ```terraform
-data "apono_access_scopes" "access-scopes-list" {
+data "apono_groups" "engineering_team" {
+  name = "Engineering Team"
 }
 ```
 
-### Retrieve a Specific Access Scope by Exact Name
+### Name Prefix
 
 ```terraform
-data "apono_access_scopes" "production_db" {
-  name = "Production Database Access"
+data "apono_groups" "dev_teams" {
+  name = "dev-*"
 }
 ```
 
-### Retrieve Access Scopes Matching a Pattern
+### Filter by Source Integration
 
 ```terraform
-data "apono_access_scopes" "production_scopes" {
-  name = "*Production*"
+data "apono_groups" "from_source" {
+  source_integration = "Google Oauth"
 }
 ```
 

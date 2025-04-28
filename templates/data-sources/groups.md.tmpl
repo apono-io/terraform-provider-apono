@@ -11,16 +11,16 @@ description: |-
 
 ## Example Usage
 
-### Retrieve All Access Scopes
+### Exact‑Name Match
 
-{{ tffile "examples/data-sources/apono_access_scopes/all-access-scopes.tf" }}
+{{ tffile "examples/data-sources/apono_groups/exact-name-match.tf" }}
 
-### Retrieve a Specific Access Scope by Exact Name
+### Name Prefix
 
-{{ tffile "examples/data-sources/apono_access_scopes/specific-access-scope.tf" }}
+{{ tffile "examples/data-sources/apono_groups/name-prefix.tf" }}
 
-### Retrieve Access Scopes Matching a Pattern
+### Filter by Source Integration
 
-{{ tffile "examples/data-sources/apono_access_scopes/pattern-matching.tf" }}
+{{ tffile "examples/data-sources/apono_groups/source-integration.tf" }}
 
 {{ .SchemaMarkdown | trimspace }}

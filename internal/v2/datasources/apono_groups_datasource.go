@@ -29,7 +29,7 @@ func (d *AponoGroupsDataSource) Metadata(_ context.Context, req datasource.Metad
 
 func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves existing groups, Apono-managed and IDP-manged groups. Use this data source to reference groups in the Access Flow resource.",
+		Description: "Retrieves existing groups, Apono-managed and IDP-managed groups. Use this data source to reference groups in the Access Flow resource.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description: "Filters by group name.",

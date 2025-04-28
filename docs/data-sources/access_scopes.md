@@ -11,27 +11,26 @@ Retrieves existing Apono Access Scopes. This data source can be used to feed exi
 
 ## Example Usage
 
-### Exact‑Name Match
+### Retrieve All Access Scopes
 
 ```terraform
-data "apono_groups" "engineering_team" {
-  name = "Engineering Team"
+data "apono_access_scopes" "access-scopes-list" {
 }
 ```
 
-### Name Prefix
+### Retrieve a Specific Access Scope by Exact Name
 
 ```terraform
-data "apono_groups" "dev_teams" {
-  name = "dev-*"
+data "apono_access_scopes" "production_db" {
+  name = "Production Database Access"
 }
 ```
 
-### Filter by Source Integration
+### Retrieve Access Scopes Matching a Pattern
 
 ```terraform
-data "apono_groups" "from_source" {
-  source_integration = "Google Oauth"
+data "apono_access_scopes" "production_scopes" {
+  name = "*Production*"
 }
 ```
 
