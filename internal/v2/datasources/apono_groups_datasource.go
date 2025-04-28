@@ -29,14 +29,14 @@ func (d *AponoGroupsDataSource) Metadata(_ context.Context, req datasource.Metad
 
 func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves a list of Apono Managed Groups.",
+		Description: "Retrieves a list of Apono Groups.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "Filter managed groups by name, supports wildcards.",
+				Description: "Filter groups by name, supports wildcards.",
 				Optional:    true,
 			},
 			"source_integration": schema.StringAttribute{
-				Description: "Filter managed groups by source integration name or ID.",
+				Description: "Filter groups by source integration name or ID.",
 				Optional:    true,
 			},
 			"groups": schema.SetNestedAttribute{

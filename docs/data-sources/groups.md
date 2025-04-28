@@ -3,12 +3,12 @@
 page_title: "apono_groups Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
-  Retrieves a list of Apono Managed Groups.
+  Retrieves a list of Apono Groups.
 ---
 
 # apono_groups (Data Source)
 
-Retrieves a list of Apono Managed Groups.
+Retrieves a list of Apono Groups.
 
 
 
@@ -17,8 +17,8 @@ Retrieves a list of Apono Managed Groups.
 
 ### Optional
 
-- `name` (String) Filter managed groups by name, supports wildcards.
-- `source_integration` (String) Filter managed groups by source integration name or ID.
+- `name` (String) Filter groups by name, supports wildcards.
+- `source_integration` (String) Filter groups by source integration name or ID.
 
 ### Read-Only
 
