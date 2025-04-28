@@ -21,3 +21,14 @@ type IntegrationTargetScopeModel struct {
 type AccessScopeTargetModel struct {
 	Name types.String `tfsdk:"name"`
 }
+
+type BundleAccessTargetModel struct {
+	Integration *IntegrationTargetModel `tfsdk:"integration"`
+	AccessScope *AccessScopeTargetModel `tfsdk:"access_scope"`
+}
+
+type BundleV2Model struct {
+	ID            types.String              `tfsdk:"id"`
+	Name          types.String              `tfsdk:"name"`
+	AccessTargets []BundleAccessTargetModel `tfsdk:"access_targets"`
+}

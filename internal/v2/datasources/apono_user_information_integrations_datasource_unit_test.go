@@ -36,7 +36,7 @@ func TestAponoUserInformationIntegrationsDataSource(t *testing.T) {
 				Type:         "ldap",
 				Category:     common.UserInformation,
 				Status:       "ACTIVE",
-				LastSyncTime: client.NewOptNilDateTime(now),
+				LastSyncTime: client.NewOptNilApiInstant(client.ApiInstant(now)),
 				IntegrationConfig: map[string]jx.Raw{
 					"url": common.StringToJx("ldap://example.com"),
 				},
@@ -47,7 +47,7 @@ func TestAponoUserInformationIntegrationsDataSource(t *testing.T) {
 				Type:         "okta",
 				Category:     common.UserInformation,
 				Status:       "ACTIVE",
-				LastSyncTime: client.NewOptNilDateTime(now),
+				LastSyncTime: client.NewOptNilApiInstant(client.ApiInstant(now)),
 				IntegrationConfig: map[string]jx.Raw{
 					"domain": common.StringToJx("example.okta.com"),
 				},

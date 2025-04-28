@@ -43,28 +43,20 @@ func ResourceIntegrationModelToCreateRequest(ctx context.Context, model Resource
 
 	req.ConnectorID.SetTo(model.ConnectorID.ValueString())
 
-	var connectedResourceTypes []string
-	diags := model.ConnectedResourceTypes.ElementsAs(ctx, &connectedResourceTypes, false)
-	if diags.HasError() {
-		return nil, fmt.Errorf("failed to parse connected resource types: %v", diags)
+	var err error
+	if req.ConnectedResourceTypes, err = getConnectedResourceTypes(ctx, model); err != nil {
+		return nil, err
 	}
-	req.ConnectedResourceTypes.SetTo(connectedResourceTypes)
 
 	if !model.IntegrationConfig.IsNull() {
-		integrationConfig := make(map[string]jx.Raw)
-		for k, v := range model.IntegrationConfig.Elements() {
-			strVal, ok := v.(types.String)
-			if !ok {
-				return nil, fmt.Errorf("failed to assert type for integration config value")
-			}
-			integrationConfig[k] = common.StringToJx(strVal.ValueString())
+		req.IntegrationConfig, err = getIntegrationConfig(model)
+		if err != nil {
+			return nil, err
 		}
-
-		req.IntegrationConfig = integrationConfig
 	}
 
 	if model.SecretStoreConfig != nil {
-		req.SecretStoreConfig.SetTo(createSecretStoreConfig(model.SecretStoreConfig))
+		req.SecretStoreConfig.SetTo(upsertSecretStoreConfig(model.SecretStoreConfig))
 	}
 
 	if !model.CustomAccessDetails.IsNull() {
@@ -72,37 +64,15 @@ func ResourceIntegrationModelToCreateRequest(ctx context.Context, model Resource
 	}
 
 	if model.Owner != nil {
-		var values []string
-		diags := model.Owner.Values.ElementsAs(ctx, &values, false)
-		if diags.HasError() {
-			return nil, fmt.Errorf("failed to parse owner values: %v", diags)
+		owner, err := getOwnerConfig(ctx, model.Owner)
+		if err != nil {
+			return nil, err
 		}
-
-		owner := client.CreateIntegrationV4Owner{
-			AttributeType:  model.Owner.Type.ValueString(),
-			AttributeValue: values,
-		}
-
-		if !model.Owner.SourceIntegrationName.IsNull() {
-			owner.SourceIntegrationReference.SetTo(model.Owner.SourceIntegrationName.ValueString())
-		}
-
-		owner.SourceIntegrationReference.SetTo(model.Owner.SourceIntegrationName.ValueString())
-
 		req.Owner.SetTo(owner)
 	}
 
 	if model.OwnersMapping != nil {
-		ownersMapping := client.CreateIntegrationV4OwnersMapping{
-			KeyName:       model.OwnersMapping.KeyName.ValueString(),
-			AttributeType: model.OwnersMapping.AttributeType.ValueString(),
-		}
-
-		if !model.OwnersMapping.SourceIntegrationName.IsNull() {
-			ownersMapping.SourceIntegrationReference.SetTo(model.OwnersMapping.SourceIntegrationName.ValueString())
-		}
-
-		req.OwnersMapping.SetTo(ownersMapping)
+		req.OwnersMapping.SetTo(getOwnersMappingConfig(model.OwnersMapping))
 	}
 
 	return req, nil
@@ -113,27 +83,20 @@ func ResourceIntegrationModelToUpdateRequest(ctx context.Context, model Resource
 		Name: model.Name.ValueString(),
 	}
 
+	var err error
 	if !model.IntegrationConfig.IsNull() {
-		integrationConfig := make(map[string]jx.Raw)
-		for k, v := range model.IntegrationConfig.Elements() {
-			strVal, ok := v.(types.String)
-			if !ok {
-				return nil, fmt.Errorf("failed to assert type for integration config value")
-			}
-			integrationConfig[k] = common.StringToJx(strVal.ValueString())
+		req.IntegrationConfig, err = getIntegrationConfig(model)
+		if err != nil {
+			return nil, err
 		}
-		req.IntegrationConfig = integrationConfig
 	}
 
-	var connectedResourceTypes []string
-	diags := model.ConnectedResourceTypes.ElementsAs(ctx, &connectedResourceTypes, false)
-	if diags.HasError() {
-		return nil, fmt.Errorf("failed to parse connected resource types: %v", diags)
+	if req.ConnectedResourceTypes, err = getConnectedResourceTypes(ctx, model); err != nil {
+		return nil, err
 	}
-	req.ConnectedResourceTypes.SetTo(connectedResourceTypes)
 
 	if model.SecretStoreConfig != nil {
-		req.SecretStoreConfig.SetTo(updateSecretStoreConfig(model.SecretStoreConfig))
+		req.SecretStoreConfig.SetTo(upsertSecretStoreConfig(model.SecretStoreConfig))
 	}
 
 	if !model.CustomAccessDetails.IsNull() {
@@ -141,38 +104,73 @@ func ResourceIntegrationModelToUpdateRequest(ctx context.Context, model Resource
 	}
 
 	if model.Owner != nil {
-		var values []string
-		diags := model.Owner.Values.ElementsAs(ctx, &values, false)
-		if diags.HasError() {
-			return nil, fmt.Errorf("failed to parse owner values: %v", diags)
+		owner, err := getOwnerConfig(ctx, model.Owner)
+		if err != nil {
+			return nil, err
 		}
-
-		owner := client.UpdateIntegrationV4Owner{
-			AttributeType:  model.Owner.Type.ValueString(),
-			AttributeValue: values,
-		}
-
-		if !model.Owner.SourceIntegrationName.IsNull() {
-			owner.SourceIntegrationReference.SetTo(model.Owner.SourceIntegrationName.ValueString())
-		}
-
 		req.Owner.SetTo(owner)
 	}
 
 	if model.OwnersMapping != nil {
-		ownersMapping := client.UpdateIntegrationV4OwnersMapping{
-			KeyName:       model.OwnersMapping.KeyName.ValueString(),
-			AttributeType: model.OwnersMapping.AttributeType.ValueString(),
-		}
-
-		if !model.OwnersMapping.SourceIntegrationName.IsNull() {
-			ownersMapping.SourceIntegrationReference.SetTo(model.OwnersMapping.SourceIntegrationName.ValueString())
-		}
-
-		req.OwnersMapping.SetTo(ownersMapping)
+		req.OwnersMapping.SetTo(getOwnersMappingConfig(model.OwnersMapping))
 	}
 
 	return req, nil
+}
+
+func getIntegrationConfig(model ResourceIntegrationModel) (map[string]jx.Raw, error) {
+	integrationConfig := make(map[string]jx.Raw)
+	for k, v := range model.IntegrationConfig.Elements() {
+		strVal, ok := v.(types.String)
+		if !ok {
+			return nil, fmt.Errorf("failed to assert type for integration config value")
+		}
+		integrationConfig[k] = common.StringToJx(strVal.ValueString())
+	}
+	return integrationConfig, nil
+}
+
+func getConnectedResourceTypes(ctx context.Context, model ResourceIntegrationModel) (client.OptNilStringArray, error) {
+	var result client.OptNilStringArray
+	var connectedResourceTypes []string
+	diags := model.ConnectedResourceTypes.ElementsAs(ctx, &connectedResourceTypes, false)
+	if diags.HasError() {
+		return result, fmt.Errorf("failed to parse connected resource types: %v", diags)
+	}
+	result.SetTo(connectedResourceTypes)
+	return result, nil
+}
+
+func getOwnerConfig(ctx context.Context, ownerConfig *OwnerConfig) (client.UpsertOwnerV4, error) {
+	var values []string
+	diags := ownerConfig.Values.ElementsAs(ctx, &values, false)
+	if diags.HasError() {
+		return client.UpsertOwnerV4{}, fmt.Errorf("failed to parse owner values: %v", diags)
+	}
+
+	owner := client.UpsertOwnerV4{
+		AttributeType:  ownerConfig.Type.ValueString(),
+		AttributeValue: values,
+	}
+
+	if !ownerConfig.SourceIntegrationName.IsNull() {
+		owner.SourceIntegrationReference.SetTo(ownerConfig.SourceIntegrationName.ValueString())
+	}
+
+	return owner, nil
+}
+
+func getOwnersMappingConfig(mappingConfig *OwnersMappingConfig) client.UpsertOwnerMappingV4 {
+	ownersMapping := client.UpsertOwnerMappingV4{
+		KeyName:       mappingConfig.KeyName.ValueString(),
+		AttributeType: mappingConfig.AttributeType.ValueString(),
+	}
+
+	if !mappingConfig.SourceIntegrationName.IsNull() {
+		ownersMapping.SourceIntegrationReference.SetTo(mappingConfig.SourceIntegrationName.ValueString())
+	}
+
+	return ownersMapping
 }
 
 func ResourceIntegrationToModel(ctx context.Context, integration *client.IntegrationV4) (*ResourceIntegrationModel, error) {

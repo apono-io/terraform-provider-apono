@@ -58,7 +58,6 @@ github.com/go-git/go-billy/v5 v5.6.0 h1:w2hPNtoehvJIxR00Vb4xX94qHQi/ApZfX+nBE2Cj
 github.com/go-git/go-billy/v5 v5.6.0/go.mod h1:sFDq7xD3fn3E0GOwUSZqHo9lrkmx8xJhA0ZrfvjBRGM=
 github.com/go-git/go-git/v5 v5.13.0 h1:vLn5wlGIh/X78El6r3Jr+30W16Blk0CTcxTYcYPWi5E=
 github.com/go-git/go-git/v5 v5.13.0/go.mod h1:Wjo7/JyVKtQgUNdXYXIepzWfJQkUEIGvkvVkiXRR/zw=
-github.com/go-logr/logr v1.2.2/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=
 github.com/go-logr/logr v1.4.2 h1:6pFjapn8bFcIbiKo3XT4j/BhANplGihG6tvd+8rYgrY=
 github.com/go-logr/logr v1.4.2/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-logr/stdr v1.2.2 h1:hSWxHoqTgW2S2qGc0LTAI563KZ5YKYRhT3MFKZMbjag=
@@ -151,6 +150,7 @@ github.com/jhump/protoreflect v1.15.1/go.mod h1:jD/2GMKKE6OqX8qTjhADU1e6DShO+gav
 github.com/kevinburke/ssh_config v1.2.0 h1:x584FjTGwHzMwvHx18PXxbBVzfnxogHaAReU4gf13a4=
 github.com/kevinburke/ssh_config v1.2.0/go.mod h1:CT57kijsi8u/K/BOFA39wgDQJ9CxiF4nAY/ojJ6r6mM=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
+github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
 github.com/kr/pretty v0.3.1/go.mod h1:hoEshYVHaxMs3cyo3Yncou5ZscifuDolrwPKZanG3xk=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
@@ -183,8 +183,8 @@ github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RR
 github.com/mitchellh/reflectwalk v1.0.0/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
 github.com/mitchellh/reflectwalk v1.0.2 h1:G2LzWKi524PWgd3mLHV8Y5k7s6XUvT0Gef6zxSIeXaQ=
 github.com/mitchellh/reflectwalk v1.0.2/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
-github.com/ogen-go/ogen v1.10.1 h1:oeSN8AF9mhTVfapbMuL8pQTF2ToqyW9xXaStmOhHKTA=
-github.com/ogen-go/ogen v1.10.1/go.mod h1:fXCg9PsNYEzJ8ABdmZ2A7j4hMi9EDHP53jzsNtIM3d0=
+github.com/ogen-go/ogen v1.12.0 h1:JMkn957i9/IPaSehqpblviy6Uao3eqQ+eVKUn4LM9pg=
+github.com/ogen-go/ogen v1.12.0/go.mod h1:RL25amedfhq5xKTUuPBPn6nhYU59CWaVWYJ8YIjNHs0=
 github.com/oklog/run v1.1.0 h1:GEenZ1cK0+q0+wsJew9qUg/DyD8k3JzYsZAi5gYi2mA=
 github.com/oklog/run v1.1.0/go.mod h1:sVPdnTZT1zYwAJeCMu2Th4T21pA3FPOQRfWjQlk7DVU=
 github.com/pjbgf/sha1cd v0.3.0 h1:4D5XXmUUBUl/xQ6IjCkEAbqXskkq/4O7LmGn0AqMDs4=

@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"time"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -34,7 +35,7 @@ func UserInformationIntegrationToModal(ctx context.Context, integration *client.
 	}
 
 	if lastSyncTime, ok := integration.LastSyncTime.Get(); ok {
-		model.LastSyncTime = types.StringValue(lastSyncTime.UTC().Format("2006-01-02T15:04:05Z"))
+		model.LastSyncTime = types.StringValue(time.Time(lastSyncTime).UTC().Format("2006-01-02T15:04:05Z"))
 	}
 
 	if integration.IntegrationConfig != nil {

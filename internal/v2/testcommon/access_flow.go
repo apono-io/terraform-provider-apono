@@ -21,7 +21,7 @@ func GenerateAccessFlowResponse() *client.AccessFlowPublicV2Model {
 
 	response.GrantDurationInMin.SetTo(int32(60))
 
-	timeframe := client.AccessFlowPublicV2ModelTimeframe{
+	timeframe := client.AccessFlowTimeframePublicV2Model{
 		StartTime:  "10:00",
 		EndTime:    "23:59",
 		TimeZone:   "Asia/Jerusalem",
@@ -42,14 +42,14 @@ func GenerateAccessFlowResponse() *client.AccessFlowPublicV2Model {
 	response.Requestors.Conditions[0].Values.SetTo([]string{"person@example.com", "person_two@example.com"})
 
 	bundleTarget := client.AccessTargetPublicV2Model{}
-	bundleData := client.AccessTargetPublicV2ModelBundle{
+	bundleData := client.BundleAccessTargetPublicV2Model{
 		BundleID:   "bundle-123",
 		BundleName: "PROD ENV",
 	}
 	bundleTarget.Bundle.SetTo(bundleData)
 
 	integrationTarget := client.AccessTargetPublicV2Model{}
-	integrationData := client.AccessTargetPublicV2ModelIntegration{
+	integrationData := client.IntegrationAccessTargetPublicV2Model{
 		IntegrationID:   "integration-123",
 		IntegrationName: "postgresql",
 		ResourceType:    "database",
@@ -65,7 +65,7 @@ func GenerateAccessFlowResponse() *client.AccessFlowPublicV2Model {
 	integrationTarget.Integration.SetTo(integrationData)
 
 	accessScopeTarget := client.AccessTargetPublicV2Model{}
-	accessScopeData := client.AccessTargetPublicV2ModelAccessScope{
+	accessScopeData := client.AccessScopeAccessTargetPublicV2Model{
 		AccessScopeID:   "scope-123",
 		AccessScopeName: "Test Scope",
 	}
@@ -73,7 +73,7 @@ func GenerateAccessFlowResponse() *client.AccessFlowPublicV2Model {
 
 	response.AccessTargets = []client.AccessTargetPublicV2Model{bundleTarget, integrationTarget, accessScopeTarget}
 
-	approverPolicy := client.AccessFlowPublicV2ModelApproverPolicy{
+	approverPolicy := client.ApproverPolicyPublicV2Model{
 		ApprovalMode: "ANY_OF",
 		ApproverGroups: []client.ApproverGroupPublicV2Model{
 			{
