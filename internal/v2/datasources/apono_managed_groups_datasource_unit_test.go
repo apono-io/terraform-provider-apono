@@ -55,10 +55,8 @@ func TestAponoManagedGroupsDataSource(t *testing.T) {
 					SourceIntegrationName: client.NewOptNilString("Source Integration 1"),
 				},
 				{
-					ID:                    "g-789012",
-					Name:                  "test-group-2",
-					SourceIntegrationID:   client.NewOptNilString(""),
-					SourceIntegrationName: client.NewOptNilString(""),
+					ID:   "g-789012",
+					Name: "test-group-2",
 				},
 			},
 			Pagination: client.PublicApiPaginationInfoModel{
