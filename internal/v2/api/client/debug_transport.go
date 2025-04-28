@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
+const MAX_DEBUG_BODY_LENGTH = 4096
+
 // DebugTransport is an HTTP transport wrapper that logs detailed error information,
 // including response bodies for HTTP errors, to aid in debugging and testing.
 type DebugTransport struct {
@@ -50,8 +52,8 @@ func (t *DebugTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 		resp.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
 		bodyStr := string(bodyBytes)
-		if len(bodyStr) > 4096 {
-			bodyStr = bodyStr[:4096] + "... [truncated]"
+		if len(bodyStr) > MAX_DEBUG_BODY_LENGTH {
+			bodyStr = bodyStr[:MAX_DEBUG_BODY_LENGTH] + "... [truncated]"
 		}
 		bodyStr = strings.TrimSpace(bodyStr)
 
