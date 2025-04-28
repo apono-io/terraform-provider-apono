@@ -76,12 +76,12 @@ func testAccAponoGroupsDataSourceConfig(name1, name2, randomPrefix string) strin
 	prefixedName2 := testcommon.PrefixedName(randomPrefix, name2)
 
 	return `
-resource "apono_group" "test1" {
+resource "apono_managed_group" "test1" {
   name = "` + prefixedName1 + `"
   members = []
 }
 
-resource "apono_group" "test2" {
+resource "apono_managed_group" "test2" {
   name = "` + prefixedName2 + `"
   members = []
 }
@@ -89,16 +89,16 @@ resource "apono_group" "test2" {
 data "apono_groups" "exact" {
   name = "` + prefixedName1 + `"
   depends_on = [
-    apono_group.test1,
-    apono_group.test2
+    apono_managed_group.test1,
+    apono_managed_group.test2
   ]
 }
 
 data "apono_groups" "wildcard" {
   name = "` + randomPrefix + `*"
   depends_on = [
-    apono_group.test1,
-    apono_group.test2
+    apono_managed_group.test1,
+    apono_managed_group.test2
   ]
 }
 `
