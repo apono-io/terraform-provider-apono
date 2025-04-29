@@ -102,12 +102,12 @@ Required:
 Required:
 
 - `type` (String) The type of identity condition.
-- `values` (Set of String) The values to match against.
 
 Optional:
 
 - `match_operator` (String) The match operator. Possible values: "starts_with", "contains", "is_not", "does_not_contain", "is". Defaults to "is".
 - `source_integration_name` (String) The name of the source integration.
+- `values` (Set of String) The values to match against.
 
 
 
@@ -145,12 +145,12 @@ Required:
 Required:
 
 - `type` (String) The type of identity condition.
-- `values` (Set of String) The values to match against.
 
 Optional:
 
 - `match_operator` (String) The match operator. Possible values: "starts_with", "contains", "is_not", "does_not_contain", "is". Defaults to "is".
 - `source_integration_name` (String) The name of the source integration.
+- `values` (Set of String) The values to match against.
 
 
 
