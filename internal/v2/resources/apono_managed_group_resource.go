@@ -37,21 +37,21 @@ func (r *AponoManagedGroupResource) Metadata(_ context.Context, req resource.Met
 
 func (r *AponoManagedGroupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages an Apono Group.",
+		Description: "Manages an Apono Group exclusively - a collection of users for simplified access‑control and approval workflows.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier of the group.",
+				Description: "Unique identifier of the Apono group.",
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the group.",
+				Description: "Display name for the Apono group; must be unique.",
 				Required:    true,
 			},
 			"members": schema.SetAttribute{
-				Description: "List of member email addresses in the group.",
+				Description: "List of user email addresses to include in the group. Must contain at least one member.",
 				ElementType: types.StringType,
 				Required:    true,
 			},

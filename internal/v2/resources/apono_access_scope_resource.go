@@ -34,22 +34,22 @@ func (r *AponoAccessScopeResource) Metadata(_ context.Context, req resource.Meta
 
 func (r *AponoAccessScopeResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages an Apono Access Scope.",
+		Description: "Manages an Apono Access Scope, a logical grouping of cloud resources defined by a flexible query.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier of the access scope.",
+				Description: "Unique identifier for this Apono Access Scope. You can reference it in other Terraform resources or use it to import an existing access scope into your Terraform state.",
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the access scope.",
+				Description: "A descriptive name for the access scope. It must be unique within Apono.",
 				Required:    true,
 			},
 			"query": schema.StringAttribute{
-				Description: "The query expression for the access scope.",
-				Required:    true,
+				MarkdownDescription: "A query string written in [Apono Query Language](https://docs.apono.io/docs/inventory/apono-query-language).",
+				Required:            true,
 			},
 		},
 	}
