@@ -54,7 +54,7 @@ func getIdentityConditionSchema() schema.NestedAttributeObject {
 			},
 			"values": schema.SetAttribute{
 				Description: "The values to match against.",
-				Required:    true,
+				Optional:    true,
 				ElementType: types.StringType,
 			},
 		},
