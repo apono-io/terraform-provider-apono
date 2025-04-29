@@ -82,6 +82,20 @@ resource "apono_access_flow_v2" "test" {
     }
   ]
 
+  approver_policy = {
+    approval_mode = "ANY_OF"
+    approver_groups = [
+      {
+        logical_operator = "AND"
+        approvers = [
+          {
+            type   = "Owner"
+          }
+        ]
+      }
+    ]
+  }
+
   settings = {
     justification_required = %t
     require_approver_reason = false
