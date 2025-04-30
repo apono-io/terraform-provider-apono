@@ -159,8 +159,6 @@ func convertConditionToUpsertRequest(ctx context.Context, model AccessFlowCondit
 		condition.SourceIntegrationReference.SetTo(model.SourceIntegrationName.ValueString())
 	}
 
-	condition.MatchOperator.SetTo(model.MatchOperator.ValueString())
-
 	if !model.Values.IsNull() {
 		var values []string
 
@@ -169,6 +167,9 @@ func convertConditionToUpsertRequest(ctx context.Context, model AccessFlowCondit
 		}
 
 		condition.Values.SetTo(values)
+
+		// Set match operator if values are provided.
+		condition.MatchOperator.SetTo(model.MatchOperator.ValueString())
 	}
 
 	return &condition, nil
