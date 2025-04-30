@@ -27,7 +27,7 @@ func (t *DebugTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	var requestBodyStr string
 	if isAcceptanceTest && req.Body != nil {
 		bodyBytes, _ := io.ReadAll(req.Body)
-		req.Body.Close()
+		_ = req.Body.Close()
 
 		req.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
@@ -46,7 +46,7 @@ func (t *DebugTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	if resp.StatusCode >= 400 {
 		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
-			werr := fmt.Errorf("Failed to read error response body: %w", err)
+			werr := fmt.Errorf("failed to read error response body: %w", err)
 			tflog.Error(req.Context(), werr.Error())
 
 			return resp, werr
