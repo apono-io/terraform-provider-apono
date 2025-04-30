@@ -30,6 +30,17 @@ func TestAccAponoAccessFlowV2Resource(t *testing.T) {
 	userEmail := users[0].Email
 
 	testAccAponoAccessFlowV2Config := func(name string, justificationRequired bool, userEmail string) string {
+		approverBlock := `{
+            type   = "Owner"
+          }`
+		// Add source_integration_name only if it's the test account.
+		if testcommon.IsTestAccount(t) {
+			approverBlock = `{
+            type   = "Owner"
+            source_integration_name = "Jumpcloud IDP"
+          }`
+		}
+
 		return fmt.Sprintf(`
 resource "apono_resource_integration" "test" {
   name                    = "%s-integration"
@@ -88,9 +99,7 @@ resource "apono_access_flow_v2" "test" {
       {
         logical_operator = "AND"
         approvers = [
-          {
-            type   = "Owner"
-          }
+          %s
         ]
       }
     ]
@@ -104,7 +113,7 @@ resource "apono_access_flow_v2" "test" {
     labels = ["test", "example"]
   }
 }
-`, name, integrationType, connectorID, resourceType, name, userEmail, resourceType, resourceType, resourceType, justificationRequired)
+`, name, integrationType, connectorID, resourceType, name, userEmail, resourceType, resourceType, resourceType, approverBlock, justificationRequired)
 	}
 
 	resource.Test(t, resource.TestCase{
