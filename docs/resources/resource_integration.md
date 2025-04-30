@@ -94,7 +94,7 @@ resource "apono_resource_integration" "gcp_sql_integration" {
 - `connected_resource_types` (List of String) List of resource types for the integration to discover.
 - `connector_id` (String) ID of the Apono Connector used for the integration.
 - `integration_config` (Map of String) Integration-specific configuration that accepts key-value pairs. Refer to the [Integration Configuration documentation](https://docs.apono.io/metadata-for-integration-config) for specific configuration values.
-- `name` (String) Human-readable name for the integration.
+- `name` (String) Human-readable name for the integration, must be unique within Apono.
 - `type` (String) Type of the integration (e.g., "aws-account", "postgresql").
 
 ### Optional
@@ -178,3 +178,20 @@ Required:
 
 - `path` (String) The HashiCorp Vault path.
 - `secret_engine` (String) The HashiCorp Vault secret engine.
+
+## Import
+
+In Terraform v1.5.0 and later, use an import block to import apono_resource_integrations using the resource integration identifier. For example:
+
+```terraform
+import {
+  to = apono_resource_integration.example
+  id = "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+
+Or using the CLI:
+
+```shell
+terraform import apono_resource_integration.example 123e4567-e89b-12d3-a456-426614174000
+```

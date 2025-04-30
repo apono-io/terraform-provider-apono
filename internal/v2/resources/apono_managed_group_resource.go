@@ -47,7 +47,7 @@ func (r *AponoManagedGroupResource) Schema(_ context.Context, _ resource.SchemaR
 				},
 			},
 			"name": schema.StringAttribute{
-				Description: "Display name for the Apono group; must be unique.",
+				Description: "Display name for the Apono group; must be unique within Apono groups.",
 				Required:    true,
 			},
 			"members": schema.SetAttribute{

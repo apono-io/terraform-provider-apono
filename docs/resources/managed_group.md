@@ -30,7 +30,7 @@ resource "apono_managed_group" "engineering_team" {
 ### Required
 
 - `members` (Set of String) List of user email addresses to include in the group. Must contain at least one member.
-- `name` (String) Display name for the Apono group; must be unique.
+- `name` (String) Display name for the Apono group; must be unique within Apono groups.
 
 ### Read-Only
 
@@ -38,17 +38,17 @@ resource "apono_managed_group" "engineering_team" {
 
 ## Import
 
-Terraform v1.5.0+ import block:
+In Terraform v1.5.0 and later, use an import block to import apono_managed_group using the Apono group identifier. For example:
 
 ```terraform
 import {
-  to = apono_group.engineering_team
-  id = "grp-abc123"
+  to = apono_managed_group.engineering_team
+  id = "123e4567-e89b-12d3-a456-426614174000"
 }
 ```
 
 Or via CLI:
 
 ```shell
-terraform import apono_group.engineering_team grp-abc123
+terraform import apono_managed_group.engineering_team 123e4567-e89b-12d3-a456-426614174000
 ```

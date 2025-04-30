@@ -40,12 +40,12 @@ data "apono_groups" "from_source" {
 
 ### Optional
 
-- `name` (String) Filters by group name.
-- `source_integration` (String) Filter by the source IDP integration name or ID.
+- `name` (String) Filters the returned groups by their name. Partial matching is supported with asterisks for contains, starts with, and ends with.
+- `source_integration` (String) Filters the returned groups by their name or IDs. Partial matching is supported for names with asterisks for contains, starts with, and ends with.
 
 ### Read-Only
 
-- `groups` (Attributes Set) The list of groups. (see [below for nested schema](#nestedatt--groups))
+- `groups` (Attributes Set) A list of groups that match the filter. (see [below for nested schema](#nestedatt--groups))
 
 <a id="nestedatt--groups"></a>
 ### Nested Schema for `groups`

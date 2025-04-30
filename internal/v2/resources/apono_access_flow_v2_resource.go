@@ -39,21 +39,21 @@ func getIdentityConditionSchema() schema.NestedAttributeObject {
 	return schema.NestedAttributeObject{
 		Attributes: map[string]schema.Attribute{
 			"source_integration_name": schema.StringAttribute{
-				Description: "The name of the source integration.",
+				Description: "The integration the user/group is from.",
 				Optional:    true,
 			},
 			"type": schema.StringAttribute{
-				Description: "The type of identity condition.",
+				Description: "Identity type (e.g., user, group, etc.)",
 				Required:    true,
 			},
 			"match_operator": schema.StringAttribute{
-				Description: `The match operator. Possible values: "starts_with", "contains", "is_not", "does_not_contain", "is". Defaults to "is".`,
+				Description: `Comparison operator. Possible values: "is", "is_not", "contains", "does_not_contain", and "starts_with". Defaults to "is".`,
 				Optional:    true,
 				Default:     stringdefault.StaticString("is"),
 				Computed:    true,
 			},
 			"values": schema.SetAttribute{
-				Description: "The values to match against.",
+				Description: "List of values.",
 				Optional:    true,
 				ElementType: types.StringType,
 			},
@@ -63,17 +63,17 @@ func getIdentityConditionSchema() schema.NestedAttributeObject {
 
 func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages an Apono Access Flow V2.",
+		Description: "Manages an Apono Access Flow that defines how users or groups can request or automatically be granted access to integrations, bundles, or access scopes under specific conditions and policies.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier of the access scope.",
+				Description: "The unique identifier of the access flow.",
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the access flow.",
+				Description: "Human-readable name for the access flow, must be unique.",
 				Required:    true,
 			},
 			"active": schema.BoolAttribute{
@@ -83,42 +83,42 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				Computed:    true,
 			},
 			"trigger": schema.StringAttribute{
-				Description: `The trigger type for the access flow. Can be "SELF_SERVE" or "AUTOMATIC".`,
+				Description: `The trigger type for the access flow. Possible values: SELF_SERVE, AUTOMATIC.`,
 				Required:    true,
 			},
 			"grant_duration_in_min": schema.Int32Attribute{
-				Description: "The grant duration in minutes. Null means indefinite. Cannot be negative.",
+				Description: "How long access is granted, in minutes.",
 				Optional:    true,
 			},
 			"timeframe": schema.SingleNestedAttribute{
-				Description: "Optional timeframe restriction for the access flow.",
+				Description: "Restrict when access can be granted.",
 				Optional:    true,
 				Attributes: map[string]schema.Attribute{
 					"start_time": schema.StringAttribute{
-						Description: "Start time in HH:mm format (e.g., '10:00').",
+						Description: "Start time (e.g., 08:00).",
 						Required:    true,
 					},
 					"end_time": schema.StringAttribute{
-						Description: "End time in HH:mm format (e.g., '23:59').",
+						Description: "End time (e.g., 17:00).",
 						Required:    true,
 					},
 					"days_of_week": schema.SetAttribute{
-						Description: "Days of the week when access is allowed (e.g., ['MONDAY', 'TUESDAY']).",
+						Description: "Days when access is allowed. (e.g., ['MONDAY', 'TUESDAY']).",
 						ElementType: types.StringType,
 						Required:    true,
 					},
 					"time_zone": schema.StringAttribute{
-						Description: "Time zone for the timeframe (e.g., 'Asia/Jerusalem').",
+						Description: "Timezone name (e.g., Asia/Jerusalem).",
 						Required:    true,
 					},
 				},
 			},
 			"approver_policy": schema.SingleNestedAttribute{
-				Description: "Approval policy configuration. If null, requests are auto-approved.",
+				Description: "Approval policy for the access request.",
 				Optional:    true,
 				Attributes: map[string]schema.Attribute{
 					"approval_mode": schema.StringAttribute{
-						Description: `The approval mode. Can be "ANY_OF" or "ALL_OF".`,
+						Description: "Possible values: ANY_OF or ALL_OF. Specifies the logical condition for approvals: ANY_OF: The request is granted if at least one approver from the list approves. ALL_OF: The request is granted only if all approvers in the list approve.",
 						Required:    true,
 					},
 					"approver_groups": schema.SetNestedAttribute{
@@ -127,7 +127,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
 								"logical_operator": schema.StringAttribute{
-									Description: `The logical operator for the approvers. Can be "OR" or "AND".`,
+									Description: `Possible values: AND or OR`,
 									Required:    true,
 								},
 								"approvers": schema.SetNestedAttribute{
@@ -141,11 +141,11 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				},
 			},
 			"requestors": schema.SingleNestedAttribute{
-				Description: "The users or groups that can be granted access through this flow.",
+				Description: "Defines who can request access.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"logical_operator": schema.StringAttribute{
-						Description: `The logical operator for the conditions. Can be "OR" or "AND".`,
+						Description: `Specifies the logical operator to be used between the requestors in the list. Possible values: "AND" or "OR".`,
 						Required:    true,
 					},
 					"conditions": schema.SetNestedAttribute{
@@ -156,17 +156,17 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				},
 			},
 			"access_targets": schema.SetNestedAttribute{
-				Description: "List of access targets for this access flow",
+				Description: "Define the targets accessible when requesting access via this access flow.",
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"integration": schemas.GetIntegrationTargetSchema(),
 						"bundle": schema.SingleNestedAttribute{
-							Description: "Bundle target configuration",
+							Description: "Bundle target.",
 							Optional:    true,
 							Attributes: map[string]schema.Attribute{
 								"name": schema.StringAttribute{
-									Description: "The name of the bundle",
+									Description: "Name of the bundle.",
 									Required:    true,
 								},
 							},
@@ -176,35 +176,35 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				},
 			},
 			"settings": schema.SingleNestedAttribute{
-				Description: "Access flow settings configuration",
+				Description: "Settings for the access flow.",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"justification_required": schema.BoolAttribute{
-						Description: "Whether justification is required when requesting access. Defaults to true.",
+						Description: "Require justification from requestor. Defaults to true. Must be set to false for automatic access flows.",
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
 						Computed:    true,
 					},
 					"require_approver_reason": schema.BoolAttribute{
-						Description: "Whether approvers must provide a reason when approving/denying requests. Defaults to false.",
+						Description: "Require reason from approver. Defaults to false.",
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
 						Computed:    true,
 					},
 					"requester_cannot_approve_self": schema.BoolAttribute{
-						Description: "Whether requesters are prevented from approving their own requests. Defaults to false.",
+						Description: "Requester cannot approve their own requests. Defaults to false.",
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
 						Computed:    true,
 					},
 					"require_mfa": schema.BoolAttribute{
-						Description: "Whether MFA is required for this access flow. Defaults to false.",
+						Description: "Require MFA at approval time. Defaults to false.",
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
 						Computed:    true,
 					},
 					"labels": schema.SetAttribute{
-						Description: "List of labels associated with this access flow",
+						Description: "Custom labels for organizational use.",
 						Optional:    true,
 						ElementType: types.StringType,
 					},

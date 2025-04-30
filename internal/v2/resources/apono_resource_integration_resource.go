@@ -60,7 +60,7 @@ func (r *AponoResourceIntegrationResource) Schema(_ context.Context, _ resource.
 				},
 			},
 			"name": schema.StringAttribute{
-				Description: "Human-readable name for the integration.",
+				Description: "Human-readable name for the integration, must be unique within Apono.",
 				Required:    true,
 			},
 			"type": schema.StringAttribute{
