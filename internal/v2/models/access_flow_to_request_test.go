@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
-	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/testcommon"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -30,7 +29,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 				{
 					SourceIntegrationName: types.StringValue("Okta Directory"),
 					Type:                  types.StringValue("user"),
-					MatchOperator:         types.StringValue(common.DefaultMatchOperator),
+					MatchOperator:         types.StringValue("is"),
 					Values:                testcommon.CreateTestStringSet(t, []string{"person@example.com", "person_two@example.com"}),
 				},
 			},
@@ -66,7 +65,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 						{
 							SourceIntegrationName: types.StringValue("Okta Directory"),
 							Type:                  types.StringValue("user"),
-							MatchOperator:         types.StringValue(common.DefaultMatchOperator),
+							MatchOperator:         types.StringValue("is"),
 							Values:                testcommon.CreateTestStringSet(t, []string{"person@example.com", "person_two@example.com"}),
 						},
 					},
@@ -110,7 +109,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	assert.Equal(t, "Okta Directory", sourceIntegRef)
 	matchOp, ok := result.Requestors.Conditions[0].MatchOperator.Get()
 	require.True(t, ok)
-	assert.Equal(t, common.DefaultMatchOperator, matchOp)
+	assert.Equal(t, "is", matchOp)
 	values, ok := result.Requestors.Conditions[0].Values.Get()
 	require.True(t, ok)
 	assert.ElementsMatch(t, []string{"person@example.com", "person_two@example.com"}, values)
@@ -149,7 +148,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	assert.Equal(t, "Okta Directory", sourceIntegRef)
 	matchOp, ok = approverPolicy.ApproverGroups[0].Approvers[0].MatchOperator.Get()
 	require.True(t, ok)
-	assert.Equal(t, common.DefaultMatchOperator, matchOp)
+	assert.Equal(t, "is", matchOp)
 	values, ok = approverPolicy.ApproverGroups[0].Approvers[0].Values.Get()
 	require.True(t, ok)
 	assert.ElementsMatch(t, []string{"person@example.com", "person_two@example.com"}, values)
@@ -171,7 +170,7 @@ func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
 			Conditions: []AccessFlowCondition{
 				{
 					Type:          types.StringValue("user"),
-					MatchOperator: types.StringValue(common.DefaultMatchOperator),
+					MatchOperator: types.StringValue("is"),
 					Values:        testcommon.CreateTestStringSet(t, []string{"person@example.com"}),
 				},
 			},
@@ -202,7 +201,7 @@ func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
 	assert.Equal(t, "user", result.Requestors.Conditions[0].Type)
 	matchOp, ok := result.Requestors.Conditions[0].MatchOperator.Get()
 	require.True(t, ok)
-	assert.Equal(t, common.DefaultMatchOperator, matchOp)
+	assert.Equal(t, "is", matchOp)
 	values, ok := result.Requestors.Conditions[0].Values.Get()
 	require.True(t, ok)
 	assert.ElementsMatch(t, []string{"person@example.com"}, values)
