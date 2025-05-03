@@ -49,7 +49,7 @@ func getIdentityConditionSchema() schema.NestedAttributeObject {
 			"match_operator": schema.StringAttribute{
 				Description: `Comparison operator. Possible values: "is", "is_not", "contains", "does_not_contain", and "starts_with". Defaults to "is".`,
 				Optional:    true,
-				Default:     stringdefault.StaticString("is"),
+				Default:     stringdefault.StaticString(common.DefaultMatchOperator),
 				Computed:    true,
 			},
 			"values": schema.SetAttribute{
