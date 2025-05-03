@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -133,7 +134,8 @@ func convertRequestorsToModel(ctx context.Context, requestors client.RequestorsP
 
 func convertConditionToModel(ctx context.Context, condition client.ConditionPublicV2Model) (*AccessFlowCondition, error) {
 	model := &AccessFlowCondition{
-		Type: types.StringValue(condition.Type),
+		Type:   types.StringValue(condition.Type),
+		Values: basetypes.NewSetNull(types.StringType),
 	}
 
 	if val, ok := condition.SourceIntegrationName.Get(); ok {
@@ -142,6 +144,8 @@ func convertConditionToModel(ctx context.Context, condition client.ConditionPubl
 
 	if val, ok := condition.MatchOperator.Get(); ok {
 		model.MatchOperator = types.StringValue(val)
+	} else {
+		model.MatchOperator = types.StringValue(common.DefaultMatchOperator)
 	}
 
 	if val, ok := condition.Values.Get(); ok {

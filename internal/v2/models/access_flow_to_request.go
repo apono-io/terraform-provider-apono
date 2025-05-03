@@ -159,15 +159,18 @@ func convertConditionToUpsertRequest(ctx context.Context, model AccessFlowCondit
 		condition.SourceIntegrationReference.SetTo(model.SourceIntegrationName.ValueString())
 	}
 
-	condition.MatchOperator.SetTo(model.MatchOperator.ValueString())
+	if !model.Values.IsNull() {
+		var values []string
 
-	var values []string
+		if diags := model.Values.ElementsAs(ctx, &values, false); diags.HasError() {
+			return nil, fmt.Errorf("failed to convert values: %v", diags)
+		}
 
-	if diags := model.Values.ElementsAs(ctx, &values, false); diags.HasError() {
-		return nil, fmt.Errorf("failed to convert values: %v", diags)
+		condition.Values.SetTo(values)
+
+		// Set match operator if values are provided.
+		condition.MatchOperator.SetTo(model.MatchOperator.ValueString())
 	}
-
-	condition.Values.SetTo(values)
 
 	return &condition, nil
 }
