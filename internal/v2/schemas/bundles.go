@@ -7,7 +7,7 @@ import (
 
 func GetIntegrationTargetSchema() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
-		Description: "Integration target configuration",
+		Description: "Integration target.",
 		Optional:    true,
 		Attributes: map[string]schema.Attribute{
 			"integration_name": schema.StringAttribute{
@@ -24,24 +24,24 @@ func GetIntegrationTargetSchema() schema.SingleNestedAttribute {
 				ElementType: types.StringType,
 			},
 			"resources_scopes": schema.SetNestedAttribute{
-				Description: "Resource scope configuration",
+				Description: "If null, the scope will apply to any resource in the integration target.",
 				Optional:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"scope_mode": schema.StringAttribute{
-							Description: "Scope mode - include_resources or exclude_resources",
+							Description: "Possible values: `include_resources` or `exclude_resources`. `include_resources`: Grants access to the specific resources listed under the `values` field. `exclude_resources`: Grants access to all resources within the integration except those specified in the `values` field.",
 							Required:    true,
 						},
 						"type": schema.StringAttribute{
-							Description: "Type - NAME, APONO_ID, or TAG",
+							Description: "NAME - specify resources by their name, APONO_ID - specify resources by their ID, or TAG - specify resources by tag.",
 							Required:    true,
 						},
 						"key": schema.StringAttribute{
-							Description: "Key - only required for TAG type",
+							Description: "Tag key. Only required if type = TAG",
 							Optional:    true,
 						},
 						"values": schema.SetAttribute{
-							Description: "List of values - Apono IDs, names, or tag values",
+							Description: "Resource values to match (IDs, names, or tag values).",
 							Required:    true,
 							ElementType: types.StringType,
 						},
@@ -54,11 +54,11 @@ func GetIntegrationTargetSchema() schema.SingleNestedAttribute {
 
 func GetAccessScopeTargetSchema() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
-		Description: "Access scope configuration",
+		Description: "Access scope.",
 		Optional:    true,
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "The name of the access scope",
+				Description: "Name of the access scope.",
 				Required:    true,
 			},
 		},

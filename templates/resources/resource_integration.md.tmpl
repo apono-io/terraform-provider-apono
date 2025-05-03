@@ -24,3 +24,20 @@ description: |-
 {{ tffile "examples/resources/apono_resource_integration/gcp_integration_with_owner.tf" }}
 
 {{ .SchemaMarkdown | trimspace }}
+
+## Import
+
+In Terraform v1.5.0 and later, use an import block to import apono_resource_integrations using the resource integration identifier. For example:
+
+```terraform
+import {
+  to = apono_resource_integration.example
+  id = "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+
+Or using the CLI:
+
+```shell
+terraform import apono_resource_integration.example 123e4567-e89b-12d3-a456-426614174000
+```
