@@ -188,6 +188,65 @@ func (_c *Invoker_CreateAccessScopesV1_Call) RunAndReturn(run func(context.Conte
 	return _c
 }
 
+// CreateBundleV2 provides a mock function with given fields: ctx, request
+func (_m *Invoker) CreateBundleV2(ctx context.Context, request *client.UpsertBundlePublicV2Model) (*client.BundlePublicV2Model, error) {
+	ret := _m.Called(ctx, request)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CreateBundleV2")
+	}
+
+	var r0 *client.BundlePublicV2Model
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundlePublicV2Model) (*client.BundlePublicV2Model, error)); ok {
+		return rf(ctx, request)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundlePublicV2Model) *client.BundlePublicV2Model); ok {
+		r0 = rf(ctx, request)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.BundlePublicV2Model)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertBundlePublicV2Model) error); ok {
+		r1 = rf(ctx, request)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_CreateBundleV2_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateBundleV2'
+type Invoker_CreateBundleV2_Call struct {
+	*mock.Call
+}
+
+// CreateBundleV2 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *client.UpsertBundlePublicV2Model
+func (_e *Invoker_Expecter) CreateBundleV2(ctx interface{}, request interface{}) *Invoker_CreateBundleV2_Call {
+	return &Invoker_CreateBundleV2_Call{Call: _e.mock.On("CreateBundleV2", ctx, request)}
+}
+
+func (_c *Invoker_CreateBundleV2_Call) Run(run func(ctx context.Context, request *client.UpsertBundlePublicV2Model)) *Invoker_CreateBundleV2_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*client.UpsertBundlePublicV2Model))
+	})
+	return _c
+}
+
+func (_c *Invoker_CreateBundleV2_Call) Return(_a0 *client.BundlePublicV2Model, _a1 error) *Invoker_CreateBundleV2_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_CreateBundleV2_Call) RunAndReturn(run func(context.Context, *client.UpsertBundlePublicV2Model) (*client.BundlePublicV2Model, error)) *Invoker_CreateBundleV2_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // CreateGroupV1 provides a mock function with given fields: ctx, request
 func (_m *Invoker) CreateGroupV1(ctx context.Context, request *client.CreateGroupV1) (*client.GroupV1, error) {
 	ret := _m.Called(ctx, request)
@@ -396,6 +455,53 @@ func (_c *Invoker_DeleteAccessScopesV1_Call) Return(_a0 error) *Invoker_DeleteAc
 }
 
 func (_c *Invoker_DeleteAccessScopesV1_Call) RunAndReturn(run func(context.Context, client.DeleteAccessScopesV1Params) error) *Invoker_DeleteAccessScopesV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteBundleV2 provides a mock function with given fields: ctx, params
+func (_m *Invoker) DeleteBundleV2(ctx context.Context, params client.DeleteBundleV2Params) error {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteBundleV2")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.DeleteBundleV2Params) error); ok {
+		r0 = rf(ctx, params)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// Invoker_DeleteBundleV2_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteBundleV2'
+type Invoker_DeleteBundleV2_Call struct {
+	*mock.Call
+}
+
+// DeleteBundleV2 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.DeleteBundleV2Params
+func (_e *Invoker_Expecter) DeleteBundleV2(ctx interface{}, params interface{}) *Invoker_DeleteBundleV2_Call {
+	return &Invoker_DeleteBundleV2_Call{Call: _e.mock.On("DeleteBundleV2", ctx, params)}
+}
+
+func (_c *Invoker_DeleteBundleV2_Call) Run(run func(ctx context.Context, params client.DeleteBundleV2Params)) *Invoker_DeleteBundleV2_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.DeleteBundleV2Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_DeleteBundleV2_Call) Return(_a0 error) *Invoker_DeleteBundleV2_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Invoker_DeleteBundleV2_Call) RunAndReturn(run func(context.Context, client.DeleteBundleV2Params) error) *Invoker_DeleteBundleV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -655,6 +761,65 @@ func (_c *Invoker_GetAccessScopesV1_Call) Return(_a0 *client.AccessScopeV1, _a1 
 }
 
 func (_c *Invoker_GetAccessScopesV1_Call) RunAndReturn(run func(context.Context, client.GetAccessScopesV1Params) (*client.AccessScopeV1, error)) *Invoker_GetAccessScopesV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetBundleV2 provides a mock function with given fields: ctx, params
+func (_m *Invoker) GetBundleV2(ctx context.Context, params client.GetBundleV2Params) (*client.BundlePublicV2Model, error) {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetBundleV2")
+	}
+
+	var r0 *client.BundlePublicV2Model
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetBundleV2Params) (*client.BundlePublicV2Model, error)); ok {
+		return rf(ctx, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetBundleV2Params) *client.BundlePublicV2Model); ok {
+		r0 = rf(ctx, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.BundlePublicV2Model)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, client.GetBundleV2Params) error); ok {
+		r1 = rf(ctx, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_GetBundleV2_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetBundleV2'
+type Invoker_GetBundleV2_Call struct {
+	*mock.Call
+}
+
+// GetBundleV2 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.GetBundleV2Params
+func (_e *Invoker_Expecter) GetBundleV2(ctx interface{}, params interface{}) *Invoker_GetBundleV2_Call {
+	return &Invoker_GetBundleV2_Call{Call: _e.mock.On("GetBundleV2", ctx, params)}
+}
+
+func (_c *Invoker_GetBundleV2_Call) Run(run func(ctx context.Context, params client.GetBundleV2Params)) *Invoker_GetBundleV2_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.GetBundleV2Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_GetBundleV2_Call) Return(_a0 *client.BundlePublicV2Model, _a1 error) *Invoker_GetBundleV2_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_GetBundleV2_Call) RunAndReturn(run func(context.Context, client.GetBundleV2Params) (*client.BundlePublicV2Model, error)) *Invoker_GetBundleV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1009,6 +1174,65 @@ func (_c *Invoker_ListAccessScopesV1_Call) Return(_a0 *client.PublicApiListRespo
 }
 
 func (_c *Invoker_ListAccessScopesV1_Call) RunAndReturn(run func(context.Context, client.ListAccessScopesV1Params) (*client.PublicApiListResponseAccessScopePublicV1Model, error)) *Invoker_ListAccessScopesV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ListBundlesV2 provides a mock function with given fields: ctx, params
+func (_m *Invoker) ListBundlesV2(ctx context.Context, params client.ListBundlesV2Params) (*client.PublicApiListResponseBundlePublicV2Model, error) {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListBundlesV2")
+	}
+
+	var r0 *client.PublicApiListResponseBundlePublicV2Model
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.ListBundlesV2Params) (*client.PublicApiListResponseBundlePublicV2Model, error)); ok {
+		return rf(ctx, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, client.ListBundlesV2Params) *client.PublicApiListResponseBundlePublicV2Model); ok {
+		r0 = rf(ctx, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.PublicApiListResponseBundlePublicV2Model)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, client.ListBundlesV2Params) error); ok {
+		r1 = rf(ctx, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_ListBundlesV2_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListBundlesV2'
+type Invoker_ListBundlesV2_Call struct {
+	*mock.Call
+}
+
+// ListBundlesV2 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.ListBundlesV2Params
+func (_e *Invoker_Expecter) ListBundlesV2(ctx interface{}, params interface{}) *Invoker_ListBundlesV2_Call {
+	return &Invoker_ListBundlesV2_Call{Call: _e.mock.On("ListBundlesV2", ctx, params)}
+}
+
+func (_c *Invoker_ListBundlesV2_Call) Run(run func(ctx context.Context, params client.ListBundlesV2Params)) *Invoker_ListBundlesV2_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.ListBundlesV2Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_ListBundlesV2_Call) Return(_a0 *client.PublicApiListResponseBundlePublicV2Model, _a1 error) *Invoker_ListBundlesV2_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_ListBundlesV2_Call) RunAndReturn(run func(context.Context, client.ListBundlesV2Params) (*client.PublicApiListResponseBundlePublicV2Model, error)) *Invoker_ListBundlesV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1470,6 +1694,66 @@ func (_c *Invoker_UpdateAccessScopesV1_Call) Return(_a0 *client.AccessScopeV1, _
 }
 
 func (_c *Invoker_UpdateAccessScopesV1_Call) RunAndReturn(run func(context.Context, *client.UpsertAccessScopeV1, client.UpdateAccessScopesV1Params) (*client.AccessScopeV1, error)) *Invoker_UpdateAccessScopesV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateBundleV2 provides a mock function with given fields: ctx, request, params
+func (_m *Invoker) UpdateBundleV2(ctx context.Context, request *client.UpsertBundlePublicV2Model, params client.UpdateBundleV2Params) (*client.BundlePublicV2Model, error) {
+	ret := _m.Called(ctx, request, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateBundleV2")
+	}
+
+	var r0 *client.BundlePublicV2Model
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundlePublicV2Model, client.UpdateBundleV2Params) (*client.BundlePublicV2Model, error)); ok {
+		return rf(ctx, request, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundlePublicV2Model, client.UpdateBundleV2Params) *client.BundlePublicV2Model); ok {
+		r0 = rf(ctx, request, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.BundlePublicV2Model)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertBundlePublicV2Model, client.UpdateBundleV2Params) error); ok {
+		r1 = rf(ctx, request, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_UpdateBundleV2_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateBundleV2'
+type Invoker_UpdateBundleV2_Call struct {
+	*mock.Call
+}
+
+// UpdateBundleV2 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *client.UpsertBundlePublicV2Model
+//   - params client.UpdateBundleV2Params
+func (_e *Invoker_Expecter) UpdateBundleV2(ctx interface{}, request interface{}, params interface{}) *Invoker_UpdateBundleV2_Call {
+	return &Invoker_UpdateBundleV2_Call{Call: _e.mock.On("UpdateBundleV2", ctx, request, params)}
+}
+
+func (_c *Invoker_UpdateBundleV2_Call) Run(run func(ctx context.Context, request *client.UpsertBundlePublicV2Model, params client.UpdateBundleV2Params)) *Invoker_UpdateBundleV2_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*client.UpsertBundlePublicV2Model), args[2].(client.UpdateBundleV2Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_UpdateBundleV2_Call) Return(_a0 *client.BundlePublicV2Model, _a1 error) *Invoker_UpdateBundleV2_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_UpdateBundleV2_Call) RunAndReturn(run func(context.Context, *client.UpsertBundlePublicV2Model, client.UpdateBundleV2Params) (*client.BundlePublicV2Model, error)) *Invoker_UpdateBundleV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
