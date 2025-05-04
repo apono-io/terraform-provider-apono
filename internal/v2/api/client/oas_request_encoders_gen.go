@@ -39,6 +39,20 @@ func encodeCreateAccessScopesV1Request(
 	return nil
 }
 
+func encodeCreateBundleV2Request(
+	req *UpsertBundlePublicV2Model,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
 func encodeCreateGroupV1Request(
 	req *CreateGroupV1,
 	r *http.Request,
@@ -83,6 +97,20 @@ func encodeUpdateAccessFlowV2Request(
 
 func encodeUpdateAccessScopesV1Request(
 	req *UpsertAccessScopeV1,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateBundleV2Request(
+	req *UpsertBundlePublicV2Model,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

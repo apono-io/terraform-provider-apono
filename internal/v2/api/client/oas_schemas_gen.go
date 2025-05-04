@@ -9,6 +9,60 @@ import (
 	"github.com/go-faster/jx"
 )
 
+// AccessBundleAccessTargetV2.
+// Ref: #/components/schemas/AccessBundleAccessTargetPublicV2Model
+type AccessBundleAccessTargetPublicV2Model struct {
+	Integration OptNilIntegrationAccessTargetPublicV2Model `json:"integration"`
+	AccessScope OptNilAccessScopeAccessTargetPublicV2Model `json:"access_scope"`
+}
+
+// GetIntegration returns the value of Integration.
+func (s *AccessBundleAccessTargetPublicV2Model) GetIntegration() OptNilIntegrationAccessTargetPublicV2Model {
+	return s.Integration
+}
+
+// GetAccessScope returns the value of AccessScope.
+func (s *AccessBundleAccessTargetPublicV2Model) GetAccessScope() OptNilAccessScopeAccessTargetPublicV2Model {
+	return s.AccessScope
+}
+
+// SetIntegration sets the value of Integration.
+func (s *AccessBundleAccessTargetPublicV2Model) SetIntegration(val OptNilIntegrationAccessTargetPublicV2Model) {
+	s.Integration = val
+}
+
+// SetAccessScope sets the value of AccessScope.
+func (s *AccessBundleAccessTargetPublicV2Model) SetAccessScope(val OptNilAccessScopeAccessTargetPublicV2Model) {
+	s.AccessScope = val
+}
+
+// AccessBundleAccessTargetUpsertV2.
+// Ref: #/components/schemas/AccessBundleAccessTargetUpsertPublicV2Model
+type AccessBundleAccessTargetUpsertPublicV2Model struct {
+	Integration OptNilIntegrationAccessTargetUpsertPublicV2Model `json:"integration"`
+	AccessScope OptNilAccessScopeAccessTargetUpsertPublicV2Model `json:"access_scope"`
+}
+
+// GetIntegration returns the value of Integration.
+func (s *AccessBundleAccessTargetUpsertPublicV2Model) GetIntegration() OptNilIntegrationAccessTargetUpsertPublicV2Model {
+	return s.Integration
+}
+
+// GetAccessScope returns the value of AccessScope.
+func (s *AccessBundleAccessTargetUpsertPublicV2Model) GetAccessScope() OptNilAccessScopeAccessTargetUpsertPublicV2Model {
+	return s.AccessScope
+}
+
+// SetIntegration sets the value of Integration.
+func (s *AccessBundleAccessTargetUpsertPublicV2Model) SetIntegration(val OptNilIntegrationAccessTargetUpsertPublicV2Model) {
+	s.Integration = val
+}
+
+// SetAccessScope sets the value of AccessScope.
+func (s *AccessBundleAccessTargetUpsertPublicV2Model) SetAccessScope(val OptNilAccessScopeAccessTargetUpsertPublicV2Model) {
+	s.AccessScope = val
+}
+
 // AccessFlowV2.
 // Ref: #/components/schemas/AccessFlowPublicV2Model
 type AccessFlowPublicV2Model struct {
@@ -785,6 +839,66 @@ func (s *BundleAccessTargetUpsertPublicV2Model) SetBundleReference(val string) {
 	s.BundleReference = val
 }
 
+// BundleV2.
+// Ref: #/components/schemas/BundlePublicV2Model
+type BundlePublicV2Model struct {
+	ID            string                                  `json:"id"`
+	Name          string                                  `json:"name"`
+	AccessTargets []AccessBundleAccessTargetPublicV2Model `json:"access_targets"`
+	CreatedDate   ApiInstant                              `json:"created_date"`
+	UpdatedDate   ApiInstant                              `json:"updated_date"`
+}
+
+// GetID returns the value of ID.
+func (s *BundlePublicV2Model) GetID() string {
+	return s.ID
+}
+
+// GetName returns the value of Name.
+func (s *BundlePublicV2Model) GetName() string {
+	return s.Name
+}
+
+// GetAccessTargets returns the value of AccessTargets.
+func (s *BundlePublicV2Model) GetAccessTargets() []AccessBundleAccessTargetPublicV2Model {
+	return s.AccessTargets
+}
+
+// GetCreatedDate returns the value of CreatedDate.
+func (s *BundlePublicV2Model) GetCreatedDate() ApiInstant {
+	return s.CreatedDate
+}
+
+// GetUpdatedDate returns the value of UpdatedDate.
+func (s *BundlePublicV2Model) GetUpdatedDate() ApiInstant {
+	return s.UpdatedDate
+}
+
+// SetID sets the value of ID.
+func (s *BundlePublicV2Model) SetID(val string) {
+	s.ID = val
+}
+
+// SetName sets the value of Name.
+func (s *BundlePublicV2Model) SetName(val string) {
+	s.Name = val
+}
+
+// SetAccessTargets sets the value of AccessTargets.
+func (s *BundlePublicV2Model) SetAccessTargets(val []AccessBundleAccessTargetPublicV2Model) {
+	s.AccessTargets = val
+}
+
+// SetCreatedDate sets the value of CreatedDate.
+func (s *BundlePublicV2Model) SetCreatedDate(val ApiInstant) {
+	s.CreatedDate = val
+}
+
+// SetUpdatedDate sets the value of UpdatedDate.
+func (s *BundlePublicV2Model) SetUpdatedDate(val ApiInstant) {
+	s.UpdatedDate = val
+}
+
 // ConditionV2.
 // Ref: #/components/schemas/ConditionPublicV2Model
 type ConditionPublicV2Model struct {
@@ -1408,6 +1522,9 @@ type DeleteAccessFlowV2NoContent struct{}
 
 // DeleteAccessScopesV1NoContent is response for DeleteAccessScopesV1 operation.
 type DeleteAccessScopesV1NoContent struct{}
+
+// DeleteBundleV2NoContent is response for DeleteBundleV2 operation.
+type DeleteBundleV2NoContent struct{}
 
 // DeleteConnectorV3NoContent is response for DeleteConnectorV3 operation.
 type DeleteConnectorV3NoContent struct{}
@@ -3859,6 +3976,32 @@ func (s *PublicApiListResponseAccessScopePublicV1Model) SetPagination(val Public
 	s.Pagination = val
 }
 
+// Ref: #/components/schemas/PublicApiListResponseBundlePublicV2Model
+type PublicApiListResponseBundlePublicV2Model struct {
+	Items      []BundlePublicV2Model        `json:"items"`
+	Pagination PublicApiPaginationInfoModel `json:"pagination"`
+}
+
+// GetItems returns the value of Items.
+func (s *PublicApiListResponseBundlePublicV2Model) GetItems() []BundlePublicV2Model {
+	return s.Items
+}
+
+// GetPagination returns the value of Pagination.
+func (s *PublicApiListResponseBundlePublicV2Model) GetPagination() PublicApiPaginationInfoModel {
+	return s.Pagination
+}
+
+// SetItems sets the value of Items.
+func (s *PublicApiListResponseBundlePublicV2Model) SetItems(val []BundlePublicV2Model) {
+	s.Items = val
+}
+
+// SetPagination sets the value of Pagination.
+func (s *PublicApiListResponseBundlePublicV2Model) SetPagination(val PublicApiPaginationInfoModel) {
+	s.Pagination = val
+}
+
 // Ref: #/components/schemas/PublicApiListResponseConnectorPublicV3Model
 type PublicApiListResponseConnectorPublicV3Model struct {
 	Items      []ConnectorV3                `json:"items"`
@@ -4292,6 +4435,33 @@ func (s *UpsertAccessScopeV1) SetName(val string) {
 // SetQuery sets the value of Query.
 func (s *UpsertAccessScopeV1) SetQuery(val string) {
 	s.Query = val
+}
+
+// UpsertBundleV2.
+// Ref: #/components/schemas/UpsertBundlePublicV2Model
+type UpsertBundlePublicV2Model struct {
+	Name          string                                        `json:"name"`
+	AccessTargets []AccessBundleAccessTargetUpsertPublicV2Model `json:"access_targets"`
+}
+
+// GetName returns the value of Name.
+func (s *UpsertBundlePublicV2Model) GetName() string {
+	return s.Name
+}
+
+// GetAccessTargets returns the value of AccessTargets.
+func (s *UpsertBundlePublicV2Model) GetAccessTargets() []AccessBundleAccessTargetUpsertPublicV2Model {
+	return s.AccessTargets
+}
+
+// SetName sets the value of Name.
+func (s *UpsertBundlePublicV2Model) SetName(val string) {
+	s.Name = val
+}
+
+// SetAccessTargets sets the value of AccessTargets.
+func (s *UpsertBundlePublicV2Model) SetAccessTargets(val []AccessBundleAccessTargetUpsertPublicV2Model) {
+	s.AccessTargets = val
 }
 
 // Ref: #/components/schemas/UpsertConnectorV3

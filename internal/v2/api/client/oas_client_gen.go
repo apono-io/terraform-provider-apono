@@ -40,6 +40,12 @@ type Invoker interface {
 	//
 	// POST /api/admin/v1/access-scopes
 	CreateAccessScopesV1(ctx context.Context, request *UpsertAccessScopeV1) (*AccessScopeV1, error)
+	// CreateBundleV2 invokes createBundleV2 operation.
+	//
+	// Create Bundle.
+	//
+	// POST /api/admin/v2/bundles
+	CreateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model) (*BundlePublicV2Model, error)
 	// CreateGroupV1 invokes createGroupV1 operation.
 	//
 	// Create Group.
@@ -64,6 +70,12 @@ type Invoker interface {
 	//
 	// DELETE /api/admin/v1/access-scopes/{id}
 	DeleteAccessScopesV1(ctx context.Context, params DeleteAccessScopesV1Params) error
+	// DeleteBundleV2 invokes deleteBundleV2 operation.
+	//
+	// Delete Bundle.
+	//
+	// DELETE /api/admin/v2/bundles/{id}
+	DeleteBundleV2(ctx context.Context, params DeleteBundleV2Params) error
 	// DeleteConnectorV3 invokes deleteConnectorV3 operation.
 	//
 	// Delete Connector.
@@ -94,6 +106,12 @@ type Invoker interface {
 	//
 	// GET /api/admin/v1/access-scopes/{id}
 	GetAccessScopesV1(ctx context.Context, params GetAccessScopesV1Params) (*AccessScopeV1, error)
+	// GetBundleV2 invokes getBundleV2 operation.
+	//
+	// Get Bundle.
+	//
+	// GET /api/admin/v2/bundles/{id}
+	GetBundleV2(ctx context.Context, params GetBundleV2Params) (*BundlePublicV2Model, error)
 	// GetConnectorV3 invokes getConnectorV3 operation.
 	//
 	// Get Connector.
@@ -130,6 +148,12 @@ type Invoker interface {
 	//
 	// GET /api/admin/v1/access-scopes
 	ListAccessScopesV1(ctx context.Context, params ListAccessScopesV1Params) (*PublicApiListResponseAccessScopePublicV1Model, error)
+	// ListBundlesV2 invokes listBundlesV2 operation.
+	//
+	// List Bundles.
+	//
+	// GET /api/admin/v2/bundles
+	ListBundlesV2(ctx context.Context, params ListBundlesV2Params) (*PublicApiListResponseBundlePublicV2Model, error)
 	// ListConnectorsV3 invokes listConnectorsV3 operation.
 	//
 	// List Connectors.
@@ -178,6 +202,12 @@ type Invoker interface {
 	//
 	// PUT /api/admin/v1/access-scopes/{id}
 	UpdateAccessScopesV1(ctx context.Context, request *UpsertAccessScopeV1, params UpdateAccessScopesV1Params) (*AccessScopeV1, error)
+	// UpdateBundleV2 invokes updateBundleV2 operation.
+	//
+	// Update Bundle.
+	//
+	// PUT /api/admin/v2/bundles/{id}
+	UpdateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model, params UpdateBundleV2Params) (*BundlePublicV2Model, error)
 	// UpdateConnectorV3 invokes updateConnectorV3 operation.
 	//
 	// Update Connector.
@@ -497,6 +527,87 @@ func (c *Client) sendCreateAccessScopesV1(ctx context.Context, request *UpsertAc
 	defer resp.Body.Close()
 
 	result, err := decodeCreateAccessScopesV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateBundleV2 invokes createBundleV2 operation.
+//
+// Create Bundle.
+//
+// POST /api/admin/v2/bundles
+func (c *Client) CreateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model) (*BundlePublicV2Model, error) {
+	res, err := c.sendCreateBundleV2(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model) (res *BundlePublicV2Model, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/admin/v2/bundles"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateBundleV2Request(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, CreateBundleV2Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeCreateBundleV2Response(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -833,6 +944,93 @@ func (c *Client) sendDeleteAccessScopesV1(ctx context.Context, params DeleteAcce
 	defer resp.Body.Close()
 
 	result, err := decodeDeleteAccessScopesV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteBundleV2 invokes deleteBundleV2 operation.
+//
+// Delete Bundle.
+//
+// DELETE /api/admin/v2/bundles/{id}
+func (c *Client) DeleteBundleV2(ctx context.Context, params DeleteBundleV2Params) error {
+	_, err := c.sendDeleteBundleV2(ctx, params)
+	return err
+}
+
+func (c *Client) sendDeleteBundleV2(ctx context.Context, params DeleteBundleV2Params) (res *DeleteBundleV2NoContent, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/admin/v2/bundles/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, DeleteBundleV2Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeDeleteBundleV2Response(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -1268,6 +1466,93 @@ func (c *Client) sendGetAccessScopesV1(ctx context.Context, params GetAccessScop
 	defer resp.Body.Close()
 
 	result, err := decodeGetAccessScopesV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetBundleV2 invokes getBundleV2 operation.
+//
+// Get Bundle.
+//
+// GET /api/admin/v2/bundles/{id}
+func (c *Client) GetBundleV2(ctx context.Context, params GetBundleV2Params) (*BundlePublicV2Model, error) {
+	res, err := c.sendGetBundleV2(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetBundleV2(ctx context.Context, params GetBundleV2Params) (res *BundlePublicV2Model, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/admin/v2/bundles/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, GetBundleV2Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeGetBundleV2Response(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -1845,6 +2130,129 @@ func (c *Client) sendListAccessScopesV1(ctx context.Context, params ListAccessSc
 	defer resp.Body.Close()
 
 	result, err := decodeListAccessScopesV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListBundlesV2 invokes listBundlesV2 operation.
+//
+// List Bundles.
+//
+// GET /api/admin/v2/bundles
+func (c *Client) ListBundlesV2(ctx context.Context, params ListBundlesV2Params) (*PublicApiListResponseBundlePublicV2Model, error) {
+	res, err := c.sendListBundlesV2(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListBundlesV2(ctx context.Context, params ListBundlesV2Params) (res *PublicApiListResponseBundlePublicV2Model, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/admin/v2/bundles"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "limit" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "limit",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Limit.Get(); ok {
+				return e.EncodeValue(conv.Int32ToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "name" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "name",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Name.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "page_token" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page_token",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PageToken.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, ListBundlesV2Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeListBundlesV2Response(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -2816,6 +3224,105 @@ func (c *Client) sendUpdateAccessScopesV1(ctx context.Context, request *UpsertAc
 	defer resp.Body.Close()
 
 	result, err := decodeUpdateAccessScopesV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateBundleV2 invokes updateBundleV2 operation.
+//
+// Update Bundle.
+//
+// PUT /api/admin/v2/bundles/{id}
+func (c *Client) UpdateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model, params UpdateBundleV2Params) (*BundlePublicV2Model, error) {
+	res, err := c.sendUpdateBundleV2(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model, params UpdateBundleV2Params) (res *BundlePublicV2Model, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/admin/v2/bundles/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateBundleV2Request(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, UpdateBundleV2Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeUpdateBundleV2Response(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

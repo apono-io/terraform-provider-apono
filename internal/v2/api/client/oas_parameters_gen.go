@@ -18,6 +18,11 @@ type DeleteAccessScopesV1Params struct {
 	ID string
 }
 
+// DeleteBundleV2Params is parameters of deleteBundleV2 operation.
+type DeleteBundleV2Params struct {
+	ID string
+}
+
 // DeleteConnectorV3Params is parameters of deleteConnectorV3 operation.
 type DeleteConnectorV3Params struct {
 	ID string
@@ -40,6 +45,11 @@ type GetAccessFlowV2Params struct {
 
 // GetAccessScopesV1Params is parameters of getAccessScopesV1 operation.
 type GetAccessScopesV1Params struct {
+	ID string
+}
+
+// GetBundleV2Params is parameters of getBundleV2 operation.
+type GetBundleV2Params struct {
 	ID string
 }
 
@@ -71,6 +81,13 @@ type ListAccessFlowsV2Params struct {
 
 // ListAccessScopesV1Params is parameters of listAccessScopesV1 operation.
 type ListAccessScopesV1Params struct {
+	Limit     OptInt32
+	Name      OptNilString
+	PageToken OptNilString
+}
+
+// ListBundlesV2Params is parameters of listBundlesV2 operation.
+type ListBundlesV2Params struct {
 	Limit     OptInt32
 	Name      OptNilString
 	PageToken OptNilString
@@ -121,6 +138,11 @@ type UpdateAccessFlowV2Params struct {
 
 // UpdateAccessScopesV1Params is parameters of updateAccessScopesV1 operation.
 type UpdateAccessScopesV1Params struct {
+	ID string
+}
+
+// UpdateBundleV2Params is parameters of updateBundleV2 operation.
+type UpdateBundleV2Params struct {
 	ID string
 }
 
