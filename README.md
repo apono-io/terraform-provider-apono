@@ -12,8 +12,6 @@ This provider is currently in beta.
 
 ## Documentation
 
-> **Note:** The minimum supported Terraform version for this provider is **1.3**.
-
 To use this provider in your Terraform module, follow the documentation on [Terraform Registry](https://registry.terraform.io/providers/apono-io/apono/latest/docs).
 
 This project uses the [Terraform documentation plugin](https://github.com/hashicorp/terraform-plugin-docs) to generate provider and resource documentation.

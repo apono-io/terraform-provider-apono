@@ -62,9 +62,11 @@ resource "apono_bundle_v2" "test" {
             values = ["resource1", "resource2"]
           }
         ]
-      }
+      },
+	  access_scope = null
     },
     {
+	  integration = null,
       access_scope = {
         name = apono_access_scope.test.name
       }
