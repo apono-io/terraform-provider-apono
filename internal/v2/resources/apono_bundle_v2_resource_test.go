@@ -84,11 +84,26 @@ resource "apono_bundle_v2" "test" {
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
 					resource.TestCheckResourceAttr(resourceName, "access_targets.#", "2"),
-					resource.TestCheckResourceAttrSet(resourceName, "access_targets.0.integration.integration_name"),
-					resource.TestCheckResourceAttr(resourceName, "access_targets.0.integration.permissions.#", "2"),
-					resource.TestCheckResourceAttr(resourceName, "access_targets.0.integration.resources_scopes.0.scope_mode", "include_resources"),
-					resource.TestCheckResourceAttr(resourceName, "access_targets.0.integration.resources_scopes.0.values.#", "2"),
-					resource.TestCheckResourceAttrSet(resourceName, "access_targets.1.access_scope.name"),
+
+					// Check for the integration access target
+					resource.TestCheckTypeSetElemNestedAttrs(resourceName, "access_targets.*", map[string]string{
+						"integration.resource_type":                 resourceType,
+						"integration.resources_scopes.0.scope_mode": "include_resources",
+						"integration.resources_scopes.0.type":       "NAME",
+					}),
+
+					// Check for permissions
+					resource.TestCheckTypeSetElemAttr(resourceName, "access_targets.*.integration.permissions.*", "read"),
+					resource.TestCheckTypeSetElemAttr(resourceName, "access_targets.*.integration.permissions.*", "write"),
+
+					// Check for resources values
+					resource.TestCheckTypeSetElemAttr(resourceName, "access_targets.*.integration.resources_scopes.0.values.*", "resource1"),
+					resource.TestCheckTypeSetElemAttr(resourceName, "access_targets.*.integration.resources_scopes.0.values.*", "resource2"),
+
+					// Check for the access scope target
+					resource.TestCheckTypeSetElemNestedAttrs(resourceName, "access_targets.*", map[string]string{
+						"access_scope.name": fmt.Sprintf("%s-scope", rName),
+					}),
 				),
 			},
 			{
@@ -97,6 +112,16 @@ resource "apono_bundle_v2" "test" {
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", updatedName),
 					resource.TestCheckResourceAttr(resourceName, "access_targets.#", "2"),
+
+					// Check for the updated integration name
+					resource.TestCheckTypeSetElemNestedAttrs(resourceName, "access_targets.*", map[string]string{
+						"integration.integration_name": fmt.Sprintf("%s-integration", updatedName),
+					}),
+
+					// Check for the updated access scope name
+					resource.TestCheckTypeSetElemNestedAttrs(resourceName, "access_targets.*", map[string]string{
+						"access_scope.name": fmt.Sprintf("%s-scope", updatedName),
+					}),
 				),
 			},
 			{
