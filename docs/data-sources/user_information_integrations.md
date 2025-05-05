@@ -38,8 +38,8 @@ data "apono_user_information_integrations" "pagerduty_and_zenduty_integrations" 
 
 ### Optional
 
-- `name` (String) Filters the returned integrations by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "Google*").
-- `type` (String) Filters the returned integrations by their type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "*duty*").
+- `name` (String) Filters the returned integrations by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "Google\*").
+- `type` (String) Filters the returned integrations by their type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "\*duty\*").
 
 ### Read-Only
 

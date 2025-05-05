@@ -419,9 +419,11 @@ Required:
 
 Optional:
 
-- `match_operator` (String) Comparison operator. Possible values: "is", "is_not", "contains", "does_not_contain", and "starts_with". Defaults to "is".
+- `match_operator` (String) Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
+Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
+For the user attribute specifically, you may also use the user’s email.
 - `source_integration_name` (String) The integration the user/group is from.
-- `values` (Set of String) List of values.
+- `values` (Set of String) List of values according to the attribute type and match_operator (e.g., user emails, group IDs, etc.).
 
 
 
@@ -458,13 +460,16 @@ Required:
 
 Required:
 
-- `type` (String) Identity type (e.g., user, group, etc.)
+- `type` (String) Approver identity type - user, group, Owner, manager, Context Integration, or any other custom value.
+Note: The Owner value must be capitalized (with an uppercase “O”).
 
 Optional:
 
-- `match_operator` (String) Comparison operator. Possible values: "is", "is_not", "contains", "does_not_contain", and "starts_with". Defaults to "is".
-- `source_integration_name` (String) The integration the user/group is from.
-- `values` (Set of String) List of values.
+- `match_operator` (String) Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
+Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
+For the user attribute specifically, you may also use the user’s email.
+- `source_integration_name` (String) Applies when the identity type stems from a Context or IDP integration.
+- `values` (Set of String) Approver values according to the attribute type and match_operator (e.g., user email, group IDs, etc).
 
 
 
