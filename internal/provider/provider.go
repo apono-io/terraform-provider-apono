@@ -181,7 +181,7 @@ func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource 
 		v2resources.NewAponoManagedGroupResource,
 		v2resources.NewAponoResourceIntegrationResource,
 		v2resources.NewAponoAccessFlowV2Resource,
-		//v2resources.NewAponoBundleV2Resource,
+		v2resources.NewAponoBundleV2Resource,
 	}
 }
 

@@ -226,7 +226,7 @@ func (r *AponoAccessFlowV2Resource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	upsertRequest, err := models.AccessFlowV2ModelToUpsertRequest(ctx, plan)
+	upsertRequest, err := models.AccessFlowModelToUpsertRequest(ctx, plan)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating access flow",
@@ -305,7 +305,7 @@ func (r *AponoAccessFlowV2Resource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	upsertRequest, err := models.AccessFlowV2ModelToUpsertRequest(ctx, plan)
+	upsertRequest, err := models.AccessFlowModelToUpsertRequest(ctx, plan)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error updating access flow",

@@ -7,7 +7,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 )
 
-func AccessFlowV2ModelToUpsertRequest(ctx context.Context, model AccessFlowV2Model) (*client.AccessFlowUpsertPublicV2Model, error) {
+func AccessFlowModelToUpsertRequest(ctx context.Context, model AccessFlowV2Model) (*client.AccessFlowUpsertPublicV2Model, error) {
 	upsert := client.AccessFlowUpsertPublicV2Model{
 		Name:    model.Name.ValueString(),
 		Active:  model.Active.ValueBool(),
