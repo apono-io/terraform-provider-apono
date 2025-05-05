@@ -65,12 +65,6 @@ func (r *AponoBundleV2Resource) Configure(ctx context.Context, req resource.Conf
 	common.ConfigureResourceClientInvoker(ctx, req, resp, &r.client)
 }
 
-// printModel prints the content of the given model using spew.Dump for debugging.
-// func printModel(prefix string, v interface{}) {
-// 	fmt.Printf("%s:\n", prefix)
-// 	spew.Dump(v)
-// }
-
 func (r *AponoBundleV2Resource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan models.BundleV2Model
 	diags := req.Plan.Get(ctx, &plan)
@@ -78,8 +72,6 @@ func (r *AponoBundleV2Resource) Create(ctx context.Context, req resource.CreateR
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
-	//printModel("Creating bundle with plan", plan)
 
 	upsertRequest, err := models.BundleModelToUpsertRequest(ctx, plan)
 	if err != nil {
@@ -90,8 +82,6 @@ func (r *AponoBundleV2Resource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	//printModel("Upsert request", upsertRequest)
-
 	bundle, err := r.client.CreateBundleV2(ctx, upsertRequest)
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -101,11 +91,6 @@ func (r *AponoBundleV2Resource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	// Print the raw API response as JSON
-	// if b, err := json.MarshalIndent(bundle, "", "  "); err == nil {
-	// 	fmt.Println("Raw API response from CreateBundleV2:", string(b))
-	// }
-
 	bundleModel, err := models.BundleResponseToModel(ctx, *bundle)
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -114,8 +99,6 @@ func (r *AponoBundleV2Resource) Create(ctx context.Context, req resource.CreateR
 		)
 		return
 	}
-
-	//printModel("Bundle created successfully", bundleModel)
 
 	diags = resp.State.Set(ctx, bundleModel)
 	resp.Diagnostics.Append(diags...)
