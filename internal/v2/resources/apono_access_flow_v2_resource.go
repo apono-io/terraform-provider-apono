@@ -35,25 +35,54 @@ func (r *AponoAccessFlowV2Resource) Metadata(_ context.Context, req resource.Met
 	resp.TypeName = req.ProviderTypeName + "_access_flow_v2"
 }
 
-func getIdentityConditionSchema() schema.NestedAttributeObject {
+type IdentityConditionSchemaType string
+
+const (
+	IdentityConditionSchemaTypeApprover  IdentityConditionSchemaType = "approver"
+	IdentityConditionSchemaTypeRequestor IdentityConditionSchemaType = "requestor"
+)
+
+func getIdentityConditionSchema(conditionType IdentityConditionSchemaType) schema.NestedAttributeObject {
+	var typeDescription string
+	var sourceIntegrationDescription string
+	var valuesDescription string
+	var matchOperatorDescription string
+
+	switch conditionType {
+	case IdentityConditionSchemaTypeApprover:
+		typeDescription = "Approver identity type - user, group, Owner, manager, Context Integration, or any other custom value.\nNote: The Owner value must be capitalized (with an uppercase “O”)."
+		sourceIntegrationDescription = "Applies when the identity type stems from a Context or IDP integration."
+		valuesDescription = "Approver values according to the attribute type and match_operator (e.g., user email, group IDs, etc)."
+		matchOperatorDescription = `Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
+Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
+For the user attribute specifically, you may also use the user’s email.`
+	case IdentityConditionSchemaTypeRequestor:
+		typeDescription = "Identity type (e.g., user, group, etc.)"
+		sourceIntegrationDescription = "The integration the user/group is from."
+		valuesDescription = "List of values according to the attribute type and match_operator (e.g., user emails, group IDs, etc.)."
+		matchOperatorDescription = `Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
+Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
+For the user attribute specifically, you may also use the user’s email.`
+	}
+
 	return schema.NestedAttributeObject{
 		Attributes: map[string]schema.Attribute{
 			"source_integration_name": schema.StringAttribute{
-				Description: "The integration the user/group is from.",
+				Description: sourceIntegrationDescription,
 				Optional:    true,
 			},
 			"type": schema.StringAttribute{
-				Description: "Identity type (e.g., user, group, etc.)",
+				Description: typeDescription,
 				Required:    true,
 			},
 			"match_operator": schema.StringAttribute{
-				Description: `Comparison operator. Possible values: "is", "is_not", "contains", "does_not_contain", and "starts_with". Defaults to "is".`,
+				Description: matchOperatorDescription,
 				Optional:    true,
 				Default:     stringdefault.StaticString(common.DefaultMatchOperator),
 				Computed:    true,
 			},
 			"values": schema.SetAttribute{
-				Description: "List of values.",
+				Description: valuesDescription,
 				Optional:    true,
 				ElementType: types.StringType,
 			},
@@ -133,7 +162,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 								"approvers": schema.SetNestedAttribute{
 									Description:  "List of approvers.",
 									Required:     true,
-									NestedObject: getIdentityConditionSchema(),
+									NestedObject: getIdentityConditionSchema(IdentityConditionSchemaTypeApprover),
 								},
 							},
 						},
@@ -151,7 +180,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 					"conditions": schema.SetNestedAttribute{
 						Description:  "List of conditions. Cannot be empty.",
 						Required:     true,
-						NestedObject: getIdentityConditionSchema(),
+						NestedObject: getIdentityConditionSchema(IdentityConditionSchemaTypeRequestor),
 					},
 				},
 			},
