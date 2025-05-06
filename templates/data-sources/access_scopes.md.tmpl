@@ -1,0 +1,28 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+  {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Type}}: {{.Name}}
+
+{{ .Description | trimspace }}
+
+## Example Usage
+
+### Retrieve All Access Scopes
+
+{{ tffile "examples/data-sources/apono_access_scopes/all-access-scopes.tf" }}
+
+### Retrieve a Specific Access Scope by Exact Name
+
+{{ tffile "examples/data-sources/apono_access_scopes/specific-access-scope.tf" }}
+
+### Retrieve Access Scopes Matching a Pattern
+
+{{ tffile "examples/data-sources/apono_access_scopes/pattern-matching.tf" }}
+
+By specifying a wildcard pattern `*Production*`, all access scopes with a name that contains Production are returned. We then output the total count of those access scopes.
+
+{{ .SchemaMarkdown | trimspace }}
