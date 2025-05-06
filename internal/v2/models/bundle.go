@@ -57,6 +57,21 @@ func BundleResponseToModel(ctx context.Context, response client.BundlePublicV2Mo
 	return &model, nil
 }
 
+func BundlesResponseToModels(ctx context.Context, bundles []client.BundlePublicV2Model) ([]BundleV2Model, error) {
+	var bundleModels []BundleV2Model
+
+	for _, bundle := range bundles {
+		model, err := BundleResponseToModel(ctx, bundle)
+		if err != nil {
+			return nil, err
+		}
+
+		bundleModels = append(bundleModels, *model)
+	}
+
+	return bundleModels, nil
+}
+
 func BundleModelToUpsertRequest(ctx context.Context, model BundleV2Model) (*client.UpsertBundlePublicV2Model, error) {
 	upsert := client.UpsertBundlePublicV2Model{
 		Name: model.Name.ValueString(),

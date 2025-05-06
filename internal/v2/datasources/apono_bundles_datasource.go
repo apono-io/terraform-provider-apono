@@ -11,7 +11,6 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -23,11 +22,6 @@ func NewAponoBundlesDataSource() datasource.DataSource {
 
 type AponoBundlesDataSource struct {
 	client client.Invoker
-}
-
-type bundlesDataSourceModel struct {
-	Name    types.String           `tfsdk:"name"`
-	Bundles []models.BundleV2Model `tfsdk:"bundles"`
 }
 
 func (d *AponoBundlesDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -77,7 +71,7 @@ func (d *AponoBundlesDataSource) Configure(ctx context.Context, req datasource.C
 }
 
 func (d *AponoBundlesDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config bundlesDataSourceModel
+	var config models.BundlesV2DataModel
 	diags := req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -99,16 +93,11 @@ func (d *AponoBundlesDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
-	var bundleModels []models.BundleV2Model
-	for _, bundle := range bundles {
-		model, err := models.BundleResponseToModel(ctx, bundle)
-		if err != nil {
-			resp.Diagnostics.AddError("Error converting bundle", fmt.Sprintf("Could not convert bundle: %v", err))
-			return
-		}
-		bundleModels = append(bundleModels, *model)
+	bundleModels, err := models.BundlesResponseToModels(ctx, bundles)
+	if err != nil {
+		resp.Diagnostics.AddError("Error converting bundles", fmt.Sprintf("Could not convert bundles: %v", err))
+		return
 	}
-
 	config.Bundles = bundleModels
 
 	diags = resp.State.Set(ctx, config)

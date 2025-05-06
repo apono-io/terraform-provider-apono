@@ -6,6 +6,7 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/mocks"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
@@ -74,7 +75,7 @@ func TestAponoBundlesDataSource(t *testing.T) {
 			Schema: schema,
 		}
 
-		diag := plan.Set(ctx, bundlesDataSourceModel{})
+		diag := plan.Set(ctx, models.BundlesV2DataModel{})
 		require.False(t, diag.HasError(), "Error setting plan: %s", diag.Errors())
 
 		req := datasource.ReadRequest{
@@ -95,7 +96,7 @@ func TestAponoBundlesDataSource(t *testing.T) {
 
 		require.False(t, resp.Diagnostics.HasError(), "Read returned error: %s", resp.Diagnostics.Errors())
 
-		var state bundlesDataSourceModel
+		var state models.BundlesV2DataModel
 		resp.Diagnostics.Append(resp.State.Get(ctx, &state)...)
 		require.False(t, resp.Diagnostics.HasError(), "Error getting state: %s", resp.Diagnostics.Errors())
 
