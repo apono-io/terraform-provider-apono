@@ -37,6 +37,11 @@ type BundleV2Model struct {
 	AccessTargets []BundleAccessTargetModel `tfsdk:"access_targets"`
 }
 
+type BundlesV2DataModel struct {
+	Name    types.String    `tfsdk:"name"`
+	Bundles []BundleV2Model `tfsdk:"bundles"`
+}
+
 func BundleResponseToModel(ctx context.Context, response client.BundlePublicV2Model) (*BundleV2Model, error) {
 	model := BundleV2Model{
 		ID:   types.StringValue(response.ID),
