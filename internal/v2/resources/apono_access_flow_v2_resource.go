@@ -189,7 +189,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"integration": schemas.GetIntegrationTargetSchema(),
+						"integration": schemas.GetIntegrationTargetSchema(schemas.ResourceMode),
 						"bundle": schema.SingleNestedAttribute{
 							Description: "Bundle target.",
 							Optional:    true,
@@ -200,7 +200,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 								},
 							},
 						},
-						"access_scope": schemas.GetAccessScopeTargetSchema(),
+						"access_scope": schemas.GetAccessScopeTargetSchema(schemas.ResourceMode),
 					},
 				},
 			},
