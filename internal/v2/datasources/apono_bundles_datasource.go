@@ -71,7 +71,7 @@ func (d *AponoBundlesDataSource) Configure(ctx context.Context, req datasource.C
 }
 
 func (d *AponoBundlesDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config models.BundlesV2DataModel
+	var config models.BundlesDataModel
 	diags := req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

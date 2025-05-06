@@ -75,7 +75,7 @@ func TestAponoBundlesDataSource(t *testing.T) {
 			Schema: schema,
 		}
 
-		diag := plan.Set(ctx, models.BundlesV2DataModel{})
+		diag := plan.Set(ctx, models.BundlesDataModel{})
 		require.False(t, diag.HasError(), "Error setting plan: %s", diag.Errors())
 
 		req := datasource.ReadRequest{
@@ -96,7 +96,7 @@ func TestAponoBundlesDataSource(t *testing.T) {
 
 		require.False(t, resp.Diagnostics.HasError(), "Read returned error: %s", resp.Diagnostics.Errors())
 
-		var state models.BundlesV2DataModel
+		var state models.BundlesDataModel
 		resp.Diagnostics.Append(resp.State.Get(ctx, &state)...)
 		require.False(t, resp.Diagnostics.HasError(), "Error getting state: %s", resp.Diagnostics.Errors())
 

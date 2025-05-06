@@ -37,7 +37,7 @@ type BundleV2Model struct {
 	AccessTargets []BundleAccessTargetModel `tfsdk:"access_targets"`
 }
 
-type BundlesV2DataModel struct {
+type BundlesDataModel struct {
 	Name    types.String    `tfsdk:"name"`
 	Bundles []BundleV2Model `tfsdk:"bundles"`
 }
