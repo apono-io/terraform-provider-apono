@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/testcommon"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/testcommon/testprovider"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
@@ -13,11 +14,11 @@ import (
 func TestAccAponoResourceIntegrationResource(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-test")
 	resourceName := "apono_resource_integration.test"
-	integrationType := "mock-duck"
+	integrationType := common.MockDuck
 
 	connectorID := testcommon.GetTestConnectorID(t)
 
-	resourceType := "mock-duck"
+	resourceType := common.MockDuck
 	customAccessDetails := "Example access instructions"
 	updatedCustomAccessDetails := "Updated access instructions"
 

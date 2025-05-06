@@ -2,11 +2,12 @@ package resources
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
-	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -15,9 +16,8 @@ import (
 )
 
 var (
-	_ resource.Resource                     = &AponoBundleV2Resource{}
-	_ resource.ResourceWithImportState      = &AponoBundleV2Resource{}
-	_ resource.ResourceWithConfigValidators = &AponoBundleV2Resource{}
+	_ resource.Resource                = &AponoBundleV2Resource{}
+	_ resource.ResourceWithImportState = &AponoBundleV2Resource{}
 )
 
 func NewAponoBundleV2Resource() resource.Resource {
@@ -30,19 +30,6 @@ type AponoBundleV2Resource struct {
 
 func (r *AponoBundleV2Resource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_bundle_v2"
-}
-
-func (r *AponoBundleV2Resource) ConfigValidators(_ context.Context) []resource.ConfigValidator {
-	return []resource.ConfigValidator{
-		resourcevalidator.AtLeastOneOf(
-			path.MatchRelative().AtParent().AtName("integration"),
-			path.MatchRelative().AtParent().AtName("access_scope"),
-		),
-		resourcevalidator.Conflicting(
-			path.MatchRelative().AtParent().AtName("integration"),
-			path.MatchRelative().AtParent().AtName("access_scope"),
-		),
-	}
 }
 
 func (r *AponoBundleV2Resource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -79,35 +66,146 @@ func (r *AponoBundleV2Resource) Configure(ctx context.Context, req resource.Conf
 }
 
 func (r *AponoBundleV2Resource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	// Placeholder implementation
-	resp.Diagnostics.AddError(
-		"Not Implemented",
-		"The create method for apono_bundle_v2 resource has not been implemented yet",
-	)
+	var plan models.BundleV2Model
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	upsertRequest, err := models.BundleModelToUpsertRequest(ctx, plan)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating bundle",
+			fmt.Sprintf("Unable to create bundle, got error: %s", err),
+		)
+		return
+	}
+
+	bundle, err := r.client.CreateBundleV2(ctx, upsertRequest)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating bundle",
+			fmt.Sprintf("Unable to create bundle, got error: %s", err),
+		)
+		return
+	}
+
+	bundleModel, err := models.BundleResponseToModel(ctx, *bundle)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating bundle",
+			fmt.Sprintf("Unable to convert API response to model: %s", err),
+		)
+		return
+	}
+
+	diags = resp.State.Set(ctx, bundleModel)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 func (r *AponoBundleV2Resource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	// Placeholder implementation
-	resp.Diagnostics.AddError(
-		"Not Implemented",
-		"The read method for apono_bundle_v2 resource has not been implemented yet",
-	)
+	var state models.BundleV2Model
+	diags := req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	bundle, err := r.client.GetBundleV2(ctx, client.GetBundleV2Params{
+		ID: state.ID.ValueString(),
+	})
+	if err != nil {
+		if client.IsNotFoundError(err) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
+		resp.Diagnostics.AddError("Error reading bundle", fmt.Sprintf("Unable to read bundle with ID %s, got error: %s", state.ID.ValueString(), err))
+		return
+	}
+
+	bundleModel, err := models.BundleResponseToModel(ctx, *bundle)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error reading bundle",
+			fmt.Sprintf("Unable to convert API response to model: %s", err),
+		)
+		return
+	}
+
+	diags = resp.State.Set(ctx, bundleModel)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 func (r *AponoBundleV2Resource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	// Placeholder implementation
-	resp.Diagnostics.AddError(
-		"Not Implemented",
-		"The update method for apono_bundle_v2 resource has not been implemented yet",
-	)
+	var plan models.BundleV2Model
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	upsertRequest, err := models.BundleModelToUpsertRequest(ctx, plan)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error updating bundle",
+			fmt.Sprintf("Unable to update bundle, got error: %s", err),
+		)
+		return
+	}
+
+	bundle, err := r.client.UpdateBundleV2(ctx, upsertRequest, client.UpdateBundleV2Params{
+		ID: plan.ID.ValueString(),
+	})
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error updating bundle",
+			fmt.Sprintf("Unable to update bundle, got error: %s", err),
+		)
+		return
+	}
+
+	bundleModel, err := models.BundleResponseToModel(ctx, *bundle)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error updating bundle",
+			fmt.Sprintf("Unable to convert API response to model: %s", err),
+		)
+		return
+	}
+
+	diags = resp.State.Set(ctx, bundleModel)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 func (r *AponoBundleV2Resource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	// Placeholder implementation
-	resp.Diagnostics.AddError(
-		"Not Implemented",
-		"The delete method for apono_bundle_v2 resource has not been implemented yet",
-	)
+	var state models.BundleV2Model
+	diags := req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	if err := r.client.DeleteBundleV2(ctx, client.DeleteBundleV2Params{
+		ID: state.ID.ValueString(),
+	}); err != nil {
+		if client.IsNotFoundError(err) {
+			return
+		}
+		resp.Diagnostics.AddError(
+			"Error deleting bundle",
+			fmt.Sprintf("Unable to delete bundle with ID %s, got error: %s", state.ID.ValueString(), err),
+		)
+	}
 }
 
 func (r *AponoBundleV2Resource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
