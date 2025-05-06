@@ -52,8 +52,8 @@ func (r *AponoBundleV2Resource) Schema(_ context.Context, _ resource.SchemaReque
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"integration":  schemas.GetIntegrationTargetSchema(),
-						"access_scope": schemas.GetAccessScopeTargetSchema(),
+						"integration":  schemas.GetIntegrationTargetSchema(schemas.ResourceMode),
+						"access_scope": schemas.GetAccessScopeTargetSchema(schemas.ResourceMode),
 					},
 				},
 			},
