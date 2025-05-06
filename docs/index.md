@@ -3,12 +3,18 @@
 page_title: "apono Provider"
 subcategory: ""
 description: |-
-  
+  The Apono provider allows you to manage Apono resources via Terraform.
+  Minimum supported Terraform version: 1.1Recommended Terraform version: 1.3 or aboveYou can configure the provider using environment variables (APONO_ENDPOINT, APONO_PERSONAL_TOKEN) or provider block attributes.See Apono API Authentication https://docs.apono.io/api-reference/api-overview/api-authentication for details on obtaining a personal token.
 ---
 
 # apono Provider
 
+The Apono provider allows you to manage Apono resources via Terraform.
 
+- **Minimum supported Terraform version:** 1.1
+- **Recommended Terraform version:** 1.3 or above
+- You can configure the provider using environment variables (`APONO_ENDPOINT`, `APONO_PERSONAL_TOKEN`) or provider block attributes.
+- See [Apono API Authentication](https://docs.apono.io/api-reference/api-overview/api-authentication) for details on obtaining a personal token.
 
 ## Example Usage
 

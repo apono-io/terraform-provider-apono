@@ -82,7 +82,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	result, err := AccessFlowV2ModelToUpsertRequest(ctx, model)
+	result, err := AccessFlowModelToUpsertRequest(ctx, model)
 	require.NoError(t, err)
 	require.NotNil(t, result)
 
@@ -185,7 +185,7 @@ func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	result, err := AccessFlowV2ModelToUpsertRequest(ctx, model)
+	result, err := AccessFlowModelToUpsertRequest(ctx, model)
 	require.NoError(t, err)
 	require.NotNil(t, result)
 
