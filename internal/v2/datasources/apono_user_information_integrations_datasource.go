@@ -98,12 +98,12 @@ func (d *AponoUserInformationIntegrationsDataSource) Read(ctx context.Context, r
 		name = model.Name.ValueString()
 	}
 
-	itergrationType := ""
+	integrationType := ""
 	if !model.Type.IsNull() {
-		itergrationType = model.Type.ValueString()
+		integrationType = model.Type.ValueString()
 	}
 
-	integrations, err := services.ListIntegrations(ctx, d.client, itergrationType, name, "", []string{common.UserInformationCategory})
+	integrations, err := services.ListIntegrations(ctx, d.client, integrationType, name, "", []string{common.UserInformationCategory})
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving user information integrations", err.Error())
 		return
