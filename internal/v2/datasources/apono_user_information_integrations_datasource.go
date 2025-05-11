@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-var _ datasource.DataSource = &AponoUserInformationIntegrationsDataSource{}
+var _ datasource.DataSourceWithConfigure = &AponoUserInformationIntegrationsDataSource{}
 
 func NewAponoUserInformationIntegrationsDataSource() datasource.DataSource {
 	return &AponoUserInformationIntegrationsDataSource{}
@@ -98,12 +98,12 @@ func (d *AponoUserInformationIntegrationsDataSource) Read(ctx context.Context, r
 		name = model.Name.ValueString()
 	}
 
-	typeName := ""
+	itergrationType := ""
 	if !model.Type.IsNull() {
-		typeName = model.Type.ValueString()
+		itergrationType = model.Type.ValueString()
 	}
 
-	integrations, err := services.ListIntegrations(ctx, d.client, typeName, name, []string{common.UserInformation})
+	integrations, err := services.ListIntegrations(ctx, d.client, itergrationType, name, "", []string{common.UserInformationCategory})
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving user information integrations", err.Error())
 		return

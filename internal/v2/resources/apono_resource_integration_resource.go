@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	_ resource.Resource                     = &AponoResourceIntegrationResource{}
+	_ resource.ResourceWithConfigure        = &AponoResourceIntegrationResource{}
 	_ resource.ResourceWithImportState      = &AponoResourceIntegrationResource{}
 	_ resource.ResourceWithConfigValidators = &AponoResourceIntegrationResource{}
 )

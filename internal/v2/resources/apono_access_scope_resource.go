@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	_ resource.Resource                = &AponoAccessScopeResource{}
+	_ resource.ResourceWithConfigure   = &AponoAccessScopeResource{}
 	_ resource.ResourceWithImportState = &AponoAccessScopeResource{}
 )
 

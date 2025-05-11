@@ -2,24 +2,23 @@ package datasources
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-// Ensure provider defined types fully satisfy framework interfaces
-var _ datasource.DataSource = &ResourceIntegrationsDataSource{}
+var _ datasource.DataSourceWithConfigure = &ResourceIntegrationsDataSource{}
 
 type ResourceIntegrationsDataSource struct {
-}
-
-type ResourceIntegrationsDataSourceModel struct {
-	Name         types.String `tfsdk:"name"`
-	Type         types.String `tfsdk:"type"`
-	ConnectorID  types.String `tfsdk:"connector_id"`
-	Integrations types.Set    `tfsdk:"integrations"`
+	client client.Invoker
 }
 
 func NewResourceIntegrationsDataSource() datasource.DataSource {
@@ -91,27 +90,58 @@ func (d *ResourceIntegrationsDataSource) Schema(ctx context.Context, req datasou
 	}
 }
 
+func (d *ResourceIntegrationsDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+	common.ConfigureDataSourceClientInvoker(ctx, req, resp, &d.client)
+}
+
 func (d *ResourceIntegrationsDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data ResourceIntegrationsDataSourceModel
-
-	// Read Terraform configuration data into the model
-	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	// TODO: Implement actual API call to fetch integrations based on filters
-	// This is a placeholder implementation that sets an empty list
-
-	// Set empty integrations set as placeholder
-	emptyIntegrations, diags := types.SetValueFrom(ctx, types.ObjectType{}, []map[string]interface{}{})
+	var config models.ResourceIntegrationsDataSourceModel
+	diags := req.Config.Get(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	data.Integrations = emptyIntegrations
+	name := ""
+	if !config.Name.IsNull() {
+		name = config.Name.ValueString()
+	}
 
-	// Save data into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	integrationType := ""
+	if !config.Type.IsNull() {
+		integrationType = config.Type.ValueString()
+	}
+	connectorID := ""
+	if !config.ConnectorID.IsNull() {
+		connectorID = config.ConnectorID.ValueString()
+	}
+
+	tflog.Debug(ctx, "Reading resource integrations", map[string]any{
+		"name_filter":         name,
+		"type_filter":         integrationType,
+		"connector_id_filter": connectorID,
+	})
+
+	integrations, err := services.ListIntegrations(ctx, d.client, integrationType, name, connectorID, []string{common.ResourceCategory})
+	if err != nil {
+		resp.Diagnostics.AddError("Error retrieving resource integrations", fmt.Sprintf("Could not retrieve resource integrations: %v", err))
+		return
+	}
+
+	integrationsModel, err := models.ResourceIntegrationsToModel(ctx, integrations)
+	if err != nil {
+		resp.Diagnostics.AddError("Error converting resource integrations", fmt.Sprintf("Could not convert resource integrations: %v", err))
+		return
+	}
+	config.Integrations = integrationsModel.Integrations
+
+	diags = resp.State.Set(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	tflog.Info(ctx, "Resource integrations retrieved successfully", map[string]any{
+		"count": len(config.Integrations),
+	})
 }
