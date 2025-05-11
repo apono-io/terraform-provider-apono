@@ -43,7 +43,7 @@ data "apono_user_information_integrations" "pagerduty_and_zenduty_integrations" 
 
 ### Read-Only
 
-- `integrations` (Attributes List) A list of user information integrations. (see [below for nested schema](#nestedatt--integrations))
+- `integrations` (Attributes Set) A list of user information integrations. (see [below for nested schema](#nestedatt--integrations))
 
 <a id="nestedatt--integrations"></a>
 ### Nested Schema for `integrations`

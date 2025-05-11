@@ -39,7 +39,7 @@ func (d *AponoUserInformationIntegrationsDataSource) Schema(_ context.Context, _
 				Description: `Filters the returned integrations by their type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "\*duty\*").`,
 				Optional:    true,
 			},
-			"integrations": schema.ListNestedAttribute{
+			"integrations": schema.SetNestedAttribute{
 				Description: "A list of user information integrations.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
