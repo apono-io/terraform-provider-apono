@@ -276,10 +276,10 @@ func convertResourcesScopesToUpsertRequest(ctx context.Context, scopes []Integra
 
 func convertSettingsToUpsertRequest(ctx context.Context, model AccessFlowSettingsModel) (*client.AccessFlowSettingsPublicV2Model, error) {
 	settings := client.AccessFlowSettingsPublicV2Model{
-		JustificationRequired:        model.JustificationRequired.ValueBool(),
-		RequireApproverReason:        model.RequireApproverReason.ValueBool(),
-		ApproverCannotApproveHimself: model.RequesterCannotApproveSelf.ValueBool(),
-		RequireMfa:                   model.RequireMFA.ValueBool(),
+		JustificationRequired:         model.JustificationRequired.ValueBool(),
+		RequireApproverReason:         model.RequireApproverReason.ValueBool(),
+		RequestorCannotApproveHimself: model.RequesterCannotApproveSelf.ValueBool(),
+		RequireMfa:                    model.RequireMFA.ValueBool(),
 	}
 
 	if !model.Labels.IsNull() {

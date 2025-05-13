@@ -1,5 +1,3 @@
-# Migration doc for Resource Integration
-
 ## Migrating Integration Resource
 
 This guide will help you migrate your existing Terraform configuration for the Resource Integration from the `apono_integration` resource schema to the updated `apono_resource_integration` schema.

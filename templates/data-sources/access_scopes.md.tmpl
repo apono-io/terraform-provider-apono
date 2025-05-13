@@ -9,6 +9,8 @@ description: |-
 
 {{ .Description | trimspace }}
 
+-> **Note** Please note this datasource is in **beta**.
+
 ## Example Usage
 
 ### Retrieve All Access Scopes
@@ -26,5 +28,3 @@ description: |-
 By specifying a wildcard pattern `*Production*`, all access scopes with a name that contains Production are returned. We then output the total count of those access scopes.
 
 {{ .SchemaMarkdown | trimspace }}
-
--> **Note** Please note this datasource is in **beta**.

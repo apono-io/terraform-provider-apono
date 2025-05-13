@@ -15,11 +15,11 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 		Active:  true,
 		Trigger: "SELF_SERVE",
 		Settings: client.AccessFlowSettingsPublicV2Model{
-			JustificationRequired:        true,
-			RequireApproverReason:        false,
-			ApproverCannotApproveHimself: false,
-			RequireMfa:                   false,
-			Labels:                       []string{"DB", "PROD", "TERRAFORM"},
+			JustificationRequired:         true,
+			RequireApproverReason:         false,
+			RequestorCannotApproveHimself: false,
+			RequireMfa:                    false,
+			Labels:                        []string{"DB", "PROD", "TERRAFORM"},
 		},
 	}
 
@@ -187,11 +187,11 @@ func TestAccessFlowResponseToModel_MinimalFields(t *testing.T) {
 		Active:  false,
 		Trigger: "AUTOMATIC",
 		Settings: client.AccessFlowSettingsPublicV2Model{
-			JustificationRequired:        false,
-			RequireApproverReason:        false,
-			ApproverCannotApproveHimself: false,
-			RequireMfa:                   false,
-			Labels:                       []string{},
+			JustificationRequired:         false,
+			RequireApproverReason:         false,
+			RequestorCannotApproveHimself: false,
+			RequireMfa:                    false,
+			Labels:                        []string{},
 		},
 		Requestors: client.RequestorsPublicV2Model{
 			LogicalOperator: "AND",

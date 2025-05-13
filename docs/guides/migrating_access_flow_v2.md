@@ -1,5 +1,3 @@
-# Migration doc for Access Flow
-
 ## Migrating Access Flow Resource
 
 This guide will help you migrate your existing Terraform configuration for the Access Flow from the `apono_access_flow` resource schema to the updated `apono_access_flow_v2` schema.
