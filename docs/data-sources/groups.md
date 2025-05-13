@@ -9,6 +9,8 @@ description: |-
 
 Retrieves existing groups, Apono-managed and IDP-managed groups. Use this data source to reference groups in the Access Flow resource.
 
+-> **Note** Please note this datasource is in **beta**.
+
 ## Example Usage
 
 ### Exact‑Name Match
@@ -56,5 +58,3 @@ Read-Only:
 - `name` (String) Group display name.
 - `source_integration_id` (String) ID of the IDP integration from which the group originated, or null.
 - `source_integration_name` (String) Human‑readable name of the originating IDP integration, or null.
-
--> **Note** Please note this datasource is in **beta**.

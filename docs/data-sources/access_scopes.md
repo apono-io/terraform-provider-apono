@@ -9,6 +9,8 @@ description: |-
 
 Retrieves existing Apono Access Scopes. This data source can be used to feed existing access scopes into the Access Flow resource.
 
+-> **Note** Please note this datasource is in **beta**.
+
 ## Example Usage
 
 ### Retrieve All Access Scopes
@@ -55,5 +57,3 @@ Read-Only:
 - `id` (String) The unique identifier of the Apono Access Scope.
 - `name` (String) The name of the Apono Access Scope.
 - `query` (String) The full query string that is used to define the access scope.
-
--> **Note** Please note this datasource is in **beta**.

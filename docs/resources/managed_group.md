@@ -9,6 +9,8 @@ description: |-
 
 Manages an Apono Group exclusively - a collection of users for simplified access‑control and approval workflows.
 
+-> **Note** Please note this resource is in **beta**.
+
 ## Example Usage
 
 ### Basic
@@ -52,5 +54,3 @@ Or via CLI:
 ```shell
 terraform import apono_managed_group.engineering_team 123e4567-e89b-12d3-a456-426614174000
 ```
-
--> **Note** Please note this resource is in **beta**.

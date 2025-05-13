@@ -243,7 +243,7 @@ func convertSettingsToModel(ctx context.Context, settings client.AccessFlowSetti
 	model := &AccessFlowSettingsModel{
 		JustificationRequired:      types.BoolValue(settings.JustificationRequired),
 		RequireApproverReason:      types.BoolValue(settings.RequireApproverReason),
-		RequesterCannotApproveSelf: types.BoolValue(settings.ApproverCannotApproveHimself),
+		RequesterCannotApproveSelf: types.BoolValue(settings.RequestorCannotApproveHimself),
 		RequireMFA:                 types.BoolValue(settings.RequireMfa),
 	}
 
