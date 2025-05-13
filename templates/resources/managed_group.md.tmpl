@@ -1,11 +1,11 @@
 ---
-page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+page_title: "{{.Name}} (beta) {{.Type}} - {{.ProviderName}}"
 subcategory: ""
 description: |-
   {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
 ---
 
-# {{.Type}}: {{.Name}}
+# {{.Type}}: {{.Name}} (beta)
 
 {{ .Description | trimspace }}
 
@@ -33,3 +33,5 @@ Or via CLI:
 ```shell
 terraform import apono_managed_group.engineering_team 123e4567-e89b-12d3-a456-426614174000
 ```
+
+-> **Note** Please note this resource is in **beta**.

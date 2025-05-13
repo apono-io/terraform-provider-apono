@@ -1,11 +1,11 @@
 ---
-page_title: "apono_access_scope Resource - terraform-provider-apono"
+page_title: "apono_access_scope (beta) Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages an Apono Access Scope, a logical grouping of cloud resources defined by a flexible query.
 ---
 
-# Resource: apono_access_scope
+# Resource: apono_access_scope (beta)
 
 Manages an Apono Access Scope, a logical grouping of cloud resources defined by a flexible query.
 
@@ -65,3 +65,5 @@ Using terraform import, import apono_access_scope with the access scope identifi
 ```shell
 terraform import apono_access_scope.production_databases 123e4567-e89b-12d3-a456-426614174000
 ```
+
+-> **Note** Please note this resource is in **beta**.
