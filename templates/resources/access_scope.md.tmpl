@@ -1,11 +1,11 @@
 ---
-page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+page_title: "{{.Name}} (beta) {{.Type}} - {{.ProviderName}}"
 subcategory: ""
 description: |-
   {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
 ---
 
-# {{.Type}}: {{.Name}}
+# {{.Type}}: {{.Name}} (beta)
 
 {{ .Description | trimspace }}
 
@@ -35,3 +35,5 @@ Using terraform import, import apono_access_scope with the access scope identifi
 ```shell
 terraform import apono_access_scope.production_databases 123e4567-e89b-12d3-a456-426614174000
 ```
+
+-> **Note** Please note this resource is in **beta**.

@@ -1,11 +1,11 @@
 ---
-page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+page_title: "{{.Name}} (beta) {{.Type}} - {{.ProviderName}}"
 subcategory: ""
 description: |-
   {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
 ---
 
-# {{.Type}}: {{.Name}}
+# {{.Type}}: {{.Name}} (beta)
 
 {{ .Description | trimspace }}
 
@@ -24,3 +24,5 @@ description: |-
 {{ tffile "examples/data-sources/apono_groups/source-integration.tf" }}
 
 {{ .SchemaMarkdown | trimspace }}
+
+-> **Note** Please note this datasource is in **beta**.

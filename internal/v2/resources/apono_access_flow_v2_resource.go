@@ -116,7 +116,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				Required:    true,
 			},
 			"grant_duration_in_min": schema.Int32Attribute{
-				Description: "How long access is granted, in minutes.",
+				Description: "How long access is granted, in minutes. If not specified, the grant duration defaults to indefinite.",
 				Optional:    true,
 			},
 			"timeframe": schema.SingleNestedAttribute{

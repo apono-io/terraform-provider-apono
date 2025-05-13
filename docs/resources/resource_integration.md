@@ -1,11 +1,11 @@
 ---
-page_title: "apono_resource_integration Resource - terraform-provider-apono"
+page_title: "apono_resource_integration (beta) Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.
 ---
 
-# Resource: apono_resource_integration
+# Resource: apono_resource_integration (beta)
 
 Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.
 
@@ -205,3 +205,5 @@ Or using the CLI:
 ```shell
 terraform import apono_resource_integration.example 123e4567-e89b-12d3-a456-426614174000
 ```
+
+-> **Note** Please note this resource is in **beta**.
