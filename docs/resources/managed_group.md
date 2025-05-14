@@ -1,13 +1,15 @@
 ---
-page_title: "apono_managed_group Resource - terraform-provider-apono"
+page_title: "apono_managed_group (beta) Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages an Apono Group exclusively - a collection of users for simplified access‑control and approval workflows.
 ---
 
-# Resource: apono_managed_group
+# Resource: apono_managed_group (beta)
 
 Manages an Apono Group exclusively - a collection of users for simplified access‑control and approval workflows.
+
+-> **Note** Please note this resource is in **beta**.
 
 ## Example Usage
 

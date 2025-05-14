@@ -1,13 +1,15 @@
 ---
-page_title: "apono_groups Data Source - terraform-provider-apono"
+page_title: "apono_groups (beta) Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
     Retrieves existing groups, Apono-managed and IDP-managed groups. Use this data source to reference groups in the Access Flow resource.
 ---
 
-# Data Source: apono_groups
+# Data Source: apono_groups (beta)
 
 Retrieves existing groups, Apono-managed and IDP-managed groups. Use this data source to reference groups in the Access Flow resource.
+
+-> **Note** Please note this datasource is in **beta**.
 
 ## Example Usage
 
@@ -45,7 +47,7 @@ data "apono_groups" "from_source" {
 
 ### Read-Only
 
-- `groups` (Attributes Set) A list of groups that match the filter. (see [below for nested schema](#nestedatt--groups))
+- `groups` (Attributes Set) A set of groups that match the filter. (see [below for nested schema](#nestedatt--groups))
 
 <a id="nestedatt--groups"></a>
 ### Nested Schema for `groups`

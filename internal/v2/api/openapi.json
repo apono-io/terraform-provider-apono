@@ -852,20 +852,28 @@
         "operationId": "listUsersV3",
         "parameters": [
           {
+            "name": "first_name",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "last_name",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
             "schema": {
               "format": "int32",
               "default": 100,
               "type": "integer"
-            }
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
             }
           },
           {
@@ -880,7 +888,10 @@
             "name": "role",
             "in": "query",
             "schema": {
-              "type": "string",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
               "nullable": true
             }
           },
@@ -1168,6 +1179,17 @@
         "operationId": "listAccessSessionsV1",
         "parameters": [
           {
+            "name": "integration_id",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
             "schema": {
@@ -1181,6 +1203,17 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "request_ids",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
               "nullable": true
             }
           }
@@ -1363,17 +1396,6 @@
             }
           },
           {
-            "name": "integration_name",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "nullable": true
-            }
-          },
-          {
             "name": "limit",
             "in": "query",
             "schema": {
@@ -1392,28 +1414,6 @@
           },
           {
             "name": "permission_name",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "nullable": true
-            }
-          },
-          {
-            "name": "resource_name",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "nullable": true
-            }
-          },
-          {
-            "name": "resource_source_id",
             "in": "query",
             "schema": {
               "type": "array",
@@ -3482,7 +3482,7 @@
         "required": [
           "justification_required",
           "require_approver_reason",
-          "approver_cannot_approve_himself",
+          "requestor_cannot_approve_himself",
           "require_mfa",
           "labels"
         ],
@@ -3495,7 +3495,7 @@
           "require_approver_reason": {
             "type": "boolean"
           },
-          "approver_cannot_approve_himself": {
+          "requestor_cannot_approve_himself": {
             "type": "boolean"
           },
           "require_mfa": {
@@ -4360,8 +4360,8 @@
           "id",
           "name",
           "access_targets",
-          "created_date",
-          "updated_date"
+          "creation_date",
+          "update_date"
         ],
         "description": "BundleV2",
         "type": "object",
@@ -4378,10 +4378,10 @@
               "$ref": "#/components/schemas/AccessBundleAccessTargetPublicV2Model"
             }
           },
-          "created_date": {
+          "creation_date": {
             "$ref": "#/components/schemas/ApiInstant"
           },
-          "updated_date": {
+          "update_date": {
             "$ref": "#/components/schemas/ApiInstant"
           }
         }
@@ -6130,6 +6130,9 @@
           "request_revoke_date",
           "requestor_name",
           "requestor_email",
+          "grantee_name",
+          "grantee_id",
+          "grantee_type",
           "integration",
           "resources",
           "resource_type",

@@ -1,13 +1,15 @@
 ---
-page_title: "apono_access_flow_v2 Resource - terraform-provider-apono"
+page_title: "apono_access_flow_v2 (beta) Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages an Apono Access Flow that defines how users or groups can request or automatically be granted access to integrations, bundles, or access scopes under specific conditions and policies.
 ---
 
-# Resource: apono_access_flow_v2
+# Resource: apono_access_flow_v2 (beta)
 
 Manages an Apono Access Flow that defines how users or groups can request or automatically be granted access to integrations, bundles, or access scopes under specific conditions and policies.
+
+-> **Note** Please note this resource is in **beta**.
 
 ## Example Usage
 
@@ -341,7 +343,7 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
 
 - `active` (Boolean) Whether the access flow is active. Defaults to true.
 - `approver_policy` (Attributes) Approval policy for the access request. (see [below for nested schema](#nestedatt--approver_policy))
-- `grant_duration_in_min` (Number) How long access is granted, in minutes.
+- `grant_duration_in_min` (Number) How long access is granted, in minutes. If not specified, the grant duration defaults to indefinite.
 - `timeframe` (Attributes) Restrict when access can be granted. (see [below for nested schema](#nestedatt--timeframe))
 
 ### Read-Only

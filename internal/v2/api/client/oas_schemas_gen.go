@@ -203,11 +203,11 @@ func (s *AccessFlowPublicV2Model) SetUpdateDate(val OptNilApiInstant) {
 // AccessFlowSettingsV2.
 // Ref: #/components/schemas/AccessFlowSettingsPublicV2Model
 type AccessFlowSettingsPublicV2Model struct {
-	JustificationRequired        bool     `json:"justification_required"`
-	RequireApproverReason        bool     `json:"require_approver_reason"`
-	ApproverCannotApproveHimself bool     `json:"approver_cannot_approve_himself"`
-	RequireMfa                   bool     `json:"require_mfa"`
-	Labels                       []string `json:"labels"`
+	JustificationRequired         bool     `json:"justification_required"`
+	RequireApproverReason         bool     `json:"require_approver_reason"`
+	RequestorCannotApproveHimself bool     `json:"requestor_cannot_approve_himself"`
+	RequireMfa                    bool     `json:"require_mfa"`
+	Labels                        []string `json:"labels"`
 }
 
 // GetJustificationRequired returns the value of JustificationRequired.
@@ -220,9 +220,9 @@ func (s *AccessFlowSettingsPublicV2Model) GetRequireApproverReason() bool {
 	return s.RequireApproverReason
 }
 
-// GetApproverCannotApproveHimself returns the value of ApproverCannotApproveHimself.
-func (s *AccessFlowSettingsPublicV2Model) GetApproverCannotApproveHimself() bool {
-	return s.ApproverCannotApproveHimself
+// GetRequestorCannotApproveHimself returns the value of RequestorCannotApproveHimself.
+func (s *AccessFlowSettingsPublicV2Model) GetRequestorCannotApproveHimself() bool {
+	return s.RequestorCannotApproveHimself
 }
 
 // GetRequireMfa returns the value of RequireMfa.
@@ -245,9 +245,9 @@ func (s *AccessFlowSettingsPublicV2Model) SetRequireApproverReason(val bool) {
 	s.RequireApproverReason = val
 }
 
-// SetApproverCannotApproveHimself sets the value of ApproverCannotApproveHimself.
-func (s *AccessFlowSettingsPublicV2Model) SetApproverCannotApproveHimself(val bool) {
-	s.ApproverCannotApproveHimself = val
+// SetRequestorCannotApproveHimself sets the value of RequestorCannotApproveHimself.
+func (s *AccessFlowSettingsPublicV2Model) SetRequestorCannotApproveHimself(val bool) {
+	s.RequestorCannotApproveHimself = val
 }
 
 // SetRequireMfa sets the value of RequireMfa.
@@ -845,8 +845,8 @@ type BundlePublicV2Model struct {
 	ID            string                                  `json:"id"`
 	Name          string                                  `json:"name"`
 	AccessTargets []AccessBundleAccessTargetPublicV2Model `json:"access_targets"`
-	CreatedDate   ApiInstant                              `json:"created_date"`
-	UpdatedDate   ApiInstant                              `json:"updated_date"`
+	CreationDate  ApiInstant                              `json:"creation_date"`
+	UpdateDate    ApiInstant                              `json:"update_date"`
 }
 
 // GetID returns the value of ID.
@@ -864,14 +864,14 @@ func (s *BundlePublicV2Model) GetAccessTargets() []AccessBundleAccessTargetPubli
 	return s.AccessTargets
 }
 
-// GetCreatedDate returns the value of CreatedDate.
-func (s *BundlePublicV2Model) GetCreatedDate() ApiInstant {
-	return s.CreatedDate
+// GetCreationDate returns the value of CreationDate.
+func (s *BundlePublicV2Model) GetCreationDate() ApiInstant {
+	return s.CreationDate
 }
 
-// GetUpdatedDate returns the value of UpdatedDate.
-func (s *BundlePublicV2Model) GetUpdatedDate() ApiInstant {
-	return s.UpdatedDate
+// GetUpdateDate returns the value of UpdateDate.
+func (s *BundlePublicV2Model) GetUpdateDate() ApiInstant {
+	return s.UpdateDate
 }
 
 // SetID sets the value of ID.
@@ -889,14 +889,14 @@ func (s *BundlePublicV2Model) SetAccessTargets(val []AccessBundleAccessTargetPub
 	s.AccessTargets = val
 }
 
-// SetCreatedDate sets the value of CreatedDate.
-func (s *BundlePublicV2Model) SetCreatedDate(val ApiInstant) {
-	s.CreatedDate = val
+// SetCreationDate sets the value of CreationDate.
+func (s *BundlePublicV2Model) SetCreationDate(val ApiInstant) {
+	s.CreationDate = val
 }
 
-// SetUpdatedDate sets the value of UpdatedDate.
-func (s *BundlePublicV2Model) SetUpdatedDate(val ApiInstant) {
-	s.UpdatedDate = val
+// SetUpdateDate sets the value of UpdateDate.
+func (s *BundlePublicV2Model) SetUpdateDate(val ApiInstant) {
+	s.UpdateDate = val
 }
 
 // ConditionV2.

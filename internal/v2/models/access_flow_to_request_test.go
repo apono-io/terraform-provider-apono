@@ -155,7 +155,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 
 	assert.True(t, result.Settings.JustificationRequired)
 	assert.False(t, result.Settings.RequireApproverReason)
-	assert.False(t, result.Settings.ApproverCannotApproveHimself)
+	assert.False(t, result.Settings.RequestorCannotApproveHimself)
 	assert.False(t, result.Settings.RequireMfa)
 	assert.ElementsMatch(t, []string{"DB", "PROD", "TERRAFORM"}, result.Settings.Labels)
 }

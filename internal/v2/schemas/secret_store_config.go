@@ -88,6 +88,23 @@ func GetSecretStoreConfigSchema(mode SchemaMode) schema.SingleNestedAttribute {
 					},
 				},
 			},
+			"kubernetes": schema.SingleNestedAttribute{
+				Description: "Kubernetes secret store configuration.",
+				Optional:    !isComputed,
+				Computed:    isComputed,
+				Attributes: map[string]schema.Attribute{
+					"namespace": schema.StringAttribute{
+						Description: "The Kubernetes namespace.",
+						Required:    fieldsRequired,
+						Computed:    fieldsComputed,
+					},
+					"name": schema.StringAttribute{
+						Description: "The Kubernetes secret name.",
+						Required:    fieldsRequired,
+						Computed:    fieldsComputed,
+					},
+				},
+			},
 		},
 	}
 }

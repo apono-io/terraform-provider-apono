@@ -12,10 +12,11 @@ import (
 )
 
 type SecretStoreConfig struct {
-	AWS            *AWSSecretConfig      `tfsdk:"aws"`
-	GCP            *GCPSecretConfig      `tfsdk:"gcp"`
-	Azure          *AzureSecretConfig    `tfsdk:"azure"`
-	HashicorpVault *HashicorpVaultConfig `tfsdk:"hashicorp_vault"`
+	AWS            *AWSSecretConfig        `tfsdk:"aws"`
+	GCP            *GCPSecretConfig        `tfsdk:"gcp"`
+	Azure          *AzureSecretConfig      `tfsdk:"azure"`
+	HashicorpVault *HashicorpVaultConfig   `tfsdk:"hashicorp_vault"`
+	Kubernetes     *KubernetesSecretConfig `tfsdk:"kubernetes"`
 }
 
 type AWSSecretConfig struct {
@@ -36,6 +37,11 @@ type AzureSecretConfig struct {
 type HashicorpVaultConfig struct {
 	SecretEngine types.String `tfsdk:"secret_engine"`
 	Path         types.String `tfsdk:"path"`
+}
+
+type KubernetesSecretConfig struct {
+	Namespace types.String `tfsdk:"namespace"`
+	Name      types.String `tfsdk:"name"`
 }
 
 func upsertSecretStoreConfig(config *SecretStoreConfig) client.UpsertSecretStoreConfigV4 {
@@ -65,6 +71,12 @@ func upsertSecretStoreConfig(config *SecretStoreConfig) client.UpsertSecretStore
 			SecretEngine: vaultConfig.SecretEngine.ValueString(),
 			Path:         vaultConfig.Path.ValueString(),
 		})
+	} else if config.Kubernetes != nil {
+		k8sConfig := config.Kubernetes
+		secretConfig.Kubernetes = client.NewOptNilKubernetesSecretConfigV4(client.KubernetesSecretConfigV4{
+			Namespace: k8sConfig.Namespace.ValueString(),
+			Name:      k8sConfig.Name.ValueString(),
+		})
 	}
 
 	return secretConfig
@@ -92,6 +104,11 @@ func convertSecretStoreConfigToModel(apiSecretConfig client.SecretStoreConfigV4)
 		secretConfig.HashicorpVault = &HashicorpVaultConfig{
 			SecretEngine: types.StringValue(vaultConfig.SecretEngine),
 			Path:         types.StringValue(vaultConfig.Path),
+		}
+	} else if k8sConfig, ok := apiSecretConfig.Kubernetes.Get(); ok {
+		secretConfig.Kubernetes = &KubernetesSecretConfig{
+			Namespace: types.StringValue(k8sConfig.Namespace),
+			Name:      types.StringValue(k8sConfig.Name),
 		}
 	}
 
