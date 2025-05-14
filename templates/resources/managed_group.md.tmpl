@@ -1,13 +1,15 @@
 ---
-page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+page_title: "{{.Name}} (beta) {{.Type}} - {{.ProviderName}}"
 subcategory: ""
 description: |-
   {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
 ---
 
-# {{.Type}}: {{.Name}}
+# {{.Type}}: {{.Name}} (beta)
 
 {{ .Description | trimspace }}
+
+-> **Note** Please note this resource is in **beta**.
 
 ## Example Usage
 

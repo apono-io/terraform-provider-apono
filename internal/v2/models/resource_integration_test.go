@@ -166,6 +166,31 @@ func TestResourceIntegrationModelToCreateRequest(t *testing.T) {
 		assert.Equal(t, "secret/data/postgres", secretConfig.HashicorpVault.Value.Path)
 	})
 
+	t.Run("with Kubernetes secret store config", func(t *testing.T) {
+		model := ResourceIntegrationModel{
+			Name: types.StringValue("test-integration"),
+			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
+			SecretStoreConfig: &SecretStoreConfig{
+				Kubernetes: &KubernetesSecretConfig{
+					Namespace: types.StringValue("test-namespace"),
+					Name:      types.StringValue("test-secret"),
+				},
+			},
+		}
+
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
+
+		require.NoError(t, err)
+		assert.True(t, req.SecretStoreConfig.IsSet())
+		secretConfig := req.SecretStoreConfig.Value
+		assert.True(t, secretConfig.Kubernetes.IsSet())
+		assert.Equal(t, "test-namespace", secretConfig.Kubernetes.Value.Namespace)
+		assert.Equal(t, "test-secret", secretConfig.Kubernetes.Value.Name)
+	})
+
 	t.Run("with custom access details", func(t *testing.T) {
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("test-integration"),
@@ -438,6 +463,38 @@ func TestResourceIntegrationToModel(t *testing.T) {
 		assert.Nil(t, model.SecretStoreConfig.Azure)
 	})
 
+	t.Run("with Kubernetes secret store config", func(t *testing.T) {
+		integration := &client.IntegrationV4{
+			ID:                     "integration-id",
+			Name:                   "test-integration",
+			Type:                   "postgres",
+			ConnectorID:            client.NewOptNilString("connector-id"),
+			ConnectedResourceTypes: client.NewOptNilStringArray([]string{"database"}),
+			SecretStoreConfig: client.NewOptNilSecretStoreConfigV4(
+				client.SecretStoreConfigV4{
+					Kubernetes: client.NewOptNilKubernetesSecretConfigV4(
+						client.KubernetesSecretConfigV4{
+							Namespace: "my-namespace",
+							Name:      "my-secret",
+						},
+					),
+				},
+			),
+		}
+
+		model, err := ResourceIntegrationToModel(ctx, integration)
+
+		require.NoError(t, err)
+		require.NotNil(t, model.SecretStoreConfig)
+		require.NotNil(t, model.SecretStoreConfig.Kubernetes)
+		assert.Equal(t, "my-namespace", model.SecretStoreConfig.Kubernetes.Namespace.ValueString())
+		assert.Equal(t, "my-secret", model.SecretStoreConfig.Kubernetes.Name.ValueString())
+		assert.Nil(t, model.SecretStoreConfig.AWS)
+		assert.Nil(t, model.SecretStoreConfig.GCP)
+		assert.Nil(t, model.SecretStoreConfig.Azure)
+		assert.Nil(t, model.SecretStoreConfig.HashicorpVault)
+	})
+
 	t.Run("with custom access details", func(t *testing.T) {
 		integration := &client.IntegrationV4{
 			ID:                     "integration-id",
@@ -669,6 +726,30 @@ func TestResourceIntegrationModelToUpdateRequest(t *testing.T) {
 		assert.True(t, secretConfig.HashicorpVault.IsSet())
 		assert.Equal(t, "kv2", secretConfig.HashicorpVault.Value.SecretEngine)
 		assert.Equal(t, "secret/data/new-postgres", secretConfig.HashicorpVault.Value.Path)
+	})
+
+	t.Run("with Kubernetes secret store config", func(t *testing.T) {
+		model := ResourceIntegrationModel{
+			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
+			SecretStoreConfig: &SecretStoreConfig{
+				Kubernetes: &KubernetesSecretConfig{
+					Namespace: types.StringValue("updated-namespace"),
+					Name:      types.StringValue("updated-secret"),
+				},
+			},
+		}
+
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
+
+		require.NoError(t, err)
+		assert.True(t, req.SecretStoreConfig.IsSet())
+		secretConfig := req.SecretStoreConfig.Value
+		assert.True(t, secretConfig.Kubernetes.IsSet())
+		assert.Equal(t, "updated-namespace", secretConfig.Kubernetes.Value.Namespace)
+		assert.Equal(t, "updated-secret", secretConfig.Kubernetes.Value.Name)
 	})
 
 	t.Run("with custom access details", func(t *testing.T) {

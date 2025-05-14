@@ -480,8 +480,8 @@ func (s *AccessFlowSettingsPublicV2Model) encodeFields(e *jx.Encoder) {
 		e.Bool(s.RequireApproverReason)
 	}
 	{
-		e.FieldStart("approver_cannot_approve_himself")
-		e.Bool(s.ApproverCannotApproveHimself)
+		e.FieldStart("requestor_cannot_approve_himself")
+		e.Bool(s.RequestorCannotApproveHimself)
 	}
 	{
 		e.FieldStart("require_mfa")
@@ -500,7 +500,7 @@ func (s *AccessFlowSettingsPublicV2Model) encodeFields(e *jx.Encoder) {
 var jsonFieldsNameOfAccessFlowSettingsPublicV2Model = [5]string{
 	0: "justification_required",
 	1: "require_approver_reason",
-	2: "approver_cannot_approve_himself",
+	2: "requestor_cannot_approve_himself",
 	3: "require_mfa",
 	4: "labels",
 }
@@ -538,17 +538,17 @@ func (s *AccessFlowSettingsPublicV2Model) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"require_approver_reason\"")
 			}
-		case "approver_cannot_approve_himself":
+		case "requestor_cannot_approve_himself":
 			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				v, err := d.Bool()
-				s.ApproverCannotApproveHimself = bool(v)
+				s.RequestorCannotApproveHimself = bool(v)
 				if err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"approver_cannot_approve_himself\"")
+				return errors.Wrap(err, "decode field \"requestor_cannot_approve_himself\"")
 			}
 		case "require_mfa":
 			requiredBitSet[0] |= 1 << 3
@@ -2740,12 +2740,12 @@ func (s *BundlePublicV2Model) encodeFields(e *jx.Encoder) {
 		e.ArrEnd()
 	}
 	{
-		e.FieldStart("created_date")
-		s.CreatedDate.Encode(e)
+		e.FieldStart("creation_date")
+		s.CreationDate.Encode(e)
 	}
 	{
-		e.FieldStart("updated_date")
-		s.UpdatedDate.Encode(e)
+		e.FieldStart("update_date")
+		s.UpdateDate.Encode(e)
 	}
 }
 
@@ -2753,8 +2753,8 @@ var jsonFieldsNameOfBundlePublicV2Model = [5]string{
 	0: "id",
 	1: "name",
 	2: "access_targets",
-	3: "created_date",
-	4: "updated_date",
+	3: "creation_date",
+	4: "update_date",
 }
 
 // Decode decodes BundlePublicV2Model from json.
@@ -2808,25 +2808,25 @@ func (s *BundlePublicV2Model) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"access_targets\"")
 			}
-		case "created_date":
+		case "creation_date":
 			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				if err := s.CreatedDate.Decode(d); err != nil {
+				if err := s.CreationDate.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"created_date\"")
+				return errors.Wrap(err, "decode field \"creation_date\"")
 			}
-		case "updated_date":
+		case "update_date":
 			requiredBitSet[0] |= 1 << 4
 			if err := func() error {
-				if err := s.UpdatedDate.Decode(d); err != nil {
+				if err := s.UpdateDate.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"updated_date\"")
+				return errors.Wrap(err, "decode field \"update_date\"")
 			}
 		default:
 			return d.Skip()

@@ -1,13 +1,15 @@
 ---
-page_title: "apono_resource_integration Resource - terraform-provider-apono"
+page_title: "apono_resource_integration (beta) Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.
 ---
 
-# Resource: apono_resource_integration
+# Resource: apono_resource_integration (beta)
 
 Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.
+
+-> **Note** Please note this resource is in **beta**.
 
 ## Example Usage
 
@@ -143,6 +145,7 @@ Optional:
 - `azure` (Attributes) Azure secret store configuration. (see [below for nested schema](#nestedatt--secret_store_config--azure))
 - `gcp` (Attributes) GCP secret store configuration. (see [below for nested schema](#nestedatt--secret_store_config--gcp))
 - `hashicorp_vault` (Attributes) HashiCorp Vault secret store configuration. (see [below for nested schema](#nestedatt--secret_store_config--hashicorp_vault))
+- `kubernetes` (Attributes) Kubernetes secret store configuration. (see [below for nested schema](#nestedatt--secret_store_config--kubernetes))
 
 <a id="nestedatt--secret_store_config--aws"></a>
 ### Nested Schema for `secret_store_config.aws`
@@ -178,6 +181,15 @@ Required:
 
 - `path` (String) The HashiCorp Vault path.
 - `secret_engine` (String) The HashiCorp Vault secret engine.
+
+
+<a id="nestedatt--secret_store_config--kubernetes"></a>
+### Nested Schema for `secret_store_config.kubernetes`
+
+Required:
+
+- `name` (String) The Kubernetes secret name.
+- `namespace` (String) The Kubernetes namespace.
 
 ## Import
 

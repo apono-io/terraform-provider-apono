@@ -1,13 +1,15 @@
 ---
-page_title: "apono_user_information_integrations Data Source - terraform-provider-apono"
+page_title: "apono_user_information_integrations (beta) Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
-    Retrieves a list of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.
+    Retrieves a set of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.
 ---
 
-# Data Source: apono_user_information_integrations
+# Data Source: apono_user_information_integrations (beta)
 
-Retrieves a list of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.
+Retrieves a set of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.
+
+-> **Note** Please note this datasource is in **beta**.
 
 ## Example Usage
 
@@ -43,7 +45,7 @@ data "apono_user_information_integrations" "pagerduty_and_zenduty_integrations" 
 
 ### Read-Only
 
-- `integrations` (Attributes List) A list of user information integrations. (see [below for nested schema](#nestedatt--integrations))
+- `integrations` (Attributes Set) A set of user information integrations. (see [below for nested schema](#nestedatt--integrations))
 
 <a id="nestedatt--integrations"></a>
 ### Nested Schema for `integrations`
@@ -71,6 +73,7 @@ Read-Only:
 - `azure` (Attributes) Azure secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--azure))
 - `gcp` (Attributes) GCP secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--gcp))
 - `hashicorp_vault` (Attributes) HashiCorp Vault secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--hashicorp_vault))
+- `kubernetes` (Attributes) Kubernetes secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--kubernetes))
 
 <a id="nestedatt--integrations--secret_store_config--aws"></a>
 ### Nested Schema for `integrations.secret_store_config.aws`
@@ -106,3 +109,12 @@ Read-Only:
 
 - `path` (String) The HashiCorp Vault path.
 - `secret_engine` (String) The HashiCorp Vault secret engine.
+
+
+<a id="nestedatt--integrations--secret_store_config--kubernetes"></a>
+### Nested Schema for `integrations.secret_store_config.kubernetes`
+
+Read-Only:
+
+- `name` (String) The Kubernetes secret name.
+- `namespace` (String) The Kubernetes namespace.

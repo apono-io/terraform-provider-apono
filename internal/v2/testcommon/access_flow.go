@@ -11,11 +11,11 @@ func GenerateAccessFlowResponse() *client.AccessFlowPublicV2Model {
 		Active:  true,
 		Trigger: "SELF_SERVE",
 		Settings: client.AccessFlowSettingsPublicV2Model{
-			JustificationRequired:        true,
-			RequireApproverReason:        false,
-			ApproverCannotApproveHimself: false,
-			RequireMfa:                   false,
-			Labels:                       []string{"DB", "PROD", "TERRAFORM"},
+			JustificationRequired:         true,
+			RequireApproverReason:         false,
+			RequestorCannotApproveHimself: false,
+			RequireMfa:                    false,
+			Labels:                        []string{"DB", "PROD", "TERRAFORM"},
 		},
 	}
 
