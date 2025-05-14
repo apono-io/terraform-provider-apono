@@ -35,6 +35,13 @@ type OwnersMappingConfig struct {
 	AttributeType         types.String `tfsdk:"attribute_type"`
 }
 
+type ResourceIntegrationsDataSourceModel struct {
+	Name         types.String               `tfsdk:"name"`
+	Type         types.String               `tfsdk:"type"`
+	ConnectorID  types.String               `tfsdk:"connector_id"`
+	Integrations []ResourceIntegrationModel `tfsdk:"integrations"`
+}
+
 func ResourceIntegrationModelToCreateRequest(ctx context.Context, model ResourceIntegrationModel) (*client.CreateIntegrationV4, error) {
 	req := &client.CreateIntegrationV4{
 		Name: model.Name.ValueString(),
@@ -243,4 +250,18 @@ func ResourceIntegrationToModel(ctx context.Context, integration *client.Integra
 	}
 
 	return model, nil
+}
+
+func ResourceIntegrationsToModel(ctx context.Context, integrations []client.IntegrationV4) (*ResourceIntegrationsDataSourceModel, error) {
+	var integrationModels []ResourceIntegrationModel
+	for _, integration := range integrations {
+		model, err := ResourceIntegrationToModel(ctx, &integration)
+		if err != nil {
+			return nil, err
+		}
+		integrationModels = append(integrationModels, *model)
+	}
+	return &ResourceIntegrationsDataSourceModel{
+		Integrations: integrationModels,
+	}, nil
 }

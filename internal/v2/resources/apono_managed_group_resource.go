@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	_ resource.Resource                = &AponoManagedGroupResource{}
+	_ resource.ResourceWithConfigure   = &AponoManagedGroupResource{}
 	_ resource.ResourceWithImportState = &AponoManagedGroupResource{}
 )
 

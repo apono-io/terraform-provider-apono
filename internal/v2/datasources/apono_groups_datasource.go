@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-var _ datasource.DataSource = &AponoGroupsDataSource{}
+var _ datasource.DataSourceWithConfigure = &AponoGroupsDataSource{}
 
 func NewAponoGroupsDataSource() datasource.DataSource {
 	return &AponoGroupsDataSource{}

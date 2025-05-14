@@ -198,6 +198,7 @@ func (p *AponoProvider) DataSources(_ context.Context) []func() datasource.DataS
 		v2datasources.NewAponoGroupsDataSource,
 		v2datasources.NewAponoUserInformationIntegrationsDataSource,
 		v2datasources.NewAponoBundlesDataSource,
+		v2datasources.NewResourceIntegrationsDataSource,
 	}
 }
 

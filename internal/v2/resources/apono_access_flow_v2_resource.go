@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	_ resource.Resource                = &AponoAccessFlowV2Resource{}
+	_ resource.ResourceWithConfigure   = &AponoAccessFlowV2Resource{}
 	_ resource.ResourceWithImportState = &AponoAccessFlowV2Resource{}
 )
 

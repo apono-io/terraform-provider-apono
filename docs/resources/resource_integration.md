@@ -120,7 +120,7 @@ Required:
 
 Optional:
 
-- `source_integration_name` (String) Name of the integration from which the type originates from (e.g. “Google Oauth”).
+- `source_integration_name` (String) Name of the integration from which the type originates from (e.g. "Google Oauth").
 
 
 <a id="nestedatt--owners_mapping"></a>
