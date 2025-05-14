@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-var _ datasource.DataSource = &AponoBundlesDataSource{}
+var _ datasource.DataSourceWithConfigure = &AponoBundlesDataSource{}
 
 func NewAponoBundlesDataSource() datasource.DataSource {
 	return &AponoBundlesDataSource{}

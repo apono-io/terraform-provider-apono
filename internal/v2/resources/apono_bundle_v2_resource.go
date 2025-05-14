@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	_ resource.Resource                = &AponoBundleV2Resource{}
+	_ resource.ResourceWithConfigure   = &AponoBundleV2Resource{}
 	_ resource.ResourceWithImportState = &AponoBundleV2Resource{}
 )
 
