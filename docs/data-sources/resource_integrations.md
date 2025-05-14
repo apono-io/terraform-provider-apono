@@ -53,6 +53,7 @@ Read-Only:
 - `azure` (Attributes) Azure secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--azure))
 - `gcp` (Attributes) GCP secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--gcp))
 - `hashicorp_vault` (Attributes) HashiCorp Vault secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--hashicorp_vault))
+- `kubernetes` (Attributes) Kubernetes secret store configuration. (see [below for nested schema](#nestedatt--integrations--secret_store_config--kubernetes))
 
 <a id="nestedatt--integrations--secret_store_config--aws"></a>
 ### Nested Schema for `integrations.secret_store_config.aws`
@@ -88,6 +89,15 @@ Read-Only:
 
 - `path` (String) The HashiCorp Vault path.
 - `secret_engine` (String) The HashiCorp Vault secret engine.
+
+
+<a id="nestedatt--integrations--secret_store_config--kubernetes"></a>
+### Nested Schema for `integrations.secret_store_config.kubernetes`
+
+Read-Only:
+
+- `name` (String) The Kubernetes secret name.
+- `namespace` (String) The Kubernetes namespace.
 
 
 
