@@ -50,7 +50,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 							ScopeMode: types.StringValue("include_resources"),
 							Type:      types.StringValue("NAME"),
 							Key:       types.StringNull(),
-							Values:    testcommon.CreateTestStringSet(t, []string{"db1", "db2"}),
+							Values:    testcommon.CreateTestStringList(t, []string{"db1", "db2"}),
 						},
 					},
 				},

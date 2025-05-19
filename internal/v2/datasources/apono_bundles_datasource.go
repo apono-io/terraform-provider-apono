@@ -36,7 +36,7 @@ func (d *AponoBundlesDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				Description: `Filters the returned bundles by their name. Partial matching is supported with asterisks for contains, starts with, and ends with.  (e.g., "\*my-bundles\*").`,
 				Optional:    true,
 			},
-			"bundles": schema.ListNestedAttribute{
+			"bundles": schema.SetNestedAttribute{
 				Description: "A list of bundles that match the filter.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
@@ -49,7 +49,7 @@ func (d *AponoBundlesDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 							Description: "The name of the bundle.",
 							Computed:    true,
 						},
-						"access_targets": schema.ListNestedAttribute{
+						"access_targets": schema.SetNestedAttribute{
 							Description: "List of access targets for this bundle",
 							Computed:    true,
 							NestedObject: schema.NestedAttributeObject{

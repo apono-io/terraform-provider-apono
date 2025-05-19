@@ -40,7 +40,7 @@ func GetIntegrationTargetResourceSchema() schema.SingleNestedAttribute {
 							Description: "Tag key. Only required if type = TAG",
 							Optional:    true,
 						},
-						"values": schema.SetAttribute{
+						"values": schema.ListAttribute{
 							Description: "Resource values to match (IDs, names, or tag values).",
 							Required:    true,
 							ElementType: types.StringType,

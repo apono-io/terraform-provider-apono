@@ -18,7 +18,7 @@ func GetIntegrationTargetDataSourceSchema() schema.SingleNestedAttribute {
 				Description: "The type of resource",
 				Computed:    true,
 			},
-			"permissions": schema.ListAttribute{
+			"permissions": schema.SetAttribute{
 				Description: "List of permissions",
 				Computed:    true,
 				ElementType: types.StringType,
