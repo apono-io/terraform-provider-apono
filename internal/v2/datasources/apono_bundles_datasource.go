@@ -54,8 +54,8 @@ func (d *AponoBundlesDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 							Computed:    true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
-									"integration":  schemas.GetIntegrationTargetSchema(schemas.DataSourceMode),
-									"access_scope": schemas.GetAccessScopeTargetSchema(schemas.DataSourceMode),
+									"integration":  schemas.GetIntegrationTargetDataSourceSchema(),
+									"access_scope": schemas.GetAccessScopeTargetDataSourceSchema(),
 								},
 							},
 						},
