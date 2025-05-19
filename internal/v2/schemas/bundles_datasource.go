@@ -18,12 +18,12 @@ func GetIntegrationTargetDataSourceSchema() schema.SingleNestedAttribute {
 				Description: "The type of resource",
 				Computed:    true,
 			},
-			"permissions": schema.SetAttribute{
+			"permissions": schema.ListAttribute{
 				Description: "List of permissions",
 				Computed:    true,
 				ElementType: types.StringType,
 			},
-			"resources_scopes": schema.SetNestedAttribute{
+			"resources_scopes": schema.ListNestedAttribute{
 				Description: "If null, the scope will apply to any resource in the integration target.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
@@ -40,7 +40,7 @@ func GetIntegrationTargetDataSourceSchema() schema.SingleNestedAttribute {
 							Description: "Tag key. Only required if type = TAG",
 							Computed:    true,
 						},
-						"values": schema.SetAttribute{
+						"values": schema.ListAttribute{
 							Description: "Resource values to match (IDs, names, or tag values).",
 							Computed:    true,
 							ElementType: types.StringType,
