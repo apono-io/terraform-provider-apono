@@ -386,7 +386,7 @@ Required:
 
 Optional:
 
-- `resources_scopes` (Attributes Set) If null, the scope will apply to any resource in the integration target. (see [below for nested schema](#nestedatt--access_targets--integration--resources_scopes))
+- `resources_scopes` (Attributes List) If null, the scope will apply to any resource in the integration target. (see [below for nested schema](#nestedatt--access_targets--integration--resources_scopes))
 
 <a id="nestedatt--access_targets--integration--resources_scopes"></a>
 ### Nested Schema for `access_targets.integration.resources_scopes`
@@ -395,7 +395,7 @@ Required:
 
 - `scope_mode` (String) Possible values: `include_resources` or `exclude_resources`. `include_resources`: Grants access to the specific resources listed under the `values` field. `exclude_resources`: Grants access to all resources within the integration except those specified in the `values` field.
 - `type` (String) NAME - specify resources by their name, APONO_ID - specify resources by their ID, or TAG - specify resources by tag.
-- `values` (Set of String) Resource values to match (IDs, names, or tag values).
+- `values` (List of String) Resource values to match (IDs, names, or tag values).
 
 Optional:
 

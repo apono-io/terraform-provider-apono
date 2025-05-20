@@ -227,11 +227,11 @@ func convertResourcesScopesToModel(ctx context.Context, scopes []client.Resource
 			modelScope.Key = types.StringValue(val)
 		}
 
-		valuesSet, diags := types.SetValueFrom(ctx, types.StringType, scope.Values)
+		valuesList, diags := types.ListValueFrom(ctx, types.StringType, scope.Values)
 		if diags.HasError() {
 			return nil, fmt.Errorf("failed to convert resource scope values: %v", diags)
 		}
-		modelScope.Values = valuesSet
+		modelScope.Values = valuesList
 
 		modelScopes = append(modelScopes, modelScope)
 	}

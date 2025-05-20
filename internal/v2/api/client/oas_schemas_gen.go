@@ -732,6 +732,7 @@ func (s *ApproverPolicyUpsertPublicV2Model) SetApproverGroups(val []ApproverGrou
 
 type Authorization struct {
 	Token string
+	Roles []string
 }
 
 // GetToken returns the value of Token.
@@ -739,9 +740,19 @@ func (s *Authorization) GetToken() string {
 	return s.Token
 }
 
+// GetRoles returns the value of Roles.
+func (s *Authorization) GetRoles() []string {
+	return s.Roles
+}
+
 // SetToken sets the value of Token.
 func (s *Authorization) SetToken(val string) {
 	s.Token = val
+}
+
+// SetRoles sets the value of Roles.
+func (s *Authorization) SetRoles(val []string) {
+	s.Roles = val
 }
 
 // Ref: #/components/schemas/AwsSecretConfigV4

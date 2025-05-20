@@ -40,7 +40,7 @@ func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.Sch
 				Description: "Filters the returned access scopes by their name. Partial matching is supported with asterisks for contains, starts with, and ends with.",
 				Optional:    true,
 			},
-			"access_scopes": schema.SetNestedAttribute{
+			"access_scopes": schema.ListNestedAttribute{
 				Description: "A set of access scopes that match the specified criteria.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{

@@ -47,7 +47,7 @@ data "apono_groups" "from_source" {
 
 ### Read-Only
 
-- `groups` (Attributes Set) A set of groups that match the filter. (see [below for nested schema](#nestedatt--groups))
+- `groups` (Attributes List) A set of groups that match the filter. (see [below for nested schema](#nestedatt--groups))
 
 <a id="nestedatt--groups"></a>
 ### Nested Schema for `groups`

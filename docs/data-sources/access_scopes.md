@@ -47,7 +47,7 @@ By specifying a wildcard pattern `*Production*`, all access scopes with a name t
 
 ### Read-Only
 
-- `access_scopes` (Attributes Set) A set of access scopes that match the specified criteria. (see [below for nested schema](#nestedatt--access_scopes))
+- `access_scopes` (Attributes List) A set of access scopes that match the specified criteria. (see [below for nested schema](#nestedatt--access_scopes))
 
 <a id="nestedatt--access_scopes"></a>
 ### Nested Schema for `access_scopes`
