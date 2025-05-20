@@ -21,8 +21,8 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 	mockInvoker := mocks.NewInvoker(t)
 	d := &AponoAccessScopesDataSource{client: mockInvoker}
 
-	getAccessScopesSetType := func() tftypes.Set {
-		return tftypes.Set{
+	getAccessScopesListType := func() tftypes.List {
+		return tftypes.List{
 			ElementType: tftypes.Object{
 				AttributeTypes: map[string]tftypes.Type{
 					"id":    tftypes.String,
@@ -37,7 +37,7 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		return tftypes.Object{
 			AttributeTypes: map[string]tftypes.Type{
 				"name":          tftypes.String,
-				"access_scopes": getAccessScopesSetType(),
+				"access_scopes": getAccessScopesListType(),
 			},
 		}
 	}
@@ -71,7 +71,7 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		ctx := t.Context()
 		configType := getConfigType()
 		accessScopesAttr := d.getTestSchema(ctx).Attributes["access_scopes"]
-		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.Set)
+		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
@@ -133,7 +133,7 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		ctx := t.Context()
 		configType := getConfigType()
 		accessScopesAttr := d.getTestSchema(ctx).Attributes["access_scopes"]
-		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.Set)
+		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
@@ -173,7 +173,7 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		ctx := t.Context()
 		configType := getConfigType()
 		accessScopesAttr := d.getTestSchema(ctx).Attributes["access_scopes"]
-		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.Set)
+		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
