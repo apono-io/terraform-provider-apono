@@ -41,7 +41,7 @@ func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.Sch
 				Optional:    true,
 			},
 			"access_scopes": schema.ListNestedAttribute{
-				Description: "A set of access scopes that match the specified criteria.",
+				Description: "A list of access scopes that match the specified criteria.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

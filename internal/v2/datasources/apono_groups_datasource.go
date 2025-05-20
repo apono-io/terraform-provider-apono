@@ -40,7 +40,7 @@ func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 				Optional:    true,
 			},
 			"groups": schema.ListNestedAttribute{
-				Description: "A set of groups that match the filter.",
+				Description: "A list of groups that match the filter.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
