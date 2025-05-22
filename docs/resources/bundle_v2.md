@@ -17,7 +17,7 @@ Manages an Apono Bundle V2.
 
 ### Required
 
-- `access_targets` (Attributes Set) List of access targets for this bundle (see [below for nested schema](#nestedatt--access_targets))
+- `access_targets` (Attributes List) List of access targets for this bundle (see [below for nested schema](#nestedatt--access_targets))
 - `name` (String) The name of the bundle.
 
 ### Read-Only
