@@ -63,3 +63,9 @@ func CreateTestStringSet(t *testing.T, values []string) types.Set {
 	require.False(t, diags.HasError())
 	return result
 }
+
+func CreateTestStringList(t *testing.T, values []string) types.List {
+	result, diags := types.ListValueFrom(t.Context(), types.StringType, values)
+	require.False(t, diags.HasError())
+	return result
+}

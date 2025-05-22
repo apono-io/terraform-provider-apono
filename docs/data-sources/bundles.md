@@ -21,14 +21,14 @@ Retrieves existing bundles. Use this data source to reference bundles in the Acc
 
 ### Read-Only
 
-- `bundles` (Attributes Set) A list of bundles that match the filter. (see [below for nested schema](#nestedatt--bundles))
+- `bundles` (Attributes List) A list of bundles that match the filter. (see [below for nested schema](#nestedatt--bundles))
 
 <a id="nestedatt--bundles"></a>
 ### Nested Schema for `bundles`
 
 Read-Only:
 
-- `access_targets` (Attributes Set) List of access targets for this bundle (see [below for nested schema](#nestedatt--bundles--access_targets))
+- `access_targets` (Attributes List) List of access targets for this bundle (see [below for nested schema](#nestedatt--bundles--access_targets))
 - `id` (String) Unique identifier of the bundle.
 - `name` (String) The name of the bundle.
 
@@ -56,7 +56,7 @@ Read-Only:
 - `integration_name` (String) The name of the integration
 - `permissions` (Set of String) List of permissions
 - `resource_type` (String) The type of resource
-- `resources_scopes` (Attributes Set) If null, the scope will apply to any resource in the integration target. (see [below for nested schema](#nestedatt--bundles--access_targets--integration--resources_scopes))
+- `resources_scopes` (Attributes List) If null, the scope will apply to any resource in the integration target. (see [below for nested schema](#nestedatt--bundles--access_targets--integration--resources_scopes))
 
 <a id="nestedatt--bundles--access_targets--integration--resources_scopes"></a>
 ### Nested Schema for `bundles.access_targets.integration.resources_scopes`
@@ -66,4 +66,4 @@ Read-Only:
 - `key` (String) Tag key. Only required if type = TAG
 - `scope_mode` (String) Possible values: `include_resources` or `exclude_resources`. `include_resources`: Grants access to the specific resources listed under the `values` field. `exclude_resources`: Grants access to all resources within the integration except those specified in the `values` field.
 - `type` (String) NAME - specify resources by their name, APONO_ID - specify resources by their ID, or TAG - specify resources by tag.
-- `values` (Set of String) Resource values to match (IDs, names, or tag values).
+- `values` (List of String) Resource values to match (IDs, names, or tag values).

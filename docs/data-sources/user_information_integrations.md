@@ -2,12 +2,12 @@
 page_title: "apono_user_information_integrations (beta) Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
-    Retrieves a set of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.
+    Retrieves a list of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.
 ---
 
 # Data Source: apono_user_information_integrations (beta)
 
-Retrieves a set of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.
+Retrieves a list of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.
 
 -> **Note** Please note this datasource is in **beta**.
 
@@ -45,7 +45,7 @@ data "apono_user_information_integrations" "pagerduty_and_zenduty_integrations" 
 
 ### Read-Only
 
-- `integrations` (Attributes Set) A set of user information integrations. (see [below for nested schema](#nestedatt--integrations))
+- `integrations` (Attributes List) A list of user information integrations. (see [below for nested schema](#nestedatt--integrations))
 
 <a id="nestedatt--integrations"></a>
 ### Nested Schema for `integrations`

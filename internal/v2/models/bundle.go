@@ -19,7 +19,7 @@ type IntegrationTargetScopeModel struct {
 	ScopeMode types.String `tfsdk:"scope_mode"`
 	Type      types.String `tfsdk:"type"`
 	Key       types.String `tfsdk:"key"`
-	Values    types.Set    `tfsdk:"values"`
+	Values    types.List   `tfsdk:"values"`
 }
 
 type AccessScopeTargetModel struct {

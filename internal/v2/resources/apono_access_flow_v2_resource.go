@@ -81,7 +81,7 @@ For the user attribute specifically, you may also use the user’s email.`
 				Default:     stringdefault.StaticString(common.DefaultMatchOperator),
 				Computed:    true,
 			},
-			"values": schema.SetAttribute{
+			"values": schema.ListAttribute{
 				Description: valuesDescription,
 				Optional:    true,
 				ElementType: types.StringType,
@@ -159,7 +159,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 									Description: `Possible values: AND or OR`,
 									Required:    true,
 								},
-								"approvers": schema.SetNestedAttribute{
+								"approvers": schema.ListNestedAttribute{
 									Description:  "List of approvers.",
 									Required:     true,
 									NestedObject: getIdentityConditionSchema(IdentityConditionSchemaTypeApprover),
@@ -177,14 +177,14 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 						Description: `Specifies the logical operator to be used between the requestors in the list. Possible values: "AND" or "OR".`,
 						Required:    true,
 					},
-					"conditions": schema.SetNestedAttribute{
+					"conditions": schema.ListNestedAttribute{
 						Description:  "List of conditions. Cannot be empty.",
 						Required:     true,
 						NestedObject: getIdentityConditionSchema(IdentityConditionSchemaTypeRequestor),
 					},
 				},
 			},
-			"access_targets": schema.SetNestedAttribute{
+			"access_targets": schema.ListNestedAttribute{
 				Description: "Define the targets accessible when requesting access via this access flow.",
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{

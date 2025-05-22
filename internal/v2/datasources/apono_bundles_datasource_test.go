@@ -51,6 +51,7 @@ func testAccAponoBundlesDataSourceConfig(name1, name2, randomPrefix, connectorID
 	prefixedName1 := testcommon.PrefixedName(randomPrefix, name1)
 	prefixedName2 := testcommon.PrefixedName(randomPrefix, name2)
 	integrationName := randomPrefix + "-integration"
+	accessScopeName := randomPrefix + "-scope"
 
 	return `
 resource "apono_resource_integration" "test" {
@@ -70,39 +71,74 @@ resource "apono_resource_integration" "test" {
   }
 }
 
-resource "apono_access_bundle" "test1" {
-  name = "` + prefixedName1 + `"
-  integration_targets = [{
-    name = "` + integrationName + `"
-    integration_name = apono_resource_integration.test.name
-    resource_type = "` + resourceType + `"
-    permissions = ["ReadOnly"]
-  }]
+resource "apono_access_scope" "test" {
+  name = "` + accessScopeName + `"
+  query = <<EOT
+  integration = "` + integrationName + `" 
+  EOT
 }
 
-resource "apono_access_bundle" "test2" {
+resource "apono_bundle_v2" "test1" {
+  name = "` + prefixedName1 + `"
+  access_targets = [
+    {
+      integration = {
+        integration_name = apono_resource_integration.test.name
+        resource_type = "` + resourceType + `"
+        permissions = ["read", "write"]
+        resources_scopes = [
+          {
+            scope_mode = "include_resources"
+            type = "NAME"
+            values = ["resource1", "resource2"]
+          }
+        ]
+      },
+      access_scope = null
+    },
+    {
+      integration = null,
+      access_scope = {
+        name = apono_access_scope.test.name
+      }
+    }
+  ]
+}
+
+resource "apono_bundle_v2" "test2" {
   name = "` + prefixedName2 + `"
-  integration_targets = [{
-    name = "` + integrationName + `"
-    integration_name = apono_resource_integration.test.name
-    resource_type = "` + resourceType + `"
-    permissions = ["ReadOnly"]
-  }]
+  access_targets = [
+    {
+      integration = {
+        integration_name = apono_resource_integration.test.name
+        resource_type = "` + resourceType + `"
+        permissions = ["read", "write"]
+        resources_scopes = [
+          {
+            scope_mode = "include_resources"
+            type = "NAME"
+            values = ["resource3"]
+          }
+        ]
+      },
+      access_scope = null
+    }
+  ]
 }
 
 data "apono_bundles" "exact" {
   name = "` + prefixedName1 + `"
   depends_on = [
-    apono_access_bundle.test1,
-    apono_access_bundle.test2
+    apono_bundle_v2.test1,
+    apono_bundle_v2.test2
   ]
 }
 
 data "apono_bundles" "wildcard" {
   name = "` + randomPrefix + `*"
   depends_on = [
-    apono_access_bundle.test1,
-    apono_access_bundle.test2
+    apono_bundle_v2.test1,
+    apono_bundle_v2.test2
   ]
 }
 `
