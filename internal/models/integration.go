@@ -17,6 +17,8 @@ type IntegrationModel struct {
 	GcpSecret              *GcpSecret             `tfsdk:"gcp_secret"`
 	KubernetesSecret       *KubernetesSecret      `tfsdk:"kubernetes_secret"`
 	HashicorpVaultSecret   *HashicorpVaultSecret  `tfsdk:"hashicorp_vault_secret"`
+	AzureSecret            *AzureSecret           `tfsdk:"azure_secret"`
+	AponoSecret            *AponoSecret           `tfsdk:"apono_secret"`
 	ResourceOwnerMappings  []ResourceOwnerMapping `tfsdk:"resource_owner_mappings"`
 	IntegrationOwners      []IntegrationOwner     `tfsdk:"integration_owners"`
 }
@@ -39,6 +41,15 @@ type KubernetesSecret struct {
 type HashicorpVaultSecret struct {
 	SecretEngine types.String `tfsdk:"secret_engine"`
 	Path         types.String `tfsdk:"path"`
+}
+
+type AzureSecret struct {
+	VaultURL types.String `tfsdk:"vault_url"`
+	Name     types.String `tfsdk:"name"`
+}
+
+type AponoSecret struct {
+	Params types.Map `tfsdk:"params"`
 }
 
 type ResourceOwnerMapping struct {

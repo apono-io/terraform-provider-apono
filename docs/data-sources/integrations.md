@@ -45,7 +45,9 @@ data "apono_integrations" "prod_mysql_integrations" {
 
 Optional:
 
+- `apono_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--apono_secret))
 - `aws_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--aws_secret))
+- `azure_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--azure_secret))
 - `gcp_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--gcp_secret))
 - `hashicorp_vault_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--hashicorp_vault_secret))
 - `kubernetes_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--kubernetes_secret))
@@ -122,3 +124,20 @@ Required:
 Optional:
 
 - `attribute_integration_id` (String) Provide the User Context integration ID the attribute originates from, for example Okta, Pagerduty, etc. You can find the ID in the Apono API Reference.
+
+
+<a id="nestedatt--integrations--azure_secret"></a>
+### Nested Schema for `integrations.azure_secret`
+
+Required:
+
+- `vault_url` (String) Azure Key Vault URL
+- `name` (String) Azure secret name
+
+
+<a id="nestedatt--integrations--apono_secret"></a>
+### Nested Schema for `integrations.apono_secret`
+
+Required:
+
+- `params` (Map of String) Apono secret parameters

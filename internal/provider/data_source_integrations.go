@@ -203,6 +203,29 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 				},
 			},
 		},
+		"azure_secret": schema.SingleNestedAttribute{
+			Optional: true,
+			Attributes: map[string]schema.Attribute{
+				"vault_url": schema.StringAttribute{
+					MarkdownDescription: "Azure Key Vault URL",
+					Required:            true,
+				},
+				"name": schema.StringAttribute{
+					MarkdownDescription: "Azure secret name",
+					Required:            true,
+				},
+			},
+		},
+		"apono_secret": schema.SingleNestedAttribute{
+			Optional: true,
+			Attributes: map[string]schema.Attribute{
+				"params": schema.MapAttribute{
+					MarkdownDescription: "Apono secret parameters",
+					Required:            true,
+					ElementType:         types.StringType,
+				},
+			},
+		},
 		"resource_owner_mappings": schema.SetNestedAttribute{
 			MarkdownDescription: "Let Apono know which tag represents owners and how to map it to a known attribute in Apono.",
 			Computed:            true,

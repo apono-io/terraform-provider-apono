@@ -35,6 +35,8 @@ var (
 		"GCP":             "gcp_secret",
 		"KUBERNETES":      "kubernetes_secret",
 		"HASHICORP_VAULT": "hashicorp_vault_secret",
+		"AZURE":           "azure_secret",
+		"APONO":           "apono_secret",
 	}
 )
 
@@ -144,6 +146,29 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 					},
 				},
 			},
+			"azure_secret": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"vault_url": schema.StringAttribute{
+						MarkdownDescription: "Azure Key Vault URL",
+						Required:            true,
+					},
+					"name": schema.StringAttribute{
+						MarkdownDescription: "Azure secret name",
+						Required:            true,
+					},
+				},
+			},
+			"apono_secret": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"params": schema.MapAttribute{
+						MarkdownDescription: "Apono secret parameters",
+						Required:            true,
+						ElementType:         types.StringType,
+					},
+				},
+			},
 			"resource_owner_mappings": schema.SetNestedAttribute{
 				MarkdownDescription: "Let Apono know which tag represents owners and how to map it to a known attribute in Apono.",
 				Optional:            true,
@@ -215,6 +240,21 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 			"type":          "HASHICORP_VAULT",
 			"secret_engine": data.HashicorpVaultSecret.SecretEngine.ValueString(),
 			"path":          data.HashicorpVaultSecret.Path.ValueString(),
+		}
+	} else if data.AzureSecret != nil {
+		secretConfig = map[string]interface{}{
+			"type":      "AZURE",
+			"vault_url": data.AzureSecret.VaultURL.ValueString(),
+			"name":      data.AzureSecret.Name.ValueString(),
+		}
+	} else if data.AponoSecret != nil {
+		params := make(map[string]string)
+		for name, value := range data.AponoSecret.Params.Elements() {
+			params[name] = utils.AttrValueToString(value)
+		}
+		secretConfig = map[string]interface{}{
+			"type":   "APONO",
+			"params": params,
 		}
 	}
 
@@ -334,6 +374,21 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 			"type":          "HASHICORP_VAULT",
 			"secret_engine": data.HashicorpVaultSecret.SecretEngine.ValueString(),
 			"path":          data.HashicorpVaultSecret.Path.ValueString(),
+		}
+	} else if data.AzureSecret != nil {
+		secretConfig = map[string]interface{}{
+			"type":      "AZURE",
+			"vault_url": data.AzureSecret.VaultURL.ValueString(),
+			"name":      data.AzureSecret.Name.ValueString(),
+		}
+	} else if data.AponoSecret != nil {
+		params := make(map[string]string)
+		for name, value := range data.AponoSecret.Params.Elements() {
+			params[name] = utils.AttrValueToString(value)
+		}
+		secretConfig = map[string]interface{}{
+			"type":   "APONO",
+			"params": params,
 		}
 	}
 
