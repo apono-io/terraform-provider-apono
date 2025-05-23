@@ -43,6 +43,7 @@ resource "apono_integration" "postgresql_prod" {
 ### Optional
 
 - `aws_secret` (Attributes) (see [below for nested schema](#nestedatt--aws_secret))
+- `azure_secret` (Attributes) (see [below for nested schema](#nestedatt--azure_secret))
 - `connected_resource_types` (Set of String) Resource types to sync, if omitted all resources types will be synced.
 - `custom_access_details` (String) Custom access details message that will be displayed to end users when they access this integration.
 - `gcp_secret` (Attributes) (see [below for nested schema](#nestedatt--gcp_secret))
@@ -63,6 +64,15 @@ Required:
 
 - `region` (String) Aws secret region
 - `secret_id` (String) Aws secret name or ARN
+
+
+<a id="nestedatt--azure_secret"></a>
+### Nested Schema for `azure_secret`
+
+Required:
+
+- `name` (String) Azure secret name
+- `vault_url` (String) Azure Key Vault URL
 
 
 <a id="nestedatt--gcp_secret"></a>

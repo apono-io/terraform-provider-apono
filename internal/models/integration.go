@@ -15,6 +15,7 @@ type IntegrationModel struct {
 	CustomAccessDetails    types.String           `tfsdk:"custom_access_details"`
 	AwsSecret              *AwsSecret             `tfsdk:"aws_secret"`
 	GcpSecret              *GcpSecret             `tfsdk:"gcp_secret"`
+	AzureSecret            *AzureSecret           `tfsdk:"azure_secret"`
 	KubernetesSecret       *KubernetesSecret      `tfsdk:"kubernetes_secret"`
 	HashicorpVaultSecret   *HashicorpVaultSecret  `tfsdk:"hashicorp_vault_secret"`
 	ResourceOwnerMappings  []ResourceOwnerMapping `tfsdk:"resource_owner_mappings"`
@@ -29,6 +30,11 @@ type AwsSecret struct {
 type GcpSecret struct {
 	Project  types.String `tfsdk:"project"`
 	SecretID types.String `tfsdk:"secret_id"`
+}
+
+type AzureSecret struct {
+	VaultURL types.String `tfsdk:"vault_url"`
+	Name     types.String `tfsdk:"name"`
 }
 
 type KubernetesSecret struct {

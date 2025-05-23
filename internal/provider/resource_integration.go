@@ -33,6 +33,7 @@ var (
 	secretTypeAttributeNames = map[string]string{
 		"AWS":             "aws_secret",
 		"GCP":             "gcp_secret",
+		"AZURE":           "azure_secret",
 		"KUBERNETES":      "kubernetes_secret",
 		"HASHICORP_VAULT": "hashicorp_vault_secret",
 	}
@@ -114,6 +115,19 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 					},
 					"secret_id": schema.StringAttribute{
 						MarkdownDescription: "GCP secret ID",
+						Required:            true,
+					},
+				},
+			},
+			"azure_secret": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"vault_url": schema.StringAttribute{
+						MarkdownDescription: "Azure Key Vault URL",
+						Required:            true,
+					},
+					"name": schema.StringAttribute{
+						MarkdownDescription: "Azure secret name",
 						Required:            true,
 					},
 				},
@@ -203,6 +217,12 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 			"type":      "GCP",
 			"project":   data.GcpSecret.Project.ValueString(),
 			"secret_id": data.GcpSecret.SecretID.ValueString(),
+		}
+	} else if data.AzureSecret != nil {
+		secretConfig = map[string]interface{}{
+			"type":      "AZURE",
+			"vault_url": data.AzureSecret.VaultURL.ValueString(),
+			"name":      data.AzureSecret.Name.ValueString(),
 		}
 	} else if data.KubernetesSecret != nil {
 		secretConfig = map[string]interface{}{
@@ -322,6 +342,12 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 			"type":      "GCP",
 			"project":   data.GcpSecret.Project.ValueString(),
 			"secret_id": data.GcpSecret.SecretID.ValueString(),
+		}
+	} else if data.AzureSecret != nil {
+		secretConfig = map[string]interface{}{
+			"type":      "AZURE",
+			"vault_url": data.AzureSecret.VaultURL.ValueString(),
+			"name":      data.AzureSecret.Name.ValueString(),
 		}
 	} else if data.KubernetesSecret != nil {
 		secretConfig = map[string]interface{}{

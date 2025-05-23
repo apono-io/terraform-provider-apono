@@ -177,6 +177,19 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 				},
 			},
 		},
+		"azure_secret": schema.SingleNestedAttribute{
+			Optional: true,
+			Attributes: map[string]schema.Attribute{
+				"vault_url": schema.StringAttribute{
+					MarkdownDescription: "Azure Key Vault URL",
+					Required:            true,
+				},
+				"name": schema.StringAttribute{
+					MarkdownDescription: "Azure secret name",
+					Required:            true,
+				},
+			},
+		},
 		"kubernetes_secret": schema.SingleNestedAttribute{
 			Optional: true,
 			Attributes: map[string]schema.Attribute{

@@ -46,6 +46,7 @@ data "apono_integrations" "prod_mysql_integrations" {
 Optional:
 
 - `aws_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--aws_secret))
+- `azure_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--azure_secret))
 - `gcp_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--gcp_secret))
 - `hashicorp_vault_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--hashicorp_vault_secret))
 - `kubernetes_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--kubernetes_secret))
@@ -69,6 +70,15 @@ Required:
 
 - `region` (String) Aws secret region
 - `secret_id` (String) Aws secret name or ARN
+
+
+<a id="nestedatt--integrations--azure_secret"></a>
+### Nested Schema for `integrations.azure_secret`
+
+Required:
+
+- `name` (String) Azure secret name
+- `vault_url` (String) Azure Key Vault URL
 
 
 <a id="nestedatt--integrations--gcp_secret"></a>

@@ -46,6 +46,11 @@ func ConvertToIntegrationModel(ctx context.Context, integration *aponoapi.Integr
 			Project:  basetypes.NewStringValue(toString(secretConfig["project"])),
 			SecretID: basetypes.NewStringValue(toString(secretConfig["secret_id"])),
 		}
+	case "AZURE":
+		data.AzureSecret = &models.AzureSecret{
+			VaultURL: basetypes.NewStringValue(toString(secretConfig["vault_url"])),
+			Name:     basetypes.NewStringValue(toString(secretConfig["name"])),
+		}
 	case "KUBERNETES":
 		data.KubernetesSecret = &models.KubernetesSecret{
 			Namespace: basetypes.NewStringValue(toString(secretConfig["namespace"])),
