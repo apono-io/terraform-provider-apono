@@ -31,10 +31,9 @@ var _ resource.ResourceWithValidateConfig = &integrationResource{}
 
 var (
 	secretTypeAttributeNames = map[string]string{
-		"AWS":             "aws_secret",
-		"GCP":             "gcp_secret",
-		"KUBERNETES":      "kubernetes_secret",
-		"HASHICORP_VAULT": "hashicorp_vault_secret",
+		"AWS":        "aws_secret",
+		"GCP":        "gcp_secret",
+		"KUBERNETES": "kubernetes_secret",
 	}
 )
 
@@ -131,19 +130,6 @@ func (r *integrationResource) Schema(_ context.Context, _ resource.SchemaRequest
 					},
 				},
 			},
-			"hashicorp_vault_secret": schema.SingleNestedAttribute{
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"secret_engine": schema.StringAttribute{
-						MarkdownDescription: "Hashicorp Vault Secret Engine",
-						Required:            true,
-					},
-					"path": schema.StringAttribute{
-						MarkdownDescription: "Hashicorp Vault secret path",
-						Required:            true,
-					},
-				},
-			},
 			"resource_owner_mappings": schema.SetNestedAttribute{
 				MarkdownDescription: "Let Apono know which tag represents owners and how to map it to a known attribute in Apono.",
 				Optional:            true,
@@ -209,12 +195,6 @@ func (r *integrationResource) Create(ctx context.Context, req resource.CreateReq
 			"type":      "KUBERNETES",
 			"namespace": data.KubernetesSecret.Namespace.ValueString(),
 			"name":      data.KubernetesSecret.Name.ValueString(),
-		}
-	} else if data.HashicorpVaultSecret != nil {
-		secretConfig = map[string]interface{}{
-			"type":          "HASHICORP_VAULT",
-			"secret_engine": data.HashicorpVaultSecret.SecretEngine.ValueString(),
-			"path":          data.HashicorpVaultSecret.Path.ValueString(),
 		}
 	}
 
@@ -328,12 +308,6 @@ func (r *integrationResource) Update(ctx context.Context, req resource.UpdateReq
 			"type":      "KUBERNETES",
 			"namespace": data.KubernetesSecret.Namespace.ValueString(),
 			"name":      data.KubernetesSecret.Name.ValueString(),
-		}
-	} else if data.HashicorpVaultSecret != nil {
-		secretConfig = map[string]interface{}{
-			"type":          "HASHICORP_VAULT",
-			"secret_engine": data.HashicorpVaultSecret.SecretEngine.ValueString(),
-			"path":          data.HashicorpVaultSecret.Path.ValueString(),
 		}
 	}
 

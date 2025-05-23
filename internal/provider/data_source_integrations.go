@@ -190,19 +190,6 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 				},
 			},
 		},
-		"hashicorp_vault_secret": schema.SingleNestedAttribute{
-			Optional: true,
-			Attributes: map[string]schema.Attribute{
-				"secret_engine": schema.StringAttribute{
-					MarkdownDescription: "Hashicorp Vault Secret Engine",
-					Required:            true,
-				},
-				"path": schema.StringAttribute{
-					MarkdownDescription: "Hashicorp Vault secret path",
-					Required:            true,
-				},
-			},
-		},
 		"resource_owner_mappings": schema.SetNestedAttribute{
 			MarkdownDescription: "Let Apono know which tag represents owners and how to map it to a known attribute in Apono.",
 			Computed:            true,

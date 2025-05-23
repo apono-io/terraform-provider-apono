@@ -47,7 +47,6 @@ Optional:
 
 - `aws_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--aws_secret))
 - `gcp_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--gcp_secret))
-- `hashicorp_vault_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--hashicorp_vault_secret))
 - `kubernetes_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--kubernetes_secret))
 - `metadata` (Map of String) Integration metadata
 
@@ -78,15 +77,6 @@ Required:
 
 - `project` (String) GCP secret project
 - `secret_id` (String) GCP secret ID
-
-
-<a id="nestedatt--integrations--hashicorp_vault_secret"></a>
-### Nested Schema for `integrations.hashicorp_vault_secret`
-
-Required:
-
-- `path` (String) Hashicorp Vault secret path
-- `secret_engine` (String) Hashicorp Vault Secret Engine
 
 
 <a id="nestedatt--integrations--kubernetes_secret"></a>

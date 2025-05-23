@@ -290,7 +290,6 @@ func SetupMockHttpServerIntegrationCatalogEndpoints() {
 					"AWS",
 					"GCP",
 					"KUBERNETES",
-					"HASHICORP_VAULT",
 				},
 			}
 
@@ -381,23 +380,6 @@ func CreateMockIntegrations() []apono.Integration {
 			},
 			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-database"},
 		},
-		{
-			Id:            "5",
-			Name:          "Postgresql PROD with Vault",
-			Type:          PostgresqlType,
-			Status:        "Active",
-			Details:       *apono.NewNullableString(&details),
-			ProvisionerId: *apono.NewNullableString(&ProdConnectorId),
-			Connection:    map[string]interface{}{},
-			LastSyncTime:  *apono.NewNullableInstant(&apono.Instant{Time: time.Now()}),
-			Metadata:      nil,
-			SecretConfig: map[string]interface{}{
-				"type":          "HASHICORP_VAULT",
-				"secret_engine": "prod",
-				"path":          "postgres-credentials",
-			},
-			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-database"},
-		},
 	}
 }
 
@@ -460,20 +442,6 @@ func CreateTFIntegrations() []aponoapi.IntegrationTerraform {
 				"type":      "KUBERNETES",
 				"namespace": "prod",
 				"name":      "postgres-credentials",
-			},
-			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-database"},
-		},
-		{
-			Id:            "5",
-			Name:          "Postgresql PROD with Vault",
-			Type:          PostgresqlType,
-			Status:        "Active",
-			ProvisionerId: *aponoapi.NewNullableString(&ProdConnectorId),
-			Params:        nil,
-			SecretConfig: map[string]interface{}{
-				"type":          "HASHICORP_VAULT",
-				"secret_engine": "prod",
-				"path":          "postgres-credentials",
 			},
 			ConnectedResourceTypes: []string{"postgresql-cluster", "postgresql-database"},
 		},
