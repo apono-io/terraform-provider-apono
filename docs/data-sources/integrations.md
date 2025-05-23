@@ -64,6 +64,14 @@ Read-Only:
 - `resource_owner_mappings` (Attributes Set) Let Apono know which tag represents owners and how to map it to a known attribute in Apono. (see [below for nested schema](#nestedatt--integrations--resource_owner_mappings))
 - `type` (String) Integration type
 
+<a id="nestedatt--integrations--apono_secret"></a>
+### Nested Schema for `integrations.apono_secret`
+
+Required:
+
+- `params` (Map of String) Apono secret parameters
+
+
 <a id="nestedatt--integrations--aws_secret"></a>
 ### Nested Schema for `integrations.aws_secret`
 
@@ -71,6 +79,15 @@ Required:
 
 - `region` (String) Aws secret region
 - `secret_id` (String) Aws secret name or ARN
+
+
+<a id="nestedatt--integrations--azure_secret"></a>
+### Nested Schema for `integrations.azure_secret`
+
+Required:
+
+- `name` (String) Azure secret name
+- `vault_url` (String) Azure Key Vault URL
 
 
 <a id="nestedatt--integrations--gcp_secret"></a>
@@ -124,20 +141,3 @@ Required:
 Optional:
 
 - `attribute_integration_id` (String) Provide the User Context integration ID the attribute originates from, for example Okta, Pagerduty, etc. You can find the ID in the Apono API Reference.
-
-
-<a id="nestedatt--integrations--azure_secret"></a>
-### Nested Schema for `integrations.azure_secret`
-
-Required:
-
-- `vault_url` (String) Azure Key Vault URL
-- `name` (String) Azure secret name
-
-
-<a id="nestedatt--integrations--apono_secret"></a>
-### Nested Schema for `integrations.apono_secret`
-
-Required:
-
-- `params` (Map of String) Apono secret parameters

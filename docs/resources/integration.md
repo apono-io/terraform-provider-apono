@@ -65,6 +65,7 @@ Required:
 
 - `params` (Map of String) Apono secret parameters
 
+
 <a id="nestedatt--aws_secret"></a>
 ### Nested Schema for `aws_secret`
 
@@ -73,13 +74,15 @@ Required:
 - `region` (String) Aws secret region
 - `secret_id` (String) Aws secret name or ARN
 
+
 <a id="nestedatt--azure_secret"></a>
 ### Nested Schema for `azure_secret`
 
 Required:
 
-- `vault_url` (String) Azure Key Vault URL
 - `name` (String) Azure secret name
+- `vault_url` (String) Azure Key Vault URL
+
 
 <a id="nestedatt--gcp_secret"></a>
 ### Nested Schema for `gcp_secret`
