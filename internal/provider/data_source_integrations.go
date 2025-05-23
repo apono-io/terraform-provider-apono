@@ -177,6 +177,19 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 				},
 			},
 		},
+		"azure_secret": schema.SingleNestedAttribute{
+			Optional: true,
+			Attributes: map[string]schema.Attribute{
+				"vault_url": schema.StringAttribute{
+					MarkdownDescription: "Azure Key Vault URL",
+					Required:            true,
+				},
+				"name": schema.StringAttribute{
+					MarkdownDescription: "Azure secret name",
+					Required:            true,
+				},
+			},
+		},
 		"kubernetes_secret": schema.SingleNestedAttribute{
 			Optional: true,
 			Attributes: map[string]schema.Attribute{
@@ -200,29 +213,6 @@ func IntegrationDataSourceAttributes() map[string]schema.Attribute {
 				"path": schema.StringAttribute{
 					MarkdownDescription: "Hashicorp Vault secret path",
 					Required:            true,
-				},
-			},
-		},
-		"azure_secret": schema.SingleNestedAttribute{
-			Optional: true,
-			Attributes: map[string]schema.Attribute{
-				"vault_url": schema.StringAttribute{
-					MarkdownDescription: "Azure Key Vault URL",
-					Required:            true,
-				},
-				"name": schema.StringAttribute{
-					MarkdownDescription: "Azure secret name",
-					Required:            true,
-				},
-			},
-		},
-		"apono_secret": schema.SingleNestedAttribute{
-			Optional: true,
-			Attributes: map[string]schema.Attribute{
-				"params": schema.MapAttribute{
-					MarkdownDescription: "Apono secret parameters",
-					Required:            true,
-					ElementType:         types.StringType,
 				},
 			},
 		},

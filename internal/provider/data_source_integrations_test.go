@@ -2,13 +2,12 @@ package provider
 
 import (
 	"fmt"
-	"strconv"
-	"testing"
-
 	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/apono-io/terraform-provider-apono/internal/mockserver"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/jarcoal/httpmock"
+	"strconv"
+	"testing"
 )
 
 func TestAccIntegrationsDataSource(t *testing.T) {
@@ -114,7 +113,6 @@ func createIntegrationsDataSourceChecks(integrations []aponoapi.IntegrationTerra
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.kubernetes_secret", i)),
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.hashicorp_vault_secret", i)),
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.azure_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.apono_secret", i)),
 			)
 		case "GCP":
 			checks = append(
@@ -125,29 +123,6 @@ func createIntegrationsDataSourceChecks(integrations []aponoapi.IntegrationTerra
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.kubernetes_secret", i)),
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.hashicorp_vault_secret", i)),
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.azure_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.apono_secret", i)),
-			)
-		case "KUBERNETES":
-			checks = append(
-				checks,
-				resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.kubernetes_secret.namespace", i), fmt.Sprintf("%s", secret["namespace"])),
-				resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.kubernetes_secret.name", i), fmt.Sprintf("%s", secret["name"])),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.aws_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.gcp_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.hashicorp_vault_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.azure_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.apono_secret", i)),
-			)
-		case "HASHICORP_VAULT":
-			checks = append(
-				checks,
-				resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.hashicorp_vault_secret.secret_engine", i), fmt.Sprintf("%s", secret["secret_engine"])),
-				resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.hashicorp_vault_secret.path", i), fmt.Sprintf("%s", secret["path"])),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.aws_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.gcp_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.kubernetes_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.azure_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.apono_secret", i)),
 			)
 		case "AZURE":
 			checks = append(
@@ -158,16 +133,25 @@ func createIntegrationsDataSourceChecks(integrations []aponoapi.IntegrationTerra
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.gcp_secret", i)),
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.kubernetes_secret", i)),
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.hashicorp_vault_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.apono_secret", i)),
 			)
-		case "APONO":
+		case "KUBERNETES":
 			checks = append(
 				checks,
-				resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.apono_secret.params.%s", i, "key1"), "value1"),
+				resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.kubernetes_secret.namespace", i), fmt.Sprintf("%s", secret["namespace"])),
+				resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.kubernetes_secret.name", i), fmt.Sprintf("%s", secret["name"])),
+				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.aws_secret", i)),
+				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.gcp_secret", i)),
+				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.hashicorp_vault_secret", i)),
+				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.azure_secret", i)),
+			)
+		case "HASHICORP_VAULT":
+			checks = append(
+				checks,
+				resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.hashicorp_vault_secret.secret_engine", i), fmt.Sprintf("%s", secret["secret_engine"])),
+				resource.TestCheckResourceAttr(allPath, fmt.Sprintf("integrations.%d.hashicorp_vault_secret.path", i), fmt.Sprintf("%s", secret["path"])),
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.aws_secret", i)),
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.gcp_secret", i)),
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.kubernetes_secret", i)),
-				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.hashicorp_vault_secret", i)),
 				resource.TestCheckNoResourceAttr(allPath, fmt.Sprintf("integrations.%d.azure_secret", i)),
 			)
 		}

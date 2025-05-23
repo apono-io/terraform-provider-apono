@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"fmt"
-
 	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/apono-io/terraform-provider-apono/internal/models"
 	"github.com/apono-io/terraform-provider-apono/internal/utils"
@@ -47,6 +46,11 @@ func ConvertToIntegrationModel(ctx context.Context, integration *aponoapi.Integr
 			Project:  basetypes.NewStringValue(toString(secretConfig["project"])),
 			SecretID: basetypes.NewStringValue(toString(secretConfig["secret_id"])),
 		}
+	case "AZURE":
+		data.AzureSecret = &models.AzureSecret{
+			VaultURL: basetypes.NewStringValue(toString(secretConfig["vault_url"])),
+			Name:     basetypes.NewStringValue(toString(secretConfig["name"])),
+		}
 	case "KUBERNETES":
 		data.KubernetesSecret = &models.KubernetesSecret{
 			Namespace: basetypes.NewStringValue(toString(secretConfig["namespace"])),
@@ -56,19 +60,6 @@ func ConvertToIntegrationModel(ctx context.Context, integration *aponoapi.Integr
 		data.HashicorpVaultSecret = &models.HashicorpVaultSecret{
 			SecretEngine: basetypes.NewStringValue(toString(secretConfig["secret_engine"])),
 			Path:         basetypes.NewStringValue(toString(secretConfig["path"])),
-		}
-	case "AZURE":
-		data.AzureSecret = &models.AzureSecret{
-			VaultURL: basetypes.NewStringValue(toString(secretConfig["vault_url"])),
-			Name:     basetypes.NewStringValue(toString(secretConfig["name"])),
-		}
-	case "APONO":
-		paramsMap, diags := types.MapValueFrom(ctx, types.StringType, secretConfig["params"])
-		if len(diags) > 0 {
-			return nil, diags
-		}
-		data.AponoSecret = &models.AponoSecret{
-			Params: paramsMap,
 		}
 	}
 

@@ -45,7 +45,6 @@ data "apono_integrations" "prod_mysql_integrations" {
 
 Optional:
 
-- `apono_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--apono_secret))
 - `aws_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--aws_secret))
 - `azure_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--azure_secret))
 - `gcp_secret` (Attributes) (see [below for nested schema](#nestedatt--integrations--gcp_secret))
@@ -63,14 +62,6 @@ Read-Only:
 - `name` (String) Integration name
 - `resource_owner_mappings` (Attributes Set) Let Apono know which tag represents owners and how to map it to a known attribute in Apono. (see [below for nested schema](#nestedatt--integrations--resource_owner_mappings))
 - `type` (String) Integration type
-
-<a id="nestedatt--integrations--apono_secret"></a>
-### Nested Schema for `integrations.apono_secret`
-
-Required:
-
-- `params` (Map of String) Apono secret parameters
-
 
 <a id="nestedatt--integrations--aws_secret"></a>
 ### Nested Schema for `integrations.aws_secret`

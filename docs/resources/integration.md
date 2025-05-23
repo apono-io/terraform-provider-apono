@@ -42,7 +42,6 @@ resource "apono_integration" "postgresql_prod" {
 
 ### Optional
 
-- `apono_secret` (Attributes) (see [below for nested schema](#nestedatt--apono_secret))
 - `aws_secret` (Attributes) (see [below for nested schema](#nestedatt--aws_secret))
 - `azure_secret` (Attributes) (see [below for nested schema](#nestedatt--azure_secret))
 - `connected_resource_types` (Set of String) Resource types to sync, if omitted all resources types will be synced.
@@ -57,14 +56,6 @@ resource "apono_integration" "postgresql_prod" {
 ### Read-Only
 
 - `id` (String) Integration identifier
-
-<a id="nestedatt--apono_secret"></a>
-### Nested Schema for `apono_secret`
-
-Required:
-
-- `params` (Map of String) Apono secret parameters
-
 
 <a id="nestedatt--aws_secret"></a>
 ### Nested Schema for `aws_secret`
