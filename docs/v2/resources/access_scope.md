@@ -13,6 +13,8 @@ Manages an Apono Access Scope, a logical grouping of cloud resources defined by 
 
 ## Example Usage
 
+### Access Scope for MySQL RDS Databases
+
 ```terraform
 resource "apono_access_scope" "production_databases" {
   name  = "production-mysql-dbs-us_east-1"
@@ -27,6 +29,8 @@ resource "apono_access_scope" "production_databases" {
 ```
 
 ## Example Usage
+
+### Access Scope for Production EC2 Instances
 
 ```terraform
 resource "apono_access_scope" "critical_ec2_instances" {

@@ -1,0 +1,20 @@
+---
+page_title: "{{.Name}} (beta) {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+  {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Type}}: {{.Name}} (beta)
+
+{{ .Description | trimspace }}
+
+-> **Note** Please note this datasource is in **beta**.
+
+## Example Usage
+
+### Retrieve Bundles by Name
+
+{{ tffile "examples/data-sources/apono_bundles/critical_prod_db_bundle.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}
