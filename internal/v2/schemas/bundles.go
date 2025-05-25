@@ -31,7 +31,7 @@ func GetIntegrationTargetSchema(mode SchemaMode) schema.SingleNestedAttribute {
 				Computed:    fieldsComputed,
 				ElementType: types.StringType,
 			},
-			"resources_scopes": schema.SetNestedAttribute{
+			"resources_scopes": schema.ListNestedAttribute{
 				Description: "If null, the scope will apply to any resource in the integration target.",
 				Optional:    !isComputed,
 				Computed:    isComputed,
@@ -52,7 +52,7 @@ func GetIntegrationTargetSchema(mode SchemaMode) schema.SingleNestedAttribute {
 							Optional:    !isComputed,
 							Computed:    isComputed,
 						},
-						"values": schema.SetAttribute{
+						"values": schema.ListAttribute{
 							Description: "Resource values to match (IDs, names, or tag values).",
 							Required:    fieldsRequired,
 							Computed:    fieldsComputed,

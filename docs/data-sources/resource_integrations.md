@@ -23,7 +23,7 @@ Fetches resource integrations based on filters
 
 ### Read-Only
 
-- `integrations` (Attributes Set) List of matching integrations (see [below for nested schema](#nestedatt--integrations))
+- `integrations` (Attributes List) List of matching integrations (see [below for nested schema](#nestedatt--integrations))
 
 <a id="nestedatt--integrations"></a>
 ### Nested Schema for `integrations`

@@ -135,7 +135,7 @@ func convertRequestorsToModel(ctx context.Context, requestors client.RequestorsP
 func convertConditionToModel(ctx context.Context, condition client.ConditionPublicV2Model) (*AccessFlowCondition, error) {
 	model := &AccessFlowCondition{
 		Type:   types.StringValue(condition.Type),
-		Values: basetypes.NewSetNull(types.StringType),
+		Values: basetypes.NewListNull(types.StringType),
 	}
 
 	if val, ok := condition.SourceIntegrationName.Get(); ok {
@@ -149,11 +149,11 @@ func convertConditionToModel(ctx context.Context, condition client.ConditionPubl
 	}
 
 	if val, ok := condition.Values.Get(); ok {
-		valuesSet, diags := types.SetValueFrom(ctx, types.StringType, val)
+		values, diags := types.ListValueFrom(ctx, types.StringType, val)
 		if diags.HasError() {
 			return nil, fmt.Errorf("failed to convert condition values: %v", diags)
 		}
-		model.Values = valuesSet
+		model.Values = values
 	}
 
 	return model, nil
@@ -227,11 +227,11 @@ func convertResourcesScopesToModel(ctx context.Context, scopes []client.Resource
 			modelScope.Key = types.StringValue(val)
 		}
 
-		valuesSet, diags := types.SetValueFrom(ctx, types.StringType, scope.Values)
+		valuesList, diags := types.ListValueFrom(ctx, types.StringType, scope.Values)
 		if diags.HasError() {
 			return nil, fmt.Errorf("failed to convert resource scope values: %v", diags)
 		}
-		modelScope.Values = valuesSet
+		modelScope.Values = valuesList
 
 		modelScopes = append(modelScopes, modelScope)
 	}

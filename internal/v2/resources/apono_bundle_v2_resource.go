@@ -47,7 +47,7 @@ func (r *AponoBundleV2Resource) Schema(_ context.Context, _ resource.SchemaReque
 				Description: "The name of the bundle.",
 				Required:    true,
 			},
-			"access_targets": schema.SetNestedAttribute{
+			"access_targets": schema.ListNestedAttribute{
 				Description: "List of access targets for this bundle",
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{

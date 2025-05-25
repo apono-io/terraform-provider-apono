@@ -45,7 +45,7 @@ func (d *ResourceIntegrationsDataSource) Schema(ctx context.Context, req datasou
 				Description: "Filter by connector ID",
 				Optional:    true,
 			},
-			"integrations": schema.SetNestedAttribute{
+			"integrations": schema.ListNestedAttribute{
 				Description: "List of matching integrations",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
