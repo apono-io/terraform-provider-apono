@@ -22,8 +22,8 @@ func TestAponoGroupsDataSource(t *testing.T) {
 	mockInvoker := mocks.NewInvoker(t)
 	d := &AponoGroupsDataSource{client: mockInvoker}
 
-	getGroupsSetType := func() tftypes.Set {
-		return tftypes.Set{
+	getGroupsListType := func() tftypes.List {
+		return tftypes.List{
 			ElementType: tftypes.Object{
 				AttributeTypes: map[string]tftypes.Type{
 					"id":                      tftypes.String,
@@ -40,7 +40,7 @@ func TestAponoGroupsDataSource(t *testing.T) {
 			AttributeTypes: map[string]tftypes.Type{
 				"name":               tftypes.String,
 				"source_integration": tftypes.String,
-				"groups":             getGroupsSetType(),
+				"groups":             getGroupsListType(),
 			},
 		}
 	}
@@ -74,7 +74,7 @@ func TestAponoGroupsDataSource(t *testing.T) {
 		ctx := t.Context()
 		configType := getGroupsConfigType()
 		groupsAttr := d.getTestSchema(ctx).Attributes["groups"]
-		groupsType, ok := groupsAttr.GetType().TerraformType(ctx).(tftypes.Set)
+		groupsType, ok := groupsAttr.GetType().TerraformType(ctx).(tftypes.List)
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
@@ -157,7 +157,7 @@ func TestAponoGroupsDataSource(t *testing.T) {
 		ctx := t.Context()
 		configType := getGroupsConfigType()
 		groupsAttr := d.getTestSchema(ctx).Attributes["groups"]
-		groupsType, ok := groupsAttr.GetType().TerraformType(ctx).(tftypes.Set)
+		groupsType, ok := groupsAttr.GetType().TerraformType(ctx).(tftypes.List)
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
@@ -199,7 +199,7 @@ func TestAponoGroupsDataSource(t *testing.T) {
 		ctx := t.Context()
 		configType := getGroupsConfigType()
 		groupsAttr := d.getTestSchema(ctx).Attributes["groups"]
-		groupsType, ok := groupsAttr.GetType().TerraformType(ctx).(tftypes.Set)
+		groupsType, ok := groupsAttr.GetType().TerraformType(ctx).(tftypes.List)
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{

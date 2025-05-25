@@ -29,7 +29,7 @@ func (d *AponoUserInformationIntegrationsDataSource) Metadata(_ context.Context,
 
 func (d *AponoUserInformationIntegrationsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves a set of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.",
+		Description: "Retrieves a list of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description: `Filters the returned integrations by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "Google\*").`,
@@ -39,8 +39,8 @@ func (d *AponoUserInformationIntegrationsDataSource) Schema(_ context.Context, _
 				Description: `Filters the returned integrations by their type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "\*duty\*").`,
 				Optional:    true,
 			},
-			"integrations": schema.SetNestedAttribute{
-				Description: "A set of user information integrations.",
+			"integrations": schema.ListNestedAttribute{
+				Description: "A list of user information integrations.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

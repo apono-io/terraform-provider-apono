@@ -36,7 +36,7 @@ type AccessFlowCondition struct {
 	SourceIntegrationName types.String `tfsdk:"source_integration_name"`
 	Type                  types.String `tfsdk:"type"`
 	MatchOperator         types.String `tfsdk:"match_operator"`
-	Values                types.Set    `tfsdk:"values"`
+	Values                types.List   `tfsdk:"values"`
 }
 
 type AccessFlowRequestorsModel struct {
