@@ -31,22 +31,22 @@ func (d *ResourceIntegrationsDataSource) Metadata(ctx context.Context, req datas
 
 func (d *ResourceIntegrationsDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Fetches resource integrations based on filters",
+		Description: "Retrieves a set of resource integrations based on filters such as connector ID, integration name, and type. This data source is typically used to query and reference existing integrations in the Access Flow resource.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "Filter by integration name. Supports wildcards (e.g., 'DB Prod*')",
+				Description: `Filter by integration name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "DB Prod*").`,
 				Optional:    true,
 			},
 			"type": schema.StringAttribute{
-				Description: "Filter by integration type. Supports wildcards (e.g., 'postgresql')",
+				Description: `Filter by Apono integration type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "*duty*", "aws-*").`,
 				Optional:    true,
 			},
 			"connector_id": schema.StringAttribute{
-				Description: "Filter by connector ID",
+				Description: "Filter by the ID of the connector used to connect the integration.",
 				Optional:    true,
 			},
 			"integrations": schema.ListNestedAttribute{
-				Description: "List of matching integrations",
+				Description: "A list of matching integrations. Each item in the list contains the following attributes.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -63,22 +63,22 @@ func (d *ResourceIntegrationsDataSource) Schema(ctx context.Context, req datasou
 							Computed:    true,
 						},
 						"connector_id": schema.StringAttribute{
-							Description: "ID of the Apono Connector used for the integration.",
+							Description: "ID of the associated Apono connector.",
 							Computed:    true,
 						},
 						"connected_resource_types": schema.ListAttribute{
-							Description: "List of resource types discovered by the integration.",
+							Description: "Resource types discovered by the integration.",
 							ElementType: types.StringType,
 							Computed:    true,
 						},
 						"integration_config": schema.MapAttribute{
-							MarkdownDescription: "Integration-specific configuration key-value pairs.",
+							MarkdownDescription: "Key-value integration-specific configuration. Refer to the [Integration Configuration documentation](https://docs.apono.io/metadata-for-integration-config) for specific configuration values.",
 							ElementType:         types.StringType,
 							Computed:            true,
 						},
 						"secret_store_config": schemas.GetSecretStoreConfigSchema(schemas.DataSourceMode),
 						"custom_access_details": schema.StringAttribute{
-							Description: "Custom access instructions for end users.",
+							Description: "Custom access instructions for end users, displayed in the access details modal.",
 							Computed:    true,
 						},
 						"owner":          schemas.GetOwnerSchema(schemas.DataSourceMode),

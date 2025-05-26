@@ -18,12 +18,12 @@ resource "apono_access_flow_v2" "bundle_access_scope_flow" {
   access_targets = [
     {
       bundle = {
-        name = "All Databases for Dev"
+        name = data.apono_bundles.critical_prod_db_bundle.bundles[0].name
       }
     },
     {
       access_scope = {
-        name = tolist(data.apono_access_scopes.production_db.access_scopes)[0].name
+        name = data.apono_access_scopes.production_db.access_scopes[0].name
       }
     }
   ]
@@ -38,18 +38,18 @@ resource "apono_access_flow_v2" "bundle_access_scope_flow" {
             source_integration_name = "Google Oauth"
             type                    = "group"
             match_operator          = "is"
-            values                  = [tolist(data.apono_groups.InfoSec_team.groups)[0].id]
+            values                  = [data.apono_groups.InfoSec_team.groups[0].id]
           },
           {
             type           = "group"
             match_operator = "is"
-            values         = [tolist(data.apono_groups.DevOps_team.groups)[0].id]
+            values         = [data.apono_groups.DevOps_team.groups[0].id]
           },
           {
             source_integration_name = "Google Oauth"
             type                    = "group"
             match_operator          = "is"
-            values                  = [tolist(data.apono_groups.dev_teams.groups)[0].id]
+            values                  = [data.apono_groups.dev_teams.groups[0].id]
           }
         ]
       }

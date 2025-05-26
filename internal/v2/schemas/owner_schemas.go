@@ -12,7 +12,7 @@ func GetOwnerSchema(mode SchemaMode) schema.SingleNestedAttribute {
 
 	description := "Apono can use the integration owner for access requests approval if no owner is found. Enter one or more users, groups, shifts or attributes. This field is mandatory when using Resource Owners and serves as a fallback approver if no resource owner is found."
 	if mode == DataSourceMode {
-		description = "Integration owner information used for access requests approval."
+		description = "Integration owner. Fallback used by Apono when no specific resource owner is available."
 	}
 
 	return schema.SingleNestedAttribute{
@@ -47,7 +47,7 @@ func GetOwnersMappingSchema(mode SchemaMode) schema.SingleNestedAttribute {
 
 	description := "Apono will sync each resource's owner from the source integration. Use this for Resource Owner access requests approval."
 	if mode == DataSourceMode {
-		description = "Resource owner mapping configuration from the source integration."
+		description = "Resource owners. This configuration determines how ownership is inferred dynamically for each resource discovered by the integration."
 	}
 
 	return schema.SingleNestedAttribute{
@@ -55,19 +55,19 @@ func GetOwnersMappingSchema(mode SchemaMode) schema.SingleNestedAttribute {
 		Optional:    !isComputed,
 		Computed:    isComputed,
 		Attributes: map[string]schema.Attribute{
-			"source_integration_name": schema.StringAttribute{
-				Description: "Name of the source integration.",
-				Optional:    !fieldsComputed,
-				Computed:    fieldsComputed,
-			},
 			"key_name": schema.StringAttribute{
-				Description: "Attribute key to map owner.",
+				Description: "Name of the tag created in your cloud environment.",
 				Required:    fieldsRequired,
 				Computed:    fieldsComputed,
 			},
 			"attribute_type": schema.StringAttribute{
-				Description: "Type of the attribute.",
+				Description: "Type of the attribute (e.g., user, group).",
 				Required:    fieldsRequired,
+				Computed:    fieldsComputed,
+			},
+			"source_integration_name": schema.StringAttribute{
+				Description: "Name of the integration from which the attribute type originates (e.g., “Google Oauth”)",
+				Optional:    !fieldsComputed,
 				Computed:    fieldsComputed,
 			},
 		},

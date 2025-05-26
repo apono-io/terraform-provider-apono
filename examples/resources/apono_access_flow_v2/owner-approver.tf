@@ -18,7 +18,7 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
   access_targets = [
     {
       integration = {
-        integration_name = "aws-account-integration"
+        integration_name = data.apono_resource_integrations.aws_staging_integrations.integrations[0].name
         resource_type    = "aws-account-s3-bucket"
         permissions      = ["READ_WRITE"]
       }

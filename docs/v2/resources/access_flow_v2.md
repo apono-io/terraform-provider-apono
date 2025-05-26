@@ -228,12 +228,12 @@ resource "apono_access_flow_v2" "bundle_access_scope_flow" {
   access_targets = [
     {
       bundle = {
-        name = "All Databases for Dev"
+        name = data.apono_bundles.critical_prod_db_bundle.bundles[0].name
       }
     },
     {
       access_scope = {
-        name = tolist(data.apono_access_scopes.production_db.access_scopes)[0].name
+        name = data.apono_access_scopes.production_db.access_scopes[0].name
       }
     }
   ]
@@ -248,18 +248,18 @@ resource "apono_access_flow_v2" "bundle_access_scope_flow" {
             source_integration_name = "Google Oauth"
             type                    = "group"
             match_operator          = "is"
-            values                  = [tolist(data.apono_groups.InfoSec_team.groups)[0].id]
+            values                  = [data.apono_groups.InfoSec_team.groups[0].id]
           },
           {
             type           = "group"
             match_operator = "is"
-            values         = [tolist(data.apono_groups.DevOps_team.groups)[0].id]
+            values         = [data.apono_groups.DevOps_team.groups[0].id]
           },
           {
             source_integration_name = "Google Oauth"
             type                    = "group"
             match_operator          = "is"
-            values                  = [tolist(data.apono_groups.dev_teams.groups)[0].id]
+            values                  = [data.apono_groups.dev_teams.groups[0].id]
           }
         ]
       }
@@ -298,7 +298,7 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
   access_targets = [
     {
       integration = {
-        integration_name = "aws-account-integration"
+        integration_name = data.apono_resource_integrations.aws_staging_integrations.integrations[0].name
         resource_type    = "aws-account-s3-bucket"
         permissions      = ["READ_WRITE"]
       }
@@ -355,9 +355,9 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
 
 Optional:
 
-- `access_scope` (Attributes) Access scope. (see [below for nested schema](#nestedatt--access_targets--access_scope))
+- `access_scope` (Attributes) Access scope target. (see [below for nested schema](#nestedatt--access_targets--access_scope))
 - `bundle` (Attributes) Bundle target. (see [below for nested schema](#nestedatt--access_targets--bundle))
-- `integration` (Attributes) Integration target. (see [below for nested schema](#nestedatt--access_targets--integration))
+- `integration` (Attributes) Defines an integration and resources to which access will be granted. (see [below for nested schema](#nestedatt--access_targets--integration))
 
 <a id="nestedatt--access_targets--access_scope"></a>
 ### Nested Schema for `access_targets.access_scope`
@@ -381,12 +381,12 @@ Required:
 Required:
 
 - `integration_name` (String) The name of the integration
-- `permissions` (Set of String) List of permissions
-- `resource_type` (String) The type of resource
+- `permissions` (Set of String) List of permissions (e.g., "Attach", "ReadOnlyAccess").
+- `resource_type` (String) The type of resource within the integration for which access is being granted (e.g., aws-account-s3-bucket).
 
 Optional:
 
-- `resources_scopes` (Attributes List) If null, the scope will apply to any resource in the integration target. (see [below for nested schema](#nestedatt--access_targets--integration--resources_scopes))
+- `resources_scopes` (Attributes List) A list of filters defining which resources are included or excluded. If null, the scope will apply to any resource in the integration target (see [below for nested schema](#nestedatt--access_targets--integration--resources_scopes))
 
 <a id="nestedatt--access_targets--integration--resources_scopes"></a>
 ### Nested Schema for `access_targets.integration.resources_scopes`
