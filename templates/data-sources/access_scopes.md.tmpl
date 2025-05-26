@@ -25,6 +25,8 @@ description: |-
 
 {{ tffile "examples/data-sources/apono_access_scopes/pattern-matching.tf" }}
 
+Example usage of [`production_db`](../resources/access_flow_v2.md#bundle-and-access-scope-as-access-targets) used in an access flow.
+
 By specifying a wildcard pattern `*Production*`, all access scopes with a name that contains Production are returned. We then output the total count of those access scopes.
 
 {{ .SchemaMarkdown | trimspace }}

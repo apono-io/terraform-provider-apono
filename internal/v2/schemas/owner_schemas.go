@@ -27,7 +27,12 @@ func GetOwnerSchema(mode SchemaMode) schema.SingleNestedAttribute {
 			Computed:    fieldsComputed,
 		},
 		"attribute_values": schema.ListAttribute{
-			Description: "List of values for the ownership assignment.",
+			Description: func() string {
+				if mode == DataSourceMode {
+					return "List of assigned owner values."
+				}
+				return "List of values for the ownership assignment."
+			}(),
 			ElementType: types.StringType,
 			Required:    fieldsRequired,
 			Computed:    fieldsComputed,

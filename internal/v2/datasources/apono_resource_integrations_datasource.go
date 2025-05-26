@@ -38,7 +38,7 @@ func (d *ResourceIntegrationsDataSource) Schema(ctx context.Context, req datasou
 				Optional:    true,
 			},
 			"type": schema.StringAttribute{
-				Description: `Filter by Apono integration type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "*duty*", "aws-*").`,
+				Description: `Filter by Apono integration type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "\*duty\*", "aws-*").`,
 				Optional:    true,
 			},
 			"connector_id": schema.StringAttribute{
