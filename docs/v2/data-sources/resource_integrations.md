@@ -125,7 +125,7 @@ Read-Only:
 
 Read-Only:
 
-- `attribute_type` (String) Type of the owner attribute.
+- `attribute_type` (String) Type of the owner attribute (e.g., user, group).
 - `attribute_values` (List of String) List of values for the ownership assignment.
 - `source_integration_name` (String) Name of the integration from which the type originates from (e.g. "Google Oauth").
 

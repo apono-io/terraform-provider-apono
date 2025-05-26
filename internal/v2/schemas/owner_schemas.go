@@ -22,7 +22,7 @@ func GetOwnerSchema(mode SchemaMode) schema.SingleNestedAttribute {
 			Computed:    fieldsComputed,
 		},
 		"attribute_type": schema.StringAttribute{
-			Description: "Type of the owner attribute.",
+			Description: "Type of the owner attribute (e.g., user, group).",
 			Required:    fieldsRequired,
 			Computed:    fieldsComputed,
 		},

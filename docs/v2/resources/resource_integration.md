@@ -115,7 +115,7 @@ resource "apono_resource_integration" "gcp_sql_integration" {
 
 Required:
 
-- `attribute_type` (String) Type of the owner attribute.
+- `attribute_type` (String) Type of the owner attribute (e.g., user, group).
 - `attribute_values` (List of String) List of values for the ownership assignment.
 
 Optional:
