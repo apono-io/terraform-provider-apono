@@ -26,7 +26,7 @@ If your configuration depends on these fields, ensure any use of `toset()` or as
 In the `apono_resource_integration` resource, the following fields in the `owner` block are now deprecated and will be removed in v2.0.0:
 
 - `type` → use `attribute_type`
-- `value` → use `attribute_value`
+- `values` → use `attribute_values`
 
 **Notice:** These old fields are still fully functional in this release but will be removed in the next major version. Please update your configuration to use the new field names to ensure compatibility going forward.
 
