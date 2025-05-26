@@ -125,9 +125,9 @@ Read-Only:
 
 Read-Only:
 
+- `attribute_type` (String) Type of the owner attribute.
+- `attribute_values` (List of String) List of values for the ownership assignment.
 - `source_integration_name` (String) Name of the integration from which the type originates from (e.g. "Google Oauth").
-- `type` (String) Type of the owner attribute.
-- `values` (List of String) List of values for the ownership assignment.
 
 
 <a id="nestedatt--integrations--owners_mapping"></a>
