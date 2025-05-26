@@ -30,14 +30,14 @@ func (d *AponoBundlesDataSource) Metadata(_ context.Context, req datasource.Meta
 
 func (d *AponoBundlesDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Retrieves existing bundles. Use this data source to reference bundles in the Access Flow resource.",
+		Description: "Retrieves a list of existing Apono Bundles. This data source is typically used to reference bundle definitions within Access Flow resources. You can filter bundles by name using exact or wildcard matching.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: `Filters the returned bundles by their name. Partial matching is supported with asterisks for contains, starts with, and ends with.  (e.g., "\*my-bundles\*").`,
+				Description: `Filter by bundle name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "prod*").`,
 				Optional:    true,
 			},
 			"bundles": schema.ListNestedAttribute{
-				Description: "A list of bundles that match the filter.",
+				Description: "A list of bundles matching the filter.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -46,11 +46,11 @@ func (d *AponoBundlesDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 							Computed:    true,
 						},
 						"name": schema.StringAttribute{
-							Description: "The name of the bundle.",
+							Description: "Name of the bundle.",
 							Computed:    true,
 						},
 						"access_targets": schema.ListNestedAttribute{
-							Description: "List of access targets for this bundle",
+							Description: "A list of access targets included in the bundle.",
 							Computed:    true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{

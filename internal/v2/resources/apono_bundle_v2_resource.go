@@ -34,7 +34,7 @@ func (r *AponoBundleV2Resource) Metadata(_ context.Context, req resource.Metadat
 
 func (r *AponoBundleV2Resource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manages an Apono Bundle V2.",
+		Description: "Manages an Apono Bundle, which defines a collection of access targets - either access scopes or specific resources within integrations.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "The unique identifier of the bundle.",
@@ -44,11 +44,11 @@ func (r *AponoBundleV2Resource) Schema(_ context.Context, _ resource.SchemaReque
 				},
 			},
 			"name": schema.StringAttribute{
-				Description: "The name of the bundle.",
+				Description: "Human-readable name for the access flow, must be unique.",
 				Required:    true,
 			},
 			"access_targets": schema.ListNestedAttribute{
-				Description: "List of access targets for this bundle",
+				Description: "A list of access targets included in the bundle.",
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

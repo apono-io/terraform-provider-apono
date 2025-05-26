@@ -128,12 +128,12 @@ Optional:
 
 Required:
 
-- `attribute_type` (String) Type of the attribute.
-- `key_name` (String) Attribute key to map owner.
+- `attribute_type` (String) Type of the attribute (e.g., user, group).
+- `key_name` (String) Name of the tag created in your cloud environment.
 
 Optional:
 
-- `source_integration_name` (String) Name of the source integration.
+- `source_integration_name` (String) Name of the integration from which the attribute type originates (e.g., “Google Oauth”)
 
 
 <a id="nestedatt--secret_store_config"></a>

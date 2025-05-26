@@ -11,7 +11,7 @@ func GetIntegrationTargetSchema(mode SchemaMode) schema.SingleNestedAttribute {
 	fieldsComputed := mode == DataSourceMode
 
 	return schema.SingleNestedAttribute{
-		Description: "Integration target.",
+		Description: "Defines an integration and resources to which access will be granted.",
 		Optional:    !isComputed,
 		Computed:    isComputed,
 		Attributes: map[string]schema.Attribute{
@@ -21,18 +21,18 @@ func GetIntegrationTargetSchema(mode SchemaMode) schema.SingleNestedAttribute {
 				Computed:    fieldsComputed,
 			},
 			"resource_type": schema.StringAttribute{
-				Description: "The type of resource",
+				Description: "The type of resource within the integration for which access is being granted (e.g., aws-account-s3-bucket).",
 				Required:    fieldsRequired,
 				Computed:    fieldsComputed,
 			},
 			"permissions": schema.SetAttribute{
-				Description: "List of permissions",
+				Description: `List of permissions (e.g., "Attach", "ReadOnlyAccess").`,
 				Required:    fieldsRequired,
 				Computed:    fieldsComputed,
 				ElementType: types.StringType,
 			},
 			"resources_scopes": schema.ListNestedAttribute{
-				Description: "If null, the scope will apply to any resource in the integration target.",
+				Description: "A list of filters defining which resources are included or excluded. If null, the scope will apply to any resource in the integration target",
 				Optional:    !isComputed,
 				Computed:    isComputed,
 				NestedObject: schema.NestedAttributeObject{
@@ -71,7 +71,7 @@ func GetAccessScopeTargetSchema(mode SchemaMode) schema.SingleNestedAttribute {
 	fieldsComputed := mode == DataSourceMode
 
 	return schema.SingleNestedAttribute{
-		Description: "Access scope.",
+		Description: "Access scope target.",
 		Optional:    !isComputed,
 		Computed:    isComputed,
 		Attributes: map[string]schema.Attribute{
