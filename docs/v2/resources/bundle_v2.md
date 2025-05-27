@@ -1,15 +1,13 @@
 ---
-page_title: "apono_bundle_v2 (beta) Resource - terraform-provider-apono"
+page_title: "apono_bundle_v2 Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages an Apono Bundle, which defines a collection of access targets - either access scopes or specific resources within integrations.
 ---
 
-# Resource: apono_bundle_v2 (beta)
+# Resource: apono_bundle_v2
 
 Manages an Apono Bundle, which defines a collection of access targets - either access scopes or specific resources within integrations.
-
--> **Note** Please note this resource is in **beta**.
 
 ## Example Usage
 

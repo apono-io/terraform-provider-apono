@@ -217,8 +217,8 @@ func TestResourceIntegrationModelToCreateRequest(t *testing.T) {
 			}),
 			Owner: &OwnerConfig{
 				SourceIntegrationName: types.StringValue("source-integration"),
-				Type:                  types.StringValue("user"),
-				Values:                types.ListValueMust(types.StringType, []attr.Value{types.StringValue("user1"), types.StringValue("user2")}),
+				AttributeType:         types.StringValue("user"),
+				AttributeValues:       types.ListValueMust(types.StringType, []attr.Value{types.StringValue("user1"), types.StringValue("user2")}),
 			},
 		}
 
@@ -531,11 +531,11 @@ func TestResourceIntegrationToModel(t *testing.T) {
 
 		require.NoError(t, err)
 		require.NotNil(t, model.Owner)
-		assert.Equal(t, "user", model.Owner.Type.ValueString())
+		assert.Equal(t, "user", model.Owner.AttributeType.ValueString())
 		assert.Equal(t, "source-integration", model.Owner.SourceIntegrationName.ValueString())
 
 		var values []string
-		diags := model.Owner.Values.ElementsAs(ctx, &values, false)
+		diags := model.Owner.AttributeValues.ElementsAs(ctx, &values, false)
 		require.False(t, diags.HasError())
 		assert.Equal(t, []string{"user1", "user2"}, values)
 	})
@@ -776,8 +776,8 @@ func TestResourceIntegrationModelToUpdateRequest(t *testing.T) {
 			}),
 			Owner: &OwnerConfig{
 				SourceIntegrationName: types.StringValue("new-source-integration"),
-				Type:                  types.StringValue("group"),
-				Values:                types.ListValueMust(types.StringType, []attr.Value{types.StringValue("group1"), types.StringValue("group2")}),
+				AttributeType:         types.StringValue("group"),
+				AttributeValues:       types.ListValueMust(types.StringType, []attr.Value{types.StringValue("group1"), types.StringValue("group2")}),
 			},
 		}
 

@@ -1,15 +1,13 @@
 ---
-page_title: "{{.Name}} (beta) {{.Type}} - {{.ProviderName}}"
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
 subcategory: ""
 description: |-
   {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
 ---
 
-# {{.Type}}: {{.Name}} (beta)
+# {{.Type}}: {{.Name}}
 
 {{ .Description | trimspace }}
-
--> **Note** Please note this datasource is in **beta**.
 
 ## Example Usage
 
@@ -24,5 +22,7 @@ description: |-
 ### Retrieve All PagerDuty and Zenduty Integrations by Type
 
 {{ tffile "examples/data-sources/apono_user_information_integrations/pagerduty-zenduty.tf" }}
+
+Example usage of [`google_oauth_idp`](../resources/access_flow_v2.md#access-to-sensitive-production-for-users-via-google-oauth-idp) used in an access flow.
 
 {{ .SchemaMarkdown | trimspace }}

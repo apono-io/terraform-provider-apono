@@ -15,28 +15,50 @@ func GetOwnerSchema(mode SchemaMode) schema.SingleNestedAttribute {
 		description = "Integration owner. Fallback used by Apono when no specific resource owner is available."
 	}
 
+	attributes := map[string]schema.Attribute{
+		"source_integration_name": schema.StringAttribute{
+			Description: "Name of the integration from which the type originates from (e.g. \"Google Oauth\").",
+			Optional:    !fieldsComputed,
+			Computed:    fieldsComputed,
+		},
+		"attribute_type": schema.StringAttribute{
+			Description: "Type of the owner attribute (e.g., user, group).",
+			Required:    fieldsRequired,
+			Computed:    fieldsComputed,
+		},
+		"attribute_values": schema.ListAttribute{
+			Description: func() string {
+				if mode == DataSourceMode {
+					return "List of assigned owner values."
+				}
+				return "List of values for the ownership assignment."
+			}(),
+			ElementType: types.StringType,
+			Required:    fieldsRequired,
+			Computed:    fieldsComputed,
+		},
+	}
+
+	// Add deprecated fields only for resource mode
+	if mode == ResourceMode {
+		attributes["type"] = schema.StringAttribute{
+			Description:        "Use `attribute_type` instead. `type` will be removed in v2.0.0.",
+			DeprecationMessage: "Deprecated. Renamed to `attribute_type` for clarity.",
+			Optional:           true,
+		}
+		attributes["values"] = schema.ListAttribute{
+			Description:        "List of values for the ownership assignment. Use `attribute_values` instead. `values` will be removed in v2.0.0.",
+			DeprecationMessage: "Deprecated. Renamed to `attribute_values` for clarity.",
+			ElementType:        types.StringType,
+			Optional:           true,
+		}
+	}
+
 	return schema.SingleNestedAttribute{
 		Description: description,
 		Optional:    !isComputed,
 		Computed:    isComputed,
-		Attributes: map[string]schema.Attribute{
-			"source_integration_name": schema.StringAttribute{
-				Description: "Name of the integration from which the type originates from (e.g. \"Google Oauth\").",
-				Optional:    !fieldsComputed,
-				Computed:    fieldsComputed,
-			},
-			"type": schema.StringAttribute{
-				Description: "Type of the owner attribute.",
-				Required:    fieldsRequired,
-				Computed:    fieldsComputed,
-			},
-			"values": schema.ListAttribute{
-				Description: "List of values for the ownership assignment.",
-				ElementType: types.StringType,
-				Required:    fieldsRequired,
-				Computed:    fieldsComputed,
-			},
-		},
+		Attributes:  attributes,
 	}
 }
 

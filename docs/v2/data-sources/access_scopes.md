@@ -1,15 +1,13 @@
 ---
-page_title: "apono_access_scopes (beta) Data Source - terraform-provider-apono"
+page_title: "apono_access_scopes Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
     Retrieves existing Apono Access Scopes. This data source can be used to feed existing access scopes into the Access Flow resource.
 ---
 
-# Data Source: apono_access_scopes (beta)
+# Data Source: apono_access_scopes
 
 Retrieves existing Apono Access Scopes. This data source can be used to feed existing access scopes into the Access Flow resource.
-
--> **Note** Please note this datasource is in **beta**.
 
 ## Example Usage
 
@@ -35,6 +33,8 @@ data "apono_access_scopes" "production_scopes" {
   name = "*Production*"
 }
 ```
+
+Example usage of [`production_db`](../resources/access_flow_v2.md#bundle-and-access-scope-as-access-targets) used in an access flow.
 
 By specifying a wildcard pattern `*Production*`, all access scopes with a name that contains Production are returned. We then output the total count of those access scopes.
 

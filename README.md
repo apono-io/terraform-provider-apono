@@ -8,8 +8,6 @@
 [![Actions Status](https://github.com/apono-io/terraform-provider-apono/workflows/Release/badge.svg)](https://github.com/apono-io/terraform-provider-apono/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/apono-io/terraform-provider-apono)](https://goreportcard.com/report/github.com/apono-io/terraform-provider-apono)
 
-This provider is currently in beta.
-
 ## Documentation
 
 > **Note:** The minimum supported Terraform version for this provider is **1.1**.  
