@@ -9,8 +9,6 @@ description: |-
 
 Retrieves a list of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.
 
--> **Note** Please note this datasource is in **beta**.
-
 ## Example Usage
 
 ### Retrieve Google OAuth Integrations by Name

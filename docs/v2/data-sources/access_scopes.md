@@ -9,8 +9,6 @@ description: |-
 
 Retrieves existing Apono Access Scopes. This data source can be used to feed existing access scopes into the Access Flow resource.
 
--> **Note** Please note this datasource is in **beta**.
-
 ## Example Usage
 
 ### Retrieve All Access Scopes

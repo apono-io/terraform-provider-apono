@@ -9,8 +9,6 @@ description: |-
 
 Manages an Apono Group exclusively - a collection of users for simplified access‑control and approval workflows.
 
--> **Note** Please note this resource is in **beta**.
-
 ## Example Usage
 
 ### Basic

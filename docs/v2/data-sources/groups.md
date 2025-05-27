@@ -9,8 +9,6 @@ description: |-
 
 Retrieves existing groups, Apono-managed and IDP-managed groups. Use this data source to reference groups in the Access Flow resource.
 
--> **Note** Please note this datasource is in **beta**.
-
 ## Example Usage
 
 ### Exact‑Name Match

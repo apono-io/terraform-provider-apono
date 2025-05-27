@@ -9,8 +9,6 @@ description: |-
 
 Manages an Apono Bundle, which defines a collection of access targets - either access scopes or specific resources within integrations.
 
--> **Note** Please note this resource is in **beta**.
-
 ## Example Usage
 
 ### Access Scope and Integration as Access Target

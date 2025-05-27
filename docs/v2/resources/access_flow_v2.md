@@ -9,8 +9,6 @@ description: |-
 
 Manages an Apono Access Flow that defines how users or groups can request or automatically be granted access to integrations, bundles, or access scopes under specific conditions and policies.
 
--> **Note** Please note this resource is in **beta**.
-
 ## Example Usage
 
 ### Basic Example - Self-Serve Access Flow 

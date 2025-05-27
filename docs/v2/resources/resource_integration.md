@@ -9,8 +9,6 @@ description: |-
 
 Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.
 
--> **Note** Please note this resource is in **beta**.
-
 ## Example Usage
 
 ### AWS Account Integration

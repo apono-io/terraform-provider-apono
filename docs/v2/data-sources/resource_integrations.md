@@ -9,8 +9,6 @@ description: |-
 
 Retrieves a set of resource integrations based on filters such as connector ID, integration name, and type. This data source is typically used to query and reference existing integrations in the Access Flow resource.
 
--> **Note** Please note this datasource is in **beta**.
-
 ## Example Usage
 
 ### Retrieve AWS Integrations by Name, Type, and Connector ID

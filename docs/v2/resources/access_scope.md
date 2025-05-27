@@ -9,8 +9,6 @@ description: |-
 
 Manages an Apono Access Scope, a logical grouping of cloud resources defined by a flexible query.
 
--> **Note** Please note this resource is in **beta**.
-
 ## Example Usage
 
 ### Access Scope for MySQL RDS Databases
