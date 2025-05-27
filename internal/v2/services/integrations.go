@@ -8,7 +8,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 )
 
-func ListIntegrations(ctx context.Context, apiClient client.Invoker, typeName string, name string, categories []string) ([]client.IntegrationV4, error) {
+func ListIntegrations(ctx context.Context, apiClient client.Invoker, integrationType string, name string, connectorID string, categories []string) ([]client.IntegrationV4, error) {
 	allIntegrations := []client.IntegrationV4{}
 	pageToken := ""
 
@@ -22,8 +22,12 @@ func ListIntegrations(ctx context.Context, apiClient client.Invoker, typeName st
 				params.Name.SetTo(name)
 			}
 
-			if typeName != "" {
-				params.Type.SetTo([]string{typeName})
+			if integrationType != "" {
+				params.Type.SetTo([]string{integrationType})
+			}
+
+			if connectorID != "" {
+				params.ConnectorID.SetTo([]string{connectorID})
 			}
 
 			if len(categories) > 0 {

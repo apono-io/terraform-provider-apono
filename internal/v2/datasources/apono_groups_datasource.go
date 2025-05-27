@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-var _ datasource.DataSource = &AponoGroupsDataSource{}
+var _ datasource.DataSourceWithConfigure = &AponoGroupsDataSource{}
 
 func NewAponoGroupsDataSource() datasource.DataSource {
 	return &AponoGroupsDataSource{}
@@ -39,8 +39,8 @@ func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 				Description: "Filters the returned groups by their name or IDs. Partial matching is supported for names with asterisks for contains, starts with, and ends with.",
 				Optional:    true,
 			},
-			"groups": schema.SetNestedAttribute{
-				Description: "A set of groups that match the filter.",
+			"groups": schema.ListNestedAttribute{
+				Description: "A list of groups that match the filter.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	_ resource.Resource                     = &AponoResourceIntegrationResource{}
+	_ resource.ResourceWithConfigure        = &AponoResourceIntegrationResource{}
 	_ resource.ResourceWithImportState      = &AponoResourceIntegrationResource{}
 	_ resource.ResourceWithConfigValidators = &AponoResourceIntegrationResource{}
 )
@@ -89,43 +89,8 @@ func (r *AponoResourceIntegrationResource) Schema(_ context.Context, _ resource.
 				Description: "Custom access instructions for end users, displayed in the access details modal.",
 				Optional:    true,
 			},
-			"owner": schema.SingleNestedAttribute{
-				Description: "Apono can use the integration owner for access requests approval if no owner is found. Enter one or more users, groups, shifts or attributes. This field is mandatory when using Resource Owners and serves as a fallback approver if no resource owner is found.",
-				Optional:    true,
-				Attributes: map[string]schema.Attribute{
-					"source_integration_name": schema.StringAttribute{
-						Description: "Name of the integration from which the type originates from (e.g. “Google Oauth”).",
-						Optional:    true,
-					},
-					"type": schema.StringAttribute{
-						Description: "Type of the owner attribute.",
-						Required:    true,
-					},
-					"values": schema.ListAttribute{
-						Description: "List of values for the ownership assignment.",
-						ElementType: types.StringType,
-						Required:    true,
-					},
-				},
-			},
-			"owners_mapping": schema.SingleNestedAttribute{
-				Description: "Apono will sync each resource's owner from the source integration. Use this for Resource Owner access requests approval.",
-				Optional:    true,
-				Attributes: map[string]schema.Attribute{
-					"source_integration_name": schema.StringAttribute{
-						Description: "Name of the source integration.",
-						Optional:    true,
-					},
-					"key_name": schema.StringAttribute{
-						Description: "Attribute key to map owner.",
-						Required:    true,
-					},
-					"attribute_type": schema.StringAttribute{
-						Description: "Type of the attribute.",
-						Required:    true,
-					},
-				},
-			},
+			"owner":          schemas.GetOwnerSchema(schemas.ResourceMode),
+			"owners_mapping": schemas.GetOwnersMappingSchema(schemas.ResourceMode),
 		},
 	}
 }

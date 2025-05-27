@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	_ resource.Resource                = &AponoAccessFlowV2Resource{}
+	_ resource.ResourceWithConfigure   = &AponoAccessFlowV2Resource{}
 	_ resource.ResourceWithImportState = &AponoAccessFlowV2Resource{}
 )
 
@@ -81,7 +81,7 @@ For the user attribute specifically, you may also use the user’s email.`
 				Default:     stringdefault.StaticString(common.DefaultMatchOperator),
 				Computed:    true,
 			},
-			"values": schema.SetAttribute{
+			"values": schema.ListAttribute{
 				Description: valuesDescription,
 				Optional:    true,
 				ElementType: types.StringType,
@@ -159,7 +159,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 									Description: `Possible values: AND or OR`,
 									Required:    true,
 								},
-								"approvers": schema.SetNestedAttribute{
+								"approvers": schema.ListNestedAttribute{
 									Description:  "List of approvers.",
 									Required:     true,
 									NestedObject: getIdentityConditionSchema(IdentityConditionSchemaTypeApprover),
@@ -177,19 +177,19 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 						Description: `Specifies the logical operator to be used between the requestors in the list. Possible values: "AND" or "OR".`,
 						Required:    true,
 					},
-					"conditions": schema.SetNestedAttribute{
+					"conditions": schema.ListNestedAttribute{
 						Description:  "List of conditions. Cannot be empty.",
 						Required:     true,
 						NestedObject: getIdentityConditionSchema(IdentityConditionSchemaTypeRequestor),
 					},
 				},
 			},
-			"access_targets": schema.SetNestedAttribute{
+			"access_targets": schema.ListNestedAttribute{
 				Description: "Define the targets accessible when requesting access via this access flow.",
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"integration": schemas.GetIntegrationTargetSchema(),
+						"integration": schemas.GetIntegrationTargetSchema(schemas.ResourceMode),
 						"bundle": schema.SingleNestedAttribute{
 							Description: "Bundle target.",
 							Optional:    true,
@@ -200,7 +200,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 								},
 							},
 						},
-						"access_scope": schemas.GetAccessScopeTargetSchema(),
+						"access_scope": schemas.GetAccessScopeTargetSchema(schemas.ResourceMode),
 					},
 				},
 			},
@@ -255,7 +255,7 @@ func (r *AponoAccessFlowV2Resource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	upsertRequest, err := models.AccessFlowV2ModelToUpsertRequest(ctx, plan)
+	upsertRequest, err := models.AccessFlowModelToUpsertRequest(ctx, plan)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating access flow",
@@ -334,7 +334,7 @@ func (r *AponoAccessFlowV2Resource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	upsertRequest, err := models.AccessFlowV2ModelToUpsertRequest(ctx, plan)
+	upsertRequest, err := models.AccessFlowModelToUpsertRequest(ctx, plan)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error updating access flow",

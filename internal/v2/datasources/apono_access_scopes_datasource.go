@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-var _ datasource.DataSource = &AponoAccessScopesDataSource{}
+var _ datasource.DataSourceWithConfigure = &AponoAccessScopesDataSource{}
 
 func NewAponoAccessScopesDataSource() datasource.DataSource {
 	return &AponoAccessScopesDataSource{}
@@ -40,8 +40,8 @@ func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.Sch
 				Description: "Filters the returned access scopes by their name. Partial matching is supported with asterisks for contains, starts with, and ends with.",
 				Optional:    true,
 			},
-			"access_scopes": schema.SetNestedAttribute{
-				Description: "A set of access scopes that match the specified criteria.",
+			"access_scopes": schema.ListNestedAttribute{
+				Description: "A list of access scopes that match the specified criteria.",
 				Computed:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

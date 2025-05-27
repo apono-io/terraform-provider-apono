@@ -1,15 +1,13 @@
 ---
-page_title: "apono_access_flow_v2 (beta) Resource - terraform-provider-apono"
+page_title: "apono_access_flow_v2 Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages an Apono Access Flow that defines how users or groups can request or automatically be granted access to integrations, bundles, or access scopes under specific conditions and policies.
 ---
 
-# Resource: apono_access_flow_v2 (beta)
+# Resource: apono_access_flow_v2
 
 Manages an Apono Access Flow that defines how users or groups can request or automatically be granted access to integrations, bundles, or access scopes under specific conditions and policies.
-
--> **Note** Please note this resource is in **beta**.
 
 ## Example Usage
 
@@ -228,12 +226,12 @@ resource "apono_access_flow_v2" "bundle_access_scope_flow" {
   access_targets = [
     {
       bundle = {
-        name = "All Databases for Dev"
+        name = data.apono_bundles.critical_prod_db_bundle.bundles[0].name
       }
     },
     {
       access_scope = {
-        name = tolist(data.apono_access_scopes.production_db.access_scopes)[0].name
+        name = data.apono_access_scopes.production_db.access_scopes[0].name
       }
     }
   ]
@@ -248,18 +246,18 @@ resource "apono_access_flow_v2" "bundle_access_scope_flow" {
             source_integration_name = "Google Oauth"
             type                    = "group"
             match_operator          = "is"
-            values                  = [tolist(data.apono_groups.InfoSec_team.groups)[0].id]
+            values                  = [data.apono_groups.InfoSec_team.groups[0].id]
           },
           {
             type           = "group"
             match_operator = "is"
-            values         = [tolist(data.apono_groups.DevOps_team.groups)[0].id]
+            values         = [data.apono_groups.DevOps_team.groups[0].id]
           },
           {
             source_integration_name = "Google Oauth"
             type                    = "group"
             match_operator          = "is"
-            values                  = [tolist(data.apono_groups.dev_teams.groups)[0].id]
+            values                  = [data.apono_groups.dev_teams.groups[0].id]
           }
         ]
       }
@@ -298,7 +296,7 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
   access_targets = [
     {
       integration = {
-        integration_name = "aws-account-integration"
+        integration_name = data.apono_resource_integrations.aws_staging_integrations.integrations[0].name
         resource_type    = "aws-account-s3-bucket"
         permissions      = ["READ_WRITE"]
       }
@@ -333,7 +331,7 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
 
 ### Required
 
-- `access_targets` (Attributes Set) Define the targets accessible when requesting access via this access flow. (see [below for nested schema](#nestedatt--access_targets))
+- `access_targets` (Attributes List) Define the targets accessible when requesting access via this access flow. (see [below for nested schema](#nestedatt--access_targets))
 - `name` (String) Human-readable name for the access flow, must be unique.
 - `requestors` (Attributes) Defines who can request access. (see [below for nested schema](#nestedatt--requestors))
 - `settings` (Attributes) Settings for the access flow. (see [below for nested schema](#nestedatt--settings))
@@ -355,9 +353,9 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
 
 Optional:
 
-- `access_scope` (Attributes) Access scope. (see [below for nested schema](#nestedatt--access_targets--access_scope))
+- `access_scope` (Attributes) Access scope target. (see [below for nested schema](#nestedatt--access_targets--access_scope))
 - `bundle` (Attributes) Bundle target. (see [below for nested schema](#nestedatt--access_targets--bundle))
-- `integration` (Attributes) Integration target. (see [below for nested schema](#nestedatt--access_targets--integration))
+- `integration` (Attributes) Defines an integration and resources to which access will be granted. (see [below for nested schema](#nestedatt--access_targets--integration))
 
 <a id="nestedatt--access_targets--access_scope"></a>
 ### Nested Schema for `access_targets.access_scope`
@@ -381,12 +379,12 @@ Required:
 Required:
 
 - `integration_name` (String) The name of the integration
-- `permissions` (Set of String) List of permissions
-- `resource_type` (String) The type of resource
+- `permissions` (Set of String) List of permissions (e.g., "Attach", "ReadOnlyAccess").
+- `resource_type` (String) The type of resource within the integration for which access is being granted (e.g., aws-account-s3-bucket).
 
 Optional:
 
-- `resources_scopes` (Attributes Set) If null, the scope will apply to any resource in the integration target. (see [below for nested schema](#nestedatt--access_targets--integration--resources_scopes))
+- `resources_scopes` (Attributes List) A list of filters defining which resources are included or excluded. If null, the scope will apply to any resource in the integration target (see [below for nested schema](#nestedatt--access_targets--integration--resources_scopes))
 
 <a id="nestedatt--access_targets--integration--resources_scopes"></a>
 ### Nested Schema for `access_targets.integration.resources_scopes`
@@ -395,7 +393,7 @@ Required:
 
 - `scope_mode` (String) Possible values: `include_resources` or `exclude_resources`. `include_resources`: Grants access to the specific resources listed under the `values` field. `exclude_resources`: Grants access to all resources within the integration except those specified in the `values` field.
 - `type` (String) NAME - specify resources by their name, APONO_ID - specify resources by their ID, or TAG - specify resources by tag.
-- `values` (Set of String) Resource values to match (IDs, names, or tag values).
+- `values` (List of String) Resource values to match (IDs, names, or tag values).
 
 Optional:
 
@@ -409,7 +407,7 @@ Optional:
 
 Required:
 
-- `conditions` (Attributes Set) List of conditions. Cannot be empty. (see [below for nested schema](#nestedatt--requestors--conditions))
+- `conditions` (Attributes List) List of conditions. Cannot be empty. (see [below for nested schema](#nestedatt--requestors--conditions))
 - `logical_operator` (String) Specifies the logical operator to be used between the requestors in the list. Possible values: "AND" or "OR".
 
 <a id="nestedatt--requestors--conditions"></a>
@@ -425,7 +423,7 @@ Optional:
 Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
 For the user attribute specifically, you may also use the user’s email.
 - `source_integration_name` (String) The integration the user/group is from.
-- `values` (Set of String) List of values according to the attribute type and match_operator (e.g., user emails, group IDs, etc.).
+- `values` (List of String) List of values according to the attribute type and match_operator (e.g., user emails, group IDs, etc.).
 
 
 
@@ -454,7 +452,7 @@ Required:
 
 Required:
 
-- `approvers` (Attributes Set) List of approvers. (see [below for nested schema](#nestedatt--approver_policy--approver_groups--approvers))
+- `approvers` (Attributes List) List of approvers. (see [below for nested schema](#nestedatt--approver_policy--approver_groups--approvers))
 - `logical_operator` (String) Possible values: AND or OR
 
 <a id="nestedatt--approver_policy--approver_groups--approvers"></a>
@@ -471,7 +469,7 @@ Optional:
 Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
 For the user attribute specifically, you may also use the user’s email.
 - `source_integration_name` (String) Applies when the identity type stems from a Context or IDP integration.
-- `values` (Set of String) Approver values according to the attribute type and match_operator (e.g., user email, group IDs, etc).
+- `values` (List of String) Approver values according to the attribute type and match_operator (e.g., user email, group IDs, etc).
 
 
 

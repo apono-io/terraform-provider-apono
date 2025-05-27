@@ -30,7 +30,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 					SourceIntegrationName: types.StringValue("Okta Directory"),
 					Type:                  types.StringValue("user"),
 					MatchOperator:         types.StringValue("is"),
-					Values:                testcommon.CreateTestStringSet(t, []string{"person@example.com", "person_two@example.com"}),
+					Values:                testcommon.CreateTestStringList(t, []string{"person@example.com", "person_two@example.com"}),
 				},
 			},
 		},
@@ -50,7 +50,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 							ScopeMode: types.StringValue("include_resources"),
 							Type:      types.StringValue("NAME"),
 							Key:       types.StringNull(),
-							Values:    testcommon.CreateTestStringSet(t, []string{"db1", "db2"}),
+							Values:    testcommon.CreateTestStringList(t, []string{"db1", "db2"}),
 						},
 					},
 				},
@@ -66,7 +66,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 							SourceIntegrationName: types.StringValue("Okta Directory"),
 							Type:                  types.StringValue("user"),
 							MatchOperator:         types.StringValue("is"),
-							Values:                testcommon.CreateTestStringSet(t, []string{"person@example.com", "person_two@example.com"}),
+							Values:                testcommon.CreateTestStringList(t, []string{"person@example.com", "person_two@example.com"}),
 						},
 					},
 				},
@@ -82,7 +82,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	result, err := AccessFlowV2ModelToUpsertRequest(ctx, model)
+	result, err := AccessFlowModelToUpsertRequest(ctx, model)
 	require.NoError(t, err)
 	require.NotNil(t, result)
 
@@ -171,7 +171,7 @@ func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
 				{
 					Type:          types.StringValue("user"),
 					MatchOperator: types.StringValue("is"),
-					Values:        testcommon.CreateTestStringSet(t, []string{"person@example.com"}),
+					Values:        testcommon.CreateTestStringList(t, []string{"person@example.com"}),
 				},
 			},
 		},
@@ -185,7 +185,7 @@ func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	result, err := AccessFlowV2ModelToUpsertRequest(ctx, model)
+	result, err := AccessFlowModelToUpsertRequest(ctx, model)
 	require.NoError(t, err)
 	require.NotNil(t, result)
 

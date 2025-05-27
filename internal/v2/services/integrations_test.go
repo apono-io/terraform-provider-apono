@@ -16,6 +16,7 @@ func TestListIntegrations(t *testing.T) {
 		name            string
 		typeName        string
 		integrationName string
+		connectorID     string
 		categories      []string
 		setupMock       func(*mocks.Invoker)
 		expected        []client.IntegrationV4
@@ -25,11 +26,13 @@ func TestListIntegrations(t *testing.T) {
 			name:            "single page integrations",
 			typeName:        "postgres",
 			integrationName: "test-integration",
+			connectorID:     "conn-123",
 			categories:      []string{"database"},
 			setupMock: func(m *mocks.Invoker) {
 				params := client.ListIntegrationsV4Params{}
 				params.Name.SetTo("test-integration")
 				params.Type.SetTo([]string{"postgres"})
+				params.ConnectorID.SetTo([]string{"conn-123"})
 				params.Category.SetTo([]string{"database"})
 
 				m.On("ListIntegrationsV4", ctx, params).Return(&client.PublicApiListResponseIntegrationPublicV4Model{
@@ -71,6 +74,7 @@ func TestListIntegrations(t *testing.T) {
 			name:            "multiple pages",
 			typeName:        "",
 			integrationName: "",
+			connectorID:     "",
 			categories:      nil,
 			setupMock: func(m *mocks.Invoker) {
 				// First page
@@ -105,6 +109,7 @@ func TestListIntegrations(t *testing.T) {
 			name:            "api error",
 			typeName:        "",
 			integrationName: "",
+			connectorID:     "",
 			categories:      nil,
 			setupMock: func(m *mocks.Invoker) {
 				params := client.ListIntegrationsV4Params{}
@@ -119,7 +124,7 @@ func TestListIntegrations(t *testing.T) {
 			mockClient := new(mocks.Invoker)
 			tc.setupMock(mockClient)
 
-			integrations, err := ListIntegrations(ctx, mockClient, tc.typeName, tc.integrationName, tc.categories)
+			integrations, err := ListIntegrations(ctx, mockClient, tc.typeName, tc.integrationName, tc.connectorID, tc.categories)
 
 			if tc.expectError {
 				assert.Error(t, err)

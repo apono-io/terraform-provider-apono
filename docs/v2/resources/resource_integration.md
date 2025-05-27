@@ -1,15 +1,13 @@
 ---
-page_title: "apono_resource_integration (beta) Resource - terraform-provider-apono"
+page_title: "apono_resource_integration Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.
 ---
 
-# Resource: apono_resource_integration (beta)
+# Resource: apono_resource_integration
 
 Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.
-
--> **Note** Please note this resource is in **beta**.
 
 ## Example Usage
 
@@ -115,12 +113,14 @@ resource "apono_resource_integration" "gcp_sql_integration" {
 
 Required:
 
-- `type` (String) Type of the owner attribute.
-- `values` (List of String) List of values for the ownership assignment.
+- `attribute_type` (String) Type of the owner attribute (e.g., user, group).
+- `attribute_values` (List of String) List of values for the ownership assignment.
 
 Optional:
 
-- `source_integration_name` (String) Name of the integration from which the type originates from (e.g. “Google Oauth”).
+- `source_integration_name` (String) Name of the integration from which the type originates from (e.g. "Google Oauth").
+- `type` (String, Deprecated) Use `attribute_type` instead. `type` will be removed in v2.0.0.
+- `values` (List of String, Deprecated) List of values for the ownership assignment. Use `attribute_values` instead. `values` will be removed in v2.0.0.
 
 
 <a id="nestedatt--owners_mapping"></a>
@@ -128,12 +128,12 @@ Optional:
 
 Required:
 
-- `attribute_type` (String) Type of the attribute.
-- `key_name` (String) Attribute key to map owner.
+- `attribute_type` (String) Type of the attribute (e.g., user, group).
+- `key_name` (String) Name of the tag created in your cloud environment.
 
 Optional:
 
-- `source_integration_name` (String) Name of the source integration.
+- `source_integration_name` (String) Name of the integration from which the attribute type originates (e.g., “Google Oauth”)
 
 
 <a id="nestedatt--secret_store_config"></a>

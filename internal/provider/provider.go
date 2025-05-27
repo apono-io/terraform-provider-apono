@@ -49,6 +49,11 @@ func (p *AponoProvider) Metadata(_ context.Context, _ provider.MetadataRequest, 
 
 func (p *AponoProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The Apono provider allows you to manage Apono resources via Terraform.\n\n" +
+			"- **Minimum supported Terraform version:** 1.1\n" +
+			"- **Recommended Terraform version:** 1.3 or above\n" +
+			"- You can configure the provider using environment variables (`APONO_ENDPOINT`, `APONO_PERSONAL_TOKEN`) or provider block attributes.\n" +
+			"- See [Apono API Authentication](https://docs.apono.io/api-reference/api-overview/api-authentication) for details on obtaining a personal token.",
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
 				Description: "Override API endpoint. This can also be set via the APONO_ENDPOINT environment variable, and is usually used for testing purposes.",
@@ -181,7 +186,7 @@ func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource 
 		v2resources.NewAponoManagedGroupResource,
 		v2resources.NewAponoResourceIntegrationResource,
 		v2resources.NewAponoAccessFlowV2Resource,
-		//v2resources.NewAponoBundleV2Resource,
+		v2resources.NewAponoBundleV2Resource,
 	}
 }
 
@@ -192,6 +197,8 @@ func (p *AponoProvider) DataSources(_ context.Context) []func() datasource.DataS
 		v2datasources.NewAponoAccessScopesDataSource,
 		v2datasources.NewAponoGroupsDataSource,
 		v2datasources.NewAponoUserInformationIntegrationsDataSource,
+		v2datasources.NewAponoBundlesDataSource,
+		v2datasources.NewResourceIntegrationsDataSource,
 	}
 }
 

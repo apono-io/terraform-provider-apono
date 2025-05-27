@@ -25,14 +25,24 @@ type ResourceIntegrationModel struct {
 
 type OwnerConfig struct {
 	SourceIntegrationName types.String `tfsdk:"source_integration_name"`
-	Type                  types.String `tfsdk:"type"`
-	Values                types.List   `tfsdk:"values"`
+	AttributeType         types.String `tfsdk:"attribute_type"`
+	AttributeValues       types.List   `tfsdk:"attribute_values"`
+	// Deprecated fields
+	Type   types.String `tfsdk:"type"`
+	Values types.List   `tfsdk:"values"`
 }
 
 type OwnersMappingConfig struct {
 	SourceIntegrationName types.String `tfsdk:"source_integration_name"`
 	KeyName               types.String `tfsdk:"key_name"`
 	AttributeType         types.String `tfsdk:"attribute_type"`
+}
+
+type ResourceIntegrationsDataSourceModel struct {
+	Name         types.String               `tfsdk:"name"`
+	Type         types.String               `tfsdk:"type"`
+	ConnectorID  types.String               `tfsdk:"connector_id"`
+	Integrations []ResourceIntegrationModel `tfsdk:"integrations"`
 }
 
 func ResourceIntegrationModelToCreateRequest(ctx context.Context, model ResourceIntegrationModel) (*client.CreateIntegrationV4, error) {
@@ -143,13 +153,14 @@ func getConnectedResourceTypes(ctx context.Context, model ResourceIntegrationMod
 
 func getOwnerConfig(ctx context.Context, ownerConfig *OwnerConfig) (client.UpsertOwnerV4, error) {
 	var values []string
-	diags := ownerConfig.Values.ElementsAs(ctx, &values, false)
+
+	diags := ownerConfig.AttributeValues.ElementsAs(ctx, &values, false)
 	if diags.HasError() {
-		return client.UpsertOwnerV4{}, fmt.Errorf("failed to parse owner values: %v", diags)
+		return client.UpsertOwnerV4{}, fmt.Errorf("failed to parse owner attribute_values: %v", diags)
 	}
 
 	owner := client.UpsertOwnerV4{
-		AttributeType:  ownerConfig.Type.ValueString(),
+		AttributeType:  ownerConfig.AttributeType.ValueString(),
 		AttributeValue: values,
 	}
 
@@ -218,8 +229,10 @@ func ResourceIntegrationToModel(ctx context.Context, integration *client.Integra
 		}
 
 		ownerConfig := &OwnerConfig{
-			Type:   types.StringValue(ownerData.AttributeType),
-			Values: values,
+			AttributeType:   types.StringValue(ownerData.AttributeType),
+			AttributeValues: values,
+			Type:            types.StringNull(),               // Deprecated field
+			Values:          types.ListNull(types.StringType), // Deprecated field
 		}
 
 		if val, ok := ownerData.SourceIntegrationName.Get(); ok {
@@ -243,4 +256,18 @@ func ResourceIntegrationToModel(ctx context.Context, integration *client.Integra
 	}
 
 	return model, nil
+}
+
+func ResourceIntegrationsToModel(ctx context.Context, integrations []client.IntegrationV4) (*ResourceIntegrationsDataSourceModel, error) {
+	var integrationModels []ResourceIntegrationModel
+	for _, integration := range integrations {
+		model, err := ResourceIntegrationToModel(ctx, &integration)
+		if err != nil {
+			return nil, err
+		}
+		integrationModels = append(integrationModels, *model)
+	}
+	return &ResourceIntegrationsDataSourceModel{
+		Integrations: integrationModels,
+	}, nil
 }

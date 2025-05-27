@@ -1,17 +1,17 @@
 ---
-page_title: "apono_access_scope (beta) Resource - terraform-provider-apono"
+page_title: "apono_access_scope Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages an Apono Access Scope, a logical grouping of cloud resources defined by a flexible query.
 ---
 
-# Resource: apono_access_scope (beta)
+# Resource: apono_access_scope
 
 Manages an Apono Access Scope, a logical grouping of cloud resources defined by a flexible query.
 
--> **Note** Please note this resource is in **beta**.
-
 ## Example Usage
+
+### Access Scope for MySQL RDS Databases
 
 ```terraform
 resource "apono_access_scope" "production_databases" {
@@ -27,6 +27,8 @@ resource "apono_access_scope" "production_databases" {
 ```
 
 ## Example Usage
+
+### Access Scope for Production EC2 Instances
 
 ```terraform
 resource "apono_access_scope" "critical_ec2_instances" {
