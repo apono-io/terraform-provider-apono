@@ -1,15 +1,13 @@
 ---
-page_title: "apono_access_flow_v2 (beta) Resource - terraform-provider-apono"
+page_title: "apono_access_flow_v2 Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages an Apono Access Flow that defines how users or groups can request or automatically be granted access to integrations, bundles, or access scopes under specific conditions and policies.
 ---
 
-# Resource: apono_access_flow_v2 (beta)
+# Resource: apono_access_flow_v2
 
 Manages an Apono Access Flow that defines how users or groups can request or automatically be granted access to integrations, bundles, or access scopes under specific conditions and policies.
-
--> **Note** Please note this resource is in **beta**.
 
 ## Example Usage
 
