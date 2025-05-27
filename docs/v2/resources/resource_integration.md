@@ -1,11 +1,11 @@
 ---
-page_title: "apono_resource_integration (beta) Resource - terraform-provider-apono"
+page_title: "apono_resource_integration Resource - terraform-provider-apono"
 subcategory: ""
 description: |-
     Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.
 ---
 
-# Resource: apono_resource_integration (beta)
+# Resource: apono_resource_integration
 
 Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.
 

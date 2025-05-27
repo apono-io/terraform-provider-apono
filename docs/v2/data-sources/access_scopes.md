@@ -1,11 +1,11 @@
 ---
-page_title: "apono_access_scopes (beta) Data Source - terraform-provider-apono"
+page_title: "apono_access_scopes Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
     Retrieves existing Apono Access Scopes. This data source can be used to feed existing access scopes into the Access Flow resource.
 ---
 
-# Data Source: apono_access_scopes (beta)
+# Data Source: apono_access_scopes
 
 Retrieves existing Apono Access Scopes. This data source can be used to feed existing access scopes into the Access Flow resource.
 

@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-Updated schema types in beta data sources and resources: Several fields previously returned as `set` now return a `list` for better performance.
+Updated schema types in data sources and resources: Several fields previously returned as `set` now return a `list` for better performance.
 
 #### Affected Data Sources and Resources and Fields:
 

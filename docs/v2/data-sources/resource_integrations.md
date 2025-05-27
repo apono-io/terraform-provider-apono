@@ -1,11 +1,11 @@
 ---
-page_title: "apono_resource_integrations (beta) Data Source - terraform-provider-apono"
+page_title: "apono_resource_integrations Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
     Retrieves a set of resource integrations based on filters such as connector ID, integration name, and type. This data source is typically used to query and reference existing integrations in the Access Flow resource.
 ---
 
-# Data Source: apono_resource_integrations (beta)
+# Data Source: apono_resource_integrations
 
 Retrieves a set of resource integrations based on filters such as connector ID, integration name, and type. This data source is typically used to query and reference existing integrations in the Access Flow resource.
 

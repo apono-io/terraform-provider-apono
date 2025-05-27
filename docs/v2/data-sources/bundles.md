@@ -1,11 +1,11 @@
 ---
-page_title: "apono_bundles (beta) Data Source - terraform-provider-apono"
+page_title: "apono_bundles Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
     Retrieves a list of existing Apono Bundles. This data source is typically used to reference bundle definitions within Access Flow resources. You can filter bundles by name using exact or wildcard matching.
 ---
 
-# Data Source: apono_bundles (beta)
+# Data Source: apono_bundles
 
 Retrieves a list of existing Apono Bundles. This data source is typically used to reference bundle definitions within Access Flow resources. You can filter bundles by name using exact or wildcard matching.
 

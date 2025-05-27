@@ -1,11 +1,11 @@
 ---
-page_title: "apono_groups (beta) Data Source - terraform-provider-apono"
+page_title: "apono_groups Data Source - terraform-provider-apono"
 subcategory: ""
 description: |-
     Retrieves existing groups, Apono-managed and IDP-managed groups. Use this data source to reference groups in the Access Flow resource.
 ---
 
-# Data Source: apono_groups (beta)
+# Data Source: apono_groups
 
 Retrieves existing groups, Apono-managed and IDP-managed groups. Use this data source to reference groups in the Access Flow resource.
 
