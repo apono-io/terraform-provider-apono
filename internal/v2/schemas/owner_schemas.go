@@ -41,19 +41,6 @@ func GetOwnerSchema(mode SchemaMode) schema.SingleNestedAttribute {
 				Required:    fieldsRequired,
 				Computed:    fieldsComputed,
 			},
-			"type": schema.StringAttribute{
-				Description:        "Use `attribute_type` instead. `type` will be removed in v2.0.0.",
-				DeprecationMessage: "Deprecated. Renamed to `attribute_type` for clarity.",
-				Optional:           !fieldsComputed,
-				Computed:           fieldsComputed,
-			},
-			"values": schema.ListAttribute{
-				Description:        "List of values for the ownership assignment. Use `attribute_values` instead. `values` will be removed in v2.0.0.",
-				DeprecationMessage: "Deprecated. Renamed to `attribute_values` for clarity.",
-				ElementType:        types.StringType,
-				Optional:           !fieldsComputed,
-				Computed:           fieldsComputed,
-			},
 		},
 	}
 }

@@ -27,9 +27,6 @@ type OwnerConfig struct {
 	SourceIntegrationName types.String `tfsdk:"source_integration_name"`
 	AttributeType         types.String `tfsdk:"attribute_type"`
 	AttributeValues       types.List   `tfsdk:"attribute_values"`
-	// Deprecated fields
-	Type   types.String `tfsdk:"type"`
-	Values types.List   `tfsdk:"values"`
 }
 
 type OwnersMappingConfig struct {
@@ -231,8 +228,6 @@ func ResourceIntegrationToModel(ctx context.Context, integration *client.Integra
 		ownerConfig := &OwnerConfig{
 			AttributeType:   types.StringValue(ownerData.AttributeType),
 			AttributeValues: values,
-			Type:            types.StringNull(),               // Deprecated field
-			Values:          types.ListNull(types.StringType), // Deprecated field
 		}
 
 		if val, ok := ownerData.SourceIntegrationName.Get(); ok {

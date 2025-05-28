@@ -128,8 +128,6 @@ Read-Only:
 - `attribute_type` (String) Type of the owner attribute (e.g., user, group).
 - `attribute_values` (List of String) List of assigned owner values.
 - `source_integration_name` (String) Name of the integration from which the type originates from (e.g. "Google Oauth").
-- `type` (String, Deprecated) Use `attribute_type` instead. `type` will be removed in v2.0.0.
-- `values` (List of String, Deprecated) List of values for the ownership assignment. Use `attribute_values` instead. `values` will be removed in v2.0.0.
 
 
 <a id="nestedatt--integrations--owners_mapping"></a>
