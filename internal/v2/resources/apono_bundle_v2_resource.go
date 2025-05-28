@@ -37,7 +37,7 @@ func (r *AponoBundleV2Resource) Schema(_ context.Context, _ resource.SchemaReque
 		Description: "Manages an Apono Bundle, which defines a collection of access targets - either access scopes or specific resources within integrations.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Description: "The unique identifier of the bundle.",
+				Description: "The unique identifier of the bundle. ",
 				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),

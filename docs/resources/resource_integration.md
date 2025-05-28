@@ -1,6 +1,6 @@
 ---
 page_title: "apono_resource_integration Resource - terraform-provider-apono"
-subcategory: ""
+subcategory: "v2"
 description: |-
     Manages a Resource Integration, allowing Apono to connect and manage external cloud resources.
 ---

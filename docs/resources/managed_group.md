@@ -1,6 +1,6 @@
 ---
 page_title: "apono_managed_group Resource - terraform-provider-apono"
-subcategory: ""
+subcategory: "v2"
 description: |-
     Manages an Apono Group exclusively - a collection of users for simplified access‑control and approval workflows.
 ---
