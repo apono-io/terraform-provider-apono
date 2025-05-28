@@ -18,7 +18,7 @@ import (
 // Run the docs generation tool, check its repository for more information on how it works and how docs
 // can be customized.
 //go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --rendered-provider-name "Apono provider"
-//go:generate bash scripts/organize-docs.sh
+//go:generate bash scripts/add_v1_subcategory.sh
 
 var (
 	// these will be set by the goreleaser configuration

@@ -1,6 +1,6 @@
 ---
 page_title: "apono_user_information_integrations Data Source - terraform-provider-apono"
-subcategory: ""
+subcategory: "v2"
 description: |-
     Retrieves a list of user information integrations, with optional filters by name and type. This data source is useful when you need to reference existing identity providers or context integrations like Google OAuth, Okta, PagerDuty, and others.
 ---

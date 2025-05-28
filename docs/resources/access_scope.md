@@ -1,6 +1,6 @@
 ---
 page_title: "apono_access_scope Resource - terraform-provider-apono"
-subcategory: ""
+subcategory: "v2"
 description: |-
     Manages an Apono Access Scope, a logical grouping of cloud resources defined by a flexible query.
 ---
