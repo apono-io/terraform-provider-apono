@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+
 	"github.com/apono-io/terraform-provider-apono/internal/aponoapi"
 	"github.com/apono-io/terraform-provider-apono/internal/models"
 	"github.com/apono-io/terraform-provider-apono/internal/schemas"
@@ -51,7 +52,7 @@ func (a accessFlowResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 	var identitySchema = schema.NestedAttributeObject{
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Name of the identity. When `type = context_attribute`, this is the shift name or manager attribute name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.**",
+				MarkdownDescription: "Name of the identity. When `type = context_attribute`, this is the shift name or manager attribute name. When `type = group`, this is the group name. When `type = user`, this is the email address. **NOTE: If a non-unique name is used with 'group' type, Apono applies the access flow to all groups matching the name.** ",
 				Required:            true,
 			},
 			"type": schema.StringAttribute{
