@@ -12,6 +12,7 @@ V1_RESOURCES=(
     "integration"
     "access_bundle"
     "manual_webhook"
+    "access_flow"
 )
 
 V1_DATA_SOURCES=(
