@@ -17,7 +17,6 @@ V1_RESOURCES=(
 V1_DATA_SOURCES=(
     "connector"
     "integrations"
-    "integration"
 )
 
 # Function to add subcategory to frontmatter
