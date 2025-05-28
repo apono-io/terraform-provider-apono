@@ -28,7 +28,7 @@ add_subcategory() {
         
         # Check if subcategory already exists with empty value and replace it
         if grep -q '^subcategory: ""' "$file"; then
-            sed -i '' 's/^subcategory: ""/subcategory: "v1"/' "$file"
+            sed -i.bak 's/^subcategory: ""/subcategory: "v1"/' "$file" && rm "$file.bak"
             echo "  Replaced empty subcategory with v1"
         fi
     else
