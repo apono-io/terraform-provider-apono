@@ -20,13 +20,3 @@ Updated schema types in data sources and resources: Several fields previously re
 - `apono_access_flow_v2.access_targets.integration.resources_scopes.values`
 
 If your configuration depends on these fields, ensure any use of `toset()` or assumptions about uniqueness are revised accordingly.
-
-### Deprecations
-
-In the `apono_resource_integration` resource, the following fields in the `owner` block are now deprecated and will be removed in v2.0.0:
-
-- `type` → use `attribute_type`
-- `values` → use `attribute_values`
-
-**Notice:** These old fields are still fully functional in this release but will be removed in the next major version. Please update your configuration to use the new field names to ensure compatibility going forward.
-
