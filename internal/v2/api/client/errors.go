@@ -4,7 +4,7 @@ import (
 	"errors"
 )
 
-// NotFoundError represents a 404 Not Found error
+// NotFoundError represents a 404 Not Found error.
 type NotFoundError struct{}
 
 func (e *NotFoundError) Error() string {
@@ -13,9 +13,5 @@ func (e *NotFoundError) Error() string {
 
 func IsNotFoundError(err error) bool {
 	var notFoundErr *NotFoundError
-	if errors.As(err, &notFoundErr) {
-		return true
-	}
-
-	return false
+	return errors.As(err, &notFoundErr)
 }
