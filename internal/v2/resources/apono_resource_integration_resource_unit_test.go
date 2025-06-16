@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
-	"github.com/ogen-go/ogen/validate"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -118,7 +117,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		r.client = mockInvoker
 
 		ctx := t.Context()
-		notFoundErr := &validate.UnexpectedStatusCodeError{StatusCode: 404}
+		notFoundErr := &client.NotFoundError{}
 
 		mockResponse := testcommon.GenerateResourceIntegrationResponse()
 		model, err := models.ResourceIntegrationToModel(ctx, mockResponse)
@@ -249,7 +248,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 		r.client = mockInvoker
 
 		ctx := t.Context()
-		notFoundErr := &validate.UnexpectedStatusCodeError{StatusCode: 404}
+		notFoundErr := &client.NotFoundError{}
 
 		mockResponse := testcommon.GenerateResourceIntegrationResponse()
 		model, err := models.ResourceIntegrationToModel(ctx, mockResponse)

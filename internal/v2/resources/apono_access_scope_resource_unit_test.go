@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
-	"github.com/ogen-go/ogen/validate"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -109,7 +108,7 @@ func TestAponoAccessScopeResource(t *testing.T) {
 	})
 
 	t.Run("Read_NotFound", func(t *testing.T) {
-		notFoundErr := &validate.UnexpectedStatusCodeError{StatusCode: 404}
+		notFoundErr := &client.NotFoundError{}
 		mockInvoker.EXPECT().
 			GetAccessScopesV1(mock.Anything, mock.MatchedBy(func(params client.GetAccessScopesV1Params) bool {
 				return params.ID == "as-not-found"
