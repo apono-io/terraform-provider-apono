@@ -1,7 +1,6 @@
 package resources_test
 
 import (
-	"context"
 	"fmt"
 	"testing"
 
@@ -23,7 +22,7 @@ func TestAccAponoResourceIntegration(t *testing.T) {
 	})
 }
 
-func testAccAponoResourceIntegrationConfig(name, integrationType, connectorID, resourceType, customAccessDetails string) string {
+func testAccAponoResourceIntegrationConfig(name, connectorID, customAccessDetails string) string {
 	return fmt.Sprintf(`
 resource "apono_resource_integration" "test" {
   name                    = "%s"
@@ -42,17 +41,15 @@ resource "apono_resource_integration" "test" {
     }
   }
 }
-`, name, integrationType, connectorID, resourceType, customAccessDetails)
+`, name, common.MockDuck, connectorID, common.MockDuck, customAccessDetails)
 }
 
 func testAccAponoResourceIntegrationResource(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-test")
 	resourceName := "apono_resource_integration.test"
-	integrationType := common.MockDuck
 
 	connectorID := testcommon.GetTestConnectorID(t)
 
-	resourceType := common.MockDuck
 	customAccessDetails := "Example access instructions"
 	updatedCustomAccessDetails := "Updated access instructions"
 
@@ -61,19 +58,19 @@ func testAccAponoResourceIntegrationResource(t *testing.T) {
 		ProtoV6ProviderFactories: testprovider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAponoResourceIntegrationConfig(rName, integrationType, connectorID, resourceType, customAccessDetails),
+				Config: testAccAponoResourceIntegrationConfig(rName, connectorID, customAccessDetails),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
-					resource.TestCheckResourceAttr(resourceName, "type", integrationType),
+					resource.TestCheckResourceAttr(resourceName, "type", common.MockDuck),
 					resource.TestCheckResourceAttr(resourceName, "connector_id", connectorID),
-					resource.TestCheckResourceAttr(resourceName, "connected_resource_types.0", resourceType),
+					resource.TestCheckResourceAttr(resourceName, "connected_resource_types.0", common.MockDuck),
 					resource.TestCheckResourceAttr(resourceName, "custom_access_details", customAccessDetails),
 					resource.TestCheckResourceAttr(resourceName, "integration_config.key", "value"),
 				),
 			},
 			{
-				Config: testAccAponoResourceIntegrationConfig(rName, integrationType, connectorID, resourceType, updatedCustomAccessDetails),
+				Config: testAccAponoResourceIntegrationConfig(rName, connectorID, updatedCustomAccessDetails),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
@@ -92,11 +89,9 @@ func testAccAponoResourceIntegrationResource(t *testing.T) {
 func testAccAponoResourceIntegrationResourceDrift(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-test-drift")
 	resourceName := "apono_resource_integration.test"
-	integrationType := common.MockDuck
 
 	connectorID := testcommon.GetTestConnectorID(t)
 
-	resourceType := common.MockDuck
 	customAccessDetails := "Example access instructions"
 
 	resource.Test(t, resource.TestCase{
@@ -104,20 +99,20 @@ func testAccAponoResourceIntegrationResourceDrift(t *testing.T) {
 		ProtoV6ProviderFactories: testprovider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAponoResourceIntegrationConfig(rName, integrationType, connectorID, resourceType, customAccessDetails),
+				Config: testAccAponoResourceIntegrationConfig(rName, connectorID, customAccessDetails),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
-					resource.TestCheckResourceAttr(resourceName, "type", integrationType),
+					resource.TestCheckResourceAttr(resourceName, "type", common.MockDuck),
 					resource.TestCheckResourceAttr(resourceName, "connector_id", connectorID),
-					resource.TestCheckResourceAttr(resourceName, "connected_resource_types.0", resourceType),
+					resource.TestCheckResourceAttr(resourceName, "connected_resource_types.0", common.MockDuck),
 					resource.TestCheckResourceAttr(resourceName, "custom_access_details", customAccessDetails),
 					resource.TestCheckResourceAttr(resourceName, "integration_config.key", "value"),
 				),
 			},
 			// Delete the resource via API to simulate drift
 			{
-				Config: testAccAponoResourceIntegrationConfig(rName, integrationType, connectorID, resourceType, customAccessDetails),
+				Config: testAccAponoResourceIntegrationConfig(rName, connectorID, customAccessDetails),
 				Check: resource.ComposeTestCheckFunc(
 					testAccDeleteResourceIntegrationViaAPI(t, resourceName),
 				),
@@ -125,13 +120,13 @@ func testAccAponoResourceIntegrationResourceDrift(t *testing.T) {
 			},
 			// Apply again to recreate the resource
 			{
-				Config: testAccAponoResourceIntegrationConfig(rName, integrationType, connectorID, resourceType, customAccessDetails),
+				Config: testAccAponoResourceIntegrationConfig(rName, connectorID, customAccessDetails),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
-					resource.TestCheckResourceAttr(resourceName, "type", integrationType),
+					resource.TestCheckResourceAttr(resourceName, "type", common.MockDuck),
 					resource.TestCheckResourceAttr(resourceName, "connector_id", connectorID),
-					resource.TestCheckResourceAttr(resourceName, "connected_resource_types.0", resourceType),
+					resource.TestCheckResourceAttr(resourceName, "connected_resource_types.0", common.MockDuck),
 					resource.TestCheckResourceAttr(resourceName, "custom_access_details", customAccessDetails),
 					resource.TestCheckResourceAttr(resourceName, "integration_config.key", "value"),
 				),
@@ -140,7 +135,7 @@ func testAccAponoResourceIntegrationResourceDrift(t *testing.T) {
 	})
 }
 
-// testAccDeleteResourceIntegrationViaAPI is a test helper that deletes the resource integration via API
+// testAccDeleteResourceIntegrationViaAPI is a test helper that deletes the resource integration via API.
 func testAccDeleteResourceIntegrationViaAPI(t *testing.T, resourceName string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[resourceName]
@@ -156,7 +151,7 @@ func testAccDeleteResourceIntegrationViaAPI(t *testing.T, resourceName string) r
 		clientInvoker := testcommon.GetTestClient(t)
 
 		// Delete the integration via API
-		err := clientInvoker.DeleteIntegrationV4(context.Background(), client.DeleteIntegrationV4Params{
+		err := clientInvoker.DeleteIntegrationV4(t.Context(), client.DeleteIntegrationV4Params{
 			ID: rs.Primary.ID,
 		})
 		if err != nil {
