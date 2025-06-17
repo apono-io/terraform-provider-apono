@@ -2,14 +2,16 @@ package client
 
 import (
 	"errors"
-
-	"github.com/ogen-go/ogen/validate"
 )
 
+// NotFoundError represents a 404 Not Found error.
+type NotFoundError struct{}
+
+func (e *NotFoundError) Error() string {
+	return "404 Not Found"
+}
+
 func IsNotFoundError(err error) bool {
-	var statusErr *validate.UnexpectedStatusCodeError
-	if errors.As(err, &statusErr) && statusErr.StatusCode == 404 {
-		return true
-	}
-	return false
+	var notFoundErr *NotFoundError
+	return errors.As(err, &notFoundErr)
 }

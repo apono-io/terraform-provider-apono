@@ -43,6 +43,10 @@ func (t *DebugTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 		return resp, werr
 	}
 
+	if resp.StatusCode == http.StatusNotFound {
+		return resp, &NotFoundError{}
+	}
+
 	if resp.StatusCode >= 400 {
 		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
