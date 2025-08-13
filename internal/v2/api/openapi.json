@@ -77,6 +77,7 @@
           {
             "name": "name",
             "in": "query",
+            "description": "Filter groups by name. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
             "schema": {
               "type": "string",
               "nullable": true
@@ -375,7 +376,7 @@
         "tags": [
           "Access Flows"
         ],
-        "summary": "List access flows",
+        "summary": "List Access Flows",
         "operationId": "listAccessFlowsV2",
         "parameters": [
           {
@@ -413,13 +414,13 @@
         "tags": [
           "Access Flows"
         ],
-        "summary": "Create access flow",
+        "summary": "Create Access Flow",
         "operationId": "createAccessFlowV2",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AccessFlowUpsertPublicV2Model"
+                "$ref": "#/components/schemas/AccessFlowUpsertV2"
               }
             }
           },
@@ -431,7 +432,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccessFlowPublicV2Model"
+                  "$ref": "#/components/schemas/AccessFlowV2"
                 }
               }
             }
@@ -444,7 +445,7 @@
         "tags": [
           "Access Flows"
         ],
-        "summary": "Get access flow",
+        "summary": "Get Access Flow",
         "operationId": "getAccessFlowV2",
         "parameters": [
           {
@@ -462,7 +463,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccessFlowPublicV2Model"
+                  "$ref": "#/components/schemas/AccessFlowV2"
                 }
               }
             }
@@ -473,7 +474,7 @@
         "tags": [
           "Access Flows"
         ],
-        "summary": "Update access flow",
+        "summary": "Update Access Flow",
         "operationId": "updateAccessFlowV2",
         "parameters": [
           {
@@ -489,7 +490,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AccessFlowUpsertPublicV2Model"
+                "$ref": "#/components/schemas/AccessFlowUpsertV2"
               }
             }
           },
@@ -501,7 +502,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccessFlowPublicV2Model"
+                  "$ref": "#/components/schemas/AccessFlowV2"
                 }
               }
             }
@@ -512,7 +513,7 @@
         "tags": [
           "Access Flows"
         ],
-        "summary": "Delete access flow",
+        "summary": "Delete Access Flow",
         "operationId": "deleteAccessFlowV2",
         "parameters": [
           {
@@ -551,6 +552,7 @@
           {
             "name": "name",
             "in": "query",
+            "description": "Filter bundles by name. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
             "schema": {
               "type": "string",
               "nullable": true
@@ -588,7 +590,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpsertBundlePublicV2Model"
+                "$ref": "#/components/schemas/UpsertBundleV2"
               }
             }
           },
@@ -600,7 +602,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BundlePublicV2Model"
+                  "$ref": "#/components/schemas/BundleV2"
                 }
               }
             }
@@ -631,7 +633,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BundlePublicV2Model"
+                  "$ref": "#/components/schemas/BundleV2"
                 }
               }
             }
@@ -658,7 +660,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpsertBundlePublicV2Model"
+                "$ref": "#/components/schemas/UpsertBundleV2"
               }
             }
           },
@@ -670,7 +672,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BundlePublicV2Model"
+                  "$ref": "#/components/schemas/BundleV2"
                 }
               }
             }
@@ -854,6 +856,7 @@
           {
             "name": "first_name",
             "in": "query",
+            "description": "Filter users by first name. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
             "schema": {
               "type": "string",
               "nullable": true
@@ -862,6 +865,7 @@
           {
             "name": "last_name",
             "in": "query",
+            "description": "Filter users by last name. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
             "schema": {
               "type": "string",
               "nullable": true
@@ -962,7 +966,7 @@
         "tags": [
           "Integrations"
         ],
-        "summary": "list integrations",
+        "summary": "list Integrations",
         "operationId": "listIntegrationsV4",
         "parameters": [
           {
@@ -999,6 +1003,7 @@
           {
             "name": "name",
             "in": "query",
+            "description": "Filter integrations by name. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
             "schema": {
               "type": "string",
               "nullable": true
@@ -1026,6 +1031,7 @@
           {
             "name": "type",
             "in": "query",
+            "description": "Filter integrations by type. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
             "schema": {
               "type": "array",
               "items": {
@@ -1052,7 +1058,7 @@
         "tags": [
           "Integrations"
         ],
-        "summary": "create integration",
+        "summary": "Create Integration",
         "operationId": "createIntegrationV4",
         "requestBody": {
           "content": {
@@ -1083,7 +1089,7 @@
         "tags": [
           "Integrations"
         ],
-        "summary": "get integration by id",
+        "summary": "Get Integration By Id",
         "operationId": "getIntegrationsByIdV4",
         "parameters": [
           {
@@ -1112,7 +1118,7 @@
         "tags": [
           "Integrations"
         ],
-        "summary": "update integration",
+        "summary": "Update Integration",
         "operationId": "updateIntegrationV4",
         "parameters": [
           {
@@ -1151,7 +1157,7 @@
         "tags": [
           "Integrations"
         ],
-        "summary": "delete integration",
+        "summary": "Delete Integration",
         "operationId": "deleteIntegrationV4",
         "parameters": [
           {
@@ -1175,7 +1181,7 @@
         "tags": [
           "Access Sessions"
         ],
-        "summary": "List access sessions",
+        "summary": "List Access Sessions",
         "operationId": "listAccessSessionsV1",
         "parameters": [
           {
@@ -1237,7 +1243,7 @@
         "tags": [
           "Access Sessions"
         ],
-        "summary": "Get access session",
+        "summary": "Get Access Session",
         "operationId": "getAccessSessionV1",
         "parameters": [
           {
@@ -1268,7 +1274,7 @@
         "tags": [
           "Access Sessions"
         ],
-        "summary": "Get session access details",
+        "summary": "Get Session Access Details",
         "operationId": "getAccessSessionAccessDetailsV1",
         "parameters": [
           {
@@ -1299,7 +1305,7 @@
         "tags": [
           "Access Sessions"
         ],
-        "summary": "Reset session credentials",
+        "summary": "Reset Session Credentials",
         "operationId": "resetAccessSessionCredentialsV1",
         "parameters": [
           {
@@ -1330,7 +1336,7 @@
         "tags": [
           "Available Access"
         ],
-        "summary": "List available bundles",
+        "summary": "List Available Bundles",
         "operationId": "listAvailableBundlesV1",
         "parameters": [
           {
@@ -1345,6 +1351,7 @@
           {
             "name": "name",
             "in": "query",
+            "description": "Filter available bundles by name. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
             "schema": {
               "type": "array",
               "items": {
@@ -1381,17 +1388,22 @@
         "tags": [
           "Available Access"
         ],
-        "summary": "List available entitlements",
+        "summary": "List Available Entitlements",
         "operationId": "listAvailableEntitlementsV1",
         "parameters": [
           {
             "name": "integration_id",
             "in": "query",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "integration_name",
+            "in": "query",
+            "schema": {
+              "type": "string",
               "nullable": true
             }
           },
@@ -1420,6 +1432,14 @@
               "items": {
                 "type": "string"
               },
+              "nullable": true
+            }
+          },
+          {
+            "name": "resource_name",
+            "in": "query",
+            "schema": {
+              "type": "string",
               "nullable": true
             }
           },
@@ -1454,7 +1474,7 @@
         "tags": [
           "Access Requests"
         ],
-        "summary": "List access requests",
+        "summary": "List Access Requests",
         "operationId": "listAccessRequestsV4",
         "parameters": [
           {
@@ -1503,7 +1523,7 @@
         "tags": [
           "Access Requests"
         ],
-        "summary": "Create access request",
+        "summary": "Create Access Request",
         "operationId": "createAccessRequestV4",
         "requestBody": {
           "content": {
@@ -1537,7 +1557,7 @@
         "tags": [
           "Access Requests"
         ],
-        "summary": "Get access request",
+        "summary": "Get Access Request",
         "operationId": "getAccessRequestsV4",
         "parameters": [
           {
@@ -1568,7 +1588,7 @@
         "tags": [
           "Access Requests"
         ],
-        "summary": "Get access request entitlements",
+        "summary": "Get Access Request Entitlements",
         "operationId": "getAccessRequestEntitlementsV4",
         "parameters": [
           {
@@ -1649,7 +1669,7 @@
         "tags": [
           "Access Requests"
         ],
-        "summary": "Request access again",
+        "summary": "Request Access Again",
         "operationId": "requestAccessAgainV4",
         "parameters": [
           {
@@ -1693,7 +1713,7 @@
         "tags": [
           "Access Requests"
         ],
-        "summary": "Revoke access request",
+        "summary": "Revoke Access Request",
         "operationId": "revokeAccessRequestV4",
         "parameters": [
           {
@@ -2010,68 +2030,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AccessFlowV1"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/connector-action-params/grant-access": {
-      "post": {
-        "tags": [
-          "Connectors"
-        ],
-        "summary": "get grant-access connector action params",
-        "operationId": "getGrantAccessConnectorActionParams",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetGrantRevokeAccessConnectorActionParamsModel"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConnectorActionParamsModel"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/connector-action-params/revoke-access": {
-      "post": {
-        "tags": [
-          "Connectors"
-        ],
-        "summary": "get revoke-access connector action params",
-        "operationId": "getRevokeAccessConnectorActionParams",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetGrantRevokeAccessConnectorActionParamsModel"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConnectorActionParamsModel"
                 }
               }
             }
@@ -3181,6 +3139,7 @@
           {
             "name": "name",
             "in": "query",
+            "description": "Filter access scopes by name. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
             "schema": {
               "type": "string",
               "nullable": true
@@ -3333,15 +3292,15 @@
   },
   "components": {
     "schemas": {
-      "AccessBundleAccessTargetPublicV2Model": {
-        "description": "AccessBundleAccessTargetV2",
+      "AccessBundleAccessTargetUpsertV2": {
+        "description": "Resource integration or access scope included in the bundle with defined permissions",
         "type": "object",
         "properties": {
           "integration": {
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/IntegrationAccessTargetPublicV2Model"
+                "$ref": "#/components/schemas/IntegrationAccessTargetUpsertV2"
               }
             ],
             "nullable": true
@@ -3350,22 +3309,22 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/AccessScopeAccessTargetPublicV2Model"
+                "$ref": "#/components/schemas/AccessScopeAccessTargetUpsertV2"
               }
             ],
             "nullable": true
           }
         }
       },
-      "AccessBundleAccessTargetUpsertPublicV2Model": {
-        "description": "AccessBundleAccessTargetUpsertV2",
+      "AccessBundleAccessTargetV2": {
+        "description": "Resource integration or access scope included in the bundle with defined permissions",
         "type": "object",
         "properties": {
           "integration": {
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/IntegrationAccessTargetUpsertPublicV2Model"
+                "$ref": "#/components/schemas/IntegrationAccessTargetV2"
               }
             ],
             "nullable": true
@@ -3374,7 +3333,7 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/AccessScopeAccessTargetUpsertPublicV2Model"
+                "$ref": "#/components/schemas/AccessScopeAccessTargetV2"
               }
             ],
             "nullable": true
@@ -3403,112 +3362,6 @@
           }
         }
       },
-      "AccessFlowPublicV2Model": {
-        "required": [
-          "id",
-          "name",
-          "active",
-          "trigger",
-          "requestors",
-          "access_targets",
-          "settings",
-          "creation_date"
-        ],
-        "description": "AccessFlowV2",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "active": {
-            "type": "boolean"
-          },
-          "trigger": {
-            "type": "string"
-          },
-          "requestors": {
-            "$ref": "#/components/schemas/RequestorsPublicV2Model"
-          },
-          "access_targets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AccessTargetPublicV2Model"
-            }
-          },
-          "approver_policy": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ApproverPolicyPublicV2Model"
-              }
-            ],
-            "nullable": true
-          },
-          "grant_duration_in_min": {
-            "format": "int32",
-            "type": "integer",
-            "nullable": true
-          },
-          "timeframe": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccessFlowTimeframePublicV2Model"
-              }
-            ],
-            "nullable": true
-          },
-          "settings": {
-            "$ref": "#/components/schemas/AccessFlowSettingsPublicV2Model"
-          },
-          "creation_date": {
-            "$ref": "#/components/schemas/ApiInstant"
-          },
-          "update_date": {
-            "type": "string",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ApiInstant"
-              }
-            ],
-            "nullable": true
-          }
-        }
-      },
-      "AccessFlowSettingsPublicV2Model": {
-        "required": [
-          "justification_required",
-          "require_approver_reason",
-          "requestor_cannot_approve_himself",
-          "require_mfa",
-          "labels"
-        ],
-        "description": "AccessFlowSettingsV2",
-        "type": "object",
-        "properties": {
-          "justification_required": {
-            "type": "boolean"
-          },
-          "require_approver_reason": {
-            "type": "boolean"
-          },
-          "requestor_cannot_approve_himself": {
-            "type": "boolean"
-          },
-          "require_mfa": {
-            "type": "boolean"
-          },
-          "labels": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "AccessFlowSettingsV1": {
         "type": "object",
         "properties": {
@@ -3530,29 +3383,68 @@
           }
         }
       },
-      "AccessFlowTimeframePublicV2Model": {
+      "AccessFlowSettingsV2": {
+        "required": [
+          "justification_required",
+          "require_approver_reason",
+          "requestor_cannot_approve_himself",
+          "require_mfa",
+          "labels"
+        ],
+        "description": "List of additional settings in the access flow",
+        "type": "object",
+        "properties": {
+          "justification_required": {
+            "description": "Requirement for the requester to explain their access need",
+            "type": "boolean"
+          },
+          "require_approver_reason": {
+            "description": "Requirement for the approver to explain why they granted or denied access",
+            "type": "boolean"
+          },
+          "requestor_cannot_approve_himself": {
+            "description": "Requirement that users cannot approve their own access requests",
+            "type": "boolean"
+          },
+          "require_mfa": {
+            "description": "Requirement for multi-factor authentication to gain access",
+            "type": "boolean"
+          },
+          "labels": {
+            "description": "Additional tags (typically indicating environment) used to filter the access flow",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AccessFlowTimeframeV2": {
         "required": [
           "start_time",
           "end_time",
           "days_of_week",
           "time_zone"
         ],
-        "description": "AccessFlowTimeframeV2",
+        "description": "Period when access is granted to the user",
         "type": "object",
         "properties": {
           "start_time": {
+            "description": "Start time of the access period, in ISO 8601 format",
             "type": "string"
           },
           "end_time": {
+            "description": "End time of the access period, in ISO 8601 format",
             "type": "string"
           },
           "days_of_week": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DayOfWeekPublicV2Model"
+              "$ref": "#/components/schemas/DayOfWeekV2"
             }
           },
           "time_zone": {
+            "description": "Timezone context used to evaluate active timeframes",
             "type": "string"
           }
         }
@@ -3577,7 +3469,7 @@
           }
         }
       },
-      "AccessFlowUpsertPublicV2Model": {
+      "AccessFlowUpsertV2": {
         "required": [
           "name",
           "active",
@@ -3586,38 +3478,41 @@
           "access_targets",
           "settings"
         ],
-        "description": "AccessFlowUpsertV2",
         "type": "object",
         "properties": {
           "name": {
+            "description": "Display name of the access flow",
             "type": "string"
           },
           "active": {
+            "description": "Activity state of the access flow (active or inactive)",
             "type": "boolean"
           },
           "trigger": {
+            "description": "Event or action that triggers the access flow",
             "type": "string"
           },
           "requestors": {
-            "$ref": "#/components/schemas/RequestorsUpsertPublicV2Model"
+            "$ref": "#/components/schemas/RequestorsUpsertV2"
           },
           "access_targets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AccessTargetUpsertPublicV2Model"
+              "$ref": "#/components/schemas/AccessTargetUpsertV2"
             }
           },
           "approver_policy": {
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/ApproverPolicyUpsertPublicV2Model"
+                "$ref": "#/components/schemas/ApproverPolicyUpsertV2"
               }
             ],
             "nullable": true
           },
           "grant_duration_in_min": {
             "format": "int32",
+            "description": "Duration of access granted to the user, in minutes",
             "type": "integer",
             "nullable": true
           },
@@ -3625,13 +3520,13 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/AccessFlowTimeframePublicV2Model"
+                "$ref": "#/components/schemas/AccessFlowTimeframeV2"
               }
             ],
             "nullable": true
           },
           "settings": {
-            "$ref": "#/components/schemas/AccessFlowSettingsPublicV2Model"
+            "$ref": "#/components/schemas/AccessFlowSettingsV2"
           }
         }
       },
@@ -3704,6 +3599,92 @@
           }
         }
       },
+      "AccessFlowV2": {
+        "required": [
+          "id",
+          "name",
+          "active",
+          "trigger",
+          "requestors",
+          "access_targets",
+          "settings",
+          "creation_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the access flow",
+            "type": "string"
+          },
+          "name": {
+            "description": "Display name of the access flow",
+            "type": "string"
+          },
+          "active": {
+            "description": "Activity state of the access flow (active or inactive)",
+            "type": "boolean"
+          },
+          "trigger": {
+            "description": "Event or action that triggers the access flow",
+            "type": "string"
+          },
+          "requestors": {
+            "$ref": "#/components/schemas/RequestorsV2"
+          },
+          "access_targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessTargetV2"
+            }
+          },
+          "approver_policy": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApproverPolicyV2"
+              }
+            ],
+            "nullable": true
+          },
+          "grant_duration_in_min": {
+            "format": "int32",
+            "description": "Duration of access granted to the user, in minutes",
+            "type": "integer",
+            "nullable": true
+          },
+          "timeframe": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccessFlowTimeframeV2"
+              }
+            ],
+            "nullable": true
+          },
+          "settings": {
+            "$ref": "#/components/schemas/AccessFlowSettingsV2"
+          },
+          "creation_date": {
+            "description": "Timestamp when the resource was created, in ISO 8601 format",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
+          },
+          "update_date": {
+            "description": "Timestamp when the resource was last modified, in ISO 8601 format",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
       "AccessRequest": {
         "required": [
           "request_id",
@@ -3754,12 +3735,20 @@
           "integration",
           "resource_types"
         ],
+        "description": "Access groups associated with this request",
         "type": "object",
         "properties": {
           "integration": {
-            "$ref": "#/components/schemas/IntegrationPartialV4"
+            "description": "Details of the integration tied to the access group",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IntegrationPartialV4"
+              }
+            ]
           },
           "resource_types": {
+            "description": "Resource type identifier tied to the access group",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ResourceTypeV4"
@@ -3786,6 +3775,7 @@
             "$ref": "#/components/schemas/RequestEntitlementPermissionV4"
           },
           "status": {
+            "description": "Current status of the access request",
             "type": "string"
           }
         }
@@ -3801,24 +3791,35 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the access request",
             "type": "string"
           },
           "status": {
+            "description": "Current status of the access request",
             "type": "string"
           },
           "duration_in_sec": {
             "format": "int32",
+            "description": "Duration for which access is granted, in seconds",
             "type": "integer",
             "nullable": true
           },
           "justification": {
+            "description": "Reason provided by the user when requesting access",
             "type": "string",
             "nullable": true
           },
           "creation_date": {
-            "$ref": "#/components/schemas/ApiInstant"
+            "description": "Date and time when the access request was created (ISO 8601 format)",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
           },
           "revocation_date": {
+            "description": "Timestamp when access was revoked, if applicable (ISO 8601 format)",
             "type": "string",
             "allOf": [
               {
@@ -3828,6 +3829,7 @@
             "nullable": true
           },
           "custom_fields": {
+            "description": "A set of user-defined key-value pairs for additional custom data. These fields may be required based on policy",
             "type": "object",
             "additionalProperties": {
               "type": "string"
@@ -3864,30 +3866,33 @@
           }
         }
       },
-      "AccessScopeAccessTargetPublicV2Model": {
+      "AccessScopeAccessTargetUpsertV2": {
         "required": [
-          "access_scope_id",
-          "access_scope_name"
+          "access_scope_reference"
         ],
-        "description": "AccessScopeAccessTargetV2",
+        "description": "Dynamic group of resources that updates automatically based on saved query criteria across integrations",
         "type": "object",
         "properties": {
-          "access_scope_id": {
-            "type": "string"
-          },
-          "access_scope_name": {
+          "access_scope_reference": {
+            "description": "Unique identifier or display name of the access scope",
             "type": "string"
           }
         }
       },
-      "AccessScopeAccessTargetUpsertPublicV2Model": {
+      "AccessScopeAccessTargetV2": {
         "required": [
-          "access_scope_reference"
+          "access_scope_id",
+          "access_scope_name"
         ],
-        "description": "AccessScopeAccessTargetUpsertV2",
+        "description": "Dynamic group of resources that updates automatically based on saved query criteria across integrations",
         "type": "object",
         "properties": {
-          "access_scope_reference": {
+          "access_scope_id": {
+            "description": "Unique identifier of the access scope",
+            "type": "string"
+          },
+          "access_scope_name": {
+            "description": "Display name of the access scope",
             "type": "string"
           }
         }
@@ -3899,13 +3904,16 @@
         "type": "object",
         "properties": {
           "instructions": {
+            "description": "User-facing text with step-by-step instructions for accessing the resource",
             "type": "string"
           },
           "custom_admin_message": {
+            "description": "An optional message provided by an admin. Often used for additional context, warnings, or escalation paths",
             "type": "string",
             "nullable": true
           },
           "parameters": {
+            "description": "A set of custom-defined key-value parameters associated with the session (e.g., username, password, etc.)",
             "type": "object",
             "additionalProperties": {
               "type": "string"
@@ -3913,6 +3921,7 @@
             "nullable": true
           },
           "cli": {
+            "description": "A command-line string the user can copy and execute to initiate access",
             "type": "string",
             "nullable": true
           },
@@ -3931,6 +3940,7 @@
         "required": [
           "id",
           "name",
+          "request_ids",
           "integration",
           "credentials_status",
           "can_reset_credentials"
@@ -3938,18 +3948,35 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the access session",
             "type": "string"
           },
           "name": {
+            "description": "A human-readable name for the session, often based on the resource or purpose",
             "type": "string"
           },
+          "request_ids": {
+            "description": "List of request id's related to the access session",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "integration": {
-            "$ref": "#/components/schemas/IntegrationPartialV4"
+            "description": "Contains metadata about the integration through which access was provisioned",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IntegrationPartialV4"
+              }
+            ]
           },
           "credentials_status": {
+            "description": "Credential status during the session. Possible values: AVAILABLE, VIEWED, RESETTING, NOT_APPLICABLE. If the access session does not rely on credentials (for example, a cloud provider session), the status will be NOT_APPLICABLE, but access details will still be available",
             "type": "string"
           },
           "can_reset_credentials": {
+            "description": "Indicates whether credentials used in this session can be reset. Applies only to sessions where credentials are applicable ",
             "type": "boolean"
           }
         }
@@ -4013,15 +4040,15 @@
           }
         }
       },
-      "AccessTargetPublicV2Model": {
-        "description": "AccessTargetV2",
+      "AccessTargetUpsertV2": {
+        "description": "Resource integration, bundle or access scopes included in the access flow with defined permissions",
         "type": "object",
         "properties": {
           "integration": {
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/IntegrationAccessTargetPublicV2Model"
+                "$ref": "#/components/schemas/IntegrationAccessTargetUpsertV2"
               }
             ],
             "nullable": true
@@ -4030,7 +4057,7 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/BundleAccessTargetPublicV2Model"
+                "$ref": "#/components/schemas/BundleAccessTargetUpsertV2"
               }
             ],
             "nullable": true
@@ -4039,22 +4066,22 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/AccessScopeAccessTargetPublicV2Model"
+                "$ref": "#/components/schemas/AccessScopeAccessTargetUpsertV2"
               }
             ],
             "nullable": true
           }
         }
       },
-      "AccessTargetUpsertPublicV2Model": {
-        "description": "AccessTargetUpsertV2",
+      "AccessTargetV2": {
+        "description": "Resource integration, bundle or access scopes included in the access flow with defined permissions",
         "type": "object",
         "properties": {
           "integration": {
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/IntegrationAccessTargetUpsertPublicV2Model"
+                "$ref": "#/components/schemas/IntegrationAccessTargetV2"
               }
             ],
             "nullable": true
@@ -4063,7 +4090,7 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/BundleAccessTargetUpsertPublicV2Model"
+                "$ref": "#/components/schemas/BundleAccessTargetV2"
               }
             ],
             "nullable": true
@@ -4072,7 +4099,7 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/AccessScopeAccessTargetUpsertPublicV2Model"
+                "$ref": "#/components/schemas/AccessScopeAccessTargetV2"
               }
             ],
             "nullable": true
@@ -4147,9 +4174,11 @@
         "required": [
           "parameters"
         ],
+        "description": "Connector credentials not protected by a secret manager and not recommended for production use",
         "type": "object",
         "properties": {
           "parameters": {
+            "description": "Username and password values supplied directly for the connector to authenticate with the integration",
             "type": "object",
             "additionalProperties": {
               "type": "string"
@@ -4157,78 +4186,83 @@
           }
         }
       },
-      "ApproverGroupPublicV2Model": {
+      "ApproverGroupUpsertV2": {
         "required": [
           "logical_operator",
           "approvers"
         ],
-        "description": "ApproverGroupV2",
+        "description": "Group of approvers who may act on requests generated from the access flow",
         "type": "object",
         "properties": {
           "logical_operator": {
+            "description": "AND / OR operator applied to the conditions",
             "type": "string"
           },
           "approvers": {
+            "description": "List of identities or groups eligible to approve access",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ConditionPublicV2Model"
+              "$ref": "#/components/schemas/ConditionUpsertV2"
             }
           }
         }
       },
-      "ApproverGroupUpsertPublicV2Model": {
+      "ApproverGroupV2": {
         "required": [
           "logical_operator",
           "approvers"
         ],
-        "description": "ApproverGroupUpsertV2",
+        "description": "Group of approvers who may act on requests generated from the access flow",
         "type": "object",
         "properties": {
           "logical_operator": {
+            "description": "AND / OR operator determining if any or all listed approvers must take action",
             "type": "string"
           },
           "approvers": {
+            "description": "List of identities or groups eligible to approve access",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ConditionUpsertPublicV2Model"
+              "$ref": "#/components/schemas/ConditionV2"
             }
           }
         }
       },
-      "ApproverPolicyPublicV2Model": {
+      "ApproverPolicyUpsertV2": {
         "required": [
           "approval_mode",
           "approver_groups"
         ],
-        "description": "ApproverPolicyV2",
+        "description": "Policy defining how and by whom requests must be approved",
         "type": "object",
         "properties": {
           "approval_mode": {
+            "description": "Relationship between the approver groups: ANY_OF or ALL_OF",
             "type": "string"
           },
           "approver_groups": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ApproverGroupPublicV2Model"
+              "$ref": "#/components/schemas/ApproverGroupUpsertV2"
             }
           }
         }
       },
-      "ApproverPolicyUpsertPublicV2Model": {
+      "ApproverPolicyV2": {
         "required": [
           "approval_mode",
           "approver_groups"
         ],
-        "description": "ApproverPolicyUpsertV2",
         "type": "object",
         "properties": {
           "approval_mode": {
+            "description": "Relationship between the approver groups: ANY_OF or ALL_OF",
             "type": "string"
           },
           "approver_groups": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ApproverGroupUpsertPublicV2Model"
+              "$ref": "#/components/schemas/ApproverGroupV2"
             }
           }
         }
@@ -4256,9 +4290,11 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the bundle",
             "type": "string"
           },
           "name": {
+            "description": "Display name of the bundle",
             "type": "string"
           }
         }
@@ -4272,7 +4308,13 @@
         "type": "object",
         "properties": {
           "integration": {
-            "$ref": "#/components/schemas/IntegrationPartialV4"
+            "description": "The integration associated with the entitlement",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IntegrationPartialV4"
+              }
+            ]
           },
           "resource": {
             "$ref": "#/components/schemas/EntitlementResourceV4"
@@ -4287,12 +4329,15 @@
           "region",
           "secret_id"
         ],
+        "description": "AWS Secrets Manager reference for the connector credentials",
         "type": "object",
         "properties": {
           "region": {
+            "description": "AWS region for the secret",
             "type": "string"
           },
           "secret_id": {
+            "description": "Identifier of the secret in AWS Secrets Manager",
             "type": "string"
           }
         }
@@ -4302,40 +4347,46 @@
           "vault_url",
           "name"
         ],
+        "description": "AWS Secrets Manager reference for the connector credentials",
         "type": "object",
         "properties": {
           "vault_url": {
+            "description": "URL of the Azure Key Vault instance containing the secret",
             "type": "string"
           },
           "name": {
+            "description": "Identifier of the secret in Azure Key Vault",
             "type": "string"
           }
         }
       },
-      "BundleAccessTargetPublicV2Model": {
+      "BundleAccessTargetUpsertV2": {
+        "required": [
+          "bundle_reference"
+        ],
+        "description": "Predefined group of integrations, roles, resources, and access scopes",
+        "type": "object",
+        "properties": {
+          "bundle_reference": {
+            "description": "Unique identifier or display name of the bundle",
+            "type": "string"
+          }
+        }
+      },
+      "BundleAccessTargetV2": {
         "required": [
           "bundle_id",
           "bundle_name"
         ],
-        "description": "BundleAccessTargetV2",
+        "description": "Predefined group of integrations, roles, resources, and access scopes",
         "type": "object",
         "properties": {
           "bundle_id": {
+            "description": "Unique identifier of the bundle",
             "type": "string"
           },
           "bundle_name": {
-            "type": "string"
-          }
-        }
-      },
-      "BundleAccessTargetUpsertPublicV2Model": {
-        "required": [
-          "bundle_reference"
-        ],
-        "description": "BundleAccessTargetUpsertV2",
-        "type": "object",
-        "properties": {
-          "bundle_reference": {
+            "description": "Display name of the bundle",
             "type": "string"
           }
         }
@@ -4345,17 +4396,20 @@
           "id",
           "name"
         ],
+        "description": "If the request was for a bundle, this object describes it",
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the bundle",
             "type": "string"
           },
           "name": {
+            "description": "Display name of the bundle",
             "type": "string"
           }
         }
       },
-      "BundlePublicV2Model": {
+      "BundleV2": {
         "required": [
           "id",
           "name",
@@ -4363,52 +4417,65 @@
           "creation_date",
           "update_date"
         ],
-        "description": "BundleV2",
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the bundle",
             "type": "string"
           },
           "name": {
+            "description": "Display name of the bundle",
             "type": "string"
           },
           "access_targets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AccessBundleAccessTargetPublicV2Model"
+              "$ref": "#/components/schemas/AccessBundleAccessTargetV2"
             }
           },
           "creation_date": {
-            "$ref": "#/components/schemas/ApiInstant"
+            "description": "Timestamp when the resource was created, in ISO 8601 format",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
           },
           "update_date": {
-            "$ref": "#/components/schemas/ApiInstant"
+            "description": "Timestamp when the resource was last modified, in ISO 8601 format",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
           }
         }
       },
-      "ConditionPublicV2Model": {
+      "ConditionUpsertV2": {
         "required": [
           "type"
         ],
-        "description": "ConditionV2",
+        "description": "Condition defining eligible users",
         "type": "object",
         "properties": {
-          "source_integration_id": {
-            "type": "string",
-            "nullable": true
-          },
-          "source_integration_name": {
+          "source_integration_reference": {
+            "description": "Unique identifier or display name of the identity platform integration providing user data",
             "type": "string",
             "nullable": true
           },
           "type": {
+            "description": "Identity attribute being evaluated: user, group, manager or Owner (NOTE: The Owner value must be capitalized)",
             "type": "string"
           },
           "match_operator": {
+            "description": "Operator used to determine the relationship between the identity attribute (type) and its value (values): is, is_not, contains, does_not_contain, starts_with. When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors. You may also use the user’s email for the user attribute specifically",
             "type": "string",
             "nullable": true
           },
           "values": {
+            "description": "Acceptable values for the identity attribute (type)",
             "type": "array",
             "items": {
               "type": "string"
@@ -4417,25 +4484,34 @@
           }
         }
       },
-      "ConditionUpsertPublicV2Model": {
+      "ConditionV2": {
         "required": [
           "type"
         ],
-        "description": "ConditionUpsertV2",
+        "description": "Condition defining eligible users",
         "type": "object",
         "properties": {
-          "source_integration_reference": {
+          "source_integration_id": {
+            "description": "Unique identifier of the identity platform integration providing user data",
+            "type": "string",
+            "nullable": true
+          },
+          "source_integration_name": {
+            "description": "Display name of the identity platform integration providing user data",
             "type": "string",
             "nullable": true
           },
           "type": {
+            "description": "Identity attribute being evaluated: user, group, manager or Owner (NOTE: The Owner value must be capitalized)",
             "type": "string"
           },
           "match_operator": {
+            "description": "Operator used to determine the relationship between the identity attribute (type) and its value (values): is, is_not, contains, does_not_contain, starts_with. When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors. You may also use the user’s email for the user attribute specifically",
             "type": "string",
             "nullable": true
           },
           "values": {
+            "description": "Acceptable values for the identity attribute (type)",
             "type": "array",
             "items": {
               "type": "string"
@@ -4482,52 +4558,8 @@
           }
         }
       },
-      "ConnectorActionParamsModel": {
-        "required": [
-          "integration_type",
-          "action",
-          "params",
-          "force_reload_secret_cache",
-          "timeout"
-        ],
-        "type": "object",
-        "properties": {
-          "integration_type": {
-            "type": "string"
-          },
-          "integration_metadata": {
-            "type": "object",
-            "nullable": true
-          },
-          "secret_config": {
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SecretConfig1"
-              }
-            ],
-            "nullable": true
-          },
-          "provider_name": {
-            "type": "string",
-            "nullable": true
-          },
-          "action": {
-            "type": "string"
-          },
-          "params": {
-            "type": "object"
-          },
-          "force_reload_secret_cache": {
-            "type": "boolean"
-          },
-          "timeout": {
-            "format": "int64",
-            "type": "integer"
-          }
-        }
-      },
       "ConnectorSessionMetadataV3": {
+        "description": "Context related to the installation of the connector",
         "type": "object",
         "properties": {
           "cloud_provider_metadata": {
@@ -4540,6 +4572,7 @@
             "nullable": true
           },
           "connector_version": {
+            "description": "The installed connector’s version",
             "type": "string",
             "nullable": true
           }
@@ -4551,20 +4584,29 @@
           "metadata",
           "last_connected_time"
         ],
+        "description": "Available when the connector status is CONNECTED. Multiple sessions are displayed if multiple connectors are installed for High Availability, indicating each connector's session state",
         "type": "object",
         "properties": {
           "id": {
+            "description": "The ID of the session",
             "type": "string"
           },
           "metadata": {
             "$ref": "#/components/schemas/ConnectorSessionMetadataV3"
           },
           "last_connected_time": {
-            "$ref": "#/components/schemas/ApiInstant"
+            "description": "Timestamp when the connector was last responsive, in ISO 8601 format",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
           }
         }
       },
       "ConnectorSessionsCloudProviderMetadataV3": {
+        "description": "Context related to the cloud provider on which the connector is installed",
         "type": "object",
         "properties": {
           "kubernetes_type": {
@@ -4634,18 +4676,23 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the connector",
             "type": "string"
           },
           "name": {
+            "description": "Unique, alphanumeric, user-friendly name used to identify the connector",
             "type": "string"
           },
           "status": {
+            "description": "Operational state of the connector: CONNECTED or DISCONNECTED",
             "type": "string"
           },
           "version": {
+            "description": "Version of the Apono connector currently in use",
             "type": "string"
           },
           "last_connected": {
+            "description": "Timestamp of the most recent successful connector connection, in ISO 8601 format",
             "type": "string",
             "allOf": [
               {
@@ -4655,9 +4702,11 @@
             "nullable": true
           },
           "is_latest_version": {
+            "description": "Indicates whether the most current version of the Apono connector is in use",
             "type": "boolean"
           },
           "cloud_provider_type": {
+            "description": "Cloud provider to which the connector grants Apono access",
             "type": "string"
           },
           "sessions": {
@@ -4711,12 +4760,15 @@
           "resource_id",
           "permission_id"
         ],
+        "description": "An Entitlement object (combining a resource_id and permission_id)",
         "type": "object",
         "properties": {
           "resource_id": {
+            "description": "Unique identifier of the resource to which access is being requested",
             "type": "string"
           },
           "permission_id": {
+            "description": "Unique identifier of the permission the user is requesting on the specified resource",
             "type": "string"
           }
         }
@@ -4728,10 +4780,12 @@
         "type": "object",
         "properties": {
           "bundle_reference": {
+            "description": "Unique identifier or display name of the bundle. Either bundle_reference or entitlements is required",
             "type": "string",
             "nullable": true
           },
           "entitlements": {
+            "description": "An Entitlement object (combining a resource_id and permission_id). Either bundle_reference or entitlements is required",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CreateAccessRequestEntitlementV4"
@@ -4739,15 +4793,18 @@
             "nullable": true
           },
           "justification": {
+            "description": "An explanation or reason for the access request",
             "type": "string",
             "nullable": true
           },
           "duration_in_sec": {
             "format": "int32",
+            "description": "Duration in seconds for which access is requested",
             "type": "integer",
             "nullable": true
           },
           "custom_fields": {
+            "description": "A set of user-defined key-value pairs for additional custom data. These fields may be required based on policy",
             "type": "object",
             "additionalProperties": {
               "type": "string"
@@ -4763,9 +4820,11 @@
         "type": "object",
         "properties": {
           "name": {
+            "description": "Display name of the group",
             "type": "string"
           },
           "members_emails": {
+            "description": "Email addresses to assign as members of the group",
             "type": "array",
             "items": {
               "type": "string"
@@ -4825,17 +4884,26 @@
         "type": "object",
         "properties": {
           "name": {
+            "description": "Unique, alphanumeric, user-friendly name used to identify the integration",
             "type": "string"
           },
           "type": {
+            "description": "Apono-defined identifier for the specific integration type",
             "type": "string"
           },
           "connector_id": {
+            "description": "Unique identifier of the Apono connector",
             "type": "string",
             "nullable": true
           },
           "integration_config": {
-            "$ref": "#/components/schemas/JsonMapModel"
+            "description": "Set of integration-specific connection and management parameters. Refer to the [Integration Configuration documentation](https://docs.apono.io/metadata-for-integration-config) for specific configuration values.",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/JsonMapModel"
+              }
+            ]
           },
           "secret_store_config": {
             "type": "object",
@@ -4847,6 +4915,7 @@
             "nullable": true
           },
           "connected_resource_types": {
+            "description": "List of discoverable resource types within the integration",
             "type": "array",
             "items": {
               "type": "string"
@@ -4854,6 +4923,7 @@
             "nullable": true
           },
           "custom_access_details": {
+            "description": "Admin custom instructions (max 400 characters) for accessing the integration’s resources, shown to end users",
             "type": "string",
             "nullable": true
           },
@@ -4889,8 +4959,8 @@
         ],
         "type": "string"
       },
-      "DayOfWeekPublicV2Model": {
-        "description": "DayOfWeek",
+      "DayOfWeekV2": {
+        "description": "Days on which a rule applies",
         "enum": [
           "MONDAY",
           "TUESDAY",
@@ -4908,15 +4978,19 @@
           "source_id",
           "name"
         ],
+        "description": "The permission granted by the entitlement",
         "type": "object",
         "properties": {
           "id": {
+            "description": "Apono’s assigned identifier of the permission",
             "type": "string"
           },
           "source_id": {
+            "description": "Permission identifier in the source system",
             "type": "string"
           },
           "name": {
+            "description": "Human-readable name of the permission",
             "type": "string"
           }
         }
@@ -4928,18 +5002,22 @@
           "type",
           "name"
         ],
+        "description": "The resource to which the entitlement applies",
         "type": "object",
         "properties": {
           "id": {
+            "description": "Apono’s assigned identifier of the resource",
             "type": "string"
           },
           "source_id": {
+            "description": "Unique identifier from the source system (e.g., AWS ARN, GCP ID)",
             "type": "string"
           },
           "type": {
             "$ref": "#/components/schemas/ResourceTypeV4"
           },
           "name": {
+            "description": "Display name of the resource",
             "type": "string"
           }
         }
@@ -4949,50 +5027,15 @@
           "project",
           "secret_id"
         ],
+        "description": "AWS Secrets Manager reference for the connector credentials",
         "type": "object",
         "properties": {
           "project": {
+            "description": "GCP project containing the secret",
             "type": "string"
           },
           "secret_id": {
-            "type": "string"
-          }
-        }
-      },
-      "GetGrantRevokeAccessConnectorActionParamsModel": {
-        "required": [
-          "request_id",
-          "friendly_request_id",
-          "username",
-          "integration_id",
-          "resource_type",
-          "resource_source_ids",
-          "permission_source_id"
-        ],
-        "type": "object",
-        "properties": {
-          "request_id": {
-            "type": "string"
-          },
-          "friendly_request_id": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          },
-          "integration_id": {
-            "type": "string"
-          },
-          "resource_type": {
-            "type": "string"
-          },
-          "resource_source_ids": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "permission_source_id": {
+            "description": "Identifier of the secret in Google Secret Manager",
             "type": "string"
           }
         }
@@ -5019,6 +5062,7 @@
         "type": "object",
         "properties": {
           "email": {
+            "description": "Group member email address",
             "type": "string"
           }
         }
@@ -5031,20 +5075,25 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the group",
             "type": "string"
           },
           "name": {
+            "description": "Display name of the group",
             "type": "string"
           },
           "source_id": {
+            "description": "Identifier of the group in the integration system providing the entity",
             "type": "string",
             "nullable": true
           },
           "source_integration_id": {
+            "description": "Unique Apono identifier of the integration providing the entity",
             "type": "string",
             "nullable": true
           },
           "source_integration_name": {
+            "description": "Display name of the integration providing the entity",
             "type": "string",
             "nullable": true
           }
@@ -5055,12 +5104,15 @@
           "secret_engine",
           "path"
         ],
+        "description": "AWS Secrets Manager reference for the connector credentials",
         "type": "object",
         "properties": {
           "secret_engine": {
+            "description": "Secret engine in HashiCorp Vault containing the secret",
             "type": "string"
           },
           "path": {
+            "description": "Path to the secret in the specified secret engine",
             "type": "string"
           }
         }
@@ -5260,26 +5312,63 @@
           }
         }
       },
-      "IntegrationAccessTargetPublicV2Model": {
+      "IntegrationAccessTargetUpsertV2": {
+        "required": [
+          "integration_reference",
+          "resource_type",
+          "permissions"
+        ],
+        "description": "External service or platform connection where resources are managed and permissions are applied",
+        "type": "object",
+        "properties": {
+          "integration_reference": {
+            "description": "Unique identifier or display name of the integration",
+            "type": "string"
+          },
+          "resource_type": {
+            "description": "Type of resource associated with the integration",
+            "type": "string"
+          },
+          "permissions": {
+            "description": "List of granted actions on the resources",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "resources_scopes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourcesScopeIntegrationAccessTargetV2"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "IntegrationAccessTargetV2": {
         "required": [
           "integration_id",
           "integration_name",
           "resource_type",
           "permissions"
         ],
-        "description": "IntegrationAccessTargetV2",
+        "description": "External service or platform connection where resources are managed and permissions are applied",
         "type": "object",
         "properties": {
           "integration_id": {
+            "description": "Unique identifier of the integration",
             "type": "string"
           },
           "integration_name": {
+            "description": "Display name of the integration",
             "type": "string"
           },
           "resource_type": {
+            "description": "Type of resource associated with the integration",
             "type": "string"
           },
           "permissions": {
+            "description": "List of granted actions on the resources",
             "type": "array",
             "items": {
               "type": "string"
@@ -5288,37 +5377,7 @@
           "resources_scopes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ResourcesScopeIntegrationAccessTargetPublicV2Model"
-            },
-            "nullable": true
-          }
-        }
-      },
-      "IntegrationAccessTargetUpsertPublicV2Model": {
-        "required": [
-          "integration_reference",
-          "resource_type",
-          "permissions"
-        ],
-        "description": "IntegrationAccessTargetUpsertV2",
-        "type": "object",
-        "properties": {
-          "integration_reference": {
-            "type": "string"
-          },
-          "resource_type": {
-            "type": "string"
-          },
-          "permissions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "resources_scopes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ResourcesScopeIntegrationAccessTargetPublicV2Model"
+              "$ref": "#/components/schemas/ResourcesScopeIntegrationAccessTargetV2"
             },
             "nullable": true
           }
@@ -5399,9 +5458,11 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the integration",
             "type": "string"
           },
           "name": {
+            "description": "Human-readable name of the integration",
             "type": "string"
           }
         }
@@ -5429,25 +5490,32 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the integration",
             "type": "string"
           },
           "name": {
+            "description": "Unique, alphanumeric, user-friendly name used to identify the integration",
             "type": "string"
           },
           "type": {
+            "description": "Apono-defined identifier for the specific integration type",
             "type": "string"
           },
           "category": {
+            "description": "Apono-defined grouping for the integration",
             "type": "string"
           },
           "connector_id": {
+            "description": "Unique identifier of the Apono connector",
             "type": "string",
             "nullable": true
           },
           "status": {
+            "description": "Operational state of the integration",
             "type": "string"
           },
           "last_sync_time": {
+            "description": "Timestamp of the most recent successful integration sync, in ISO 8601 format",
             "type": "string",
             "allOf": [
               {
@@ -5457,7 +5525,13 @@
             "nullable": true
           },
           "integration_config": {
-            "$ref": "#/components/schemas/JsonMapModel"
+            "description": "Set of integration-specific connection and management parameters",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/JsonMapModel"
+              }
+            ]
           },
           "secret_store_config": {
             "type": "object",
@@ -5469,6 +5543,7 @@
             "nullable": true
           },
           "connected_resource_types": {
+            "description": "List of discoverable resource types within the integration",
             "type": "array",
             "items": {
               "type": "string"
@@ -5476,6 +5551,7 @@
             "nullable": true
           },
           "custom_access_details": {
+            "description": "Admin custom instructions (max 400 characters) for accessing the integration’s resources, shown to end users",
             "type": "string",
             "nullable": true
           },
@@ -5508,12 +5584,15 @@
           "namespace",
           "name"
         ],
+        "description": "AWS Secrets Manager reference for the connector credentials",
         "type": "object",
         "properties": {
           "namespace": {
+            "description": "Kubernetes namespace containing the secret",
             "type": "string"
           },
           "name": {
+            "description": "Identifier of the secret in Kubernetes",
             "type": "string"
           }
         }
@@ -5522,12 +5601,15 @@
         "required": [
           "url"
         ],
+        "description": "A direct access link, such as to a web console, application, or dashboard",
         "type": "object",
         "properties": {
           "url": {
+            "description": "The destination URL of the link",
             "type": "string"
           },
           "title": {
+            "description": "A user-friendly title for the link, which can be displayed instead of the raw URL",
             "type": "string",
             "nullable": true
           }
@@ -5549,19 +5631,24 @@
           "key_name",
           "attribute_type"
         ],
+        "description": "Group or role responsible for approving or rejecting access to the resource",
         "type": "object",
         "properties": {
           "key_name": {
+            "description": "Name of the resource tag in the source integration used to identify ownership",
             "type": "string"
           },
           "attribute_type": {
+            "description": "Identity provider attribute used to map the key_name to owners",
             "type": "string"
           },
           "source_integration_id": {
+            "description": "Unique Apono identifier of the integration providing the entity",
             "type": "string",
             "nullable": true
           },
           "source_integration_name": {
+            "description": "Display name of the integration providing the entity",
             "type": "string",
             "nullable": true
           }
@@ -5572,22 +5659,27 @@
           "attribute_type",
           "attribute_value"
         ],
+        "description": "Fallback approver, if no resource owner is resolved via owners_mapping",
         "type": "object",
         "properties": {
           "attribute_type": {
+            "description": "Identity provider attribute used to define the owner",
             "type": "string"
           },
           "attribute_value": {
+            "description": "One or more users or groups assigned as owners, based on the chosen attribute_type. For most attribute types (e.g., \"group\"), you must provide the source ID of the entity, which is retrieved from the source integration (e.g., the group ID from Okta). For the \"user\" attribute type, you may alternatively use the user’s email address",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
           "source_integration_id": {
+            "description": "Unique Apono identifier of the integration providing the entity",
             "type": "string",
             "nullable": true
           },
           "source_integration_name": {
+            "description": "Display name of the integration providing the entity",
             "type": "string",
             "nullable": true
           }
@@ -5896,7 +5988,7 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AccessFlowPublicV2Model"
+              "$ref": "#/components/schemas/AccessFlowV2"
             }
           },
           "pagination": {
@@ -6004,7 +6096,7 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/BundlePublicV2Model"
+              "$ref": "#/components/schemas/BundleV2"
             }
           },
           "pagination": {
@@ -6117,6 +6209,7 @@
         "type": "object",
         "properties": {
           "next_page_token": {
+            "description": "Token used to retrieve the next page of results in a paginated response",
             "type": "string",
             "nullable": true
           }
@@ -6157,10 +6250,12 @@
         "type": "object",
         "properties": {
           "justification": {
+            "description": "An explanation or reason for the access request",
             "type": "string",
             "nullable": true
           },
           "custom_fields": {
+            "description": "A set of user-defined key-value pairs for additional custom data. These fields may be required based on policy",
             "type": "object",
             "additionalProperties": {
               "type": "string"
@@ -6172,6 +6267,7 @@
         "required": [
           "name"
         ],
+        "description": "The granted permission to the resource",
         "type": "object",
         "properties": {
           "name": {
@@ -6179,40 +6275,42 @@
           }
         }
       },
-      "RequestorsPublicV2Model": {
+      "RequestorsUpsertV2": {
         "required": [
           "logical_operator",
           "conditions"
         ],
-        "description": "RequestorsV2",
+        "description": "List of users who can request access, and the conditions under which they can request access",
         "type": "object",
         "properties": {
           "logical_operator": {
+            "description": "AND / OR operator applied to the conditions",
             "type": "string"
           },
           "conditions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ConditionPublicV2Model"
+              "$ref": "#/components/schemas/ConditionUpsertV2"
             }
           }
         }
       },
-      "RequestorsUpsertPublicV2Model": {
+      "RequestorsV2": {
         "required": [
           "logical_operator",
           "conditions"
         ],
-        "description": "RequestorsUpsertV2",
+        "description": "List of users who can request access, and the conditions under which they can request access",
         "type": "object",
         "properties": {
           "logical_operator": {
+            "description": "AND / OR operator applied to the conditions",
             "type": "string"
           },
           "conditions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ConditionUpsertPublicV2Model"
+              "$ref": "#/components/schemas/ConditionV2"
             }
           }
         }
@@ -6268,12 +6366,15 @@
           "id",
           "label"
         ],
+        "description": "The type of the resource",
         "type": "object",
         "properties": {
           "id": {
+            "description": "Apono’s assigned identifier of the resource type",
             "type": "string"
           },
           "label": {
+            "description": "Display name of the resource type",
             "type": "string"
           }
         }
@@ -6296,26 +6397,30 @@
           }
         }
       },
-      "ResourcesScopeIntegrationAccessTargetPublicV2Model": {
+      "ResourcesScopeIntegrationAccessTargetV2": {
         "required": [
           "scope_mode",
           "type",
           "values"
         ],
-        "description": "ResourcesScopeIntegrationAccessTargetV2",
+        "description": "Resource within an integration that is accessible based on resource identifiers",
         "type": "object",
         "properties": {
           "scope_mode": {
+            "description": "Inclusion or exclusion rule for resource access: include_resources or exclude_resources",
             "type": "string"
           },
           "type": {
+            "description": "Filtering method: APONO_ID, NAME, or TAG",
             "type": "string"
           },
           "key": {
+            "description": "Tag name used for resource filtering (only when type = TAG)",
             "type": "string",
             "nullable": true
           },
           "values": {
+            "description": "Values matching Apono IDs, Names, or service tag values",
             "type": "array",
             "items": {
               "type": "string"
@@ -6326,10 +6431,8 @@
       "SecretConfig": {
         "type": "object"
       },
-      "SecretConfig1": {
-        "type": "object"
-      },
       "SecretStoreConfigV4": {
+        "description": "Provider-specific external secret manager reference for the connector credentials. Exactly one must be provided",
         "type": "object",
         "properties": {
           "aws": {
@@ -6585,6 +6688,7 @@
         "type": "object",
         "properties": {
           "members_emails": {
+            "description": "Email addresses to assign as members of the group",
             "type": "array",
             "items": {
               "type": "string"
@@ -6599,6 +6703,7 @@
         "type": "object",
         "properties": {
           "name": {
+            "description": "Display name of the group",
             "type": "string"
           }
         }
@@ -6650,10 +6755,22 @@
         "type": "object",
         "properties": {
           "name": {
+            "description": "Unique, alphanumeric, user-friendly name used to identify the integration",
             "type": "string"
           },
+          "connector_id": {
+            "description": "Unique identifier of the Apono connector",
+            "type": "string",
+            "nullable": true
+          },
           "integration_config": {
-            "$ref": "#/components/schemas/JsonMapModel"
+            "description": "Set of integration-specific connection and management parameters",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/JsonMapModel"
+              }
+            ]
           },
           "secret_store_config": {
             "type": "object",
@@ -6665,6 +6782,7 @@
             "nullable": true
           },
           "connected_resource_types": {
+            "description": "List of discoverable resource types within the integration",
             "type": "array",
             "items": {
               "type": "string"
@@ -6672,6 +6790,7 @@
             "nullable": true
           },
           "custom_access_details": {
+            "description": "Admin custom instructions (max 400 characters) for accessing the integration’s resources, shown to end users",
             "type": "string",
             "nullable": true
           },
@@ -6788,21 +6907,21 @@
           }
         }
       },
-      "UpsertBundlePublicV2Model": {
+      "UpsertBundleV2": {
         "required": [
           "name",
           "access_targets"
         ],
-        "description": "UpsertBundleV2",
         "type": "object",
         "properties": {
           "name": {
+            "description": "Display name of the bundle",
             "type": "string"
           },
           "access_targets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AccessBundleAccessTargetUpsertPublicV2Model"
+              "$ref": "#/components/schemas/AccessBundleAccessTargetUpsertV2"
             }
           }
         }
@@ -6814,6 +6933,7 @@
         "type": "object",
         "properties": {
           "name": {
+            "description": "Unique, alphanumeric, user-friendly name used to identify the connector",
             "type": "string"
           }
         }
@@ -6838,15 +6958,19 @@
           "key_name",
           "attribute_type"
         ],
+        "description": "Group or role responsible for approving or rejecting access to the resource",
         "type": "object",
         "properties": {
           "key_name": {
+            "description": "Name of the resource tag in the source integration used to identify ownership",
             "type": "string"
           },
           "attribute_type": {
+            "description": "Identity provider attribute used to map the key_name to owners",
             "type": "string"
           },
           "source_integration_reference": {
+            "description": "Unique identifier or display name of the identity platform integration providing user data",
             "type": "string",
             "nullable": true
           }
@@ -6857,24 +6981,29 @@
           "attribute_type",
           "attribute_value"
         ],
+        "description": "Fallback approver, if no resource owner is resolved via owners_mapping",
         "type": "object",
         "properties": {
           "attribute_type": {
+            "description": "Identity provider attribute used to define the owner",
             "type": "string"
           },
           "attribute_value": {
+            "description": "One or more users or groups assigned as owners, based on the chosen attribute_type",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
           "source_integration_reference": {
+            "description": "Unique identifier or display name of the identity platform integration providing user data",
             "type": "string",
             "nullable": true
           }
         }
       },
       "UpsertSecretStoreConfigV4": {
+        "description": "Provider-specific external secret manager reference for the connector credentials. Exactly one must be provided",
         "type": "object",
         "properties": {
           "aws": {
@@ -6964,41 +7093,51 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the user",
             "type": "string"
           },
           "email": {
+            "description": "The user’s primary email address",
             "type": "string"
           },
           "email_aliases": {
+            "description": "A list of additional email addresses associated with the user",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
           "first_name": {
+            "description": "The user’s first name",
             "type": "string"
           },
           "last_name": {
+            "description": "The user’s family name or surname",
             "type": "string"
           },
           "active": {
+            "description": "Indicates whether the user is currently active within Apono",
             "type": "boolean"
           },
           "roles": {
+            "description": "A list of roles assigned to the user, representing their permissions (e.g. Admin, Power User, Deployment, Viewer)",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
           "source_integration_id": {
+            "description": "Unique Apono identifier of the integration providing the entity",
             "type": "string",
             "nullable": true
           },
           "source_integration_name": {
+            "description": "Display name of the integration providing the entity",
             "type": "string",
             "nullable": true
           },
           "attributes": {
+            "description": "A key-value map of custom user attributes retrieved from the source integration. These may include department, location, title, or any other metadata defined in the source system",
             "type": "object",
             "additionalProperties": {
               "type": "string"
@@ -7018,19 +7157,34 @@
         "type": "object",
         "properties": {
           "id": {
+            "description": "Unique identifier of the access scope",
             "type": "string"
           },
           "name": {
+            "description": "Display name of the access scope",
             "type": "string"
           },
           "query": {
+            "description": "Apono Query Language (AQL) expression that defines filters for cloud resources, integrations, and permissions",
             "type": "string"
           },
           "creation_date": {
-            "$ref": "#/components/schemas/ApiInstant"
+            "description": "Timestamp when the resource was created, in ISO 8601 format",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
           },
           "update_date": {
-            "$ref": "#/components/schemas/ApiInstant"
+            "description": "Timestamp when the resource was last modified, in ISO 8601 format",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
           }
         }
       },
@@ -7060,9 +7214,11 @@
         "type": "object",
         "properties": {
           "name": {
+            "description": "Display name of the access scope",
             "type": "string"
           },
           "query": {
+            "description": "Apono Query Language (AQL) expression that defines filters for cloud resources, integrations, and permissions",
             "type": "string"
           }
         }

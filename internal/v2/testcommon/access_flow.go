@@ -4,13 +4,13 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 )
 
-func GenerateAccessFlowResponse() *client.AccessFlowPublicV2Model {
-	response := client.AccessFlowPublicV2Model{
+func GenerateAccessFlowResponse() *client.AccessFlowV2 {
+	response := client.AccessFlowV2{
 		ID:      "flow-123",
 		Name:    "postgresql_prod",
 		Active:  true,
 		Trigger: "SELF_SERVE",
-		Settings: client.AccessFlowSettingsPublicV2Model{
+		Settings: client.AccessFlowSettingsV2{
 			JustificationRequired:         true,
 			RequireApproverReason:         false,
 			RequestorCannotApproveHimself: false,
@@ -21,17 +21,17 @@ func GenerateAccessFlowResponse() *client.AccessFlowPublicV2Model {
 
 	response.GrantDurationInMin.SetTo(int32(60))
 
-	timeframe := client.AccessFlowTimeframePublicV2Model{
+	timeframe := client.AccessFlowTimeframeV2{
 		StartTime:  "10:00",
 		EndTime:    "23:59",
 		TimeZone:   "Asia/Jerusalem",
-		DaysOfWeek: []client.DayOfWeekPublicV2Model{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"},
+		DaysOfWeek: []client.DayOfWeekV2{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"},
 	}
 	response.Timeframe.SetTo(timeframe)
 
-	response.Requestors = client.RequestorsPublicV2Model{
+	response.Requestors = client.RequestorsV2{
 		LogicalOperator: "OR",
-		Conditions: []client.ConditionPublicV2Model{
+		Conditions: []client.ConditionV2{
 			{
 				Type: "user",
 			},
@@ -41,44 +41,44 @@ func GenerateAccessFlowResponse() *client.AccessFlowPublicV2Model {
 	response.Requestors.Conditions[0].MatchOperator.SetTo("is")
 	response.Requestors.Conditions[0].Values.SetTo([]string{"person@example.com", "person_two@example.com"})
 
-	bundleTarget := client.AccessTargetPublicV2Model{}
-	bundleData := client.BundleAccessTargetPublicV2Model{
+	bundleTarget := client.AccessTargetV2{}
+	bundleData := client.BundleAccessTargetV2{
 		BundleID:   "bundle-123",
 		BundleName: "PROD ENV",
 	}
 	bundleTarget.Bundle.SetTo(bundleData)
 
-	integrationTarget := client.AccessTargetPublicV2Model{}
-	integrationData := client.IntegrationAccessTargetPublicV2Model{
+	integrationTarget := client.AccessTargetV2{}
+	integrationData := client.IntegrationAccessTargetV2{
 		IntegrationID:   "integration-123",
 		IntegrationName: "postgresql",
 		ResourceType:    "database",
 		Permissions:     []string{"read", "write"},
 	}
 
-	resourceScope := client.ResourcesScopeIntegrationAccessTargetPublicV2Model{
+	resourceScope := client.ResourcesScopeIntegrationAccessTargetV2{
 		ScopeMode: "include_resources",
 		Type:      "NAME",
 		Values:    []string{"db1", "db2"},
 	}
-	integrationData.ResourcesScopes.SetTo([]client.ResourcesScopeIntegrationAccessTargetPublicV2Model{resourceScope})
+	integrationData.ResourcesScopes.SetTo([]client.ResourcesScopeIntegrationAccessTargetV2{resourceScope})
 	integrationTarget.Integration.SetTo(integrationData)
 
-	accessScopeTarget := client.AccessTargetPublicV2Model{}
-	accessScopeData := client.AccessScopeAccessTargetPublicV2Model{
+	accessScopeTarget := client.AccessTargetV2{}
+	accessScopeData := client.AccessScopeAccessTargetV2{
 		AccessScopeID:   "scope-123",
 		AccessScopeName: "Test Scope",
 	}
 	accessScopeTarget.AccessScope.SetTo(accessScopeData)
 
-	response.AccessTargets = []client.AccessTargetPublicV2Model{bundleTarget, integrationTarget, accessScopeTarget}
+	response.AccessTargets = []client.AccessTargetV2{bundleTarget, integrationTarget, accessScopeTarget}
 
-	approverPolicy := client.ApproverPolicyPublicV2Model{
+	approverPolicy := client.ApproverPolicyV2{
 		ApprovalMode: "ANY_OF",
-		ApproverGroups: []client.ApproverGroupPublicV2Model{
+		ApproverGroups: []client.ApproverGroupV2{
 			{
 				LogicalOperator: "OR",
-				Approvers: []client.ConditionPublicV2Model{
+				Approvers: []client.ConditionV2{
 					{
 						Type: "user",
 					},

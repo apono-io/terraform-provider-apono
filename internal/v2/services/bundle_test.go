@@ -16,7 +16,7 @@ func TestListBundles(t *testing.T) {
 		name        string
 		bundleName  string
 		setupMock   func(*mocks.Invoker)
-		expected    []client.BundlePublicV2Model
+		expected    []client.BundleV2
 		expectError bool
 	}{
 		{
@@ -25,7 +25,7 @@ func TestListBundles(t *testing.T) {
 			setupMock: func(m *mocks.Invoker) {
 				params := client.ListBundlesV2Params{}
 				m.On("ListBundlesV2", ctx, params).Return(&client.PublicApiListResponseBundlePublicV2Model{
-					Items: []client.BundlePublicV2Model{
+					Items: []client.BundleV2{
 						{ID: "b2"},
 						{ID: "b1"},
 					},
@@ -34,7 +34,7 @@ func TestListBundles(t *testing.T) {
 					},
 				}, nil)
 			},
-			expected: []client.BundlePublicV2Model{
+			expected: []client.BundleV2{
 				{ID: "b1"},
 				{ID: "b2"},
 			},
@@ -46,7 +46,7 @@ func TestListBundles(t *testing.T) {
 				firstParams := client.ListBundlesV2Params{}
 				nextToken := client.NewOptNilString("next")
 				m.On("ListBundlesV2", ctx, firstParams).Return(&client.PublicApiListResponseBundlePublicV2Model{
-					Items: []client.BundlePublicV2Model{
+					Items: []client.BundleV2{
 						{ID: "b3"},
 					},
 					Pagination: client.PublicApiPaginationInfoModel{
@@ -57,7 +57,7 @@ func TestListBundles(t *testing.T) {
 				secondParams := client.ListBundlesV2Params{}
 				secondParams.PageToken = nextToken
 				m.On("ListBundlesV2", ctx, secondParams).Return(&client.PublicApiListResponseBundlePublicV2Model{
-					Items: []client.BundlePublicV2Model{
+					Items: []client.BundleV2{
 						{ID: "b2"},
 						{ID: "b1"},
 					},
@@ -66,7 +66,7 @@ func TestListBundles(t *testing.T) {
 					},
 				}, nil)
 			},
-			expected: []client.BundlePublicV2Model{
+			expected: []client.BundleV2{
 				{ID: "b1"},
 				{ID: "b2"},
 				{ID: "b3"},
@@ -79,7 +79,7 @@ func TestListBundles(t *testing.T) {
 				params := client.ListBundlesV2Params{}
 				params.Name.SetTo("bundle-name")
 				m.On("ListBundlesV2", ctx, params).Return(&client.PublicApiListResponseBundlePublicV2Model{
-					Items: []client.BundlePublicV2Model{
+					Items: []client.BundleV2{
 						{ID: "b1"},
 					},
 					Pagination: client.PublicApiPaginationInfoModel{
@@ -87,7 +87,7 @@ func TestListBundles(t *testing.T) {
 					},
 				}, nil)
 			},
-			expected: []client.BundlePublicV2Model{
+			expected: []client.BundleV2{
 				{ID: "b1"},
 			},
 		},

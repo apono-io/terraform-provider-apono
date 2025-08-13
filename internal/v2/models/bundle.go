@@ -42,7 +42,7 @@ type BundlesDataModel struct {
 	Bundles []BundleV2Model `tfsdk:"bundles"`
 }
 
-func BundleResponseToModel(ctx context.Context, response client.BundlePublicV2Model) (*BundleV2Model, error) {
+func BundleResponseToModel(ctx context.Context, response client.BundleV2) (*BundleV2Model, error) {
 	model := BundleV2Model{
 		ID:   types.StringValue(response.ID),
 		Name: types.StringValue(response.Name),
@@ -57,7 +57,7 @@ func BundleResponseToModel(ctx context.Context, response client.BundlePublicV2Mo
 	return &model, nil
 }
 
-func BundlesResponseToModels(ctx context.Context, bundles []client.BundlePublicV2Model) ([]BundleV2Model, error) {
+func BundlesResponseToModels(ctx context.Context, bundles []client.BundleV2) ([]BundleV2Model, error) {
 	var bundleModels []BundleV2Model
 
 	for _, bundle := range bundles {
@@ -72,8 +72,8 @@ func BundlesResponseToModels(ctx context.Context, bundles []client.BundlePublicV
 	return bundleModels, nil
 }
 
-func BundleModelToUpsertRequest(ctx context.Context, model BundleV2Model) (*client.UpsertBundlePublicV2Model, error) {
-	upsert := client.UpsertBundlePublicV2Model{
+func BundleModelToUpsertRequest(ctx context.Context, model BundleV2Model) (*client.UpsertBundleV2, error) {
+	upsert := client.UpsertBundleV2{
 		Name: model.Name.ValueString(),
 	}
 
@@ -87,7 +87,7 @@ func BundleModelToUpsertRequest(ctx context.Context, model BundleV2Model) (*clie
 	return &upsert, nil
 }
 
-func convertBundleAccessTargetsToModel(ctx context.Context, accessTargets []client.AccessBundleAccessTargetPublicV2Model) ([]BundleAccessTargetModel, error) {
+func convertBundleAccessTargetsToModel(ctx context.Context, accessTargets []client.AccessBundleAccessTargetV2) ([]BundleAccessTargetModel, error) {
 	var modelTargets []BundleAccessTargetModel
 
 	for _, target := range accessTargets {
@@ -113,11 +113,11 @@ func convertBundleAccessTargetsToModel(ctx context.Context, accessTargets []clie
 	return modelTargets, nil
 }
 
-func convertBundleAccessTargetsToUpsertRequest(ctx context.Context, models []BundleAccessTargetModel) ([]client.AccessBundleAccessTargetUpsertPublicV2Model, error) {
-	var targets []client.AccessBundleAccessTargetUpsertPublicV2Model
+func convertBundleAccessTargetsToUpsertRequest(ctx context.Context, models []BundleAccessTargetModel) ([]client.AccessBundleAccessTargetUpsertV2, error) {
+	var targets []client.AccessBundleAccessTargetUpsertV2
 
 	for i, model := range models {
-		target := client.AccessBundleAccessTargetUpsertPublicV2Model{}
+		target := client.AccessBundleAccessTargetUpsertV2{}
 		setCount := 0
 
 		if model.Integration != nil {
@@ -131,7 +131,7 @@ func convertBundleAccessTargetsToUpsertRequest(ctx context.Context, models []Bun
 		}
 
 		if model.AccessScope != nil {
-			scope := client.AccessScopeAccessTargetUpsertPublicV2Model{
+			scope := client.AccessScopeAccessTargetUpsertV2{
 				AccessScopeReference: model.AccessScope.Name.ValueString(),
 			}
 

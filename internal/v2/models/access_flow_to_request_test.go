@@ -98,7 +98,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	assert.Equal(t, "23:59", timeframe.EndTime)
 	assert.Equal(t, "Asia/Jerusalem", timeframe.TimeZone)
 	assert.ElementsMatch(t,
-		[]client.DayOfWeekPublicV2Model{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"},
+		[]client.DayOfWeekV2{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"},
 		timeframe.DaysOfWeek)
 
 	assert.Equal(t, "OR", result.Requestors.LogicalOperator)

@@ -12,7 +12,7 @@ import (
 )
 
 func encodeCreateAccessFlowV2Request(
-	req *AccessFlowUpsertPublicV2Model,
+	req *AccessFlowUpsertV2,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -40,7 +40,7 @@ func encodeCreateAccessScopesV1Request(
 }
 
 func encodeCreateBundleV2Request(
-	req *UpsertBundlePublicV2Model,
+	req *UpsertBundleV2,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -82,7 +82,7 @@ func encodeCreateIntegrationV4Request(
 }
 
 func encodeUpdateAccessFlowV2Request(
-	req *AccessFlowUpsertPublicV2Model,
+	req *AccessFlowUpsertV2,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -110,7 +110,7 @@ func encodeUpdateAccessScopesV1Request(
 }
 
 func encodeUpdateBundleV2Request(
-	req *UpsertBundlePublicV2Model,
+	req *UpsertBundleV2,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

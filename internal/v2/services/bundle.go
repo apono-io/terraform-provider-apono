@@ -7,8 +7,8 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 )
 
-func ListBundles(ctx context.Context, apiClient client.Invoker, name string) ([]client.BundlePublicV2Model, error) {
-	results := []client.BundlePublicV2Model{}
+func ListBundles(ctx context.Context, apiClient client.Invoker, name string) ([]client.BundleV2, error) {
+	results := []client.BundleV2{}
 	pageToken := ""
 
 	for {

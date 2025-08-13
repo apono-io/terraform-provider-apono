@@ -10,7 +10,7 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-func (s *AccessBundleAccessTargetPublicV2Model) Validate() error {
+func (s *AccessBundleAccessTargetUpsertV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -40,7 +40,7 @@ func (s *AccessBundleAccessTargetPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *AccessBundleAccessTargetUpsertPublicV2Model) Validate() error {
+func (s *AccessBundleAccessTargetV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -70,105 +70,7 @@ func (s *AccessBundleAccessTargetUpsertPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *AccessFlowPublicV2Model) Validate() error {
-	if s == nil {
-		return validate.ErrNilPointer
-	}
-
-	var failures []validate.FieldError
-	if err := func() error {
-		if err := s.Requestors.Validate(); err != nil {
-			return err
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "requestors",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if s.AccessTargets == nil {
-			return errors.New("nil is invalid value")
-		}
-		var failures []validate.FieldError
-		for i, elem := range s.AccessTargets {
-			if err := func() error {
-				if err := elem.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				failures = append(failures, validate.FieldError{
-					Name:  fmt.Sprintf("[%d]", i),
-					Error: err,
-				})
-			}
-		}
-		if len(failures) > 0 {
-			return &validate.Error{Fields: failures}
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "access_targets",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if value, ok := s.ApproverPolicy.Get(); ok {
-			if err := func() error {
-				if err := value.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "approver_policy",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if value, ok := s.Timeframe.Get(); ok {
-			if err := func() error {
-				if err := value.Validate(); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "timeframe",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if err := s.Settings.Validate(); err != nil {
-			return err
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "settings",
-			Error: err,
-		})
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-	return nil
-}
-
-func (s *AccessFlowSettingsPublicV2Model) Validate() error {
+func (s *AccessFlowSettingsV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -191,7 +93,7 @@ func (s *AccessFlowSettingsPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *AccessFlowTimeframePublicV2Model) Validate() error {
+func (s *AccessFlowTimeframeV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -231,7 +133,7 @@ func (s *AccessFlowTimeframePublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *AccessFlowUpsertPublicV2Model) Validate() error {
+func (s *AccessFlowUpsertV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -329,7 +231,105 @@ func (s *AccessFlowUpsertPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *AccessTargetPublicV2Model) Validate() error {
+func (s *AccessFlowV2) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.Requestors.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "requestors",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if s.AccessTargets == nil {
+			return errors.New("nil is invalid value")
+		}
+		var failures []validate.FieldError
+		for i, elem := range s.AccessTargets {
+			if err := func() error {
+				if err := elem.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				failures = append(failures, validate.FieldError{
+					Name:  fmt.Sprintf("[%d]", i),
+					Error: err,
+				})
+			}
+		}
+		if len(failures) > 0 {
+			return &validate.Error{Fields: failures}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "access_targets",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.ApproverPolicy.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "approver_policy",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Timeframe.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "timeframe",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.Settings.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "settings",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *AccessTargetUpsertV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -359,7 +359,7 @@ func (s *AccessTargetPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *AccessTargetUpsertPublicV2Model) Validate() error {
+func (s *AccessTargetV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -389,7 +389,7 @@ func (s *AccessTargetUpsertPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *ApproverGroupPublicV2Model) Validate() error {
+func (s *ApproverGroupUpsertV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -429,7 +429,7 @@ func (s *ApproverGroupPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *ApproverGroupUpsertPublicV2Model) Validate() error {
+func (s *ApproverGroupV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -469,7 +469,7 @@ func (s *ApproverGroupUpsertPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *ApproverPolicyPublicV2Model) Validate() error {
+func (s *ApproverPolicyUpsertV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -509,7 +509,7 @@ func (s *ApproverPolicyPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *ApproverPolicyUpsertPublicV2Model) Validate() error {
+func (s *ApproverPolicyV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -549,7 +549,7 @@ func (s *ApproverPolicyUpsertPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *BundlePublicV2Model) Validate() error {
+func (s *BundleV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -589,7 +589,7 @@ func (s *BundlePublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *ConditionPublicV2Model) Validate() error {
+func (s *ConditionUpsertV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -619,7 +619,7 @@ func (s *ConditionPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *ConditionUpsertPublicV2Model) Validate() error {
+func (s *ConditionV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -743,7 +743,7 @@ func (s *CreateIntegrationV4) Validate() error {
 	return nil
 }
 
-func (s DayOfWeekPublicV2Model) Validate() error {
+func (s DayOfWeekV2) Validate() error {
 	switch s {
 	case "MONDAY":
 		return nil
@@ -764,7 +764,7 @@ func (s DayOfWeekPublicV2Model) Validate() error {
 	}
 }
 
-func (s *IntegrationAccessTargetPublicV2Model) Validate() error {
+func (s *IntegrationAccessTargetUpsertV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -822,7 +822,7 @@ func (s *IntegrationAccessTargetPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *IntegrationAccessTargetUpsertPublicV2Model) Validate() error {
+func (s *IntegrationAccessTargetV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -1203,7 +1203,7 @@ func (s *PublicApiListResponseIntegrationPublicV4Model) Validate() error {
 	return nil
 }
 
-func (s *RequestorsPublicV2Model) Validate() error {
+func (s *RequestorsUpsertV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -1243,7 +1243,7 @@ func (s *RequestorsPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *RequestorsUpsertPublicV2Model) Validate() error {
+func (s *RequestorsV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -1283,7 +1283,7 @@ func (s *RequestorsUpsertPublicV2Model) Validate() error {
 	return nil
 }
 
-func (s *ResourcesScopeIntegrationAccessTargetPublicV2Model) Validate() error {
+func (s *ResourcesScopeIntegrationAccessTargetV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -1377,7 +1377,7 @@ func (s *UpdateIntegrationV4) Validate() error {
 	return nil
 }
 
-func (s *UpsertBundlePublicV2Model) Validate() error {
+func (s *UpsertBundleV2) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}

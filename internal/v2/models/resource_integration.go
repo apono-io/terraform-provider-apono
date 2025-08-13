@@ -90,6 +90,8 @@ func ResourceIntegrationModelToUpdateRequest(ctx context.Context, model Resource
 		Name: model.Name.ValueString(),
 	}
 
+	req.ConnectorID.SetTo(model.ConnectorID.ValueString())
+
 	var err error
 	if !model.IntegrationConfig.IsNull() {
 		req.IntegrationConfig, err = getIntegrationConfig(model)
