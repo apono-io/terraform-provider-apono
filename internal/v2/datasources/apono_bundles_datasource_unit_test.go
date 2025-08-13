@@ -23,18 +23,18 @@ func TestAponoBundlesDataSource(t *testing.T) {
 
 		ctx := t.Context()
 
-		bundles := []client.BundlePublicV2Model{
+		bundles := []client.BundleV2{
 			{
 				ID:   "bundle-123",
 				Name: "test-bundle-1",
-				AccessTargets: []client.AccessBundleAccessTargetPublicV2Model{
+				AccessTargets: []client.AccessBundleAccessTargetV2{
 					{
-						Integration: client.NewOptNilIntegrationAccessTargetPublicV2Model(
-							client.IntegrationAccessTargetPublicV2Model{
+						Integration: client.NewOptNilIntegrationAccessTargetV2(
+							client.IntegrationAccessTargetV2{
 								IntegrationName: "test-integration",
 								ResourceType:    "db",
 								Permissions:     []string{"read", "write"},
-								ResourcesScopes: client.NewOptNilResourcesScopeIntegrationAccessTargetPublicV2ModelArray([]client.ResourcesScopeIntegrationAccessTargetPublicV2Model{
+								ResourcesScopes: client.NewOptNilResourcesScopeIntegrationAccessTargetV2Array([]client.ResourcesScopeIntegrationAccessTargetV2{
 									{
 										ScopeMode: "include_resources",
 										Type:      "NAME",
@@ -50,10 +50,10 @@ func TestAponoBundlesDataSource(t *testing.T) {
 			{
 				ID:   "bundle-456",
 				Name: "test-bundle-2",
-				AccessTargets: []client.AccessBundleAccessTargetPublicV2Model{
+				AccessTargets: []client.AccessBundleAccessTargetV2{
 					{
-						AccessScope: client.NewOptNilAccessScopeAccessTargetPublicV2Model(
-							client.AccessScopeAccessTargetPublicV2Model{
+						AccessScope: client.NewOptNilAccessScopeAccessTargetV2(
+							client.AccessScopeAccessTargetV2{
 								AccessScopeName: "test-access-scope",
 							},
 						),

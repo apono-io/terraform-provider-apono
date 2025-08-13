@@ -81,14 +81,18 @@ type ListAccessFlowsV2Params struct {
 
 // ListAccessScopesV1Params is parameters of listAccessScopesV1 operation.
 type ListAccessScopesV1Params struct {
-	Limit     OptInt32
+	Limit OptInt32
+	// Filter access scopes by name. Supports wildcard (*) for partial matches - use * for contains,
+	// prefix* for starts with, *suffix for ends with.
 	Name      OptNilString
 	PageToken OptNilString
 }
 
 // ListBundlesV2Params is parameters of listBundlesV2 operation.
 type ListBundlesV2Params struct {
-	Limit     OptInt32
+	Limit OptInt32
+	// Filter bundles by name. Supports wildcard (*) for partial matches - use * for contains, prefix*
+	// for starts with, *suffix for ends with.
 	Name      OptNilString
 	PageToken OptNilString
 }
@@ -109,7 +113,9 @@ type ListGroupMembersV1Params struct {
 
 // ListGroupsV1Params is parameters of listGroupsV1 operation.
 type ListGroupsV1Params struct {
-	Limit     OptInt32
+	Limit OptInt32
+	// Filter groups by name. Supports wildcard (*) for partial matches - use * for contains, prefix* for
+	// starts with, *suffix for ends with.
 	Name      OptNilString
 	PageToken OptNilString
 }
@@ -119,10 +125,14 @@ type ListIntegrationsV4Params struct {
 	Category    OptNilStringArray
 	ConnectorID OptNilStringArray
 	Limit       OptInt32
-	Name        OptNilString
-	PageToken   OptNilString
-	Status      OptNilStringArray
-	Type        OptNilStringArray
+	// Filter integrations by name. Supports wildcard (*) for partial matches - use * for contains,
+	// prefix* for starts with, *suffix for ends with.
+	Name      OptNilString
+	PageToken OptNilString
+	Status    OptNilStringArray
+	// Filter integrations by type. Supports wildcard (*) for partial matches - use * for contains,
+	// prefix* for starts with, *suffix for ends with.
+	Type OptNilStringArray
 }
 
 // RemoveGroupMemberV1Params is parameters of removeGroupMemberV1 operation.

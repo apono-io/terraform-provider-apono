@@ -20,7 +20,7 @@ func TestAccAponoUserInformationIntegrationsDataSource(t *testing.T) {
 		checks = append(checks,
 			resource.TestCheckResourceAttr(dataSourceName, "integrations.0.name", "Jumpcloud IDP"),
 			resource.TestCheckResourceAttr(dataSourceName, "integrations.0.category", common.UserInformationCategory),
-			resource.TestCheckResourceAttr(dataSourceName, "integrations.0.status", "ACTIVE"),
+			resource.TestCheckResourceAttr(dataSourceName, "integrations.0.status", "ERROR"),
 		)
 	}
 

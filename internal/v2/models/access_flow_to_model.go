@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowPublicV2Model) (*AccessFlowV2Model, error) {
+func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowV2) (*AccessFlowV2Model, error) {
 	model := AccessFlowV2Model{
 		ID:      types.StringValue(response.ID),
 		Name:    types.StringValue(response.Name),
@@ -59,7 +59,7 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowPu
 	return &model, nil
 }
 
-func convertTimeframeToModel(ctx context.Context, timeframe client.AccessFlowTimeframePublicV2Model) (*AccessFlowTimeframeModel, error) {
+func convertTimeframeToModel(ctx context.Context, timeframe client.AccessFlowTimeframeV2) (*AccessFlowTimeframeModel, error) {
 	daysOfWeek := []string{}
 	for _, day := range timeframe.DaysOfWeek {
 		daysOfWeek = append(daysOfWeek, string(day))
@@ -78,7 +78,7 @@ func convertTimeframeToModel(ctx context.Context, timeframe client.AccessFlowTim
 	}, nil
 }
 
-func convertApproverPolicyToModel(ctx context.Context, policy client.ApproverPolicyPublicV2Model) (*AccessFlowApproverPolicy, error) {
+func convertApproverPolicyToModel(ctx context.Context, policy client.ApproverPolicyV2) (*AccessFlowApproverPolicy, error) {
 	model := &AccessFlowApproverPolicy{
 		ApprovalMode: types.StringValue(policy.ApprovalMode),
 	}
@@ -96,7 +96,7 @@ func convertApproverPolicyToModel(ctx context.Context, policy client.ApproverPol
 	return model, nil
 }
 
-func convertApproverGroupToModel(ctx context.Context, group client.ApproverGroupPublicV2Model) (*AccessFlowApproverGroup, error) {
+func convertApproverGroupToModel(ctx context.Context, group client.ApproverGroupV2) (*AccessFlowApproverGroup, error) {
 	model := &AccessFlowApproverGroup{
 		LogicalOperator: types.StringValue(group.LogicalOperator),
 	}
@@ -114,7 +114,7 @@ func convertApproverGroupToModel(ctx context.Context, group client.ApproverGroup
 	return model, nil
 }
 
-func convertRequestorsToModel(ctx context.Context, requestors client.RequestorsPublicV2Model) (*AccessFlowRequestorsModel, error) {
+func convertRequestorsToModel(ctx context.Context, requestors client.RequestorsV2) (*AccessFlowRequestorsModel, error) {
 	model := &AccessFlowRequestorsModel{
 		LogicalOperator: types.StringValue(requestors.LogicalOperator),
 	}
@@ -132,7 +132,7 @@ func convertRequestorsToModel(ctx context.Context, requestors client.RequestorsP
 	return model, nil
 }
 
-func convertConditionToModel(ctx context.Context, condition client.ConditionPublicV2Model) (*AccessFlowCondition, error) {
+func convertConditionToModel(ctx context.Context, condition client.ConditionV2) (*AccessFlowCondition, error) {
 	model := &AccessFlowCondition{
 		Type:   types.StringValue(condition.Type),
 		Values: basetypes.NewListNull(types.StringType),
@@ -159,7 +159,7 @@ func convertConditionToModel(ctx context.Context, condition client.ConditionPubl
 	return model, nil
 }
 
-func convertAccessTargetsToModel(ctx context.Context, accessTargets []client.AccessTargetPublicV2Model) ([]AccessFlowAccessTargetModel, error) {
+func convertAccessTargetsToModel(ctx context.Context, accessTargets []client.AccessTargetV2) ([]AccessFlowAccessTargetModel, error) {
 	var modelTargets []AccessFlowAccessTargetModel
 
 	for _, target := range accessTargets {
@@ -191,7 +191,7 @@ func convertAccessTargetsToModel(ctx context.Context, accessTargets []client.Acc
 	return modelTargets, nil
 }
 
-func convertIntegrationTargetToModel(ctx context.Context, integration client.IntegrationAccessTargetPublicV2Model) (*IntegrationTargetModel, error) {
+func convertIntegrationTargetToModel(ctx context.Context, integration client.IntegrationAccessTargetV2) (*IntegrationTargetModel, error) {
 	model := &IntegrationTargetModel{
 		IntegrationName: types.StringValue(integration.IntegrationName),
 		ResourceType:    types.StringValue(integration.ResourceType),
@@ -214,7 +214,7 @@ func convertIntegrationTargetToModel(ctx context.Context, integration client.Int
 	return model, nil
 }
 
-func convertResourcesScopesToModel(ctx context.Context, scopes []client.ResourcesScopeIntegrationAccessTargetPublicV2Model) ([]IntegrationTargetScopeModel, error) {
+func convertResourcesScopesToModel(ctx context.Context, scopes []client.ResourcesScopeIntegrationAccessTargetV2) ([]IntegrationTargetScopeModel, error) {
 	var modelScopes []IntegrationTargetScopeModel
 
 	for _, scope := range scopes {
@@ -239,7 +239,7 @@ func convertResourcesScopesToModel(ctx context.Context, scopes []client.Resource
 	return modelScopes, nil
 }
 
-func convertSettingsToModel(ctx context.Context, settings client.AccessFlowSettingsPublicV2Model) (*AccessFlowSettingsModel, error) {
+func convertSettingsToModel(ctx context.Context, settings client.AccessFlowSettingsV2) (*AccessFlowSettingsModel, error) {
 	model := &AccessFlowSettingsModel{
 		JustificationRequired:      types.BoolValue(settings.JustificationRequired),
 		RequireApproverReason:      types.BoolValue(settings.RequireApproverReason),

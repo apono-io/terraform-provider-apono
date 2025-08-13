@@ -30,10 +30,10 @@ type Invoker interface {
 	AddGroupMemberV1(ctx context.Context, params AddGroupMemberV1Params) error
 	// CreateAccessFlowV2 invokes createAccessFlowV2 operation.
 	//
-	// Create access flow.
+	// Create Access Flow.
 	//
 	// POST /api/admin/v2/access-flows
-	CreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertPublicV2Model) (*AccessFlowPublicV2Model, error)
+	CreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2) (*AccessFlowV2, error)
 	// CreateAccessScopesV1 invokes createAccessScopesV1 operation.
 	//
 	// Create Access Scope.
@@ -45,7 +45,7 @@ type Invoker interface {
 	// Create Bundle.
 	//
 	// POST /api/admin/v2/bundles
-	CreateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model) (*BundlePublicV2Model, error)
+	CreateBundleV2(ctx context.Context, request *UpsertBundleV2) (*BundleV2, error)
 	// CreateGroupV1 invokes createGroupV1 operation.
 	//
 	// Create Group.
@@ -54,13 +54,13 @@ type Invoker interface {
 	CreateGroupV1(ctx context.Context, request *CreateGroupV1) (*GroupV1, error)
 	// CreateIntegrationV4 invokes createIntegrationV4 operation.
 	//
-	// Create integration.
+	// Create Integration.
 	//
 	// POST /api/admin/v4/integrations
 	CreateIntegrationV4(ctx context.Context, request *CreateIntegrationV4) (*IntegrationV4, error)
 	// DeleteAccessFlowV2 invokes deleteAccessFlowV2 operation.
 	//
-	// Delete access flow.
+	// Delete Access Flow.
 	//
 	// DELETE /api/admin/v2/access-flows/{id}
 	DeleteAccessFlowV2(ctx context.Context, params DeleteAccessFlowV2Params) error
@@ -90,16 +90,16 @@ type Invoker interface {
 	DeleteGroupV1(ctx context.Context, params DeleteGroupV1Params) error
 	// DeleteIntegrationV4 invokes deleteIntegrationV4 operation.
 	//
-	// Delete integration.
+	// Delete Integration.
 	//
 	// DELETE /api/admin/v4/integrations/{id}
 	DeleteIntegrationV4(ctx context.Context, params DeleteIntegrationV4Params) error
 	// GetAccessFlowV2 invokes getAccessFlowV2 operation.
 	//
-	// Get access flow.
+	// Get Access Flow.
 	//
 	// GET /api/admin/v2/access-flows/{id}
-	GetAccessFlowV2(ctx context.Context, params GetAccessFlowV2Params) (*AccessFlowPublicV2Model, error)
+	GetAccessFlowV2(ctx context.Context, params GetAccessFlowV2Params) (*AccessFlowV2, error)
 	// GetAccessScopesV1 invokes getAccessScopesV1 operation.
 	//
 	// Get Access Scope.
@@ -111,7 +111,7 @@ type Invoker interface {
 	// Get Bundle.
 	//
 	// GET /api/admin/v2/bundles/{id}
-	GetBundleV2(ctx context.Context, params GetBundleV2Params) (*BundlePublicV2Model, error)
+	GetBundleV2(ctx context.Context, params GetBundleV2Params) (*BundleV2, error)
 	// GetConnectorV3 invokes getConnectorV3 operation.
 	//
 	// Get Connector.
@@ -126,7 +126,7 @@ type Invoker interface {
 	GetGroupV1(ctx context.Context, params GetGroupV1Params) (*GroupV1, error)
 	// GetIntegrationsByIdV4 invokes getIntegrationsByIdV4 operation.
 	//
-	// Get integration by id.
+	// Get Integration By Id.
 	//
 	// GET /api/admin/v4/integrations/{id}
 	GetIntegrationsByIdV4(ctx context.Context, params GetIntegrationsByIdV4Params) (*IntegrationV4, error)
@@ -138,7 +138,7 @@ type Invoker interface {
 	GetUser(ctx context.Context, params GetUserParams) (*UserModel, error)
 	// ListAccessFlowsV2 invokes listAccessFlowsV2 operation.
 	//
-	// List access flows.
+	// List Access Flows.
 	//
 	// GET /api/admin/v2/access-flows
 	ListAccessFlowsV2(ctx context.Context, params ListAccessFlowsV2Params) (*PublicApiListResponseAccessFlowPublicV2Model, error)
@@ -174,7 +174,7 @@ type Invoker interface {
 	ListGroupsV1(ctx context.Context, params ListGroupsV1Params) (*PublicApiListResponseGroupPublicV1Model, error)
 	// ListIntegrationsV4 invokes listIntegrationsV4 operation.
 	//
-	// List integrations.
+	// List Integrations.
 	//
 	// GET /api/admin/v4/integrations
 	ListIntegrationsV4(ctx context.Context, params ListIntegrationsV4Params) (*PublicApiListResponseIntegrationPublicV4Model, error)
@@ -192,10 +192,10 @@ type Invoker interface {
 	RemoveGroupMemberV1(ctx context.Context, params RemoveGroupMemberV1Params) error
 	// UpdateAccessFlowV2 invokes updateAccessFlowV2 operation.
 	//
-	// Update access flow.
+	// Update Access Flow.
 	//
 	// PUT /api/admin/v2/access-flows/{id}
-	UpdateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertPublicV2Model, params UpdateAccessFlowV2Params) (*AccessFlowPublicV2Model, error)
+	UpdateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2, params UpdateAccessFlowV2Params) (*AccessFlowV2, error)
 	// UpdateAccessScopesV1 invokes updateAccessScopesV1 operation.
 	//
 	// Update Access Scope.
@@ -207,7 +207,7 @@ type Invoker interface {
 	// Update Bundle.
 	//
 	// PUT /api/admin/v2/bundles/{id}
-	UpdateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model, params UpdateBundleV2Params) (*BundlePublicV2Model, error)
+	UpdateBundleV2(ctx context.Context, request *UpsertBundleV2, params UpdateBundleV2Params) (*BundleV2, error)
 	// UpdateConnectorV3 invokes updateConnectorV3 operation.
 	//
 	// Update Connector.
@@ -228,7 +228,7 @@ type Invoker interface {
 	UpdateGroupV1(ctx context.Context, request *UpdateGroupV1, params UpdateGroupV1Params) (*GroupV1, error)
 	// UpdateIntegrationV4 invokes updateIntegrationV4 operation.
 	//
-	// Update integration.
+	// Update Integration.
 	//
 	// PUT /api/admin/v4/integrations/{id}
 	UpdateIntegrationV4(ctx context.Context, request *UpdateIntegrationV4, params UpdateIntegrationV4Params) (*IntegrationV4, error)
@@ -383,15 +383,15 @@ func (c *Client) sendAddGroupMemberV1(ctx context.Context, params AddGroupMember
 
 // CreateAccessFlowV2 invokes createAccessFlowV2 operation.
 //
-// Create access flow.
+// Create Access Flow.
 //
 // POST /api/admin/v2/access-flows
-func (c *Client) CreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertPublicV2Model) (*AccessFlowPublicV2Model, error) {
+func (c *Client) CreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2) (*AccessFlowV2, error) {
 	res, err := c.sendCreateAccessFlowV2(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendCreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertPublicV2Model) (res *AccessFlowPublicV2Model, err error) {
+func (c *Client) sendCreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2) (res *AccessFlowV2, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {
@@ -539,12 +539,12 @@ func (c *Client) sendCreateAccessScopesV1(ctx context.Context, request *UpsertAc
 // Create Bundle.
 //
 // POST /api/admin/v2/bundles
-func (c *Client) CreateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model) (*BundlePublicV2Model, error) {
+func (c *Client) CreateBundleV2(ctx context.Context, request *UpsertBundleV2) (*BundleV2, error) {
 	res, err := c.sendCreateBundleV2(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendCreateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model) (res *BundlePublicV2Model, err error) {
+func (c *Client) sendCreateBundleV2(ctx context.Context, request *UpsertBundleV2) (res *BundleV2, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {
@@ -698,7 +698,7 @@ func (c *Client) sendCreateGroupV1(ctx context.Context, request *CreateGroupV1) 
 
 // CreateIntegrationV4 invokes createIntegrationV4 operation.
 //
-// Create integration.
+// Create Integration.
 //
 // POST /api/admin/v4/integrations
 func (c *Client) CreateIntegrationV4(ctx context.Context, request *CreateIntegrationV4) (*IntegrationV4, error) {
@@ -779,7 +779,7 @@ func (c *Client) sendCreateIntegrationV4(ctx context.Context, request *CreateInt
 
 // DeleteAccessFlowV2 invokes deleteAccessFlowV2 operation.
 //
-// Delete access flow.
+// Delete Access Flow.
 //
 // DELETE /api/admin/v2/access-flows/{id}
 func (c *Client) DeleteAccessFlowV2(ctx context.Context, params DeleteAccessFlowV2Params) error {
@@ -1214,7 +1214,7 @@ func (c *Client) sendDeleteGroupV1(ctx context.Context, params DeleteGroupV1Para
 
 // DeleteIntegrationV4 invokes deleteIntegrationV4 operation.
 //
-// Delete integration.
+// Delete Integration.
 //
 // DELETE /api/admin/v4/integrations/{id}
 func (c *Client) DeleteIntegrationV4(ctx context.Context, params DeleteIntegrationV4Params) error {
@@ -1301,15 +1301,15 @@ func (c *Client) sendDeleteIntegrationV4(ctx context.Context, params DeleteInteg
 
 // GetAccessFlowV2 invokes getAccessFlowV2 operation.
 //
-// Get access flow.
+// Get Access Flow.
 //
 // GET /api/admin/v2/access-flows/{id}
-func (c *Client) GetAccessFlowV2(ctx context.Context, params GetAccessFlowV2Params) (*AccessFlowPublicV2Model, error) {
+func (c *Client) GetAccessFlowV2(ctx context.Context, params GetAccessFlowV2Params) (*AccessFlowV2, error) {
 	res, err := c.sendGetAccessFlowV2(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendGetAccessFlowV2(ctx context.Context, params GetAccessFlowV2Params) (res *AccessFlowPublicV2Model, err error) {
+func (c *Client) sendGetAccessFlowV2(ctx context.Context, params GetAccessFlowV2Params) (res *AccessFlowV2, err error) {
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [2]string
@@ -1478,12 +1478,12 @@ func (c *Client) sendGetAccessScopesV1(ctx context.Context, params GetAccessScop
 // Get Bundle.
 //
 // GET /api/admin/v2/bundles/{id}
-func (c *Client) GetBundleV2(ctx context.Context, params GetBundleV2Params) (*BundlePublicV2Model, error) {
+func (c *Client) GetBundleV2(ctx context.Context, params GetBundleV2Params) (*BundleV2, error) {
 	res, err := c.sendGetBundleV2(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendGetBundleV2(ctx context.Context, params GetBundleV2Params) (res *BundlePublicV2Model, err error) {
+func (c *Client) sendGetBundleV2(ctx context.Context, params GetBundleV2Params) (res *BundleV2, err error) {
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [2]string
@@ -1736,7 +1736,7 @@ func (c *Client) sendGetGroupV1(ctx context.Context, params GetGroupV1Params) (r
 
 // GetIntegrationsByIdV4 invokes getIntegrationsByIdV4 operation.
 //
-// Get integration by id.
+// Get Integration By Id.
 //
 // GET /api/admin/v4/integrations/{id}
 func (c *Client) GetIntegrationsByIdV4(ctx context.Context, params GetIntegrationsByIdV4Params) (*IntegrationV4, error) {
@@ -1910,7 +1910,7 @@ func (c *Client) sendGetUser(ctx context.Context, params GetUserParams) (res *Us
 
 // ListAccessFlowsV2 invokes listAccessFlowsV2 operation.
 //
-// List access flows.
+// List Access Flows.
 //
 // GET /api/admin/v2/access-flows
 func (c *Client) ListAccessFlowsV2(ctx context.Context, params ListAccessFlowsV2Params) (*PublicApiListResponseAccessFlowPublicV2Model, error) {
@@ -2642,7 +2642,7 @@ func (c *Client) sendListGroupsV1(ctx context.Context, params ListGroupsV1Params
 
 // ListIntegrationsV4 invokes listIntegrationsV4 operation.
 //
-// List integrations.
+// List Integrations.
 //
 // GET /api/admin/v4/integrations
 func (c *Client) ListIntegrationsV4(ctx context.Context, params ListIntegrationsV4Params) (*PublicApiListResponseIntegrationPublicV4Model, error) {
@@ -3044,15 +3044,15 @@ func (c *Client) sendRemoveGroupMemberV1(ctx context.Context, params RemoveGroup
 
 // UpdateAccessFlowV2 invokes updateAccessFlowV2 operation.
 //
-// Update access flow.
+// Update Access Flow.
 //
 // PUT /api/admin/v2/access-flows/{id}
-func (c *Client) UpdateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertPublicV2Model, params UpdateAccessFlowV2Params) (*AccessFlowPublicV2Model, error) {
+func (c *Client) UpdateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2, params UpdateAccessFlowV2Params) (*AccessFlowV2, error) {
 	res, err := c.sendUpdateAccessFlowV2(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertPublicV2Model, params UpdateAccessFlowV2Params) (res *AccessFlowPublicV2Model, err error) {
+func (c *Client) sendUpdateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2, params UpdateAccessFlowV2Params) (res *AccessFlowV2, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {
@@ -3236,12 +3236,12 @@ func (c *Client) sendUpdateAccessScopesV1(ctx context.Context, request *UpsertAc
 // Update Bundle.
 //
 // PUT /api/admin/v2/bundles/{id}
-func (c *Client) UpdateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model, params UpdateBundleV2Params) (*BundlePublicV2Model, error) {
+func (c *Client) UpdateBundleV2(ctx context.Context, request *UpsertBundleV2, params UpdateBundleV2Params) (*BundleV2, error) {
 	res, err := c.sendUpdateBundleV2(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdateBundleV2(ctx context.Context, request *UpsertBundlePublicV2Model, params UpdateBundleV2Params) (res *BundlePublicV2Model, err error) {
+func (c *Client) sendUpdateBundleV2(ctx context.Context, request *UpsertBundleV2, params UpdateBundleV2Params) (res *BundleV2, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {
@@ -3613,7 +3613,7 @@ func (c *Client) sendUpdateGroupV1(ctx context.Context, request *UpdateGroupV1, 
 
 // UpdateIntegrationV4 invokes updateIntegrationV4 operation.
 //
-// Update integration.
+// Update Integration.
 //
 // PUT /api/admin/v4/integrations/{id}
 func (c *Client) UpdateIntegrationV4(ctx context.Context, request *UpdateIntegrationV4, params UpdateIntegrationV4Params) (*IntegrationV4, error) {

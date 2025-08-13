@@ -7,8 +7,8 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 )
 
-func AccessFlowModelToUpsertRequest(ctx context.Context, model AccessFlowV2Model) (*client.AccessFlowUpsertPublicV2Model, error) {
-	upsert := client.AccessFlowUpsertPublicV2Model{
+func AccessFlowModelToUpsertRequest(ctx context.Context, model AccessFlowV2Model) (*client.AccessFlowUpsertV2, error) {
+	upsert := client.AccessFlowUpsertV2{
 		Name:    model.Name.ValueString(),
 		Active:  model.Active.ValueBool(),
 		Trigger: model.Trigger.ValueString(),
@@ -63,8 +63,8 @@ func AccessFlowModelToUpsertRequest(ctx context.Context, model AccessFlowV2Model
 	return &upsert, nil
 }
 
-func convertTimeframeToUpsertRequest(ctx context.Context, model AccessFlowTimeframeModel) (*client.AccessFlowTimeframePublicV2Model, error) {
-	timeframe := client.AccessFlowTimeframePublicV2Model{
+func convertTimeframeToUpsertRequest(ctx context.Context, model AccessFlowTimeframeModel) (*client.AccessFlowTimeframeV2, error) {
+	timeframe := client.AccessFlowTimeframeV2{
 		StartTime: model.StartTime.ValueString(),
 		EndTime:   model.EndTime.ValueString(),
 		TimeZone:  model.TimeZone.ValueString(),
@@ -75,9 +75,9 @@ func convertTimeframeToUpsertRequest(ctx context.Context, model AccessFlowTimefr
 		return nil, fmt.Errorf("failed to convert days_of_week: %v", diags)
 	}
 
-	daysOfWeek := []client.DayOfWeekPublicV2Model{}
+	daysOfWeek := []client.DayOfWeekV2{}
 	for _, dayStr := range daysOfWeekStrings {
-		daysOfWeek = append(daysOfWeek, client.DayOfWeekPublicV2Model(dayStr))
+		daysOfWeek = append(daysOfWeek, client.DayOfWeekV2(dayStr))
 	}
 
 	timeframe.DaysOfWeek = daysOfWeek
@@ -85,12 +85,12 @@ func convertTimeframeToUpsertRequest(ctx context.Context, model AccessFlowTimefr
 	return &timeframe, nil
 }
 
-func convertApproverPolicyToUpsertRequest(ctx context.Context, model AccessFlowApproverPolicy) (*client.ApproverPolicyUpsertPublicV2Model, error) {
-	policy := client.ApproverPolicyUpsertPublicV2Model{
+func convertApproverPolicyToUpsertRequest(ctx context.Context, model AccessFlowApproverPolicy) (*client.ApproverPolicyUpsertV2, error) {
+	policy := client.ApproverPolicyUpsertV2{
 		ApprovalMode: model.ApprovalMode.ValueString(),
 	}
 
-	var groups []client.ApproverGroupUpsertPublicV2Model
+	var groups []client.ApproverGroupUpsertV2
 
 	for i, groupModel := range model.ApproverGroups {
 		group, err := convertApproverGroupToUpsertRequest(ctx, groupModel)
@@ -106,12 +106,12 @@ func convertApproverPolicyToUpsertRequest(ctx context.Context, model AccessFlowA
 	return &policy, nil
 }
 
-func convertApproverGroupToUpsertRequest(ctx context.Context, model AccessFlowApproverGroup) (*client.ApproverGroupUpsertPublicV2Model, error) {
-	group := client.ApproverGroupUpsertPublicV2Model{
+func convertApproverGroupToUpsertRequest(ctx context.Context, model AccessFlowApproverGroup) (*client.ApproverGroupUpsertV2, error) {
+	group := client.ApproverGroupUpsertV2{
 		LogicalOperator: model.LogicalOperator.ValueString(),
 	}
 
-	var approvers []client.ConditionUpsertPublicV2Model
+	var approvers []client.ConditionUpsertV2
 
 	for i, approverModel := range model.Approvers {
 		condition, err := convertConditionToUpsertRequest(ctx, approverModel)
@@ -127,12 +127,12 @@ func convertApproverGroupToUpsertRequest(ctx context.Context, model AccessFlowAp
 	return &group, nil
 }
 
-func convertRequestorsToUpsertRequest(ctx context.Context, model AccessFlowRequestorsModel) (*client.RequestorsUpsertPublicV2Model, error) {
-	requestors := client.RequestorsUpsertPublicV2Model{
+func convertRequestorsToUpsertRequest(ctx context.Context, model AccessFlowRequestorsModel) (*client.RequestorsUpsertV2, error) {
+	requestors := client.RequestorsUpsertV2{
 		LogicalOperator: model.LogicalOperator.ValueString(),
 	}
 
-	var conditions []client.ConditionUpsertPublicV2Model
+	var conditions []client.ConditionUpsertV2
 
 	for i, conditionModel := range model.Conditions {
 		condition, err := convertConditionToUpsertRequest(ctx, conditionModel)
@@ -150,8 +150,8 @@ func convertRequestorsToUpsertRequest(ctx context.Context, model AccessFlowReque
 	return &requestors, nil
 }
 
-func convertConditionToUpsertRequest(ctx context.Context, model AccessFlowCondition) (*client.ConditionUpsertPublicV2Model, error) {
-	condition := client.ConditionUpsertPublicV2Model{
+func convertConditionToUpsertRequest(ctx context.Context, model AccessFlowCondition) (*client.ConditionUpsertV2, error) {
+	condition := client.ConditionUpsertV2{
 		Type: model.Type.ValueString(),
 	}
 
@@ -175,11 +175,11 @@ func convertConditionToUpsertRequest(ctx context.Context, model AccessFlowCondit
 	return &condition, nil
 }
 
-func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessFlowAccessTargetModel) ([]client.AccessTargetUpsertPublicV2Model, error) {
-	var targets []client.AccessTargetUpsertPublicV2Model
+func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessFlowAccessTargetModel) ([]client.AccessTargetUpsertV2, error) {
+	var targets []client.AccessTargetUpsertV2
 
 	for i, model := range models {
-		target := client.AccessTargetUpsertPublicV2Model{}
+		target := client.AccessTargetUpsertV2{}
 		setCount := 0
 
 		if model.Integration != nil {
@@ -194,7 +194,7 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessFlo
 		}
 
 		if model.Bundle != nil {
-			bundle := client.BundleAccessTargetUpsertPublicV2Model{
+			bundle := client.BundleAccessTargetUpsertV2{
 				BundleReference: model.Bundle.Name.ValueString(),
 			}
 
@@ -205,7 +205,7 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessFlo
 		}
 
 		if model.AccessScope != nil {
-			scope := client.AccessScopeAccessTargetUpsertPublicV2Model{
+			scope := client.AccessScopeAccessTargetUpsertV2{
 				AccessScopeReference: model.AccessScope.Name.ValueString(),
 			}
 
@@ -224,8 +224,8 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessFlo
 	return targets, nil
 }
 
-func convertIntegrationTargetToUpsertRequest(ctx context.Context, model IntegrationTargetModel) (*client.IntegrationAccessTargetUpsertPublicV2Model, error) {
-	integration := client.IntegrationAccessTargetUpsertPublicV2Model{
+func convertIntegrationTargetToUpsertRequest(ctx context.Context, model IntegrationTargetModel) (*client.IntegrationAccessTargetUpsertV2, error) {
+	integration := client.IntegrationAccessTargetUpsertV2{
 		IntegrationReference: model.IntegrationName.ValueString(),
 		ResourceType:         model.ResourceType.ValueString(),
 	}
@@ -247,11 +247,11 @@ func convertIntegrationTargetToUpsertRequest(ctx context.Context, model Integrat
 	return &integration, nil
 }
 
-func convertResourcesScopesToUpsertRequest(ctx context.Context, scopes []IntegrationTargetScopeModel) ([]client.ResourcesScopeIntegrationAccessTargetPublicV2Model, error) {
-	var result []client.ResourcesScopeIntegrationAccessTargetPublicV2Model
+func convertResourcesScopesToUpsertRequest(ctx context.Context, scopes []IntegrationTargetScopeModel) ([]client.ResourcesScopeIntegrationAccessTargetV2, error) {
+	var result []client.ResourcesScopeIntegrationAccessTargetV2
 
 	for i, scope := range scopes {
-		resourceScope := client.ResourcesScopeIntegrationAccessTargetPublicV2Model{
+		resourceScope := client.ResourcesScopeIntegrationAccessTargetV2{
 			ScopeMode: scope.ScopeMode.ValueString(),
 			Type:      scope.Type.ValueString(),
 		}
@@ -274,8 +274,8 @@ func convertResourcesScopesToUpsertRequest(ctx context.Context, scopes []Integra
 	return result, nil
 }
 
-func convertSettingsToUpsertRequest(ctx context.Context, model AccessFlowSettingsModel) (*client.AccessFlowSettingsPublicV2Model, error) {
-	settings := client.AccessFlowSettingsPublicV2Model{
+func convertSettingsToUpsertRequest(ctx context.Context, model AccessFlowSettingsModel) (*client.AccessFlowSettingsV2, error) {
+	settings := client.AccessFlowSettingsV2{
 		JustificationRequired:         model.JustificationRequired.ValueBool(),
 		RequireApproverReason:         model.RequireApproverReason.ValueBool(),
 		RequestorCannotApproveHimself: model.RequesterCannotApproveSelf.ValueBool(),

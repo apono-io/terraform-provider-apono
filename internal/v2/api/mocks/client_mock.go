@@ -71,27 +71,27 @@ func (_c *Invoker_AddGroupMemberV1_Call) RunAndReturn(run func(context.Context, 
 }
 
 // CreateAccessFlowV2 provides a mock function with given fields: ctx, request
-func (_m *Invoker) CreateAccessFlowV2(ctx context.Context, request *client.AccessFlowUpsertPublicV2Model) (*client.AccessFlowPublicV2Model, error) {
+func (_m *Invoker) CreateAccessFlowV2(ctx context.Context, request *client.AccessFlowUpsertV2) (*client.AccessFlowV2, error) {
 	ret := _m.Called(ctx, request)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreateAccessFlowV2")
 	}
 
-	var r0 *client.AccessFlowPublicV2Model
+	var r0 *client.AccessFlowV2
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertPublicV2Model) (*client.AccessFlowPublicV2Model, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertV2) (*client.AccessFlowV2, error)); ok {
 		return rf(ctx, request)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertPublicV2Model) *client.AccessFlowPublicV2Model); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertV2) *client.AccessFlowV2); ok {
 		r0 = rf(ctx, request)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*client.AccessFlowPublicV2Model)
+			r0 = ret.Get(0).(*client.AccessFlowV2)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *client.AccessFlowUpsertPublicV2Model) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *client.AccessFlowUpsertV2) error); ok {
 		r1 = rf(ctx, request)
 	} else {
 		r1 = ret.Error(1)
@@ -107,24 +107,24 @@ type Invoker_CreateAccessFlowV2_Call struct {
 
 // CreateAccessFlowV2 is a helper method to define mock.On call
 //   - ctx context.Context
-//   - request *client.AccessFlowUpsertPublicV2Model
+//   - request *client.AccessFlowUpsertV2
 func (_e *Invoker_Expecter) CreateAccessFlowV2(ctx interface{}, request interface{}) *Invoker_CreateAccessFlowV2_Call {
 	return &Invoker_CreateAccessFlowV2_Call{Call: _e.mock.On("CreateAccessFlowV2", ctx, request)}
 }
 
-func (_c *Invoker_CreateAccessFlowV2_Call) Run(run func(ctx context.Context, request *client.AccessFlowUpsertPublicV2Model)) *Invoker_CreateAccessFlowV2_Call {
+func (_c *Invoker_CreateAccessFlowV2_Call) Run(run func(ctx context.Context, request *client.AccessFlowUpsertV2)) *Invoker_CreateAccessFlowV2_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*client.AccessFlowUpsertPublicV2Model))
+		run(args[0].(context.Context), args[1].(*client.AccessFlowUpsertV2))
 	})
 	return _c
 }
 
-func (_c *Invoker_CreateAccessFlowV2_Call) Return(_a0 *client.AccessFlowPublicV2Model, _a1 error) *Invoker_CreateAccessFlowV2_Call {
+func (_c *Invoker_CreateAccessFlowV2_Call) Return(_a0 *client.AccessFlowV2, _a1 error) *Invoker_CreateAccessFlowV2_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *Invoker_CreateAccessFlowV2_Call) RunAndReturn(run func(context.Context, *client.AccessFlowUpsertPublicV2Model) (*client.AccessFlowPublicV2Model, error)) *Invoker_CreateAccessFlowV2_Call {
+func (_c *Invoker_CreateAccessFlowV2_Call) RunAndReturn(run func(context.Context, *client.AccessFlowUpsertV2) (*client.AccessFlowV2, error)) *Invoker_CreateAccessFlowV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -189,27 +189,27 @@ func (_c *Invoker_CreateAccessScopesV1_Call) RunAndReturn(run func(context.Conte
 }
 
 // CreateBundleV2 provides a mock function with given fields: ctx, request
-func (_m *Invoker) CreateBundleV2(ctx context.Context, request *client.UpsertBundlePublicV2Model) (*client.BundlePublicV2Model, error) {
+func (_m *Invoker) CreateBundleV2(ctx context.Context, request *client.UpsertBundleV2) (*client.BundleV2, error) {
 	ret := _m.Called(ctx, request)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreateBundleV2")
 	}
 
-	var r0 *client.BundlePublicV2Model
+	var r0 *client.BundleV2
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundlePublicV2Model) (*client.BundlePublicV2Model, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundleV2) (*client.BundleV2, error)); ok {
 		return rf(ctx, request)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundlePublicV2Model) *client.BundlePublicV2Model); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundleV2) *client.BundleV2); ok {
 		r0 = rf(ctx, request)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*client.BundlePublicV2Model)
+			r0 = ret.Get(0).(*client.BundleV2)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertBundlePublicV2Model) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertBundleV2) error); ok {
 		r1 = rf(ctx, request)
 	} else {
 		r1 = ret.Error(1)
@@ -225,24 +225,24 @@ type Invoker_CreateBundleV2_Call struct {
 
 // CreateBundleV2 is a helper method to define mock.On call
 //   - ctx context.Context
-//   - request *client.UpsertBundlePublicV2Model
+//   - request *client.UpsertBundleV2
 func (_e *Invoker_Expecter) CreateBundleV2(ctx interface{}, request interface{}) *Invoker_CreateBundleV2_Call {
 	return &Invoker_CreateBundleV2_Call{Call: _e.mock.On("CreateBundleV2", ctx, request)}
 }
 
-func (_c *Invoker_CreateBundleV2_Call) Run(run func(ctx context.Context, request *client.UpsertBundlePublicV2Model)) *Invoker_CreateBundleV2_Call {
+func (_c *Invoker_CreateBundleV2_Call) Run(run func(ctx context.Context, request *client.UpsertBundleV2)) *Invoker_CreateBundleV2_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*client.UpsertBundlePublicV2Model))
+		run(args[0].(context.Context), args[1].(*client.UpsertBundleV2))
 	})
 	return _c
 }
 
-func (_c *Invoker_CreateBundleV2_Call) Return(_a0 *client.BundlePublicV2Model, _a1 error) *Invoker_CreateBundleV2_Call {
+func (_c *Invoker_CreateBundleV2_Call) Return(_a0 *client.BundleV2, _a1 error) *Invoker_CreateBundleV2_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *Invoker_CreateBundleV2_Call) RunAndReturn(run func(context.Context, *client.UpsertBundlePublicV2Model) (*client.BundlePublicV2Model, error)) *Invoker_CreateBundleV2_Call {
+func (_c *Invoker_CreateBundleV2_Call) RunAndReturn(run func(context.Context, *client.UpsertBundleV2) (*client.BundleV2, error)) *Invoker_CreateBundleV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -648,23 +648,23 @@ func (_c *Invoker_DeleteIntegrationV4_Call) RunAndReturn(run func(context.Contex
 }
 
 // GetAccessFlowV2 provides a mock function with given fields: ctx, params
-func (_m *Invoker) GetAccessFlowV2(ctx context.Context, params client.GetAccessFlowV2Params) (*client.AccessFlowPublicV2Model, error) {
+func (_m *Invoker) GetAccessFlowV2(ctx context.Context, params client.GetAccessFlowV2Params) (*client.AccessFlowV2, error) {
 	ret := _m.Called(ctx, params)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetAccessFlowV2")
 	}
 
-	var r0 *client.AccessFlowPublicV2Model
+	var r0 *client.AccessFlowV2
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, client.GetAccessFlowV2Params) (*client.AccessFlowPublicV2Model, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetAccessFlowV2Params) (*client.AccessFlowV2, error)); ok {
 		return rf(ctx, params)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, client.GetAccessFlowV2Params) *client.AccessFlowPublicV2Model); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetAccessFlowV2Params) *client.AccessFlowV2); ok {
 		r0 = rf(ctx, params)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*client.AccessFlowPublicV2Model)
+			r0 = ret.Get(0).(*client.AccessFlowV2)
 		}
 	}
 
@@ -696,12 +696,12 @@ func (_c *Invoker_GetAccessFlowV2_Call) Run(run func(ctx context.Context, params
 	return _c
 }
 
-func (_c *Invoker_GetAccessFlowV2_Call) Return(_a0 *client.AccessFlowPublicV2Model, _a1 error) *Invoker_GetAccessFlowV2_Call {
+func (_c *Invoker_GetAccessFlowV2_Call) Return(_a0 *client.AccessFlowV2, _a1 error) *Invoker_GetAccessFlowV2_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *Invoker_GetAccessFlowV2_Call) RunAndReturn(run func(context.Context, client.GetAccessFlowV2Params) (*client.AccessFlowPublicV2Model, error)) *Invoker_GetAccessFlowV2_Call {
+func (_c *Invoker_GetAccessFlowV2_Call) RunAndReturn(run func(context.Context, client.GetAccessFlowV2Params) (*client.AccessFlowV2, error)) *Invoker_GetAccessFlowV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -766,23 +766,23 @@ func (_c *Invoker_GetAccessScopesV1_Call) RunAndReturn(run func(context.Context,
 }
 
 // GetBundleV2 provides a mock function with given fields: ctx, params
-func (_m *Invoker) GetBundleV2(ctx context.Context, params client.GetBundleV2Params) (*client.BundlePublicV2Model, error) {
+func (_m *Invoker) GetBundleV2(ctx context.Context, params client.GetBundleV2Params) (*client.BundleV2, error) {
 	ret := _m.Called(ctx, params)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetBundleV2")
 	}
 
-	var r0 *client.BundlePublicV2Model
+	var r0 *client.BundleV2
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, client.GetBundleV2Params) (*client.BundlePublicV2Model, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetBundleV2Params) (*client.BundleV2, error)); ok {
 		return rf(ctx, params)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, client.GetBundleV2Params) *client.BundlePublicV2Model); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetBundleV2Params) *client.BundleV2); ok {
 		r0 = rf(ctx, params)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*client.BundlePublicV2Model)
+			r0 = ret.Get(0).(*client.BundleV2)
 		}
 	}
 
@@ -814,12 +814,12 @@ func (_c *Invoker_GetBundleV2_Call) Run(run func(ctx context.Context, params cli
 	return _c
 }
 
-func (_c *Invoker_GetBundleV2_Call) Return(_a0 *client.BundlePublicV2Model, _a1 error) *Invoker_GetBundleV2_Call {
+func (_c *Invoker_GetBundleV2_Call) Return(_a0 *client.BundleV2, _a1 error) *Invoker_GetBundleV2_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *Invoker_GetBundleV2_Call) RunAndReturn(run func(context.Context, client.GetBundleV2Params) (*client.BundlePublicV2Model, error)) *Invoker_GetBundleV2_Call {
+func (_c *Invoker_GetBundleV2_Call) RunAndReturn(run func(context.Context, client.GetBundleV2Params) (*client.BundleV2, error)) *Invoker_GetBundleV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1579,27 +1579,27 @@ func (_c *Invoker_RemoveGroupMemberV1_Call) RunAndReturn(run func(context.Contex
 }
 
 // UpdateAccessFlowV2 provides a mock function with given fields: ctx, request, params
-func (_m *Invoker) UpdateAccessFlowV2(ctx context.Context, request *client.AccessFlowUpsertPublicV2Model, params client.UpdateAccessFlowV2Params) (*client.AccessFlowPublicV2Model, error) {
+func (_m *Invoker) UpdateAccessFlowV2(ctx context.Context, request *client.AccessFlowUpsertV2, params client.UpdateAccessFlowV2Params) (*client.AccessFlowV2, error) {
 	ret := _m.Called(ctx, request, params)
 
 	if len(ret) == 0 {
 		panic("no return value specified for UpdateAccessFlowV2")
 	}
 
-	var r0 *client.AccessFlowPublicV2Model
+	var r0 *client.AccessFlowV2
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertPublicV2Model, client.UpdateAccessFlowV2Params) (*client.AccessFlowPublicV2Model, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertV2, client.UpdateAccessFlowV2Params) (*client.AccessFlowV2, error)); ok {
 		return rf(ctx, request, params)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertPublicV2Model, client.UpdateAccessFlowV2Params) *client.AccessFlowPublicV2Model); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertV2, client.UpdateAccessFlowV2Params) *client.AccessFlowV2); ok {
 		r0 = rf(ctx, request, params)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*client.AccessFlowPublicV2Model)
+			r0 = ret.Get(0).(*client.AccessFlowV2)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *client.AccessFlowUpsertPublicV2Model, client.UpdateAccessFlowV2Params) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *client.AccessFlowUpsertV2, client.UpdateAccessFlowV2Params) error); ok {
 		r1 = rf(ctx, request, params)
 	} else {
 		r1 = ret.Error(1)
@@ -1615,25 +1615,25 @@ type Invoker_UpdateAccessFlowV2_Call struct {
 
 // UpdateAccessFlowV2 is a helper method to define mock.On call
 //   - ctx context.Context
-//   - request *client.AccessFlowUpsertPublicV2Model
+//   - request *client.AccessFlowUpsertV2
 //   - params client.UpdateAccessFlowV2Params
 func (_e *Invoker_Expecter) UpdateAccessFlowV2(ctx interface{}, request interface{}, params interface{}) *Invoker_UpdateAccessFlowV2_Call {
 	return &Invoker_UpdateAccessFlowV2_Call{Call: _e.mock.On("UpdateAccessFlowV2", ctx, request, params)}
 }
 
-func (_c *Invoker_UpdateAccessFlowV2_Call) Run(run func(ctx context.Context, request *client.AccessFlowUpsertPublicV2Model, params client.UpdateAccessFlowV2Params)) *Invoker_UpdateAccessFlowV2_Call {
+func (_c *Invoker_UpdateAccessFlowV2_Call) Run(run func(ctx context.Context, request *client.AccessFlowUpsertV2, params client.UpdateAccessFlowV2Params)) *Invoker_UpdateAccessFlowV2_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*client.AccessFlowUpsertPublicV2Model), args[2].(client.UpdateAccessFlowV2Params))
+		run(args[0].(context.Context), args[1].(*client.AccessFlowUpsertV2), args[2].(client.UpdateAccessFlowV2Params))
 	})
 	return _c
 }
 
-func (_c *Invoker_UpdateAccessFlowV2_Call) Return(_a0 *client.AccessFlowPublicV2Model, _a1 error) *Invoker_UpdateAccessFlowV2_Call {
+func (_c *Invoker_UpdateAccessFlowV2_Call) Return(_a0 *client.AccessFlowV2, _a1 error) *Invoker_UpdateAccessFlowV2_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *Invoker_UpdateAccessFlowV2_Call) RunAndReturn(run func(context.Context, *client.AccessFlowUpsertPublicV2Model, client.UpdateAccessFlowV2Params) (*client.AccessFlowPublicV2Model, error)) *Invoker_UpdateAccessFlowV2_Call {
+func (_c *Invoker_UpdateAccessFlowV2_Call) RunAndReturn(run func(context.Context, *client.AccessFlowUpsertV2, client.UpdateAccessFlowV2Params) (*client.AccessFlowV2, error)) *Invoker_UpdateAccessFlowV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1699,27 +1699,27 @@ func (_c *Invoker_UpdateAccessScopesV1_Call) RunAndReturn(run func(context.Conte
 }
 
 // UpdateBundleV2 provides a mock function with given fields: ctx, request, params
-func (_m *Invoker) UpdateBundleV2(ctx context.Context, request *client.UpsertBundlePublicV2Model, params client.UpdateBundleV2Params) (*client.BundlePublicV2Model, error) {
+func (_m *Invoker) UpdateBundleV2(ctx context.Context, request *client.UpsertBundleV2, params client.UpdateBundleV2Params) (*client.BundleV2, error) {
 	ret := _m.Called(ctx, request, params)
 
 	if len(ret) == 0 {
 		panic("no return value specified for UpdateBundleV2")
 	}
 
-	var r0 *client.BundlePublicV2Model
+	var r0 *client.BundleV2
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundlePublicV2Model, client.UpdateBundleV2Params) (*client.BundlePublicV2Model, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundleV2, client.UpdateBundleV2Params) (*client.BundleV2, error)); ok {
 		return rf(ctx, request, params)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundlePublicV2Model, client.UpdateBundleV2Params) *client.BundlePublicV2Model); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundleV2, client.UpdateBundleV2Params) *client.BundleV2); ok {
 		r0 = rf(ctx, request, params)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*client.BundlePublicV2Model)
+			r0 = ret.Get(0).(*client.BundleV2)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertBundlePublicV2Model, client.UpdateBundleV2Params) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertBundleV2, client.UpdateBundleV2Params) error); ok {
 		r1 = rf(ctx, request, params)
 	} else {
 		r1 = ret.Error(1)
@@ -1735,25 +1735,25 @@ type Invoker_UpdateBundleV2_Call struct {
 
 // UpdateBundleV2 is a helper method to define mock.On call
 //   - ctx context.Context
-//   - request *client.UpsertBundlePublicV2Model
+//   - request *client.UpsertBundleV2
 //   - params client.UpdateBundleV2Params
 func (_e *Invoker_Expecter) UpdateBundleV2(ctx interface{}, request interface{}, params interface{}) *Invoker_UpdateBundleV2_Call {
 	return &Invoker_UpdateBundleV2_Call{Call: _e.mock.On("UpdateBundleV2", ctx, request, params)}
 }
 
-func (_c *Invoker_UpdateBundleV2_Call) Run(run func(ctx context.Context, request *client.UpsertBundlePublicV2Model, params client.UpdateBundleV2Params)) *Invoker_UpdateBundleV2_Call {
+func (_c *Invoker_UpdateBundleV2_Call) Run(run func(ctx context.Context, request *client.UpsertBundleV2, params client.UpdateBundleV2Params)) *Invoker_UpdateBundleV2_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*client.UpsertBundlePublicV2Model), args[2].(client.UpdateBundleV2Params))
+		run(args[0].(context.Context), args[1].(*client.UpsertBundleV2), args[2].(client.UpdateBundleV2Params))
 	})
 	return _c
 }
 
-func (_c *Invoker_UpdateBundleV2_Call) Return(_a0 *client.BundlePublicV2Model, _a1 error) *Invoker_UpdateBundleV2_Call {
+func (_c *Invoker_UpdateBundleV2_Call) Return(_a0 *client.BundleV2, _a1 error) *Invoker_UpdateBundleV2_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *Invoker_UpdateBundleV2_Call) RunAndReturn(run func(context.Context, *client.UpsertBundlePublicV2Model, client.UpdateBundleV2Params) (*client.BundlePublicV2Model, error)) *Invoker_UpdateBundleV2_Call {
+func (_c *Invoker_UpdateBundleV2_Call) RunAndReturn(run func(context.Context, *client.UpsertBundleV2, client.UpdateBundleV2Params) (*client.BundleV2, error)) *Invoker_UpdateBundleV2_Call {
 	_c.Call.Return(run)
 	return _c
 }

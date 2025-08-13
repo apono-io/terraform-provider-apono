@@ -23,7 +23,7 @@ func decodeAddGroupMemberV1Response(resp *http.Response) (res *AddGroupMemberV1N
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeCreateAccessFlowV2Response(resp *http.Response) (res *AccessFlowPublicV2Model, _ error) {
+func decodeCreateAccessFlowV2Response(resp *http.Response) (res *AccessFlowV2, _ error) {
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
@@ -39,7 +39,7 @@ func decodeCreateAccessFlowV2Response(resp *http.Response) (res *AccessFlowPubli
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response AccessFlowPublicV2Model
+			var response AccessFlowV2
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -114,7 +114,7 @@ func decodeCreateAccessScopesV1Response(resp *http.Response) (res *AccessScopeV1
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeCreateBundleV2Response(resp *http.Response) (res *BundlePublicV2Model, _ error) {
+func decodeCreateBundleV2Response(resp *http.Response) (res *BundleV2, _ error) {
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
@@ -130,7 +130,7 @@ func decodeCreateBundleV2Response(resp *http.Response) (res *BundlePublicV2Model
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response BundlePublicV2Model
+			var response BundleV2
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -309,7 +309,7 @@ func decodeDeleteIntegrationV4Response(resp *http.Response) (res *DeleteIntegrat
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeGetAccessFlowV2Response(resp *http.Response) (res *AccessFlowPublicV2Model, _ error) {
+func decodeGetAccessFlowV2Response(resp *http.Response) (res *AccessFlowV2, _ error) {
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
@@ -325,7 +325,7 @@ func decodeGetAccessFlowV2Response(resp *http.Response) (res *AccessFlowPublicV2
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response AccessFlowPublicV2Model
+			var response AccessFlowV2
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -400,7 +400,7 @@ func decodeGetAccessScopesV1Response(resp *http.Response) (res *AccessScopeV1, _
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeGetBundleV2Response(resp *http.Response) (res *BundlePublicV2Model, _ error) {
+func decodeGetBundleV2Response(resp *http.Response) (res *BundleV2, _ error) {
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
@@ -416,7 +416,7 @@ func decodeGetBundleV2Response(resp *http.Response) (res *BundlePublicV2Model, _
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response BundlePublicV2Model
+			var response BundleV2
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1041,7 +1041,7 @@ func decodeRemoveGroupMemberV1Response(resp *http.Response) (res *RemoveGroupMem
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeUpdateAccessFlowV2Response(resp *http.Response) (res *AccessFlowPublicV2Model, _ error) {
+func decodeUpdateAccessFlowV2Response(resp *http.Response) (res *AccessFlowV2, _ error) {
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
@@ -1057,7 +1057,7 @@ func decodeUpdateAccessFlowV2Response(resp *http.Response) (res *AccessFlowPubli
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response AccessFlowPublicV2Model
+			var response AccessFlowV2
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1132,7 +1132,7 @@ func decodeUpdateAccessScopesV1Response(resp *http.Response) (res *AccessScopeV1
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
-func decodeUpdateBundleV2Response(resp *http.Response) (res *BundlePublicV2Model, _ error) {
+func decodeUpdateBundleV2Response(resp *http.Response) (res *BundleV2, _ error) {
 	switch resp.StatusCode {
 	case 200:
 		// Code 200.
@@ -1148,7 +1148,7 @@ func decodeUpdateBundleV2Response(resp *http.Response) (res *BundlePublicV2Model
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response BundlePublicV2Model
+			var response BundleV2
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err

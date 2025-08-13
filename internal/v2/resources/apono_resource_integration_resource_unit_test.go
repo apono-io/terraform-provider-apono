@@ -158,6 +158,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 
 		updatedResponse := testcommon.GenerateResourceIntegrationResponse()
 		updatedResponse.Name = "updated-name"
+		updatedResponse.ConnectorID.Value = "updated-connector-id"
 		updatedResponse.Category = common.ResourceCategory
 		updatedResponse.CustomAccessDetails.Value = "Updated access details"
 		updatedResponse.ConnectedResourceTypes.Value = append(updatedResponse.ConnectedResourceTypes.Value, "role")
@@ -203,6 +204,7 @@ func TestAponoResourceIntegrationResource(t *testing.T) {
 
 		assert.Equal(t, planModel.ID.ValueString(), got.ID.ValueString())
 		assert.Equal(t, "updated-name", got.Name.ValueString())
+		assert.Equal(t, "updated-connector-id", got.ConnectorID.ValueString())
 		assert.Equal(t, "Updated access details", got.CustomAccessDetails.ValueString())
 
 		var connectedTypes []string
