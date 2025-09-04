@@ -30,7 +30,9 @@ type Invoker interface {
 	AddGroupMemberV1(ctx context.Context, params AddGroupMemberV1Params) error
 	// CreateAccessFlowV2 invokes createAccessFlowV2 operation.
 	//
-	// Create Access Flow.
+	// Note: Some fields are only applicable in self-serve access flows and are ignored or not required
+	// in automatic access flows.
+	// Refer to each field’s description to understand when it applies.
 	//
 	// POST /api/admin/v2/access-flows
 	CreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2) (*AccessFlowV2, error)
@@ -383,7 +385,9 @@ func (c *Client) sendAddGroupMemberV1(ctx context.Context, params AddGroupMember
 
 // CreateAccessFlowV2 invokes createAccessFlowV2 operation.
 //
-// Create Access Flow.
+// Note: Some fields are only applicable in self-serve access flows and are ignored or not required
+// in automatic access flows.
+// Refer to each field’s description to understand when it applies.
 //
 // POST /api/admin/v2/access-flows
 func (c *Client) CreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2) (*AccessFlowV2, error) {
