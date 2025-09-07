@@ -67,12 +67,16 @@ func (s *AccessBundleAccessTargetV2) SetAccessScope(val OptNilAccessScopeAccessT
 // Ref: #/components/schemas/AccessFlowSettingsV2
 type AccessFlowSettingsV2 struct {
 	// Requirement for the requester to explain their access need.
+	// Only applicable in self-serve access flows (trigger.type = "SELF_SERVE").
 	JustificationRequired bool `json:"justification_required"`
-	// Requirement for the approver to explain why they granted or denied access.
+	// Requirement for the approver to explain why they granted or denied access
+	// Only applicable in self-serve access flows (trigger.type = "SELF_SERVE").
 	RequireApproverReason bool `json:"require_approver_reason"`
 	// Requirement that users cannot approve their own access requests.
+	// Only applicable in self-serve access flows (trigger.type = "SELF_SERVE").
 	RequestorCannotApproveHimself bool `json:"requestor_cannot_approve_himself"`
 	// Requirement for multi-factor authentication to gain access.
+	// Only applicable in self-serve access flows (trigger.type = "SELF_SERVE").
 	RequireMfa bool `json:"require_mfa"`
 	// Additional tags (typically indicating environment) used to filter the access flow.
 	Labels []string `json:"labels"`
@@ -129,6 +133,7 @@ func (s *AccessFlowSettingsV2) SetLabels(val []string) {
 }
 
 // Period when access is granted to the user.
+// Only applicable in self-serve access flows (trigger.type = "SELF_SERVE").
 // Ref: #/components/schemas/AccessFlowTimeframeV2
 type AccessFlowTimeframeV2 struct {
 	// Start time of the access period, in ISO 8601 format.
@@ -189,12 +194,14 @@ type AccessFlowUpsertV2 struct {
 	// Event or action that triggers the access flow.
 	Trigger        string                       `json:"trigger"`
 	Requestors     RequestorsUpsertV2           `json:"requestors"`
+	RequestFor     OptNilRequestForUpsertV2     `json:"request_for"`
 	AccessTargets  []AccessTargetUpsertV2       `json:"access_targets"`
 	ApproverPolicy OptNilApproverPolicyUpsertV2 `json:"approver_policy"`
 	// Duration of access granted to the user, in minutes.
 	GrantDurationInMin OptNilInt32                 `json:"grant_duration_in_min"`
 	Timeframe          OptNilAccessFlowTimeframeV2 `json:"timeframe"`
 	Settings           AccessFlowSettingsV2        `json:"settings"`
+	RequestForOthers   bool                        `json:"request_for_others"`
 }
 
 // GetName returns the value of Name.
@@ -215,6 +222,11 @@ func (s *AccessFlowUpsertV2) GetTrigger() string {
 // GetRequestors returns the value of Requestors.
 func (s *AccessFlowUpsertV2) GetRequestors() RequestorsUpsertV2 {
 	return s.Requestors
+}
+
+// GetRequestFor returns the value of RequestFor.
+func (s *AccessFlowUpsertV2) GetRequestFor() OptNilRequestForUpsertV2 {
+	return s.RequestFor
 }
 
 // GetAccessTargets returns the value of AccessTargets.
@@ -242,6 +254,11 @@ func (s *AccessFlowUpsertV2) GetSettings() AccessFlowSettingsV2 {
 	return s.Settings
 }
 
+// GetRequestForOthers returns the value of RequestForOthers.
+func (s *AccessFlowUpsertV2) GetRequestForOthers() bool {
+	return s.RequestForOthers
+}
+
 // SetName sets the value of Name.
 func (s *AccessFlowUpsertV2) SetName(val string) {
 	s.Name = val
@@ -260,6 +277,11 @@ func (s *AccessFlowUpsertV2) SetTrigger(val string) {
 // SetRequestors sets the value of Requestors.
 func (s *AccessFlowUpsertV2) SetRequestors(val RequestorsUpsertV2) {
 	s.Requestors = val
+}
+
+// SetRequestFor sets the value of RequestFor.
+func (s *AccessFlowUpsertV2) SetRequestFor(val OptNilRequestForUpsertV2) {
+	s.RequestFor = val
 }
 
 // SetAccessTargets sets the value of AccessTargets.
@@ -287,6 +309,11 @@ func (s *AccessFlowUpsertV2) SetSettings(val AccessFlowSettingsV2) {
 	s.Settings = val
 }
 
+// SetRequestForOthers sets the value of RequestForOthers.
+func (s *AccessFlowUpsertV2) SetRequestForOthers(val bool) {
+	s.RequestForOthers = val
+}
+
 // Ref: #/components/schemas/AccessFlowV2
 type AccessFlowV2 struct {
 	// Unique identifier of the access flow.
@@ -298,6 +325,7 @@ type AccessFlowV2 struct {
 	// Event or action that triggers the access flow.
 	Trigger        string                 `json:"trigger"`
 	Requestors     RequestorsV2           `json:"requestors"`
+	RequestFor     OptNilRequestForV2     `json:"request_for"`
 	AccessTargets  []AccessTargetV2       `json:"access_targets"`
 	ApproverPolicy OptNilApproverPolicyV2 `json:"approver_policy"`
 	// Duration of access granted to the user, in minutes.
@@ -333,6 +361,11 @@ func (s *AccessFlowV2) GetTrigger() string {
 // GetRequestors returns the value of Requestors.
 func (s *AccessFlowV2) GetRequestors() RequestorsV2 {
 	return s.Requestors
+}
+
+// GetRequestFor returns the value of RequestFor.
+func (s *AccessFlowV2) GetRequestFor() OptNilRequestForV2 {
+	return s.RequestFor
 }
 
 // GetAccessTargets returns the value of AccessTargets.
@@ -393,6 +426,11 @@ func (s *AccessFlowV2) SetTrigger(val string) {
 // SetRequestors sets the value of Requestors.
 func (s *AccessFlowV2) SetRequestors(val RequestorsV2) {
 	s.Requestors = val
+}
+
+// SetRequestFor sets the value of RequestFor.
+func (s *AccessFlowV2) SetRequestFor(val OptNilRequestForV2) {
+	s.RequestFor = val
 }
 
 // SetAccessTargets sets the value of AccessTargets.
@@ -714,6 +752,7 @@ func (s *ApproverGroupV2) SetApprovers(val []ConditionV2) {
 }
 
 // Policy defining how and by whom requests must be approved.
+// Only applicable in self-serve access flows (trigger.type = "SELF_SERVE").
 // Ref: #/components/schemas/ApproverPolicyUpsertV2
 type ApproverPolicyUpsertV2 struct {
 	// Relationship between the approver groups: ANY_OF or ALL_OF.
@@ -1665,6 +1704,68 @@ func (s *GcpSecretConfigV4) SetProject(val string) {
 // SetSecretID sets the value of SecretID.
 func (s *GcpSecretConfigV4) SetSecretID(val string) {
 	s.SecretID = val
+}
+
+// Applicable only when "others" is included in request_scope.
+// Defines the set of users or attributes who can be selected as recipients of the access.
+// Accepts attribute-based filters (e.g., groups, departments, or teams) or explicit identity
+// references.
+// Ref: #/components/schemas/GranteesUpsertV2
+type GranteesUpsertV2 struct {
+	// AND / OR operator applied to the conditions.
+	LogicalOperator string              `json:"logical_operator"`
+	Conditions      []ConditionUpsertV2 `json:"conditions"`
+}
+
+// GetLogicalOperator returns the value of LogicalOperator.
+func (s *GranteesUpsertV2) GetLogicalOperator() string {
+	return s.LogicalOperator
+}
+
+// GetConditions returns the value of Conditions.
+func (s *GranteesUpsertV2) GetConditions() []ConditionUpsertV2 {
+	return s.Conditions
+}
+
+// SetLogicalOperator sets the value of LogicalOperator.
+func (s *GranteesUpsertV2) SetLogicalOperator(val string) {
+	s.LogicalOperator = val
+}
+
+// SetConditions sets the value of Conditions.
+func (s *GranteesUpsertV2) SetConditions(val []ConditionUpsertV2) {
+	s.Conditions = val
+}
+
+// Required only when "others" is included in request_scope.
+// Defines the set of users or attributes who can be selected as recipients of the access.
+// Accepts attribute-based filters (e.g., groups, departments, or teams) or explicit identity
+// references.
+// Ref: #/components/schemas/GranteesV2
+type GranteesV2 struct {
+	// AND / OR operator applied to the conditions.
+	LogicalOperator string        `json:"logical_operator"`
+	Conditions      []ConditionV2 `json:"conditions"`
+}
+
+// GetLogicalOperator returns the value of LogicalOperator.
+func (s *GranteesV2) GetLogicalOperator() string {
+	return s.LogicalOperator
+}
+
+// GetConditions returns the value of Conditions.
+func (s *GranteesV2) GetConditions() []ConditionV2 {
+	return s.Conditions
+}
+
+// SetLogicalOperator sets the value of LogicalOperator.
+func (s *GranteesV2) SetLogicalOperator(val string) {
+	s.LogicalOperator = val
+}
+
+// SetConditions sets the value of Conditions.
+func (s *GranteesV2) SetConditions(val []ConditionV2) {
+	s.Conditions = val
 }
 
 // Ref: #/components/schemas/GroupMemberV1
@@ -3019,6 +3120,132 @@ func (o OptNilGcpSecretConfigV4) Or(d GcpSecretConfigV4) GcpSecretConfigV4 {
 	return d
 }
 
+// NewOptNilGranteesUpsertV2 returns new OptNilGranteesUpsertV2 with value set to v.
+func NewOptNilGranteesUpsertV2(v GranteesUpsertV2) OptNilGranteesUpsertV2 {
+	return OptNilGranteesUpsertV2{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilGranteesUpsertV2 is optional nullable GranteesUpsertV2.
+type OptNilGranteesUpsertV2 struct {
+	Value GranteesUpsertV2
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilGranteesUpsertV2 was set.
+func (o OptNilGranteesUpsertV2) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilGranteesUpsertV2) Reset() {
+	var v GranteesUpsertV2
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilGranteesUpsertV2) SetTo(v GranteesUpsertV2) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilGranteesUpsertV2) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilGranteesUpsertV2) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v GranteesUpsertV2
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilGranteesUpsertV2) Get() (v GranteesUpsertV2, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilGranteesUpsertV2) Or(d GranteesUpsertV2) GranteesUpsertV2 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilGranteesV2 returns new OptNilGranteesV2 with value set to v.
+func NewOptNilGranteesV2(v GranteesV2) OptNilGranteesV2 {
+	return OptNilGranteesV2{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilGranteesV2 is optional nullable GranteesV2.
+type OptNilGranteesV2 struct {
+	Value GranteesV2
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilGranteesV2 was set.
+func (o OptNilGranteesV2) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilGranteesV2) Reset() {
+	var v GranteesV2
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilGranteesV2) SetTo(v GranteesV2) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilGranteesV2) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilGranteesV2) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v GranteesV2
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilGranteesV2) Get() (v GranteesV2, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilGranteesV2) Or(d GranteesV2) GranteesV2 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptNilHashicorpVaultSecretConfigV4 returns new OptNilHashicorpVaultSecretConfigV4 with value set to v.
 func NewOptNilHashicorpVaultSecretConfigV4(v HashicorpVaultSecretConfigV4) OptNilHashicorpVaultSecretConfigV4 {
 	return OptNilHashicorpVaultSecretConfigV4{
@@ -3454,6 +3681,132 @@ func (o OptNilOwnerV4) Get() (v OwnerV4, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptNilOwnerV4) Or(d OwnerV4) OwnerV4 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilRequestForUpsertV2 returns new OptNilRequestForUpsertV2 with value set to v.
+func NewOptNilRequestForUpsertV2(v RequestForUpsertV2) OptNilRequestForUpsertV2 {
+	return OptNilRequestForUpsertV2{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilRequestForUpsertV2 is optional nullable RequestForUpsertV2.
+type OptNilRequestForUpsertV2 struct {
+	Value RequestForUpsertV2
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilRequestForUpsertV2 was set.
+func (o OptNilRequestForUpsertV2) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilRequestForUpsertV2) Reset() {
+	var v RequestForUpsertV2
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilRequestForUpsertV2) SetTo(v RequestForUpsertV2) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilRequestForUpsertV2) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilRequestForUpsertV2) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v RequestForUpsertV2
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilRequestForUpsertV2) Get() (v RequestForUpsertV2, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilRequestForUpsertV2) Or(d RequestForUpsertV2) RequestForUpsertV2 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilRequestForV2 returns new OptNilRequestForV2 with value set to v.
+func NewOptNilRequestForV2(v RequestForV2) OptNilRequestForV2 {
+	return OptNilRequestForV2{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilRequestForV2 is optional nullable RequestForV2.
+type OptNilRequestForV2 struct {
+	Value RequestForV2
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilRequestForV2 was set.
+func (o OptNilRequestForV2) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilRequestForV2) Reset() {
+	var v RequestForV2
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilRequestForV2) SetTo(v RequestForV2) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilRequestForV2) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilRequestForV2) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v RequestForV2
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilRequestForV2) Get() (v RequestForV2, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilRequestForV2) Or(d RequestForV2) RequestForV2 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -4274,7 +4627,80 @@ func (s *PublicApiPaginationInfoModel) SetNextPageToken(val OptNilString) {
 // RemoveGroupMemberV1NoContent is response for RemoveGroupMemberV1 operation.
 type RemoveGroupMemberV1NoContent struct{}
 
-// List of users who can request access, and the conditions under which they can request access.
+// Defines who the access request can be made for. This enables support to request on behalf of other
+// users, groups, or identities.
+// Only applicable in self-serve access flows (trigger.type = "SELF_SERVE").
+// Ref: #/components/schemas/RequestForUpsertV2
+type RequestForUpsertV2 struct {
+	// Specifies who the request can be made for. Supported values:
+	// 1. "self" – The user making the request (default behavior).
+	// 2. "others" – Specific individuals specified manually.
+	// 3. "direct_reports" –  Allows the requestor, identified as a manager in the organization’s
+	// identity provider (IdP), to request access for individuals formally assigned as direct reports in
+	// the IdP (based on IdP integration).
+	RequestScopes []string               `json:"request_scopes"`
+	Grantees      OptNilGranteesUpsertV2 `json:"grantees"`
+}
+
+// GetRequestScopes returns the value of RequestScopes.
+func (s *RequestForUpsertV2) GetRequestScopes() []string {
+	return s.RequestScopes
+}
+
+// GetGrantees returns the value of Grantees.
+func (s *RequestForUpsertV2) GetGrantees() OptNilGranteesUpsertV2 {
+	return s.Grantees
+}
+
+// SetRequestScopes sets the value of RequestScopes.
+func (s *RequestForUpsertV2) SetRequestScopes(val []string) {
+	s.RequestScopes = val
+}
+
+// SetGrantees sets the value of Grantees.
+func (s *RequestForUpsertV2) SetGrantees(val OptNilGranteesUpsertV2) {
+	s.Grantees = val
+}
+
+// Defines who the access request can be made for. This enables support to request on behalf of other
+// users, groups, or identities.
+// Ref: #/components/schemas/RequestForV2
+type RequestForV2 struct {
+	// Specifies who the request can be made for. Supported values:
+	// "self" – The user making the request (default behavior).
+	// "others" – Specific individuals specified manually.
+	// "direct_reports" –  Allows the requestor, identified as a manager in the organization’s
+	// identity provider (IdP), to request access for individuals formally assigned as direct reports in
+	// the IdP (based on IdP integration).
+	RequestScopes []string         `json:"request_scopes"`
+	Grantees      OptNilGranteesV2 `json:"grantees"`
+}
+
+// GetRequestScopes returns the value of RequestScopes.
+func (s *RequestForV2) GetRequestScopes() []string {
+	return s.RequestScopes
+}
+
+// GetGrantees returns the value of Grantees.
+func (s *RequestForV2) GetGrantees() OptNilGranteesV2 {
+	return s.Grantees
+}
+
+// SetRequestScopes sets the value of RequestScopes.
+func (s *RequestForV2) SetRequestScopes(val []string) {
+	s.RequestScopes = val
+}
+
+// SetGrantees sets the value of Grantees.
+func (s *RequestForV2) SetGrantees(val OptNilGranteesV2) {
+	s.Grantees = val
+}
+
+// List of users who can request access, based on identity attributes (e.g., users, groups, or
+// shifts) and the conditions under which they can request access.
+// In self-serve access flows, requestors specify who is allowed to submit an access request.
+// In automatic access flows, requestors specify who will automatically receive access when
+// conditions are met (equivalent to “grantees” in the UI).
 // Ref: #/components/schemas/RequestorsUpsertV2
 type RequestorsUpsertV2 struct {
 	// AND / OR operator applied to the conditions.

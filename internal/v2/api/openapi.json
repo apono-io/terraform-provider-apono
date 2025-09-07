@@ -415,6 +415,7 @@
           "Access Flows"
         ],
         "summary": "Create Access Flow",
+        "description": "\n        Note: Some fields are only applicable in self-serve access flows and are ignored or not required in automatic access flows. \n        Refer to each field’s description to understand when it applies.\n    ",
         "operationId": "createAccessFlowV2",
         "requestBody": {
           "content": {
@@ -1340,6 +1341,15 @@
         "operationId": "listAvailableBundlesV1",
         "parameters": [
           {
+            "name": "grantee",
+            "in": "query",
+            "description": "Filters available bundles by the specified user, accepts ID or email. Defaults to the authenticated user",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
             "schema": {
@@ -1391,6 +1401,15 @@
         "summary": "List Available Entitlements",
         "operationId": "listAvailableEntitlementsV1",
         "parameters": [
+          {
+            "name": "grantee",
+            "in": "query",
+            "description": "Filters available access options by the specified user, accepts ID or email. Defaults to the authenticated user",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
           {
             "name": "integration_id",
             "in": "query",
@@ -1469,6 +1488,98 @@
         }
       }
     },
+    "/api/user/v1/delegated-access-requests": {
+      "get": {
+        "tags": [
+          "Access Requests"
+        ],
+        "summary": "List Delegated Access Requests",
+        "operationId": "listDelegatedAccessRequestsV1",
+        "parameters": [
+          {
+            "name": "grantee",
+            "in": "query",
+            "description": "Filters results to requests made for the specified user. Accepts a user ID or email address",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "default": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "statuses",
+            "in": "query",
+            "description": "Filters results by request status. Supports multiple statuses.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiListResponseDelegatedAccessRequestV1PublicModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/v1/delegated-access-requests/{id}": {
+      "get": {
+        "tags": [
+          "Access Requests"
+        ],
+        "summary": "Get Access Request",
+        "operationId": "getDelegatedAccessRequestsV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DelegatedAccessRequestV1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/user/v4/access-requests": {
       "get": {
         "tags": [
@@ -1489,6 +1600,15 @@
           {
             "name": "page_token",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "requestor",
+            "in": "query",
+            "description": "\n            Filters access requests by the initiating user. Accepts a user ID or email address.\n            If not provided, returns requests submitted by the authenticated user.\n        ",
             "schema": {
               "type": "string",
               "nullable": true
@@ -3395,19 +3515,19 @@
         "type": "object",
         "properties": {
           "justification_required": {
-            "description": "Requirement for the requester to explain their access need",
+            "description": "\n        Requirement for the requester to explain their access need.\n        Only applicable in self-serve access flows (trigger.type = \"SELF_SERVE\")\n    ",
             "type": "boolean"
           },
           "require_approver_reason": {
-            "description": "Requirement for the approver to explain why they granted or denied access",
+            "description": "\n        Requirement for the approver to explain why they granted or denied access\n        Only applicable in self-serve access flows (trigger.type = \"SELF_SERVE\")\n        ",
             "type": "boolean"
           },
           "requestor_cannot_approve_himself": {
-            "description": "Requirement that users cannot approve their own access requests",
+            "description": "\n        Requirement that users cannot approve their own access requests.\n        Only applicable in self-serve access flows (trigger.type = \"SELF_SERVE\")\n        ",
             "type": "boolean"
           },
           "require_mfa": {
-            "description": "Requirement for multi-factor authentication to gain access",
+            "description": "\n        Requirement for multi-factor authentication to gain access.\n        Only applicable in self-serve access flows (trigger.type = \"SELF_SERVE\")\n        ",
             "type": "boolean"
           },
           "labels": {
@@ -3426,7 +3546,7 @@
           "days_of_week",
           "time_zone"
         ],
-        "description": "Period when access is granted to the user",
+        "description": "\n    Period when access is granted to the user.\n    Only applicable in self-serve access flows (trigger.type = \"SELF_SERVE\")\n",
         "type": "object",
         "properties": {
           "start_time": {
@@ -3476,7 +3596,8 @@
           "trigger",
           "requestors",
           "access_targets",
-          "settings"
+          "settings",
+          "request_for_others"
         ],
         "type": "object",
         "properties": {
@@ -3494,6 +3615,15 @@
           },
           "requestors": {
             "$ref": "#/components/schemas/RequestorsUpsertV2"
+          },
+          "request_for": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RequestForUpsertV2"
+              }
+            ],
+            "nullable": true
           },
           "access_targets": {
             "type": "array",
@@ -3527,6 +3657,9 @@
           },
           "settings": {
             "$ref": "#/components/schemas/AccessFlowSettingsV2"
+          },
+          "request_for_others": {
+            "type": "boolean"
           }
         }
       },
@@ -3630,6 +3763,15 @@
           },
           "requestors": {
             "$ref": "#/components/schemas/RequestorsV2"
+          },
+          "request_for": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RequestForV2"
+              }
+            ],
+            "nullable": true
           },
           "access_targets": {
             "type": "array",
@@ -3840,6 +3982,24 @@
             "items": {
               "$ref": "#/components/schemas/AccessRequestAccessGroupV4"
             }
+          },
+          "requestor": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RequestorIdentityV4"
+              }
+            ],
+            "nullable": true
+          },
+          "grantee": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GranteeIdentityV4"
+              }
+            ],
+            "nullable": true
           },
           "bundle": {
             "type": "object",
@@ -4233,7 +4393,7 @@
           "approval_mode",
           "approver_groups"
         ],
-        "description": "Policy defining how and by whom requests must be approved",
+        "description": "\n    Policy defining how and by whom requests must be approved.\n    Only applicable in self-serve access flows (trigger.type = \"SELF_SERVE\")\n",
         "type": "object",
         "properties": {
           "approval_mode": {
@@ -4809,6 +4969,11 @@
             "additionalProperties": {
               "type": "string"
             }
+          },
+          "grantee": {
+            "description": "\n        The user the access is being requested for. Accepts a user ID or email address.\n        If not provided, access is requested for the authenticated user.\n        Requires the caller to be authorized in the access flow to request access on behalf of the specified user\n    ",
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4972,6 +5137,91 @@
         ],
         "type": "string"
       },
+      "DelegatedAccessRequestV1": {
+        "required": [
+          "id",
+          "status",
+          "creation_date",
+          "custom_fields",
+          "access_groups",
+          "grantee"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the access request",
+            "type": "string"
+          },
+          "status": {
+            "description": "Current status of the access request",
+            "type": "string"
+          },
+          "duration_in_sec": {
+            "format": "int32",
+            "description": "Duration for which access is granted, in seconds",
+            "type": "integer",
+            "nullable": true
+          },
+          "justification": {
+            "description": "Reason provided by the user when requesting access",
+            "type": "string",
+            "nullable": true
+          },
+          "creation_date": {
+            "description": "Date and time when the access request was created (ISO 8601 format)",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
+          },
+          "revocation_date": {
+            "description": "Timestamp when access was revoked, if applicable (ISO 8601 format)",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ],
+            "nullable": true
+          },
+          "custom_fields": {
+            "description": "A set of user-defined key-value pairs for additional custom data. These fields may be required based on policy",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "access_groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccessRequestAccessGroupV4"
+            }
+          },
+          "requestor": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GranteeIdentityV1"
+              }
+            ],
+            "nullable": true
+          },
+          "grantee": {
+            "$ref": "#/components/schemas/GranteeIdentityV11"
+          },
+          "bundle": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BundlePartialV4"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
       "EntitlementPermissionV4": {
         "required": [
           "id",
@@ -5040,6 +5290,60 @@
           }
         }
       },
+      "GranteeIdentityV1": {
+        "required": [
+          "id",
+          "source_id"
+        ],
+        "description": "The user who submitted the access request",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique Apono-assigned ID of the user",
+            "type": "string"
+          },
+          "source_id": {
+            "description": "The user’s email address, as defined in your identity provider (e.g., Okta, Google Workspace).",
+            "type": "string"
+          }
+        }
+      },
+      "GranteeIdentityV11": {
+        "required": [
+          "id",
+          "source_id"
+        ],
+        "description": "The user the request was made for",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique Apono-assigned ID of the user",
+            "type": "string"
+          },
+          "source_id": {
+            "description": "The user’s email address, as defined in your identity provider (e.g., Okta, Google Workspace).",
+            "type": "string"
+          }
+        }
+      },
+      "GranteeIdentityV4": {
+        "required": [
+          "id",
+          "source_id"
+        ],
+        "description": "The user the request was made for. If null, the request was made for the authenticated user. Delegated requests can be retrieved using the /delegated-access-requests endpoints",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique Apono-assigned ID of the user",
+            "type": "string"
+          },
+          "source_id": {
+            "description": "The user’s email address, as defined in your identity provider (e.g., Okta, Google Workspace).",
+            "type": "string"
+          }
+        }
+      },
       "GranteeV1": {
         "required": [
           "id",
@@ -5052,6 +5356,46 @@
           },
           "type": {
             "type": "string"
+          }
+        }
+      },
+      "GranteesUpsertV2": {
+        "required": [
+          "logical_operator",
+          "conditions"
+        ],
+        "description": "\n        Applicable only when \"others\" is included in request_scope. \n        Defines the set of users or attributes who can be selected as recipients of the access.\n        Accepts attribute-based filters (e.g., groups, departments, or teams) or explicit identity references.\n        ",
+        "type": "object",
+        "properties": {
+          "logical_operator": {
+            "description": "AND / OR operator applied to the conditions",
+            "type": "string"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConditionUpsertV2"
+            }
+          }
+        }
+      },
+      "GranteesV2": {
+        "required": [
+          "logical_operator",
+          "conditions"
+        ],
+        "description": "\n    Required only when \"others\" is included in request_scope.\n    Defines the set of users or attributes who can be selected as recipients of the access.\n    Accepts attribute-based filters (e.g., groups, departments, or teams) or explicit identity references.\n    ",
+        "type": "object",
+        "properties": {
+          "logical_operator": {
+            "description": "AND / OR operator applied to the conditions",
+            "type": "string"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConditionV2"
+            }
           }
         }
       },
@@ -6122,6 +6466,24 @@
           }
         }
       },
+      "PublicApiListResponseDelegatedAccessRequestV1PublicModel": {
+        "required": [
+          "items",
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DelegatedAccessRequestV1"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PublicApiPaginationInfoModel"
+          }
+        }
+      },
       "PublicApiListResponseGroupMemberPublicV1Model": {
         "required": [
           "items",
@@ -6275,12 +6637,80 @@
           }
         }
       },
+      "RequestForUpsertV2": {
+        "required": [
+          "request_scopes"
+        ],
+        "description": "\n    Defines who the access request can be made for. This enables support to request on behalf of other users, groups, or identities. \n    Only applicable in self-serve access flows (trigger.type = \"SELF_SERVE\")\n",
+        "type": "object",
+        "properties": {
+          "request_scopes": {
+            "description": "\n            Specifies who the request can be made for. Supported values:\n            1. \"self\" – The user making the request (default behavior).\n            2. \"others\" – Specific individuals specified manually.\n            3. \"direct_reports\" –  Allows the requestor, identified as a manager in the organization’s identity provider (IdP), to request access for individuals formally assigned as direct reports in the IdP (based on IdP integration).\n            ",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "grantees": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GranteesUpsertV2"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "RequestForV2": {
+        "required": [
+          "request_scopes"
+        ],
+        "description": "Defines who the access request can be made for. This enables support to request on behalf of other users, groups, or identities",
+        "type": "object",
+        "properties": {
+          "request_scopes": {
+            "description": "\n        Specifies who the request can be made for. Supported values:\n        \"self\" – The user making the request (default behavior).\n        \"others\" – Specific individuals specified manually.\n        \"direct_reports\" –  Allows the requestor, identified as a manager in the organization’s identity provider (IdP), to request access for individuals formally assigned as direct reports in the IdP (based on IdP integration).\n    ",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "grantees": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GranteesV2"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "RequestorIdentityV4": {
+        "required": [
+          "id",
+          "source_id"
+        ],
+        "description": "The user who submitted the access request. If null, the request was submitted by the authenticated user",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique Apono-assigned ID of the user",
+            "type": "string"
+          },
+          "source_id": {
+            "description": "The user’s email address, as defined in your identity provider (e.g., Okta, Google Workspace).",
+            "type": "string"
+          }
+        }
+      },
       "RequestorsUpsertV2": {
         "required": [
           "logical_operator",
           "conditions"
         ],
-        "description": "List of users who can request access, and the conditions under which they can request access",
+        "description": "\n    List of users who can request access, based on identity attributes (e.g., users, groups, or shifts) and the conditions under which they can request access.\n    In self-serve access flows, requestors specify who is allowed to submit an access request.\n    In automatic access flows, requestors specify who will automatically receive access when conditions are met (equivalent to “grantees” in the UI)\n",
         "type": "object",
         "properties": {
           "logical_operator": {
