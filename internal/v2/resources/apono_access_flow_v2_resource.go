@@ -97,7 +97,7 @@ For the user attribute specifically, you may also use the user’s email.`
 	}
 }
 
-func (r *AponoAccessFlowV2Resource) Schema(ctx context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Description: "Manages an Apono Access Flow that defines how users or groups can request or automatically be granted access to integrations, bundles, or access scopes under specific conditions and policies.",
 		Attributes: map[string]schema.Attribute{
