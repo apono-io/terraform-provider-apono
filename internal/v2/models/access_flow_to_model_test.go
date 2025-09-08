@@ -45,6 +45,23 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	response.Requestors.Conditions[0].MatchOperator.SetTo("is")
 	response.Requestors.Conditions[0].Values.SetTo([]string{"person@example.com", "person_two@example.com"})
 
+	requestFor := client.RequestForV2{
+		RequestScopes: []string{"self", "others"},
+	}
+	grantees := client.GranteesV2{
+		LogicalOperator: "OR",
+		Conditions: []client.ConditionV2{
+			{
+				Type: "user",
+			},
+		},
+	}
+	grantees.Conditions[0].SourceIntegrationName.SetTo("Google Oauth")
+	grantees.Conditions[0].MatchOperator.SetTo("is")
+	grantees.Conditions[0].Values.SetTo([]string{"tzlil.a@apono.io"})
+	requestFor.Grantees.SetTo(grantees)
+	response.RequestFor.SetTo(requestFor)
+
 	bundleTarget := client.AccessTargetV2{}
 	bundleData := client.BundleAccessTargetV2{
 		BundleID:   "bundle-123",
@@ -177,9 +194,27 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	diags = model.ApproverPolicy.ApproverGroups[0].Approvers[0].Values.ElementsAs(ctx, &approverValues, false)
 	require.False(t, diags.HasError())
 	assert.ElementsMatch(t, []string{"person@example.com", "person_two@example.com"}, approverValues)
+
+	require.NotNil(t, model.RequestFor)
+	var requestScopes []string
+	diags = model.RequestFor.RequestScopes.ElementsAs(ctx, &requestScopes, false)
+	require.False(t, diags.HasError())
+	assert.ElementsMatch(t, []string{"self", "others"}, requestScopes)
+
+	require.NotNil(t, model.RequestFor.Grantees)
+	assert.Equal(t, "OR", model.RequestFor.Grantees.LogicalOperator.ValueString())
+	require.Len(t, model.RequestFor.Grantees.Conditions, 1)
+	assert.Equal(t, "Google Oauth", model.RequestFor.Grantees.Conditions[0].SourceIntegrationName.ValueString())
+	assert.Equal(t, "user", model.RequestFor.Grantees.Conditions[0].Type.ValueString())
+	assert.Equal(t, "is", model.RequestFor.Grantees.Conditions[0].MatchOperator.ValueString())
+
+	var granteeValues []string
+	diags = model.RequestFor.Grantees.Conditions[0].Values.ElementsAs(ctx, &granteeValues, false)
+	require.False(t, diags.HasError())
+	assert.ElementsMatch(t, []string{"tzlil.a@apono.io"}, granteeValues)
 }
 
-func TestAccessFlowResponseToModel_MinimalFields(t *testing.T) {
+func TestAccessFlowResponseToModelMinimalFields(t *testing.T) {
 	response := client.AccessFlowV2{
 		ID:      "flow-456",
 		Name:    "minimal_flow",
@@ -247,4 +282,6 @@ func TestAccessFlowResponseToModel_MinimalFields(t *testing.T) {
 	require.Len(t, model.AccessTargets, 1)
 	require.NotNil(t, model.AccessTargets[0].Bundle)
 	assert.Equal(t, "QA ENV", model.AccessTargets[0].Bundle.Name.ValueString())
+
+	assert.Nil(t, model.RequestFor)
 }

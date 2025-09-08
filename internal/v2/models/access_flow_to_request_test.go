@@ -79,6 +79,20 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 			RequireMFA:                 types.BoolValue(false),
 			Labels:                     testcommon.CreateTestStringSet(t, []string{"DB", "PROD", "TERRAFORM"}),
 		},
+		RequestFor: &AccessFlowRequestForModel{
+			RequestScopes: testcommon.CreateTestStringSet(t, []string{"self", "others"}),
+			Grantees: &AccessFlowGranteesModel{
+				LogicalOperator: types.StringValue("OR"),
+				Conditions: []AccessFlowCondition{
+					{
+						SourceIntegrationName: types.StringValue("Google Oauth"),
+						Type:                  types.StringValue("user"),
+						MatchOperator:         types.StringValue("is"),
+						Values:                testcommon.CreateTestStringList(t, []string{"tzlil.a@apono.io"}),
+					},
+				},
+			},
+		},
 	}
 
 	ctx := t.Context()
@@ -158,9 +172,30 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	assert.False(t, result.Settings.RequestorCannotApproveHimself)
 	assert.False(t, result.Settings.RequireMfa)
 	assert.ElementsMatch(t, []string{"DB", "PROD", "TERRAFORM"}, result.Settings.Labels)
+
+	require.True(t, result.RequestFor.IsSet())
+	requestFor, ok := result.RequestFor.Get()
+	require.True(t, ok)
+	assert.ElementsMatch(t, []string{"self", "others"}, requestFor.RequestScopes)
+
+	require.True(t, requestFor.Grantees.IsSet())
+	grantees, ok := requestFor.Grantees.Get()
+	require.True(t, ok)
+	assert.Equal(t, "OR", grantees.LogicalOperator)
+	require.Len(t, grantees.Conditions, 1)
+	assert.Equal(t, "user", grantees.Conditions[0].Type)
+	sourceIntegRef, ok = grantees.Conditions[0].SourceIntegrationReference.Get()
+	require.True(t, ok)
+	assert.Equal(t, "Google Oauth", sourceIntegRef)
+	matchOp, ok = grantees.Conditions[0].MatchOperator.Get()
+	require.True(t, ok)
+	assert.Equal(t, "is", matchOp)
+	values, ok = grantees.Conditions[0].Values.Get()
+	require.True(t, ok)
+	assert.ElementsMatch(t, []string{"tzlil.a@apono.io"}, values)
 }
 
-func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
+func TestAccessFlowV2ModelToUpsertRequestNullValues(t *testing.T) {
 	model := AccessFlowV2Model{
 		Name:    types.StringValue("minimal_flow"),
 		Active:  types.BoolValue(false),
@@ -211,4 +246,6 @@ func TestAccessFlowV2ModelToUpsertRequest_NullValues(t *testing.T) {
 	bundle, ok := result.AccessTargets[0].Bundle.Get()
 	require.True(t, ok)
 	assert.Equal(t, "QA ENV", bundle.BundleReference)
+
+	assert.False(t, result.RequestFor.IsSet())
 }

@@ -11,6 +11,7 @@ type AccessFlowV2Model struct {
 	Timeframe          *AccessFlowTimeframeModel     `tfsdk:"timeframe"`
 	ApproverPolicy     *AccessFlowApproverPolicy     `tfsdk:"approver_policy"`
 	Requestors         *AccessFlowRequestorsModel    `tfsdk:"requestors"`
+	RequestFor         *AccessFlowRequestForModel    `tfsdk:"request_for"`
 	AccessTargets      []AccessFlowAccessTargetModel `tfsdk:"access_targets"`
 	Settings           *AccessFlowSettingsModel      `tfsdk:"settings"`
 }
@@ -60,4 +61,14 @@ type AccessFlowAccessTargetModel struct {
 	Integration *IntegrationTargetModel      `tfsdk:"integration"`
 	Bundle      *AccessFlowTargetBundleModel `tfsdk:"bundle"`
 	AccessScope *AccessScopeTargetModel      `tfsdk:"access_scope"`
+}
+
+type AccessFlowRequestForModel struct {
+	RequestScopes types.Set                `tfsdk:"request_scopes"`
+	Grantees      *AccessFlowGranteesModel `tfsdk:"grantees"`
+}
+
+type AccessFlowGranteesModel struct {
+	LogicalOperator types.String          `tfsdk:"logical_operator"`
+	Conditions      []AccessFlowCondition `tfsdk:"conditions"`
 }
