@@ -8,6 +8,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -22,6 +23,10 @@ import (
 var (
 	_ resource.ResourceWithConfigure   = &AponoAccessFlowV2Resource{}
 	_ resource.ResourceWithImportState = &AponoAccessFlowV2Resource{}
+
+	defaultRequestScopes = setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+		types.StringValue("self"),
+	}))
 )
 
 func NewAponoAccessFlowV2Resource() resource.Resource {
@@ -93,13 +98,6 @@ For the user attribute specifically, you may also use the user’s email.`
 }
 
 func (r *AponoAccessFlowV2Resource) Schema(ctx context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	defaultRequestScopes, diags := types.SetValueFrom(ctx, types.StringType, []string{"self"})
-	resp.Diagnostics.Append(diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
 	resp.Schema = schema.Schema{
 		Description: "Manages an Apono Access Flow that defines how users or groups can request or automatically be granted access to integrations, bundles, or access scopes under specific conditions and policies.",
 		Attributes: map[string]schema.Attribute{
@@ -206,7 +204,7 @@ func (r *AponoAccessFlowV2Resource) Schema(ctx context.Context, _ resource.Schem
 Defaults to ["self"].`,
 						Optional:    true,
 						Computed:    true,
-						Default:     setdefault.StaticValue(defaultRequestScopes),
+						Default:     defaultRequestScopes,
 						ElementType: types.StringType,
 					},
 					"grantees": schema.SingleNestedAttribute{

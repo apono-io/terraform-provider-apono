@@ -50,7 +50,7 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowV2
 	}
 	model.Requestors = requestors
 
-	if val, ok := response.RequestFor.Get(); ok && len(val.RequestScopes) > 0 {
+	if val, ok := response.RequestFor.Get(); ok {
 		requestFor, err := convertRequestForToModel(ctx, val)
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert request_for: %w", err)
