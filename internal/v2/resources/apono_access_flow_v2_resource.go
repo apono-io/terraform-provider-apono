@@ -8,11 +8,13 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -21,6 +23,10 @@ import (
 var (
 	_ resource.ResourceWithConfigure   = &AponoAccessFlowV2Resource{}
 	_ resource.ResourceWithImportState = &AponoAccessFlowV2Resource{}
+
+	defaultRequestScopes = setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+		types.StringValue("self"),
+	}))
 )
 
 func NewAponoAccessFlowV2Resource() resource.Resource {
@@ -40,6 +46,7 @@ type IdentityConditionSchemaType string
 const (
 	IdentityConditionSchemaTypeApprover  IdentityConditionSchemaType = "approver"
 	IdentityConditionSchemaTypeRequestor IdentityConditionSchemaType = "requestor"
+	IdentityConditionSchemaTypeGrantee   IdentityConditionSchemaType = "grantee"
 )
 
 func getIdentityConditionSchema(conditionType IdentityConditionSchemaType) schema.NestedAttributeObject {
@@ -56,7 +63,7 @@ func getIdentityConditionSchema(conditionType IdentityConditionSchemaType) schem
 		matchOperatorDescription = `Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
 Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
 For the user attribute specifically, you may also use the user’s email.`
-	case IdentityConditionSchemaTypeRequestor:
+	case IdentityConditionSchemaTypeRequestor, IdentityConditionSchemaTypeGrantee:
 		typeDescription = "Identity type (e.g., user, group, etc.)"
 		sourceIntegrationDescription = "The integration the user/group is from."
 		valuesDescription = "List of values according to the attribute type and match_operator (e.g., user emails, group IDs, etc.)."
@@ -120,7 +127,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				Optional:    true,
 			},
 			"timeframe": schema.SingleNestedAttribute{
-				Description: "Restrict when access can be granted.",
+				Description: "Restrict when access can be granted. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
 				Optional:    true,
 				Attributes: map[string]schema.Attribute{
 					"start_time": schema.StringAttribute{
@@ -143,7 +150,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				},
 			},
 			"approver_policy": schema.SingleNestedAttribute{
-				Description: "Approval policy for the access request.",
+				Description: "Approval policy for the access request. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
 				Optional:    true,
 				Attributes: map[string]schema.Attribute{
 					"approval_mode": schema.StringAttribute{
@@ -170,7 +177,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				},
 			},
 			"requestors": schema.SingleNestedAttribute{
-				Description: "Defines who can request access.",
+				Description: "List of users who can request access, based on identity attributes (e.g., users, groups, or shifts) and the conditions under which they can request access.\nIn self-serve access flows, requestors specify who is allowed to submit an access request.\nIn automatic access flows, requestors specify who will automatically receive access when conditions are met (equivalent to \"grantees\" in the UI).",
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"logical_operator": schema.StringAttribute{
@@ -181,6 +188,39 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 						Description:  "List of conditions. Cannot be empty.",
 						Required:     true,
 						NestedObject: getIdentityConditionSchema(IdentityConditionSchemaTypeRequestor),
+					},
+				},
+			},
+			"request_for": schema.SingleNestedAttribute{
+				Description: "Defines who the access request can be made for. This enables support to request on behalf of other users, groups, or identities. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
+				Optional:    true,
+				Attributes: map[string]schema.Attribute{
+					"request_scopes": schema.SetAttribute{
+						MarkdownDescription: `Specifies who the request can be made for. Supported values:
+1. "self" - The user making the request (default behavior).
+2. "others" - Specific individuals specified manually.
+3. "direct_reports" - Allows the requestor, identified as a manager in the organization's identity provider (IdP), to request access for individuals formally assigned as direct reports in the IdP (based on IdP integration).
+
+Defaults to ["self"].`,
+						Optional:    true,
+						Computed:    true,
+						Default:     defaultRequestScopes,
+						ElementType: types.StringType,
+					},
+					"grantees": schema.SingleNestedAttribute{
+						Description: "Applicable only when \"others\" is included in request_scope. Defines the set of users or attributes who can be selected as recipients of the access.",
+						Optional:    true,
+						Attributes: map[string]schema.Attribute{
+							"logical_operator": schema.StringAttribute{
+								Description: `Specifies the logical operator to be used between the grantees in the list. Possible values: "AND" or "OR".`,
+								Required:    true,
+							},
+							"conditions": schema.ListNestedAttribute{
+								Description:  "List of conditions. Cannot be empty.",
+								Required:     true,
+								NestedObject: getIdentityConditionSchema(IdentityConditionSchemaTypeGrantee),
+							},
+						},
 					},
 				},
 			},
@@ -209,25 +249,25 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				Required:    true,
 				Attributes: map[string]schema.Attribute{
 					"justification_required": schema.BoolAttribute{
-						Description: "Require justification from requestor. Defaults to true. Must be set to false for automatic access flows.",
+						Description: "Require justification from requestor. Defaults to true. Must be set to false for automatic access flows. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
 						Computed:    true,
 					},
 					"require_approver_reason": schema.BoolAttribute{
-						Description: "Require reason from approver. Defaults to false.",
+						Description: "Require reason from approver. Defaults to false. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
 						Computed:    true,
 					},
 					"requester_cannot_approve_self": schema.BoolAttribute{
-						Description: "Requester cannot approve their own requests. Defaults to false.",
+						Description: "Requester cannot approve their own requests. Defaults to false. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
 						Computed:    true,
 					},
 					"require_mfa": schema.BoolAttribute{
-						Description: "Require MFA at approval time. Defaults to false.",
+						Description: "Require MFA at approval time. Defaults to false. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
 						Computed:    true,

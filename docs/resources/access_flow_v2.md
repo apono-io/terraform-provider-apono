@@ -333,16 +333,19 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
 
 - `access_targets` (Attributes List) Define the targets accessible when requesting access via this access flow. (see [below for nested schema](#nestedatt--access_targets))
 - `name` (String) Human-readable name for the access flow, must be unique.
-- `requestors` (Attributes) Defines who can request access. (see [below for nested schema](#nestedatt--requestors))
+- `requestors` (Attributes) List of users who can request access, based on identity attributes (e.g., users, groups, or shifts) and the conditions under which they can request access.
+In self-serve access flows, requestors specify who is allowed to submit an access request.
+In automatic access flows, requestors specify who will automatically receive access when conditions are met (equivalent to "grantees" in the UI). (see [below for nested schema](#nestedatt--requestors))
 - `settings` (Attributes) Settings for the access flow. (see [below for nested schema](#nestedatt--settings))
 - `trigger` (String) The trigger type for the access flow. Possible values: SELF_SERVE, AUTOMATIC.
 
 ### Optional
 
 - `active` (Boolean) Whether the access flow is active. Defaults to true.
-- `approver_policy` (Attributes) Approval policy for the access request. (see [below for nested schema](#nestedatt--approver_policy))
+- `approver_policy` (Attributes) Approval policy for the access request. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--approver_policy))
 - `grant_duration_in_min` (Number) How long access is granted, in minutes. If not specified, the grant duration defaults to indefinite.
-- `timeframe` (Attributes) Restrict when access can be granted. (see [below for nested schema](#nestedatt--timeframe))
+- `request_for` (Attributes) Defines who the access request can be made for. This enables support to request on behalf of other users, groups, or identities. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--request_for))
+- `timeframe` (Attributes) Restrict when access can be granted. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--timeframe))
 
 ### Read-Only
 
@@ -432,11 +435,11 @@ For the user attribute specifically, you may also use the user’s email.
 
 Optional:
 
-- `justification_required` (Boolean) Require justification from requestor. Defaults to true. Must be set to false for automatic access flows.
+- `justification_required` (Boolean) Require justification from requestor. Defaults to true. Must be set to false for automatic access flows. Only applicable in self-serve access flows (trigger = "SELF_SERVE").
 - `labels` (Set of String) Custom labels for organizational use.
-- `requester_cannot_approve_self` (Boolean) Requester cannot approve their own requests. Defaults to false.
-- `require_approver_reason` (Boolean) Require reason from approver. Defaults to false.
-- `require_mfa` (Boolean) Require MFA at approval time. Defaults to false.
+- `requester_cannot_approve_self` (Boolean) Requester cannot approve their own requests. Defaults to false. Only applicable in self-serve access flows (trigger = "SELF_SERVE").
+- `require_approver_reason` (Boolean) Require reason from approver. Defaults to false. Only applicable in self-serve access flows (trigger = "SELF_SERVE").
+- `require_mfa` (Boolean) Require MFA at approval time. Defaults to false. Only applicable in self-serve access flows (trigger = "SELF_SERVE").
 
 
 <a id="nestedatt--approver_policy"></a>
@@ -470,6 +473,45 @@ Note: When using is or is_not with any type, you can specify either the source I
 For the user attribute specifically, you may also use the user’s email.
 - `source_integration_name` (String) Applies when the identity type stems from a Context or IDP integration.
 - `values` (List of String) Approver values according to the attribute type and match_operator (e.g., user email, group IDs, etc).
+
+
+
+
+<a id="nestedatt--request_for"></a>
+### Nested Schema for `request_for`
+
+Optional:
+
+- `grantees` (Attributes) Applicable only when "others" is included in request_scope. Defines the set of users or attributes who can be selected as recipients of the access. (see [below for nested schema](#nestedatt--request_for--grantees))
+- `request_scopes` (Set of String) Specifies who the request can be made for. Supported values:
+1. "self" - The user making the request (default behavior).
+2. "others" - Specific individuals specified manually.
+3. "direct_reports" - Allows the requestor, identified as a manager in the organization's identity provider (IdP), to request access for individuals formally assigned as direct reports in the IdP (based on IdP integration).
+
+Defaults to ["self"].
+
+<a id="nestedatt--request_for--grantees"></a>
+### Nested Schema for `request_for.grantees`
+
+Required:
+
+- `conditions` (Attributes List) List of conditions. Cannot be empty. (see [below for nested schema](#nestedatt--request_for--grantees--conditions))
+- `logical_operator` (String) Specifies the logical operator to be used between the grantees in the list. Possible values: "AND" or "OR".
+
+<a id="nestedatt--request_for--grantees--conditions"></a>
+### Nested Schema for `request_for.grantees.conditions`
+
+Required:
+
+- `type` (String) Identity type (e.g., user, group, etc.)
+
+Optional:
+
+- `match_operator` (String) Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
+Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
+For the user attribute specifically, you may also use the user’s email.
+- `source_integration_name` (String) The integration the user/group is from.
+- `values` (List of String) List of values according to the attribute type and match_operator (e.g., user emails, group IDs, etc.).
 
 
 

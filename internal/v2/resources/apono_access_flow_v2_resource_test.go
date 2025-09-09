@@ -14,6 +14,7 @@ import (
 func TestAccAponoAccessFlowV2Resource(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-test")
 	resourceName := "apono_access_flow_v2.test"
+	resourceNameWithRequestFor := "apono_access_flow_v2.test_with_request_for"
 	updatedJustificationRequired := false
 
 	integrationType := common.MockDuck
@@ -25,12 +26,13 @@ func TestAccAponoAccessFlowV2Resource(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get users: %v", err)
 	}
-	if len(users) == 0 {
-		t.Fatalf("no users found for test")
+	if len(users) < 2 {
+		t.Fatalf("need at least 2 users for test, found %d", len(users))
 	}
 	userEmail := users[0].Email
+	granteeEmail := users[1].Email
 
-	testAccAponoAccessFlowV2Config := func(name string, justificationRequired bool, userEmail string) string {
+	testAccAponoAccessFlowV2Config := func(name string, justificationRequired bool, userEmail, granteeEmail string) string {
 		return fmt.Sprintf(`
 resource "apono_resource_integration" "test" {
   name                    = "%s-integration"
@@ -91,7 +93,57 @@ resource "apono_access_flow_v2" "test" {
     labels = ["test", "example"]
   }
 }
-`, name, integrationType, connectorID, resourceType, name, userEmail, resourceType, resourceType, resourceType, justificationRequired)
+
+resource "apono_access_flow_v2" "test_with_request_for" {
+  name = "%s-with-request-for"
+  trigger = "SELF_SERVE"
+  active = true
+
+  requestors = {
+    logical_operator = "OR"
+    conditions = [
+      {
+        type = "user"
+        values = ["%s"]
+      }
+    ]
+  }
+
+  request_for = {
+    request_scopes = ["self", "others"]
+    grantees = {
+      logical_operator = "OR"
+      conditions = [
+        {
+          type = "user"
+          values = ["%s"]
+        }
+      ]
+    }
+  }
+
+  access_targets = [
+    {
+      integration = {
+        name = apono_resource_integration.test.name
+        integration_name = apono_resource_integration.test.name
+        resources = [
+          {
+            type = "%s"
+            resource_type = "%s"
+            identifier = "example-db"
+            permissions = ["read"]
+          }
+        ]
+        permissions = ["read"]
+        resource_type = "%s"
+      }
+    }
+  ]
+
+  settings = {}
+}
+`, name, integrationType, connectorID, resourceType, name, userEmail, resourceType, resourceType, resourceType, justificationRequired, name, userEmail, granteeEmail, resourceType, resourceType, resourceType)
 	}
 
 	resource.Test(t, resource.TestCase{
@@ -99,7 +151,7 @@ resource "apono_access_flow_v2" "test" {
 		ProtoV6ProviderFactories: testprovider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAponoAccessFlowV2Config(rName, true, userEmail),
+				Config: testAccAponoAccessFlowV2Config(rName, true, userEmail, granteeEmail),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
@@ -109,10 +161,16 @@ resource "apono_access_flow_v2" "test" {
 					resource.TestCheckResourceAttr(resourceName, "access_targets.#", "1"),
 					resource.TestCheckResourceAttr(resourceName, "settings.justification_required", "true"),
 					resource.TestCheckResourceAttr(resourceName, "settings.labels.#", "2"),
+					// Check second resource with request_for
+					resource.TestCheckResourceAttrSet(resourceNameWithRequestFor, "id"),
+					resource.TestCheckResourceAttr(resourceNameWithRequestFor, "name", rName+"-with-request-for"),
+					resource.TestCheckResourceAttr(resourceNameWithRequestFor, "request_for.request_scopes.#", "2"),
+					resource.TestCheckResourceAttr(resourceNameWithRequestFor, "request_for.grantees.logical_operator", "OR"),
+					resource.TestCheckResourceAttr(resourceNameWithRequestFor, "request_for.grantees.conditions.#", "1"),
 				),
 			},
 			{
-				Config: testAccAponoAccessFlowV2Config(rName, updatedJustificationRequired, userEmail),
+				Config: testAccAponoAccessFlowV2Config(rName, updatedJustificationRequired, userEmail, granteeEmail),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),

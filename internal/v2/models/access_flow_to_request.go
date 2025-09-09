@@ -53,6 +53,14 @@ func AccessFlowModelToUpsertRequest(ctx context.Context, model AccessFlowV2Model
 
 	upsert.Requestors = *requestors
 
+	if model.RequestFor != nil {
+		requestFor, err := convertRequestForToUpsertRequest(ctx, *model.RequestFor)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert request_for: %w", err)
+		}
+		upsert.RequestFor.SetTo(*requestFor)
+	}
+
 	targets, err := convertAccessTargetsToUpsertRequest(ctx, model.AccessTargets)
 	if err != nil {
 		return nil, fmt.Errorf("failed to convert access targets: %w", err)
@@ -295,4 +303,42 @@ func convertSettingsToUpsertRequest(ctx context.Context, model AccessFlowSetting
 	}
 
 	return &settings, nil
+}
+
+func convertRequestForToUpsertRequest(ctx context.Context, model AccessFlowRequestForModel) (*client.RequestForUpsertV2, error) {
+	requestFor := client.RequestForUpsertV2{}
+
+	var requestScopes []string
+	if diags := model.RequestScopes.ElementsAs(ctx, &requestScopes, false); diags.HasError() {
+		return nil, fmt.Errorf("failed to convert request_scopes: %v", diags)
+	}
+	requestFor.RequestScopes = requestScopes
+
+	if model.Grantees != nil {
+		grantees, err := convertGranteesToUpsertRequest(ctx, *model.Grantees)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert grantees: %w", err)
+		}
+		requestFor.Grantees.SetTo(*grantees)
+	}
+
+	return &requestFor, nil
+}
+
+func convertGranteesToUpsertRequest(ctx context.Context, model AccessFlowGranteesModel) (*client.GranteesUpsertV2, error) {
+	grantees := client.GranteesUpsertV2{
+		LogicalOperator: model.LogicalOperator.ValueString(),
+	}
+
+	var conditions []client.ConditionUpsertV2
+	for i, conditionModel := range model.Conditions {
+		condition, err := convertConditionToUpsertRequest(ctx, conditionModel)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert grantee condition at index %d: %w", i, err)
+		}
+		conditions = append(conditions, *condition)
+	}
+	grantees.Conditions = conditions
+
+	return &grantees, nil
 }

@@ -50,6 +50,14 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowV2
 	}
 	model.Requestors = requestors
 
+	if val, ok := response.RequestFor.Get(); ok {
+		requestFor, err := convertRequestForToModel(ctx, val)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert request_for: %w", err)
+		}
+		model.RequestFor = requestFor
+	}
+
 	accessTargets, err := convertAccessTargetsToModel(ctx, response.AccessTargets)
 	if err != nil {
 		return nil, fmt.Errorf("failed to convert access targets: %w", err)
@@ -256,6 +264,44 @@ func convertSettingsToModel(ctx context.Context, settings client.AccessFlowSetti
 	} else {
 		model.Labels = basetypes.NewSetNull(types.StringType)
 	}
+
+	return model, nil
+}
+
+func convertRequestForToModel(ctx context.Context, requestFor client.RequestForV2) (*AccessFlowRequestForModel, error) {
+	model := &AccessFlowRequestForModel{}
+
+	requestScopesSet, diags := types.SetValueFrom(ctx, types.StringType, requestFor.RequestScopes)
+	if diags.HasError() {
+		return nil, fmt.Errorf("failed to convert request_scopes: %v", diags)
+	}
+	model.RequestScopes = requestScopesSet
+
+	if val, ok := requestFor.Grantees.Get(); ok {
+		grantees, err := convertGranteesToModel(ctx, val)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert grantees: %w", err)
+		}
+		model.Grantees = grantees
+	}
+
+	return model, nil
+}
+
+func convertGranteesToModel(ctx context.Context, grantees client.GranteesV2) (*AccessFlowGranteesModel, error) {
+	model := &AccessFlowGranteesModel{
+		LogicalOperator: types.StringValue(grantees.LogicalOperator),
+	}
+
+	var conditions []AccessFlowCondition
+	for _, condition := range grantees.Conditions {
+		conditionModel, err := convertConditionToModel(ctx, condition)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert grantee condition: %w", err)
+		}
+		conditions = append(conditions, *conditionModel)
+	}
+	model.Conditions = conditions
 
 	return model, nil
 }
