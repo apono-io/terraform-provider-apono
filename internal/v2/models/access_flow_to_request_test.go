@@ -88,7 +88,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 						SourceIntegrationName: types.StringValue("Google Oauth"),
 						Type:                  types.StringValue("user"),
 						MatchOperator:         types.StringValue("is"),
-						Values:                testcommon.CreateTestStringList(t, []string{"tzlil.a@apono.io"}),
+						Values:                testcommon.CreateTestStringList(t, []string{"user1@example.com"}),
 					},
 				},
 			},
@@ -192,7 +192,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	assert.Equal(t, "is", matchOp)
 	values, ok = grantees.Conditions[0].Values.Get()
 	require.True(t, ok)
-	assert.ElementsMatch(t, []string{"tzlil.a@apono.io"}, values)
+	assert.ElementsMatch(t, []string{"user1@example.com"}, values)
 }
 
 func TestAccessFlowV2ModelToUpsertRequestNullValues(t *testing.T) {

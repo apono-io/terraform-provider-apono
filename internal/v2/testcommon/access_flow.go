@@ -54,7 +54,7 @@ func GenerateAccessFlowResponse() *client.AccessFlowV2 {
 	}
 	grantees.Conditions[0].SourceIntegrationName.SetTo("Google Oauth")
 	grantees.Conditions[0].MatchOperator.SetTo("is")
-	grantees.Conditions[0].Values.SetTo([]string{"tzlil.a@apono.io"})
+	grantees.Conditions[0].Values.SetTo([]string{"user1@example.com"})
 	requestFor.Grantees.SetTo(grantees)
 	response.RequestFor.SetTo(requestFor)
 

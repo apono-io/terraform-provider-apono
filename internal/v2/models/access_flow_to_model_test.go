@@ -58,7 +58,7 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	}
 	grantees.Conditions[0].SourceIntegrationName.SetTo("Google Oauth")
 	grantees.Conditions[0].MatchOperator.SetTo("is")
-	grantees.Conditions[0].Values.SetTo([]string{"tzlil.a@apono.io"})
+	grantees.Conditions[0].Values.SetTo([]string{"user1@example.com"})
 	requestFor.Grantees.SetTo(grantees)
 	response.RequestFor.SetTo(requestFor)
 
@@ -211,7 +211,7 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	var granteeValues []string
 	diags = model.RequestFor.Grantees.Conditions[0].Values.ElementsAs(ctx, &granteeValues, false)
 	require.False(t, diags.HasError())
-	assert.ElementsMatch(t, []string{"tzlil.a@apono.io"}, granteeValues)
+	assert.ElementsMatch(t, []string{"user1@example.com"}, granteeValues)
 }
 
 func TestAccessFlowResponseToModelMinimalFields(t *testing.T) {
