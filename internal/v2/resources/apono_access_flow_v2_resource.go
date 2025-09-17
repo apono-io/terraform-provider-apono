@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
@@ -251,8 +252,11 @@ Defaults to ["self"].`,
 					"justification_required": schema.BoolAttribute{
 						Description: "Require justification from requestor. Defaults to true. Must be set to false for automatic access flows. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
 						Computed:    true,
+						PlanModifiers: []planmodifier.Bool{
+							// Automatic access flows always have justification_required = false
+							boolplanmodifier.UseStateForUnknown(),
+						},
 					},
 					"require_approver_reason": schema.BoolAttribute{
 						Description: "Require reason from approver. Defaults to false. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
