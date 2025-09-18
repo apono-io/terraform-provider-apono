@@ -226,7 +226,7 @@ Defaults to ["self"].`,
 				},
 			},
 			"access_targets": schema.ListNestedAttribute{
-				Description: "Define the targets accessible when requesting access via this access flow.",
+				Description: "Define the targets accessible when requesting access via this access flow. Access scopes are the recommended way to manage dynamic access flows. They update automatically during Apono’s hourly sync to include new resources and define reusable boundaries that adapt to changes, reducing maintenance overhead.",
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -254,7 +254,8 @@ Defaults to ["self"].`,
 						Optional:    true,
 						Computed:    true,
 						PlanModifiers: []planmodifier.Bool{
-							// Automatic access flows always have justification_required = false
+							// Automatic access flows must have justification_required = false.
+							// If the plan value is unknown, use the value returned by the API.
 							boolplanmodifier.UseStateForUnknown(),
 						},
 					},

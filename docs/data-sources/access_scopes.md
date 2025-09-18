@@ -43,7 +43,7 @@ By specifying a wildcard pattern `*Production*`, all access scopes with a name t
 
 ### Optional
 
-- `name` (String) Filters the returned access scopes by their name. Partial matching is supported with asterisks for contains, starts with, and ends with.
+- `name` (String) Filters the returned access scopes by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. Matching is case-insensitive.
 
 ### Read-Only
 

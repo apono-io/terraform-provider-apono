@@ -71,8 +71,113 @@ resource "apono_access_flow_v2" "aws_auto_grant_flow" {
     }
   ]
 
+  settings = {}
+}
+```
+
+### Auto-approved Access Flow for on-call OpsGenie responders
+
+Auto-approved Access Flow for on-call OpsGenie responders to request access on behalf of the R&D group.
+
+```terraform
+resource "apono_access_flow_v2" "oncall_request_for_rnd" {
+  name                  = "On-Call request for R&D group"
+  active                = true
+  grant_duration_in_min = 30
+  trigger               = "SELF_SERVE"
+
+  requestors = {
+    logical_operator = "OR"
+    conditions = [
+      {
+        type                    = "opsgenie_schedule"
+        source_integration_name = "Opsgenie"
+        match_operator          = "contains"
+        values                  = ["night_shift"]
+      }
+    ]
+  }
+
+  request_for = {
+    request_scopes = ["self", "others"]
+    grantees = {
+      logical_operator = "OR"
+      conditions = [
+        {
+          type                    = "group"
+          match_operator          = "contains"
+          source_integration_name = "Google Oauth"
+          values                  = ["RND_TEAM"]
+        }
+      ]
+    }
+  }
+
+  access_targets = [
+    {
+      bundle = {
+        name = data.apono_bundles.critical_prod_db_bundle.bundles[0].name
+      }
+    },
+    {
+      access_scope = {
+        name = data.apono_access_scopes.production_db.access_scopes[0].name
+      }
+    }
+  ]
+
   settings = {
-    justification_required = false
+    justification_required        = true
+    requester_cannot_approve_self = true
+    require_mfa                   = false
+    labels                        = ["bundle_access", "scope_reference"]
+  }
+}
+```
+
+### Access Flow for Managers to Request Access on Behalf of Their Direct Reports
+
+This access flow allows **only those members of the specified group who are identified as managers** (based on identity provider) to request access **on behalf of their direct reports**. The manager-report relationship must be defined in the identity provider integration. Users in the group who are not managers will not be able to request access for others.
+
+```terraform
+resource "apono_access_flow_v2" "managers_request_for_employees" {
+  name                  = "Sensitive Access to Production AWS"
+  active                = true
+  grant_duration_in_min = 60
+  trigger               = "SELF_SERVE"
+
+  requestors = {
+    logical_operator = "OR"
+    conditions = [
+      {
+        type                    = "group"
+        match_operator          = "contains"
+        source_integration_name = "Google Oauth"
+        values                  = ["All Company"]
+      }
+    ]
+  }
+
+  request_for = {
+    request_scopes = ["direct_reports"]
+  }
+
+  access_targets = [
+    {
+      integration = {
+        integration_name = "Azure Subscription Integration"
+        resource_type    = "azure-subscription-sql-server"
+        permissions      = ["Contributor"]
+      }
+    }
+  ]
+
+  settings = {
+    justification_required        = true
+    require_approver_reason       = false
+    requester_cannot_approve_self = false
+    require_mfa                   = true
+    labels                        = ["created_from_terraform"]
   }
 }
 ```
@@ -331,7 +436,7 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
 
 ### Required
 
-- `access_targets` (Attributes List) Define the targets accessible when requesting access via this access flow. (see [below for nested schema](#nestedatt--access_targets))
+- `access_targets` (Attributes List) Define the targets accessible when requesting access via this access flow. Access scopes are the recommended way to manage dynamic access flows. They update automatically during Apono’s hourly sync to include new resources and define reusable boundaries that adapt to changes, reducing maintenance overhead. (see [below for nested schema](#nestedatt--access_targets))
 - `name` (String) Human-readable name for the access flow, must be unique.
 - `requestors` (Attributes) List of users who can request access, based on identity attributes (e.g., users, groups, or shifts) and the conditions under which they can request access.
 In self-serve access flows, requestors specify who is allowed to submit an access request.

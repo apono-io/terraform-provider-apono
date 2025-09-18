@@ -35,7 +35,7 @@ func GetOwnerSchema(mode SchemaMode) schema.SingleNestedAttribute {
 					if mode == DataSourceMode {
 						return "List of assigned owner values."
 					}
-					return "List of values for the ownership assignment."
+					return "List of values for the ownership assignment based on the chosen attribute_type. For most attribute types (e.g., \"group\"), you must provide the source ID of the entity, which is retrieved from the source integration (e.g., the group ID from Okta). For the \"user\" attribute type, you may alternatively use the user's email address."
 				}(),
 				ElementType: types.StringType,
 				Required:    fieldsRequired,

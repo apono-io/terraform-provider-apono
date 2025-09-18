@@ -32,11 +32,11 @@ func (d *AponoGroupsDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 		Description: "Retrieves existing groups, Apono-managed and IDP-managed groups. Use this data source to reference groups in the Access Flow resource.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "Filters the returned groups by their name. Partial matching is supported with asterisks for contains, starts with, and ends with.",
+				Description: "Filters the returned groups by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. Matching is case-insensitive.",
 				Optional:    true,
 			},
 			"source_integration": schema.StringAttribute{
-				Description: "Filters the returned groups by their name or IDs. Partial matching is supported for names with asterisks for contains, starts with, and ends with.",
+				Description: "Filters the returned groups by their name or IDs. Partial matching is supported for names with asterisks for contains, starts with, and ends with. Matching is case-insensitive.",
 				Optional:    true,
 			},
 			"groups": schema.ListNestedAttribute{

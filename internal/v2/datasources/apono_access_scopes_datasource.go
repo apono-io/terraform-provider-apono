@@ -37,7 +37,7 @@ func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.Sch
 		Description: "Retrieves existing Apono Access Scopes. This data source can be used to feed existing access scopes into the Access Flow resource.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "Filters the returned access scopes by their name. Partial matching is supported with asterisks for contains, starts with, and ends with.",
+				Description: "Filters the returned access scopes by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. Matching is case-insensitive.",
 				Optional:    true,
 			},
 			"access_scopes": schema.ListNestedAttribute{

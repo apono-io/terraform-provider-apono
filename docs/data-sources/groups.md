@@ -42,8 +42,8 @@ Example usage of [`dev_teams`](../resources/access_flow_v2.md#bundle-and-access-
 
 ### Optional
 
-- `name` (String) Filters the returned groups by their name. Partial matching is supported with asterisks for contains, starts with, and ends with.
-- `source_integration` (String) Filters the returned groups by their name or IDs. Partial matching is supported for names with asterisks for contains, starts with, and ends with.
+- `name` (String) Filters the returned groups by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. Matching is case-insensitive.
+- `source_integration` (String) Filters the returned groups by their name or IDs. Partial matching is supported for names with asterisks for contains, starts with, and ends with. Matching is case-insensitive.
 
 ### Read-Only
 

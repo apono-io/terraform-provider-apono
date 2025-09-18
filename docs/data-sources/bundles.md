@@ -26,7 +26,7 @@ Example usage of [`critical_prod_db_bundle`](../resources/access_flow_v2.md#bund
 
 ### Optional
 
-- `name` (String) Filter by bundle name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "prod*").
+- `name` (String) Filter by bundle name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "prod*"). Matching is case-insensitive.
 
 ### Read-Only
 

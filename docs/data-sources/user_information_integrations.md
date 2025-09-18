@@ -40,8 +40,8 @@ Example usage of [`google_oauth_idp`](../resources/access_flow_v2.md#access-to-s
 
 ### Optional
 
-- `name` (String) Filters the returned integrations by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "Google\*").
-- `type` (String) Filters the returned integrations by their type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "\*duty\*").
+- `name` (String) Filters the returned integrations by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "Google\*"). Matching is case-insensitive.
+- `type` (String) Filters the returned integrations by their type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "\*duty\*"). Matching is case-insensitive.
 
 ### Read-Only
 

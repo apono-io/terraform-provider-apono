@@ -34,15 +34,15 @@ func (d *ResourceIntegrationsDataSource) Schema(ctx context.Context, req datasou
 		Description: "Retrieves a set of resource integrations based on filters such as connector ID, integration name, and type. This data source is typically used to query and reference existing integrations in the Access Flow resource.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: `Filter by integration name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "DB Prod*").`,
+				Description: `Filter by integration name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "DB Prod*"). Matching is case-insensitive.`,
 				Optional:    true,
 			},
 			"type": schema.StringAttribute{
-				Description: `Filter by Apono integration type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "\*duty\*", "aws-*").`,
+				Description: `Filter by Apono integration type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "\*duty\*", "aws-*"). Matching is case-insensitive.`,
 				Optional:    true,
 			},
 			"connector_id": schema.StringAttribute{
-				Description: "Filter by the ID of the connector used to connect the integration.",
+				Description: "Filter by the ID of the connector used to connect the integration. Matching is case-insensitive.",
 				Optional:    true,
 			},
 			"integrations": schema.ListNestedAttribute{

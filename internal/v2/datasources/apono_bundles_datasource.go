@@ -33,7 +33,7 @@ func (d *AponoBundlesDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 		Description: "Retrieves a list of existing Apono Bundles. This data source is typically used to reference bundle definitions within Access Flow resources. You can filter bundles by name using exact or wildcard matching.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: `Filter by bundle name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "prod*").`,
+				Description: `Filter by bundle name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "prod*"). Matching is case-insensitive.`,
 				Optional:    true,
 			},
 			"bundles": schema.ListNestedAttribute{

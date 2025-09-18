@@ -36,9 +36,9 @@ Example usage of [`aws_staging_integrations`](../resources/access_flow_v2.md#int
 
 ### Optional
 
-- `connector_id` (String) Filter by the ID of the connector used to connect the integration.
-- `name` (String) Filter by integration name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "DB Prod*").
-- `type` (String) Filter by Apono integration type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "\*duty\*", "aws-*").
+- `connector_id` (String) Filter by the ID of the connector used to connect the integration. Matching is case-insensitive.
+- `name` (String) Filter by integration name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "DB Prod*"). Matching is case-insensitive.
+- `type` (String) Filter by Apono integration type. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "\*duty\*", "aws-*"). Matching is case-insensitive.
 
 ### Read-Only
 
