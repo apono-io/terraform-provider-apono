@@ -114,7 +114,7 @@ resource "apono_resource_integration" "gcp_sql_integration" {
 Required:
 
 - `attribute_type` (String) Type of the owner attribute (e.g., user, group).
-- `attribute_values` (List of String) List of values for the ownership assignment.
+- `attribute_values` (List of String) List of values for the ownership assignment based on the chosen attribute_type. For most attribute types (e.g., "group"), you must provide the source ID of the entity, which is retrieved from the source integration (e.g., the group ID from Okta). For the "user" attribute type, you may alternatively use the user's email address.
 
 Optional:
 

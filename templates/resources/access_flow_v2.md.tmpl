@@ -19,6 +19,18 @@ description: |-
 
 {{ tffile "examples/resources/apono_access_flow_v2/automatic-approval.tf" }}
 
+### Auto-approved Access Flow for on-call OpsGenie responders
+
+Auto-approved Access Flow for on-call OpsGenie responders to request access on behalf of the R&D group.
+
+{{ tffile "examples/resources/apono_access_flow_v2/oncall_request_for_rnd.tf" }}
+
+### Access Flow for Managers to Request Access on Behalf of Their Direct Reports
+
+This access flow allows **only those members of the specified group who are identified as managers** (based on identity provider) to request access **on behalf of their direct reports**. The manager-report relationship must be defined in the identity provider integration. Users in the group who are not managers will not be able to request access for others.
+
+{{ tffile "examples/resources/apono_access_flow_v2/managers_request_for_employees.tf" }}
+
 ### Access to Sensitive Production for Users via Google Oauth IDP  
 
 {{ tffile "examples/resources/apono_access_flow_v2/sensitive-production.tf" }}

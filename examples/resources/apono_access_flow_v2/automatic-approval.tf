@@ -23,7 +23,5 @@ resource "apono_access_flow_v2" "aws_auto_grant_flow" {
     }
   ]
 
-  settings = {
-    justification_required = false
-  }
+  settings = {}
 }

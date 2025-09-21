@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
@@ -225,7 +226,7 @@ Defaults to ["self"].`,
 				},
 			},
 			"access_targets": schema.ListNestedAttribute{
-				Description: "Define the targets accessible when requesting access via this access flow.",
+				Description: "Define the targets accessible when requesting access via this access flow. Access scopes are the recommended way to manage dynamic access flows. They update automatically during Apono’s hourly sync to include new resources and define reusable boundaries that adapt to changes, reducing maintenance overhead.",
 				Required:    true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -251,8 +252,12 @@ Defaults to ["self"].`,
 					"justification_required": schema.BoolAttribute{
 						Description: "Require justification from requestor. Defaults to true. Must be set to false for automatic access flows. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
 						Computed:    true,
+						PlanModifiers: []planmodifier.Bool{
+							// Automatic access flows must have justification_required = false.
+							// If the plan value is unknown, use the value returned by the API.
+							boolplanmodifier.UseStateForUnknown(),
+						},
 					},
 					"require_approver_reason": schema.BoolAttribute{
 						Description: "Require reason from approver. Defaults to false. Only applicable in self-serve access flows (trigger = \"SELF_SERVE\").",
