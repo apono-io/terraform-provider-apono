@@ -523,7 +523,7 @@ Required:
 
 Required:
 
-- `type` (String) Identity type (e.g., user, group, manager, Owner etc.). Run [this](https://docs.apono.io/api-reference/discovering-identity-attribute-types)  discovery script to retrieve the list of supported attribute types for your account. Values are case sensitive.
+- `type` (String) Identity type (e.g., user, group, manager, Owner etc.). Run [this](https://docs.apono.io/api-reference/discovering-identity-attribute-types) discovery script to retrieve the list of supported attribute types for your account. Values are case sensitive.
 
 Optional:
 
@@ -608,7 +608,7 @@ Required:
 
 Required:
 
-- `type` (String) Identity type (e.g., user, group, manager, Owner etc.). Run [this](https://docs.apono.io/api-reference/discovering-identity-attribute-types)  discovery script to retrieve the list of supported attribute types for your account. Values are case sensitive.
+- `type` (String) Identity type (e.g., user, group, manager, Owner etc.). Run [this](https://docs.apono.io/api-reference/discovering-identity-attribute-types) discovery script to retrieve the list of supported attribute types for your account. Values are case sensitive.
 
 Optional:
 
