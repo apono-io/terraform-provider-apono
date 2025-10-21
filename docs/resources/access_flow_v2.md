@@ -523,13 +523,13 @@ Required:
 
 Required:
 
-- `type` (String) Identity type (e.g., user, group, etc.)
+- `type` (String) Identity type (e.g., user, group, manager, Owner etc.). Run [this](https://docs.apono.io/api-reference/discovering-identity-attribute-types)  discovery script to retrieve the list of supported attribute types for your account. Values are case sensitive.
 
 Optional:
 
 - `match_operator` (String) Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
 Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
-For the user attribute specifically, you may also use the user’s email.
+For the user attribute specifically, you may also use the user's email.
 - `source_integration_name` (String) The integration the user/group is from.
 - `values` (List of String) List of values according to the attribute type and match_operator (e.g., user emails, group IDs, etc.).
 
@@ -569,13 +569,13 @@ Required:
 Required:
 
 - `type` (String) Approver identity type - user, group, Owner, manager, Context Integration, or any other custom value.
-Note: The Owner value must be capitalized (with an uppercase “O”).
+Run [this discovery script](https://docs.apono.io/api-reference/discovering-identity-attribute-types) to retrieve the list of supported attribute types for your account. Values are case sensitive.
 
 Optional:
 
 - `match_operator` (String) Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
 Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
-For the user attribute specifically, you may also use the user’s email.
+For the user attribute specifically, you may also use the user's email.
 - `source_integration_name` (String) Applies when the identity type stems from a Context or IDP integration.
 - `values` (List of String) Approver values according to the attribute type and match_operator (e.g., user email, group IDs, etc).
 
@@ -608,13 +608,13 @@ Required:
 
 Required:
 
-- `type` (String) Identity type (e.g., user, group, etc.)
+- `type` (String) Identity type (e.g., user, group, manager, Owner etc.). Run [this](https://docs.apono.io/api-reference/discovering-identity-attribute-types)  discovery script to retrieve the list of supported attribute types for your account. Values are case sensitive.
 
 Optional:
 
 - `match_operator` (String) Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
 Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
-For the user attribute specifically, you may also use the user’s email.
+For the user attribute specifically, you may also use the user's email.
 - `source_integration_name` (String) The integration the user/group is from.
 - `values` (List of String) List of values according to the attribute type and match_operator (e.g., user emails, group IDs, etc.).
 

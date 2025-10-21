@@ -9,7 +9,6 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/go-faster/jx"
-
 	"github.com/ogen-go/ogen/ogenerrors"
 	"github.com/ogen-go/ogen/validate"
 )
@@ -20,7 +19,7 @@ func decodeAddGroupMemberV1Response(resp *http.Response) (res *AddGroupMemberV1N
 		// Code 204.
 		return &AddGroupMemberV1NoContent{}, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeCreateAccessFlowV2Response(resp *http.Response) (res *AccessFlowV2, _ error) {
@@ -70,7 +69,7 @@ func decodeCreateAccessFlowV2Response(resp *http.Response) (res *AccessFlowV2, _
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeCreateAccessScopesV1Response(resp *http.Response) (res *AccessScopeV1, _ error) {
@@ -111,7 +110,7 @@ func decodeCreateAccessScopesV1Response(resp *http.Response) (res *AccessScopeV1
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeCreateBundleV2Response(resp *http.Response) (res *BundleV2, _ error) {
@@ -161,7 +160,7 @@ func decodeCreateBundleV2Response(resp *http.Response) (res *BundleV2, _ error) 
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeCreateGroupV1Response(resp *http.Response) (res *GroupV1, _ error) {
@@ -202,7 +201,7 @@ func decodeCreateGroupV1Response(resp *http.Response) (res *GroupV1, _ error) {
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeCreateIntegrationV4Response(resp *http.Response) (res *IntegrationV4, _ error) {
@@ -252,7 +251,7 @@ func decodeCreateIntegrationV4Response(resp *http.Response) (res *IntegrationV4,
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeDeleteAccessFlowV2Response(resp *http.Response) (res *DeleteAccessFlowV2NoContent, _ error) {
@@ -261,7 +260,7 @@ func decodeDeleteAccessFlowV2Response(resp *http.Response) (res *DeleteAccessFlo
 		// Code 204.
 		return &DeleteAccessFlowV2NoContent{}, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeDeleteAccessScopesV1Response(resp *http.Response) (res *DeleteAccessScopesV1NoContent, _ error) {
@@ -270,7 +269,7 @@ func decodeDeleteAccessScopesV1Response(resp *http.Response) (res *DeleteAccessS
 		// Code 204.
 		return &DeleteAccessScopesV1NoContent{}, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeDeleteBundleV2Response(resp *http.Response) (res *DeleteBundleV2NoContent, _ error) {
@@ -279,7 +278,7 @@ func decodeDeleteBundleV2Response(resp *http.Response) (res *DeleteBundleV2NoCon
 		// Code 204.
 		return &DeleteBundleV2NoContent{}, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeDeleteConnectorV3Response(resp *http.Response) (res *DeleteConnectorV3NoContent, _ error) {
@@ -288,7 +287,7 @@ func decodeDeleteConnectorV3Response(resp *http.Response) (res *DeleteConnectorV
 		// Code 204.
 		return &DeleteConnectorV3NoContent{}, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeDeleteGroupV1Response(resp *http.Response) (res *DeleteGroupV1NoContent, _ error) {
@@ -297,7 +296,7 @@ func decodeDeleteGroupV1Response(resp *http.Response) (res *DeleteGroupV1NoConte
 		// Code 204.
 		return &DeleteGroupV1NoContent{}, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeDeleteIntegrationV4Response(resp *http.Response) (res *DeleteIntegrationV4NoContent, _ error) {
@@ -306,7 +305,7 @@ func decodeDeleteIntegrationV4Response(resp *http.Response) (res *DeleteIntegrat
 		// Code 204.
 		return &DeleteIntegrationV4NoContent{}, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetAccessFlowV2Response(resp *http.Response) (res *AccessFlowV2, _ error) {
@@ -356,7 +355,7 @@ func decodeGetAccessFlowV2Response(resp *http.Response) (res *AccessFlowV2, _ er
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetAccessScopesV1Response(resp *http.Response) (res *AccessScopeV1, _ error) {
@@ -397,7 +396,7 @@ func decodeGetAccessScopesV1Response(resp *http.Response) (res *AccessScopeV1, _
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetBundleV2Response(resp *http.Response) (res *BundleV2, _ error) {
@@ -447,7 +446,7 @@ func decodeGetBundleV2Response(resp *http.Response) (res *BundleV2, _ error) {
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetConnectorV3Response(resp *http.Response) (res *ConnectorV3, _ error) {
@@ -497,7 +496,7 @@ func decodeGetConnectorV3Response(resp *http.Response) (res *ConnectorV3, _ erro
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetGroupV1Response(resp *http.Response) (res *GroupV1, _ error) {
@@ -538,7 +537,7 @@ func decodeGetGroupV1Response(resp *http.Response) (res *GroupV1, _ error) {
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetIntegrationsByIdV4Response(resp *http.Response) (res *IntegrationV4, _ error) {
@@ -588,7 +587,7 @@ func decodeGetIntegrationsByIdV4Response(resp *http.Response) (res *IntegrationV
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetUserResponse(resp *http.Response) (res *UserModel, _ error) {
@@ -629,7 +628,7 @@ func decodeGetUserResponse(resp *http.Response) (res *UserModel, _ error) {
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListAccessFlowsV2Response(resp *http.Response) (res *PublicApiListResponseAccessFlowPublicV2Model, _ error) {
@@ -679,7 +678,7 @@ func decodeListAccessFlowsV2Response(resp *http.Response) (res *PublicApiListRes
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListAccessScopesV1Response(resp *http.Response) (res *PublicApiListResponseAccessScopePublicV1Model, _ error) {
@@ -729,7 +728,7 @@ func decodeListAccessScopesV1Response(resp *http.Response) (res *PublicApiListRe
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListBundlesV2Response(resp *http.Response) (res *PublicApiListResponseBundlePublicV2Model, _ error) {
@@ -779,7 +778,7 @@ func decodeListBundlesV2Response(resp *http.Response) (res *PublicApiListRespons
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListConnectorsV3Response(resp *http.Response) (res *PublicApiListResponseConnectorPublicV3Model, _ error) {
@@ -829,7 +828,7 @@ func decodeListConnectorsV3Response(resp *http.Response) (res *PublicApiListResp
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListGroupMembersV1Response(resp *http.Response) (res *PublicApiListResponseGroupMemberPublicV1Model, _ error) {
@@ -879,7 +878,7 @@ func decodeListGroupMembersV1Response(resp *http.Response) (res *PublicApiListRe
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListGroupsV1Response(resp *http.Response) (res *PublicApiListResponseGroupPublicV1Model, _ error) {
@@ -929,7 +928,7 @@ func decodeListGroupsV1Response(resp *http.Response) (res *PublicApiListResponse
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListIntegrationsV4Response(resp *http.Response) (res *PublicApiListResponseIntegrationPublicV4Model, _ error) {
@@ -979,7 +978,7 @@ func decodeListIntegrationsV4Response(resp *http.Response) (res *PublicApiListRe
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListUsersResponse(resp *http.Response) (res *PaginatedResponseUserModel, _ error) {
@@ -1029,7 +1028,7 @@ func decodeListUsersResponse(resp *http.Response) (res *PaginatedResponseUserMod
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeRemoveGroupMemberV1Response(resp *http.Response) (res *RemoveGroupMemberV1NoContent, _ error) {
@@ -1038,7 +1037,7 @@ func decodeRemoveGroupMemberV1Response(resp *http.Response) (res *RemoveGroupMem
 		// Code 204.
 		return &RemoveGroupMemberV1NoContent{}, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeUpdateAccessFlowV2Response(resp *http.Response) (res *AccessFlowV2, _ error) {
@@ -1088,7 +1087,7 @@ func decodeUpdateAccessFlowV2Response(resp *http.Response) (res *AccessFlowV2, _
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeUpdateAccessScopesV1Response(resp *http.Response) (res *AccessScopeV1, _ error) {
@@ -1129,7 +1128,7 @@ func decodeUpdateAccessScopesV1Response(resp *http.Response) (res *AccessScopeV1
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeUpdateBundleV2Response(resp *http.Response) (res *BundleV2, _ error) {
@@ -1179,7 +1178,7 @@ func decodeUpdateBundleV2Response(resp *http.Response) (res *BundleV2, _ error) 
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeUpdateConnectorV3Response(resp *http.Response) (res *ConnectorV3, _ error) {
@@ -1229,7 +1228,7 @@ func decodeUpdateConnectorV3Response(resp *http.Response) (res *ConnectorV3, _ e
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeUpdateGroupMembersV1Response(resp *http.Response) (res *UpdateGroupMembersV1NoContent, _ error) {
@@ -1238,7 +1237,7 @@ func decodeUpdateGroupMembersV1Response(resp *http.Response) (res *UpdateGroupMe
 		// Code 204.
 		return &UpdateGroupMembersV1NoContent{}, nil
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeUpdateGroupV1Response(resp *http.Response) (res *GroupV1, _ error) {
@@ -1279,7 +1278,7 @@ func decodeUpdateGroupV1Response(resp *http.Response) (res *GroupV1, _ error) {
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeUpdateIntegrationV4Response(resp *http.Response) (res *IntegrationV4, _ error) {
@@ -1329,5 +1328,5 @@ func decodeUpdateIntegrationV4Response(resp *http.Response) (res *IntegrationV4,
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
