@@ -75,64 +75,64 @@ type GetUserParams struct {
 
 // ListAccessFlowsV2Params is parameters of listAccessFlowsV2 operation.
 type ListAccessFlowsV2Params struct {
-	Limit     OptInt32
-	PageToken OptNilString
+	Limit     OptInt32     `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
 }
 
 // ListAccessScopesV1Params is parameters of listAccessScopesV1 operation.
 type ListAccessScopesV1Params struct {
-	Limit OptInt32
+	Limit OptInt32 `json:",omitempty,omitzero"`
 	// Filter access scopes by name. Supports wildcard (*) for partial matches - use * for contains,
 	// prefix* for starts with, *suffix for ends with.
-	Name      OptNilString
-	PageToken OptNilString
+	Name      OptNilString `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
 }
 
 // ListBundlesV2Params is parameters of listBundlesV2 operation.
 type ListBundlesV2Params struct {
-	Limit OptInt32
+	Limit OptInt32 `json:",omitempty,omitzero"`
 	// Filter bundles by name. Supports wildcard (*) for partial matches - use * for contains, prefix*
 	// for starts with, *suffix for ends with.
-	Name      OptNilString
-	PageToken OptNilString
+	Name      OptNilString `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
 }
 
 // ListConnectorsV3Params is parameters of listConnectorsV3 operation.
 type ListConnectorsV3Params struct {
-	Limit     OptInt32
-	PageToken OptNilString
-	Status    OptNilStringArray
+	Limit     OptInt32          `json:",omitempty,omitzero"`
+	PageToken OptNilString      `json:",omitempty,omitzero"`
+	Status    OptNilStringArray `json:",omitempty,omitzero"`
 }
 
 // ListGroupMembersV1Params is parameters of listGroupMembersV1 operation.
 type ListGroupMembersV1Params struct {
 	ID        string
-	Limit     OptInt32
-	PageToken OptNilString
+	Limit     OptInt32     `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
 }
 
 // ListGroupsV1Params is parameters of listGroupsV1 operation.
 type ListGroupsV1Params struct {
-	Limit OptInt32
+	Limit OptInt32 `json:",omitempty,omitzero"`
 	// Filter groups by name. Supports wildcard (*) for partial matches - use * for contains, prefix* for
 	// starts with, *suffix for ends with.
-	Name      OptNilString
-	PageToken OptNilString
+	Name      OptNilString `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
 }
 
 // ListIntegrationsV4Params is parameters of listIntegrationsV4 operation.
 type ListIntegrationsV4Params struct {
-	Category    OptNilStringArray
-	ConnectorID OptNilStringArray
-	Limit       OptInt32
+	Category    OptNilStringArray `json:",omitempty,omitzero"`
+	ConnectorID OptNilStringArray `json:",omitempty,omitzero"`
+	Limit       OptInt32          `json:",omitempty,omitzero"`
 	// Filter integrations by name. Supports wildcard (*) for partial matches - use * for contains,
 	// prefix* for starts with, *suffix for ends with.
-	Name      OptNilString
-	PageToken OptNilString
-	Status    OptNilStringArray
+	Name      OptNilString      `json:",omitempty,omitzero"`
+	PageToken OptNilString      `json:",omitempty,omitzero"`
+	Status    OptNilStringArray `json:",omitempty,omitzero"`
 	// Filter integrations by type. Supports wildcard (*) for partial matches - use * for contains,
 	// prefix* for starts with, *suffix for ends with.
-	Type OptNilStringArray
+	Type OptNilStringArray `json:",omitempty,omitzero"`
 }
 
 // RemoveGroupMemberV1Params is parameters of removeGroupMemberV1 operation.

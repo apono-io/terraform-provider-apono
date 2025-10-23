@@ -58,19 +58,19 @@ func getIdentityConditionSchema(conditionType IdentityConditionSchemaType) schem
 
 	switch conditionType {
 	case IdentityConditionSchemaTypeApprover:
-		typeDescription = "Approver identity type - user, group, Owner, manager, Context Integration, or any other custom value.\nNote: The Owner value must be capitalized (with an uppercase “O”)."
+		typeDescription = "Approver identity type - user, group, Owner, manager, Context Integration, or any other custom value.\nRun [this discovery script](https://docs.apono.io/api-reference/discovering-identity-attribute-types) to retrieve the list of supported attribute types for your account. Values are case sensitive."
 		sourceIntegrationDescription = "Applies when the identity type stems from a Context or IDP integration."
 		valuesDescription = "Approver values according to the attribute type and match_operator (e.g., user email, group IDs, etc)."
 		matchOperatorDescription = `Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
 Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
-For the user attribute specifically, you may also use the user’s email.`
+For the user attribute specifically, you may also use the user's email.`
 	case IdentityConditionSchemaTypeRequestor, IdentityConditionSchemaTypeGrantee:
-		typeDescription = "Identity type (e.g., user, group, etc.)"
+		typeDescription = "Identity type (e.g., user, group, manager, Owner etc.). Run [this](https://docs.apono.io/api-reference/discovering-identity-attribute-types) discovery script to retrieve the list of supported attribute types for your account. Values are case sensitive."
 		sourceIntegrationDescription = "The integration the user/group is from."
 		valuesDescription = "List of values according to the attribute type and match_operator (e.g., user emails, group IDs, etc.)."
 		matchOperatorDescription = `Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
 Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
-For the user attribute specifically, you may also use the user’s email.`
+For the user attribute specifically, you may also use the user's email.`
 	}
 
 	return schema.NestedAttributeObject{
@@ -80,8 +80,8 @@ For the user attribute specifically, you may also use the user’s email.`
 				Optional:    true,
 			},
 			"type": schema.StringAttribute{
-				Description: typeDescription,
-				Required:    true,
+				MarkdownDescription: typeDescription,
+				Required:            true,
 			},
 			"match_operator": schema.StringAttribute{
 				Description: matchOperatorDescription,
