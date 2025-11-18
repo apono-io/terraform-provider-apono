@@ -7,7 +7,7 @@ toolchain go1.24.2
 require (
 	github.com/apono-io/apono-sdk-go v0.1.0-alpha9
 	github.com/go-faster/errors v0.7.1
-	github.com/go-faster/jx v1.1.0
+	github.com/go-faster/jx v1.2.0
 	github.com/google/uuid v1.6.0
 	github.com/hashicorp/terraform-plugin-docs v0.16.0
 	github.com/hashicorp/terraform-plugin-framework v1.16.1
