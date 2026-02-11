@@ -48,6 +48,8 @@ resource "apono_access_flow_v2" "sensitive_production_aws" {
     require_approver_reason       = false
     requester_cannot_approve_self = false
     require_mfa                   = true
+    max_extensions                = 0
+    extension_duration_in_min     = 0
     labels                        = ["created_from_terraform"]
   }
 }

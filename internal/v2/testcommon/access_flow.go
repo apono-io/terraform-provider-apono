@@ -19,6 +19,9 @@ func GenerateAccessFlowResponse() *client.AccessFlowV2 {
 		},
 	}
 
+	response.Settings.MaxExtensions.SetTo(int32(0))
+	response.Settings.ExtensionDurationInMin.SetTo(int32(0))
+
 	response.GrantDurationInMin.SetTo(int32(60))
 
 	timeframe := client.AccessFlowTimeframeV2{

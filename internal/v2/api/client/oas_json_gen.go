@@ -206,14 +206,28 @@ func (s *AccessFlowSettingsV2) encodeFields(e *jx.Encoder) {
 		}
 		e.ArrEnd()
 	}
+	{
+		if s.MaxExtensions.Set {
+			e.FieldStart("max_extensions")
+			s.MaxExtensions.Encode(e)
+		}
+	}
+	{
+		if s.ExtensionDurationInMin.Set {
+			e.FieldStart("extension_duration_in_min")
+			s.ExtensionDurationInMin.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfAccessFlowSettingsV2 = [5]string{
+var jsonFieldsNameOfAccessFlowSettingsV2 = [7]string{
 	0: "justification_required",
 	1: "require_approver_reason",
 	2: "requestor_cannot_approve_himself",
 	3: "require_mfa",
 	4: "labels",
+	5: "max_extensions",
+	6: "extension_duration_in_min",
 }
 
 // Decode decodes AccessFlowSettingsV2 from json.
@@ -292,6 +306,26 @@ func (s *AccessFlowSettingsV2) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"labels\"")
+			}
+		case "max_extensions":
+			if err := func() error {
+				s.MaxExtensions.Reset()
+				if err := s.MaxExtensions.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"max_extensions\"")
+			}
+		case "extension_duration_in_min":
+			if err := func() error {
+				s.ExtensionDurationInMin.Reset()
+				if err := s.ExtensionDurationInMin.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"extension_duration_in_min\"")
 			}
 		default:
 			return d.Skip()
@@ -10816,14 +10850,21 @@ func (s *UpsertSecretStoreConfigV4) encodeFields(e *jx.Encoder) {
 			s.HashicorpVault.Encode(e)
 		}
 	}
+	{
+		if s.Apono.Set {
+			e.FieldStart("apono")
+			s.Apono.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfUpsertSecretStoreConfigV4 = [5]string{
+var jsonFieldsNameOfUpsertSecretStoreConfigV4 = [6]string{
 	0: "aws",
 	1: "gcp",
 	2: "kubernetes",
 	3: "azure",
 	4: "hashicorp_vault",
+	5: "apono",
 }
 
 // Decode decodes UpsertSecretStoreConfigV4 from json.
@@ -10883,6 +10924,16 @@ func (s *UpsertSecretStoreConfigV4) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"hashicorp_vault\"")
+			}
+		case "apono":
+			if err := func() error {
+				s.Apono.Reset()
+				if err := s.Apono.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"apono\"")
 			}
 		default:
 			return d.Skip()

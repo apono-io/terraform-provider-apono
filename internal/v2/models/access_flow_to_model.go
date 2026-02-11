@@ -265,6 +265,14 @@ func convertSettingsToModel(ctx context.Context, settings client.AccessFlowSetti
 		model.Labels = basetypes.NewSetNull(types.StringType)
 	}
 
+	if val, ok := settings.MaxExtensions.Get(); ok {
+		model.MaxExtensions = types.Int32Value(val)
+	}
+
+	if val, ok := settings.ExtensionDurationInMin.Get(); ok {
+		model.ExtensionDurationInMin = types.Int32Value(val)
+	}
+
 	return model, nil
 }
 

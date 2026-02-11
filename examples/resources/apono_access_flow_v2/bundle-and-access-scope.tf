@@ -60,6 +60,8 @@ resource "apono_access_flow_v2" "bundle_access_scope_flow" {
     justification_required        = true
     requester_cannot_approve_self = true
     require_mfa                   = false
+    max_extensions                = 0
+    extension_duration_in_min     = 0
     labels                        = ["bundle_access", "scope_reference"]
   }
 }

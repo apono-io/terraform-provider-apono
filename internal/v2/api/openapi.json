@@ -35,6 +35,12 @@
       "name": "Activity"
     },
     {
+      "name": "Activity Reports"
+    },
+    {
+      "name": "Attributes"
+    },
+    {
       "name": "Available Access"
     },
     {
@@ -42,6 +48,9 @@
     },
     {
       "name": "Connectors"
+    },
+    {
+      "name": "Delegated Access Requests"
     },
     {
       "name": "Groups"
@@ -57,6 +66,248 @@
     }
   ],
   "paths": {
+    "/api/admin/v1/activity-reports": {
+      "get": {
+        "tags": [
+          "Activity Reports"
+        ],
+        "summary": "List Activity Reports",
+        "operationId": "listActivityReports",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "default": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The name of the report. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiListResponseActivityReportPublicV1Model"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Activity Reports"
+        ],
+        "summary": "Create Activity Report",
+        "operationId": "createActivityReport",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityReportUpsertPublicV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityReportPublicV1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1/activity-reports/{id}": {
+      "get": {
+        "tags": [
+          "Activity Reports"
+        ],
+        "summary": "Get Activity Report",
+        "operationId": "getActivityReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityReportPublicV1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Activity Reports"
+        ],
+        "summary": "Update Activity Report",
+        "operationId": "updateActivityReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityReportUpsertPublicV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityReportPublicV1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Activity Reports"
+        ],
+        "summary": "Delete Activity Report",
+        "operationId": "deleteActivityReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1/attributes": {
+      "get": {
+        "tags": [
+          "Attributes"
+        ],
+        "summary": "List Attributes",
+        "operationId": "listAttributesV1",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "default": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Free text to search values of attributes. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "source_integration_reference",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiListResponseAttributePublicV1Model"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/admin/v1/groups": {
       "get": {
         "tags": [
@@ -1491,7 +1742,7 @@
     "/api/user/v1/delegated-access-requests": {
       "get": {
         "tags": [
-          "Access Requests"
+          "Delegated Access Requests"
         ],
         "summary": "List Delegated Access Requests",
         "operationId": "listDelegatedAccessRequestsV1",
@@ -1552,9 +1803,9 @@
     "/api/user/v1/delegated-access-requests/{id}": {
       "get": {
         "tags": [
-          "Access Requests"
+          "Delegated Access Requests"
         ],
-        "summary": "Get Access Request",
+        "summary": "Get Delegated Access Request",
         "operationId": "getDelegatedAccessRequestsV1",
         "parameters": [
           {
@@ -1585,7 +1836,7 @@
         "tags": [
           "Access Requests"
         ],
-        "summary": "List Access Requests",
+        "summary": "List My Access Requests",
         "operationId": "listAccessRequestsV4",
         "parameters": [
           {
@@ -1677,7 +1928,7 @@
         "tags": [
           "Access Requests"
         ],
-        "summary": "Get Access Request",
+        "summary": "Get My Access Request",
         "operationId": "getAccessRequestsV4",
         "parameters": [
           {
@@ -2824,6 +3075,28 @@
             }
           },
           {
+            "name": "filter[access_flow_id]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          },
+          {
+            "name": "filter[access_request_id]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          },
+          {
             "name": "filter[integration_id]",
             "in": "query",
             "schema": {
@@ -3412,6 +3685,28 @@
   },
   "components": {
     "schemas": {
+      "AbsoluteTimeFrameV1": {
+        "required": [
+          "start_date",
+          "end_date"
+        ],
+        "description": "Defines a fixed date range using explicit ISO 8601 timestamps in UTC.",
+        "type": "object",
+        "properties": {
+          "start_date": {
+            "format": "date-time",
+            "description": "The start date of the time range to include in the report, in ISO 8601 format",
+            "type": "string",
+            "example": "2022-03-10T16:15:50Z"
+          },
+          "end_date": {
+            "format": "date-time",
+            "description": "The end date of the time range to include in the report, in ISO 8601 format",
+            "type": "string",
+            "example": "2022-03-10T16:15:50Z"
+          }
+        }
+      },
       "AccessBundleAccessTargetUpsertV2": {
         "description": "Resource integration or access scope included in the bundle with defined permissions",
         "type": "object",
@@ -3536,6 +3831,18 @@
             "items": {
               "type": "string"
             }
+          },
+          "max_extensions": {
+            "format": "int32",
+            "description": "Maximum number of times a user can extend the access duration. Set to 0 to disable extensions",
+            "type": "integer",
+            "nullable": true
+          },
+          "extension_duration_in_min": {
+            "format": "int32",
+            "description": "Amount of time in minutes added for each access extension, defaults to 0. Only applies when maxExtensions is 1 or more",
+            "type": "integer",
+            "nullable": true
           }
         }
       },
@@ -4322,6 +4629,113 @@
           "access_flow": {
             "type": "string",
             "nullable": true
+          },
+          "extension_count": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ActivityReportPublicV1": {
+        "required": [
+          "id",
+          "name",
+          "filters",
+          "timeframe",
+          "creation_date",
+          "update_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the report.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Display name of the report. Must be unique.",
+            "type": "string"
+          },
+          "fields": {
+            "description": "\n        List of fields to include in the report. Possible values: \n        request_id, request_date, request_grant_date, request_revoke_date, requestor_name, \n        requestor_email, grantee_name, grantee_id, grantee_type, integration, resources, resource_type, \n        permissions, approver_names, approver_emails, approver_types, \n        justification, status, approver_reason, resources_status, trigger_type, access_flow, bundle_name, extension_count.\n    ",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "filters": {
+            "$ref": "#/components/schemas/FiltersPublicV1"
+          },
+          "timeframe": {
+            "$ref": "#/components/schemas/TimeFramePublicV1"
+          },
+          "schedule": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SchedulePublicV1"
+              }
+            ],
+            "nullable": true
+          },
+          "format": {
+            "description": "Format of the report. Possible values: csv, pdf. Default is csv",
+            "type": "string",
+            "nullable": true
+          },
+          "creation_date": {
+            "format": "date-time",
+            "description": "Timestamp when the report was created, in ISO 8601 format",
+            "type": "string",
+            "example": "2022-03-10T16:15:50Z"
+          },
+          "update_date": {
+            "format": "date-time",
+            "description": "Timestamp when the report was last updated, in ISO 8601 format",
+            "type": "string",
+            "example": "2022-03-10T16:15:50Z"
+          }
+        }
+      },
+      "ActivityReportUpsertPublicV1": {
+        "required": [
+          "name",
+          "filters",
+          "timeframe"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Display name of the report. Must be unique.",
+            "type": "string"
+          },
+          "fields": {
+            "description": "\n        List of fields to include in the report. Possible values: \n        request_id, request_date, request_grant_date, request_revoke_date, requestor_name, \n        requestor_email, grantee_name, grantee_id, grantee_type, integration, resources, resource_type, \n        permissions, approver_names, approver_emails, approver_types, \n        justification, status, approver_reason, resources_status, trigger_type, access_flow, bundle_name, extension_count.\n    ",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "filters": {
+            "$ref": "#/components/schemas/FiltersPublicV1"
+          },
+          "timeframe": {
+            "$ref": "#/components/schemas/TimeFramePublicV1"
+          },
+          "schedule": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SchedulePublicV1"
+              }
+            ],
+            "nullable": true
+          },
+          "format": {
+            "description": "Format of the report. Possible values: csv, pdf. Default is csv",
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4334,11 +4748,11 @@
         "required": [
           "parameters"
         ],
-        "description": "Connector credentials not protected by a secret manager and not recommended for production use",
+        "description": "The Apono’s secret store used to store your connector credentials for the desired integration resources. **Using the Apono secret store option is not recommended.**",
         "type": "object",
         "properties": {
           "parameters": {
-            "description": "Username and password values supplied directly for the connector to authenticate with the integration",
+            "description": "The keys and values in this map vary by integration type. Using the Apono secret store option is not recommended.",
             "type": "object",
             "additionalProperties": {
               "type": "string"
@@ -4442,6 +4856,38 @@
           }
         }
       },
+      "AttributePublicV1": {
+        "required": [
+          "type",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The unique identifier of an attribute",
+            "type": "string"
+          },
+          "value": {
+            "description": "The value of the attribute",
+            "type": "string"
+          },
+          "source_id": {
+            "description": "Identifier of the attribute in the source integration providing the attribute",
+            "type": "string",
+            "nullable": true
+          },
+          "source_integration_id": {
+            "description": "Unique identifier of the identity platform integration providing attribute data",
+            "type": "string",
+            "nullable": true
+          },
+          "source_integration_name": {
+            "description": "Display name of the identity platform integration providing attribute data",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "AvailableBundleV1": {
         "required": [
           "id",
@@ -4507,7 +4953,7 @@
           "vault_url",
           "name"
         ],
-        "description": "AWS Secrets Manager reference for the connector credentials",
+        "description": "Azure Key Vault reference for the connector credentials",
         "type": "object",
         "properties": {
           "vault_url": {
@@ -5272,12 +5718,88 @@
           }
         }
       },
+      "FiltersPublicV1": {
+        "description": "Conditions to narrow down which activity events are included in the report.",
+        "type": "object",
+        "properties": {
+          "requestor_source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "grantee_source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "grantee_identity_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "integration_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "permission_names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "resource_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "resource_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "statuses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "trigger_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "access_flow_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        }
+      },
       "GcpSecretConfigV4": {
         "required": [
           "project",
           "secret_id"
         ],
-        "description": "AWS Secrets Manager reference for the connector credentials",
+        "description": "Google Secret Manager reference for the connector credentials",
         "type": "object",
         "properties": {
           "project": {
@@ -5448,7 +5970,7 @@
           "secret_engine",
           "path"
         ],
-        "description": "AWS Secrets Manager reference for the connector credentials",
+        "description": "HashiCorp Vault reference for the connector credentials",
         "type": "object",
         "properties": {
           "secret_engine": {
@@ -5928,7 +6450,7 @@
           "namespace",
           "name"
         ],
-        "description": "AWS Secrets Manager reference for the connector credentials",
+        "description": "Kubernetes Secret Manager reference for the connector credentials",
         "type": "object",
         "properties": {
           "namespace": {
@@ -6394,6 +6916,42 @@
           }
         }
       },
+      "PublicApiListResponseActivityReportPublicV1Model": {
+        "required": [
+          "items",
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActivityReportPublicV1"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PublicApiPaginationInfoModel"
+          }
+        }
+      },
+      "PublicApiListResponseAttributePublicV1Model": {
+        "required": [
+          "items",
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttributePublicV1"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PublicApiPaginationInfoModel"
+          }
+        }
+      },
       "PublicApiListResponseAvailableBundlePublicV1Model": {
         "required": [
           "items",
@@ -6577,6 +7135,30 @@
           }
         }
       },
+      "RelativeTimeFrameV1": {
+        "required": [
+          "last",
+          "unit",
+          "rounded"
+        ],
+        "description": "Defines a dynamic time window based on a relative offset from the current date and time.",
+        "type": "object",
+        "properties": {
+          "last": {
+            "format": "int32",
+            "description": "The number of time units to look back. Must be a positive integer.",
+            "type": "integer"
+          },
+          "unit": {
+            "description": "The unit of time to apply. Supported values: hour, day, month.",
+            "type": "string"
+          },
+          "rounded": {
+            "description": "If true, rounds the timeframe to the start of the chosen unit. For example, if unit is day and the current time is 14:45, the report will start from 00:00 today. Defaults to false",
+            "type": "boolean"
+          }
+        }
+      },
       "ReportField": {
         "enum": [
           "request_id",
@@ -6601,7 +7183,8 @@
           "resources_status",
           "trigger_type",
           "access_flow",
-          "bundle_name"
+          "bundle_name",
+          "extension_count"
         ],
         "type": "string"
       },
@@ -6858,6 +7441,27 @@
           }
         }
       },
+      "SchedulePublicV1": {
+        "required": [
+          "cron_expression",
+          "recipients"
+        ],
+        "description": "Defines how and when the report is automatically generated and delivered.",
+        "type": "object",
+        "properties": {
+          "cron_expression": {
+            "description": "\n        CRON expression that specifies the schedule for generating the report.\n        E.g. \"0 9 * * 1-5\" will run at 09:00 each day between Monday and Friday. \n    ",
+            "type": "string"
+          },
+          "recipients": {
+            "description": "List of email addresses that will receive the report output",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "SecretConfig": {
         "type": "object"
       },
@@ -7000,6 +7604,30 @@
           },
           "value": {
             "type": "string"
+          }
+        }
+      },
+      "TimeFramePublicV1": {
+        "description": "Specifies the time range for the report data. Exactly one of absolute or relative must be provided.",
+        "type": "object",
+        "properties": {
+          "absolute": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AbsoluteTimeFrameV1"
+              }
+            ],
+            "nullable": true
+          },
+          "relative": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeTimeFrameV1"
+              }
+            ],
+            "nullable": true
           }
         }
       },
@@ -7477,6 +8105,15 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/HashicorpVaultSecretConfigV4"
+              }
+            ],
+            "nullable": true
+          },
+          "apono": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AponoSecretConfigV4"
               }
             ],
             "nullable": true

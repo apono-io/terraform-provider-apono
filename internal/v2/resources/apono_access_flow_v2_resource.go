@@ -8,16 +8,19 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int32validator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int32default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -281,6 +284,24 @@ Defaults to ["self"].`,
 						Description: "Custom labels for organizational use.",
 						Optional:    true,
 						ElementType: types.StringType,
+					},
+					"max_extensions": schema.Int32Attribute{
+						Description: "Maximum number of times a user can extend the access duration. Set to 0 to disable extensions. Defaults to 0.",
+						Optional:    true,
+						Computed:    true,
+						Default:     int32default.StaticInt32(0),
+						Validators: []validator.Int32{
+							int32validator.AtLeast(0),
+						},
+					},
+					"extension_duration_in_min": schema.Int32Attribute{
+						Description: "Amount of time in minutes added for each access extension. Only applies when max_extensions is 1 or more. Defaults to 0.",
+						Optional:    true,
+						Computed:    true,
+						Default:     int32default.StaticInt32(0),
+						Validators: []validator.Int32{
+							int32validator.AtLeast(0),
+						},
 					},
 				},
 			},

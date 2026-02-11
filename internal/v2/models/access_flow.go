@@ -46,11 +46,13 @@ type AccessFlowRequestorsModel struct {
 }
 
 type AccessFlowSettingsModel struct {
-	JustificationRequired      types.Bool `tfsdk:"justification_required"`
-	RequireApproverReason      types.Bool `tfsdk:"require_approver_reason"`
-	RequesterCannotApproveSelf types.Bool `tfsdk:"requester_cannot_approve_self"`
-	RequireMFA                 types.Bool `tfsdk:"require_mfa"`
-	Labels                     types.Set  `tfsdk:"labels"`
+	JustificationRequired      types.Bool  `tfsdk:"justification_required"`
+	RequireApproverReason      types.Bool  `tfsdk:"require_approver_reason"`
+	RequesterCannotApproveSelf types.Bool  `tfsdk:"requester_cannot_approve_self"`
+	RequireMFA                 types.Bool  `tfsdk:"require_mfa"`
+	Labels                     types.Set   `tfsdk:"labels"`
+	MaxExtensions              types.Int32 `tfsdk:"max_extensions"`
+	ExtensionDurationInMin     types.Int32 `tfsdk:"extension_duration_in_min"`
 }
 
 type AccessFlowTargetBundleModel struct {
