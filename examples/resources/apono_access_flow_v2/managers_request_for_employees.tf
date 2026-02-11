@@ -35,6 +35,8 @@ resource "apono_access_flow_v2" "managers_request_for_employees" {
     require_approver_reason       = false
     requester_cannot_approve_self = false
     require_mfa                   = true
+    max_extensions                = 0
+    extension_duration_in_min     = 0
     labels                        = ["created_from_terraform"]
   }
 }

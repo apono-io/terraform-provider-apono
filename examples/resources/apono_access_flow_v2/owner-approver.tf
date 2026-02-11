@@ -43,6 +43,8 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
     justification_required        = true
     requester_cannot_approve_self = true
     require_mfa                   = true
+    max_extensions                = 0
+    extension_duration_in_min     = 0
     labels                        = ["created_from_terraform"]
   }
 }

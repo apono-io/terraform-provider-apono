@@ -20,30 +20,30 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
         with:
           go-version-file: 'go.mod'
           cache: true
       - run: go mod download
       - run: go build -v .
       - name: Run linters
-        uses: golangci/golangci-lint-action@v8
+        uses: golangci/golangci-lint-action@v9
         with:
-          version: "v2.1"
+          version: "v2.9"
 
   generate:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
         with:
           go-version-file: 'go.mod'
           cache: true
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.11.4"
+          terraform_version: "1.14.4"
       - run: go mod download
       - name: Install mockery
         run: go install github.com/vektra/mockery/v2@latest
@@ -63,12 +63,12 @@ jobs:
       fail-fast: false
       matrix:
         terraform:
-          - '1.11.*'
-          - '1.6.*'
+          - '1.14.*'
+          - '1.7.*'
           - '1.1.*'
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
         with:
           go-version-file: 'go.mod'
           cache: true
@@ -88,8 +88,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ matrix.terraform }}

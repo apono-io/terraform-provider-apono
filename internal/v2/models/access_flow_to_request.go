@@ -302,6 +302,9 @@ func convertSettingsToUpsertRequest(ctx context.Context, model AccessFlowSetting
 		settings.Labels = []string{}
 	}
 
+	settings.MaxExtensions.SetTo(model.MaxExtensions.ValueInt32())
+	settings.ExtensionDurationInMin.SetTo(model.ExtensionDurationInMin.ValueInt32())
+
 	return &settings, nil
 }
 

@@ -80,6 +80,11 @@ type AccessFlowSettingsV2 struct {
 	RequireMfa bool `json:"require_mfa"`
 	// Additional tags (typically indicating environment) used to filter the access flow.
 	Labels []string `json:"labels"`
+	// Maximum number of times a user can extend the access duration. Set to 0 to disable extensions.
+	MaxExtensions OptNilInt32 `json:"max_extensions"`
+	// Amount of time in minutes added for each access extension, defaults to 0. Only applies when
+	// maxExtensions is 1 or more.
+	ExtensionDurationInMin OptNilInt32 `json:"extension_duration_in_min"`
 }
 
 // GetJustificationRequired returns the value of JustificationRequired.
@@ -107,6 +112,16 @@ func (s *AccessFlowSettingsV2) GetLabels() []string {
 	return s.Labels
 }
 
+// GetMaxExtensions returns the value of MaxExtensions.
+func (s *AccessFlowSettingsV2) GetMaxExtensions() OptNilInt32 {
+	return s.MaxExtensions
+}
+
+// GetExtensionDurationInMin returns the value of ExtensionDurationInMin.
+func (s *AccessFlowSettingsV2) GetExtensionDurationInMin() OptNilInt32 {
+	return s.ExtensionDurationInMin
+}
+
 // SetJustificationRequired sets the value of JustificationRequired.
 func (s *AccessFlowSettingsV2) SetJustificationRequired(val bool) {
 	s.JustificationRequired = val
@@ -130,6 +145,16 @@ func (s *AccessFlowSettingsV2) SetRequireMfa(val bool) {
 // SetLabels sets the value of Labels.
 func (s *AccessFlowSettingsV2) SetLabels(val []string) {
 	s.Labels = val
+}
+
+// SetMaxExtensions sets the value of MaxExtensions.
+func (s *AccessFlowSettingsV2) SetMaxExtensions(val OptNilInt32) {
+	s.MaxExtensions = val
+}
+
+// SetExtensionDurationInMin sets the value of ExtensionDurationInMin.
+func (s *AccessFlowSettingsV2) SetExtensionDurationInMin(val OptNilInt32) {
+	s.ExtensionDurationInMin = val
 }
 
 // Period when access is granted to the user.
@@ -662,11 +687,12 @@ type AddGroupMemberV1NoContent struct{}
 
 type ApiInstant time.Time
 
-// Connector credentials not protected by a secret manager and not recommended for production use.
+// The Apono’s secret store used to store your connector credentials for the desired integration
+// resources. **Using the Apono secret store option is not recommended.**.
 // Ref: #/components/schemas/AponoSecretConfigV4
 type AponoSecretConfigV4 struct {
-	// Username and password values supplied directly for the connector to authenticate with the
-	// integration.
+	// The keys and values in this map vary by integration type. Using the Apono secret store option is
+	// not recommended.
 	Parameters AponoSecretConfigV4Parameters `json:"parameters"`
 }
 
@@ -680,8 +706,8 @@ func (s *AponoSecretConfigV4) SetParameters(val AponoSecretConfigV4Parameters) {
 	s.Parameters = val
 }
 
-// Username and password values supplied directly for the connector to authenticate with the
-// integration.
+// The keys and values in this map vary by integration type. Using the Apono secret store option is
+// not recommended.
 type AponoSecretConfigV4Parameters map[string]string
 
 func (s *AponoSecretConfigV4Parameters) init() AponoSecretConfigV4Parameters {
@@ -861,7 +887,7 @@ func (s *AwsSecretConfigV4) SetSecretID(val string) {
 	s.SecretID = val
 }
 
-// AWS Secrets Manager reference for the connector credentials.
+// Azure Key Vault reference for the connector credentials.
 // Ref: #/components/schemas/AzureSecretConfigV4
 type AzureSecretConfigV4 struct {
 	// URL of the Azure Key Vault instance containing the secret.
@@ -1677,7 +1703,7 @@ type DeleteGroupV1NoContent struct{}
 // DeleteIntegrationV4NoContent is response for DeleteIntegrationV4 operation.
 type DeleteIntegrationV4NoContent struct{}
 
-// AWS Secrets Manager reference for the connector credentials.
+// Google Secret Manager reference for the connector credentials.
 // Ref: #/components/schemas/GcpSecretConfigV4
 type GcpSecretConfigV4 struct {
 	// GCP project containing the secret.
@@ -1848,7 +1874,7 @@ func (s *GroupV1) SetSourceIntegrationName(val OptNilString) {
 	s.SourceIntegrationName = val
 }
 
-// AWS Secrets Manager reference for the connector credentials.
+// HashiCorp Vault reference for the connector credentials.
 // Ref: #/components/schemas/HashicorpVaultSecretConfigV4
 type HashicorpVaultSecretConfigV4 struct {
 	// Secret engine in HashiCorp Vault containing the secret.
@@ -2163,7 +2189,7 @@ func (s *JsonMapModel) init() JsonMapModel {
 	return m
 }
 
-// AWS Secrets Manager reference for the connector credentials.
+// Kubernetes Secret Manager reference for the connector credentials.
 // Ref: #/components/schemas/KubernetesSecretConfigV4
 type KubernetesSecretConfigV4 struct {
 	// Kubernetes namespace containing the secret.
@@ -5177,6 +5203,7 @@ type UpsertSecretStoreConfigV4 struct {
 	Kubernetes     OptNilKubernetesSecretConfigV4     `json:"kubernetes"`
 	Azure          OptNilAzureSecretConfigV4          `json:"azure"`
 	HashicorpVault OptNilHashicorpVaultSecretConfigV4 `json:"hashicorp_vault"`
+	Apono          OptNilAponoSecretConfigV4          `json:"apono"`
 }
 
 // GetAWS returns the value of AWS.
@@ -5204,6 +5231,11 @@ func (s *UpsertSecretStoreConfigV4) GetHashicorpVault() OptNilHashicorpVaultSecr
 	return s.HashicorpVault
 }
 
+// GetApono returns the value of Apono.
+func (s *UpsertSecretStoreConfigV4) GetApono() OptNilAponoSecretConfigV4 {
+	return s.Apono
+}
+
 // SetAWS sets the value of AWS.
 func (s *UpsertSecretStoreConfigV4) SetAWS(val OptNilAwsSecretConfigV4) {
 	s.AWS = val
@@ -5227,6 +5259,11 @@ func (s *UpsertSecretStoreConfigV4) SetAzure(val OptNilAzureSecretConfigV4) {
 // SetHashicorpVault sets the value of HashicorpVault.
 func (s *UpsertSecretStoreConfigV4) SetHashicorpVault(val OptNilHashicorpVaultSecretConfigV4) {
 	s.HashicorpVault = val
+}
+
+// SetApono sets the value of Apono.
+func (s *UpsertSecretStoreConfigV4) SetApono(val OptNilAponoSecretConfigV4) {
+	s.Apono = val
 }
 
 // Ref: #/components/schemas/UserModel

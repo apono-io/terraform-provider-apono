@@ -71,7 +71,7 @@ resource "apono_access_flow_v2" "aws_auto_grant_flow" {
     }
   ]
 
-  settings = {}
+  settings = {} // Default settings applied
 }
 ```
 
@@ -130,6 +130,8 @@ resource "apono_access_flow_v2" "oncall_request_for_rnd" {
     justification_required        = true
     requester_cannot_approve_self = true
     require_mfa                   = false
+    max_extensions                = 0
+    extension_duration_in_min     = 0
     labels                        = ["bundle_access", "scope_reference"]
   }
 }
@@ -177,6 +179,8 @@ resource "apono_access_flow_v2" "managers_request_for_employees" {
     require_approver_reason       = false
     requester_cannot_approve_self = false
     require_mfa                   = true
+    max_extensions                = 0
+    extension_duration_in_min     = 0
     labels                        = ["created_from_terraform"]
   }
 }
@@ -235,6 +239,8 @@ resource "apono_access_flow_v2" "sensitive_production_aws" {
     require_approver_reason       = false
     requester_cannot_approve_self = false
     require_mfa                   = true
+    max_extensions                = 0
+    extension_duration_in_min     = 0
     labels                        = ["created_from_terraform"]
   }
 }
@@ -303,6 +309,8 @@ resource "apono_access_flow_v2" "multiple_resources_flow" {
     justification_required        = true
     requester_cannot_approve_self = true
     require_mfa                   = true
+    max_extensions                = 0
+    extension_duration_in_min     = 0
     labels                        = ["multiple_resources", "azure_integration"]
   }
 }
@@ -373,6 +381,8 @@ resource "apono_access_flow_v2" "bundle_access_scope_flow" {
     justification_required        = true
     requester_cannot_approve_self = true
     require_mfa                   = false
+    max_extensions                = 0
+    extension_duration_in_min     = 0
     labels                        = ["bundle_access", "scope_reference"]
   }
 }
@@ -426,6 +436,8 @@ resource "apono_access_flow_v2" "owner_approver_flow" {
     justification_required        = true
     requester_cannot_approve_self = true
     require_mfa                   = true
+    max_extensions                = 0
+    extension_duration_in_min     = 0
     labels                        = ["created_from_terraform"]
   }
 }
@@ -540,8 +552,10 @@ For the user attribute specifically, you may also use the user's email.
 
 Optional:
 
+- `extension_duration_in_min` (Number) Amount of time in minutes added for each access extension. Only applies when max_extensions is 1 or more. Defaults to 0.
 - `justification_required` (Boolean) Require justification from requestor. Defaults to true. Must be set to false for automatic access flows. Only applicable in self-serve access flows (trigger = "SELF_SERVE").
 - `labels` (Set of String) Custom labels for organizational use.
+- `max_extensions` (Number) Maximum number of times a user can extend the access duration. Set to 0 to disable extensions. Defaults to 0.
 - `requester_cannot_approve_self` (Boolean) Requester cannot approve their own requests. Defaults to false. Only applicable in self-serve access flows (trigger = "SELF_SERVE").
 - `require_approver_reason` (Boolean) Require reason from approver. Defaults to false. Only applicable in self-serve access flows (trigger = "SELF_SERVE").
 - `require_mfa` (Boolean) Require MFA at approval time. Defaults to false. Only applicable in self-serve access flows (trigger = "SELF_SERVE").
