@@ -1,6 +1,6 @@
 module github.com/apono-io/terraform-provider-apono
 
-go 1.25
+go 1.25.0
 
 require (
 	github.com/apono-io/apono-sdk-go v0.1.0-alpha9
@@ -15,7 +15,7 @@ require (
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.38.2
 	github.com/hashicorp/terraform-plugin-testing v1.5.1
 	github.com/jarcoal/httpmock v1.4.1
-	github.com/ogen-go/ogen v1.18.0
+	github.com/ogen-go/ogen v1.20.1
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/exp v0.0.0-20260209203927-2842357ff358
 )
@@ -81,7 +81,7 @@ require (
 	go.uber.org/zap v1.27.1 // indirect
 	golang.org/x/crypto v0.48.0 // indirect
 	golang.org/x/mod v0.33.0 // indirect
-	golang.org/x/net v0.50.0 // indirect
+	golang.org/x/net v0.51.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.41.0 // indirect
 	golang.org/x/text v0.34.0 // indirect
