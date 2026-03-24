@@ -4,7 +4,9 @@ import "github.com/go-faster/jx"
 
 // StringToJx converts a string to a jx.Raw JSON representation.
 func StringToJx(s string) jx.Raw {
-	return jx.Raw("\"" + s + "\"")
+	var e jx.Encoder
+	e.Str(s)
+	return e.Bytes()
 }
 
 // JxToString converts a jx.Raw JSON representation to a string.
