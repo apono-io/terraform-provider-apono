@@ -66,6 +66,34 @@ func TestResourceIntegrationModelToCreateRequest(t *testing.T) {
 		assert.Equal(t, "postgres", dbVal.ValueString())
 	})
 
+	t.Run("with integration config containing JSON string value", func(t *testing.T) {
+		serversJSON := `[{ "name": "alpine-bastion", "host": "10.0.8.15", "user": "admin", "port": "2222" }]`
+		configMap := map[string]attr.Value{
+			"servers": types.StringValue(serversJSON),
+			"shell":   types.StringValue("/bin/bash"),
+		}
+		model := ResourceIntegrationModel{
+			Name: types.StringValue("ssh-integration"),
+			Type: types.StringValue("ssh"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("ssh-server"),
+			}),
+			IntegrationConfig: types.MapValueMust(types.StringType, configMap),
+		}
+
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
+
+		require.NoError(t, err)
+		assert.NotNil(t, req.IntegrationConfig)
+
+		// The servers value must be valid JSON when encoded
+		serversRaw := req.IntegrationConfig["servers"]
+		d := jx.DecodeStr(string(serversRaw))
+		decoded, err := d.Str()
+		require.NoError(t, err, "servers config value must produce valid JSON, got: %s", string(serversRaw))
+		assert.Equal(t, serversJSON, decoded)
+	})
+
 	t.Run("with AWS secret store config", func(t *testing.T) {
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("test-integration"),
@@ -630,6 +658,32 @@ func TestResourceIntegrationModelToUpdateRequest(t *testing.T) {
 		require.NoError(t, err)
 		assert.True(t, req.ConnectedResourceTypes.IsSet())
 		assert.Equal(t, []string{"table", "view"}, req.ConnectedResourceTypes.Value)
+	})
+
+	t.Run("with integration config containing JSON string value", func(t *testing.T) {
+		serversJSON := `[{ "name": "rhel-app", "host": "10.1.3.77" }]`
+		configMap := map[string]attr.Value{
+			"servers": types.StringValue(serversJSON),
+			"shell":   types.StringValue("/bin/zsh"),
+		}
+		model := ResourceIntegrationModel{
+			Name: types.StringValue("updated-ssh-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("ssh-server"),
+			}),
+			IntegrationConfig: types.MapValueMust(types.StringType, configMap),
+		}
+
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
+
+		require.NoError(t, err)
+		assert.NotNil(t, req.IntegrationConfig)
+
+		serversRaw := req.IntegrationConfig["servers"]
+		d := jx.DecodeStr(string(serversRaw))
+		decoded, err := d.Str()
+		require.NoError(t, err, "servers config value must produce valid JSON, got: %s", string(serversRaw))
+		assert.Equal(t, serversJSON, decoded)
 	})
 
 	t.Run("with AWS secret store config", func(t *testing.T) {
