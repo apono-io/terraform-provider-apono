@@ -53,6 +53,7 @@ resource "apono_resource_integration" "test" {
 
 resource "apono_access_flow_v2" "test" {
   name = "%s"
+  description = "test access flow description"
   trigger = "SELF_SERVE"
   active = true
 
@@ -155,6 +156,7 @@ resource "apono_access_flow_v2" "test_with_request_for" {
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
+					resource.TestCheckResourceAttr(resourceName, "description", "test access flow description"),
 					resource.TestCheckResourceAttr(resourceName, "trigger", "SELF_SERVE"),
 					resource.TestCheckResourceAttr(resourceName, "active", "true"),
 					resource.TestCheckResourceAttr(resourceName, "requestors.logical_operator", "OR"),

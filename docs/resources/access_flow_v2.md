@@ -460,6 +460,7 @@ In automatic access flows, requestors specify who will automatically receive acc
 
 - `active` (Boolean) Whether the access flow is active. Defaults to true.
 - `approver_policy` (Attributes) Approval policy for the access request. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--approver_policy))
+- `description` (String) Description of the access flow.
 - `grant_duration_in_min` (Number) How long access is granted, in minutes. If not specified, the grant duration defaults to indefinite.
 - `request_for` (Attributes) Defines who the access request can be made for. This enables support to request on behalf of other users, groups, or identities. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--request_for))
 - `timeframe` (Attributes) Restrict when access can be granted. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--timeframe))

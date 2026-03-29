@@ -31,13 +31,15 @@ func TestAccAponoAccessScopesDataSource(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(dataSourceNameExact, "access_scopes.#", "1"),
 					resource.TestCheckResourceAttr(dataSourceNameExact, "access_scopes.0.name", testcommon.PrefixedName(randomPrefix, rName1)),
+					resource.TestCheckResourceAttr(dataSourceNameExact, "access_scopes.0.description", "test description"),
 					resource.TestMatchResourceAttr(dataSourceNameExact, "access_scopes.0.query",
 						regexp.MustCompile(`(?s)^\s*integration = "5161d0f2-242d-42ee-92cb-8afd30caa0" and resource_type = "mock-duck"\s*$`)),
 					resource.TestCheckResourceAttrSet(dataSourceNameExact, "access_scopes.0.id"),
 
 					resource.TestCheckResourceAttr(dataSourceNameWildcard, "access_scopes.#", "2"),
 					resource.TestCheckTypeSetElemNestedAttrs(dataSourceNameWildcard, "access_scopes.*", map[string]string{
-						"name": testcommon.PrefixedName(randomPrefix, rName1),
+						"name":        testcommon.PrefixedName(randomPrefix, rName1),
+						"description": "test description",
 					}),
 					resource.TestCheckTypeSetElemNestedAttrs(dataSourceNameWildcard, "access_scopes.*", map[string]string{
 						"name": testcommon.PrefixedName(randomPrefix, rName2),
@@ -58,6 +60,7 @@ func testAccAponoAccessScopesDataSourceConfig(name1, name2, query, randomPrefix 
 	return `
 resource "apono_access_scope" "test1" {
   name  = "` + prefixedName1 + `"
+  description = "test description"
   query = <<EOT
   ` + query + `
   EOT

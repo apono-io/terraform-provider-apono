@@ -9,17 +9,24 @@ import (
 )
 
 type AccessScopeModel struct {
-	ID    types.String `tfsdk:"id"`
-	Name  types.String `tfsdk:"name"`
-	Query types.String `tfsdk:"query"`
+	ID          types.String `tfsdk:"id"`
+	Name        types.String `tfsdk:"name"`
+	Description types.String `tfsdk:"description"`
+	Query       types.String `tfsdk:"query"`
 }
 
 func AccessScopeToModel(accessScope *client.AccessScopeV1) *AccessScopeModel {
-	return &AccessScopeModel{
+	model := &AccessScopeModel{
 		ID:    types.StringValue(accessScope.ID),
 		Name:  types.StringValue(accessScope.Name),
 		Query: types.StringValue(accessScope.Query),
 	}
+
+	if val, ok := accessScope.Description.Get(); ok {
+		model.Description = types.StringValue(val)
+	}
+
+	return model
 }
 
 func AccessScopesToModels(apiScopes []client.AccessScopeV1) []AccessScopeModel {

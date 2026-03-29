@@ -14,6 +14,10 @@ func AccessFlowModelToUpsertRequest(ctx context.Context, model AccessFlowV2Model
 		Trigger: model.Trigger.ValueString(),
 	}
 
+	if !model.Description.IsNull() {
+		upsert.Description.SetTo(model.Description.ValueString())
+	}
+
 	if !model.GrantDurationInMin.IsNull() {
 		upsert.GrantDurationInMin.SetTo(model.GrantDurationInMin.ValueInt32())
 	}

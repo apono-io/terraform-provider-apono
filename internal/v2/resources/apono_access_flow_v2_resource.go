@@ -116,6 +116,10 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				Description: "Human-readable name for the access flow, must be unique.",
 				Required:    true,
 			},
+			"description": schema.StringAttribute{
+				Description: "Description of the access flow.",
+				Optional:    true,
+			},
 			"active": schema.BoolAttribute{
 				Description: "Whether the access flow is active. Defaults to true.",
 				Optional:    true,

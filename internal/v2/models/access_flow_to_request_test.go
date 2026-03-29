@@ -248,4 +248,5 @@ func TestAccessFlowV2ModelToUpsertRequestNullValues(t *testing.T) {
 	assert.Equal(t, "QA ENV", bundle.BundleReference)
 
 	assert.False(t, result.RequestFor.IsSet())
+	assert.False(t, result.Description.IsSet())
 }

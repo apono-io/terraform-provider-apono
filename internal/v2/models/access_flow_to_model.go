@@ -18,6 +18,10 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowV2
 		Trigger: types.StringValue(response.Trigger),
 	}
 
+	if val, ok := response.Description.Get(); ok {
+		model.Description = types.StringValue(val)
+	}
+
 	if val, ok := response.GrantDurationInMin.Get(); ok {
 		model.GrantDurationInMin = types.Int32Value(val)
 	}

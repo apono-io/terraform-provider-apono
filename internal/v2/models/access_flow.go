@@ -5,6 +5,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type AccessFlowV2Model struct {
 	ID                 types.String                  `tfsdk:"id"`
 	Name               types.String                  `tfsdk:"name"`
+	Description        types.String                  `tfsdk:"description"`
 	Active             types.Bool                    `tfsdk:"active"`
 	Trigger            types.String                  `tfsdk:"trigger"`
 	GrantDurationInMin types.Int32                   `tfsdk:"grant_duration_in_min"`
