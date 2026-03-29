@@ -23,9 +23,10 @@ func TestAponoAccessScopeResource(t *testing.T) {
 	getStateType := func() tftypes.Object {
 		return tftypes.Object{
 			AttributeTypes: map[string]tftypes.Type{
-				"id":    tftypes.String,
-				"name":  tftypes.String,
-				"query": tftypes.String,
+				"id":          tftypes.String,
+				"name":        tftypes.String,
+				"description": tftypes.String,
+				"query":       tftypes.String,
 			},
 		}
 	}
@@ -45,9 +46,10 @@ func TestAponoAccessScopeResource(t *testing.T) {
 		ctx := t.Context()
 		planType := getStateType()
 		planVal := tftypes.NewValue(planType, map[string]tftypes.Value{
-			"id":    tftypes.NewValue(tftypes.String, nil),
-			"name":  tftypes.NewValue(tftypes.String, "test-scope"),
-			"query": tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"id":          tftypes.NewValue(tftypes.String, nil),
+			"name":        tftypes.NewValue(tftypes.String, "test-scope"),
+			"description": tftypes.NewValue(tftypes.String, nil),
+			"query":       tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
 		})
 
 		schema := r.getTestSchema(ctx)
@@ -84,9 +86,10 @@ func TestAponoAccessScopeResource(t *testing.T) {
 		ctx := t.Context()
 		stateType := getStateType()
 		stateVal := tftypes.NewValue(stateType, map[string]tftypes.Value{
-			"id":    tftypes.NewValue(tftypes.String, "as-123456"),
-			"name":  tftypes.NewValue(tftypes.String, "old-name"),
-			"query": tftypes.NewValue(tftypes.String, `resource_type = "valid-resource"`),
+			"id":          tftypes.NewValue(tftypes.String, "as-123456"),
+			"name":        tftypes.NewValue(tftypes.String, "old-name"),
+			"description": tftypes.NewValue(tftypes.String, nil),
+			"query":       tftypes.NewValue(tftypes.String, `resource_type = "valid-resource"`),
 		})
 
 		schema := r.getTestSchema(ctx)
@@ -119,9 +122,10 @@ func TestAponoAccessScopeResource(t *testing.T) {
 		ctx := t.Context()
 		stateType := getStateType()
 		stateVal := tftypes.NewValue(stateType, map[string]tftypes.Value{
-			"id":    tftypes.NewValue(tftypes.String, "as-not-found"),
-			"name":  tftypes.NewValue(tftypes.String, "test-scope"),
-			"query": tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"id":          tftypes.NewValue(tftypes.String, "as-not-found"),
+			"name":        tftypes.NewValue(tftypes.String, "test-scope"),
+			"description": tftypes.NewValue(tftypes.String, nil),
+			"query":       tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
 		})
 
 		schema := r.getTestSchema(ctx)

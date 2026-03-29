@@ -54,6 +54,7 @@ By specifying a wildcard pattern `*Production*`, all access scopes with a name t
 
 Read-Only:
 
+- `description` (String) Description of the access scope.
 - `id` (String) The unique identifier of the Apono Access Scope.
 - `name` (String) The name of the Apono Access Scope.
 - `query` (String) The full query string that is used to define the access scope.

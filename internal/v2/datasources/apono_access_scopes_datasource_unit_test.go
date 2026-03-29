@@ -25,9 +25,10 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		return tftypes.List{
 			ElementType: tftypes.Object{
 				AttributeTypes: map[string]tftypes.Type{
-					"id":    tftypes.String,
-					"name":  tftypes.String,
-					"query": tftypes.String,
+					"id":          tftypes.String,
+					"name":        tftypes.String,
+					"description": tftypes.String,
+					"query":       tftypes.String,
 				},
 			},
 		}
@@ -46,9 +47,10 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		mockListResponse := &client.PublicApiListResponseAccessScopePublicV1Model{
 			Items: []client.AccessScopeV1{
 				{
-					ID:    "as-123456",
-					Name:  "test-scope-1",
-					Query: `resource_type = "mock-1"`,
+					ID:          "as-123456",
+					Name:        "test-scope-1",
+					Description: client.NewOptNilString("my description"),
+					Query:       `resource_type = "mock-1"`,
 				},
 				{
 					ID:    "as-789012",
@@ -99,10 +101,12 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 
 		assert.Equal(t, "as-123456", stateVal.AccessScopes[0].ID.ValueString())
 		assert.Equal(t, "test-scope-1", stateVal.AccessScopes[0].Name.ValueString())
+		assert.Equal(t, "my description", stateVal.AccessScopes[0].Description.ValueString())
 		assert.Equal(t, `resource_type = "mock-1"`, stateVal.AccessScopes[0].Query.ValueString())
 
 		assert.Equal(t, "as-789012", stateVal.AccessScopes[1].ID.ValueString())
 		assert.Equal(t, "test-scope-2", stateVal.AccessScopes[1].Name.ValueString())
+		assert.True(t, stateVal.AccessScopes[1].Description.IsNull())
 		assert.Equal(t, `resource_type = "mock-2"`, stateVal.AccessScopes[1].Query.ValueString())
 	})
 

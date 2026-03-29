@@ -214,6 +214,8 @@ func (s *AccessFlowTimeframeV2) SetTimeZone(val string) {
 type AccessFlowUpsertV2 struct {
 	// Display name of the access flow.
 	Name string `json:"name"`
+	// Description of the access flow.
+	Description OptNilString `json:"description"`
 	// Activity state of the access flow (active or inactive).
 	Active bool `json:"active"`
 	// Event or action that triggers the access flow.
@@ -232,6 +234,11 @@ type AccessFlowUpsertV2 struct {
 // GetName returns the value of Name.
 func (s *AccessFlowUpsertV2) GetName() string {
 	return s.Name
+}
+
+// GetDescription returns the value of Description.
+func (s *AccessFlowUpsertV2) GetDescription() OptNilString {
+	return s.Description
 }
 
 // GetActive returns the value of Active.
@@ -287,6 +294,11 @@ func (s *AccessFlowUpsertV2) GetRequestForOthers() bool {
 // SetName sets the value of Name.
 func (s *AccessFlowUpsertV2) SetName(val string) {
 	s.Name = val
+}
+
+// SetDescription sets the value of Description.
+func (s *AccessFlowUpsertV2) SetDescription(val OptNilString) {
+	s.Description = val
 }
 
 // SetActive sets the value of Active.
@@ -345,6 +357,8 @@ type AccessFlowV2 struct {
 	ID string `json:"id"`
 	// Display name of the access flow.
 	Name string `json:"name"`
+	// Description of the access flow.
+	Description OptNilString `json:"description"`
 	// Activity state of the access flow (active or inactive).
 	Active bool `json:"active"`
 	// Event or action that triggers the access flow.
@@ -371,6 +385,11 @@ func (s *AccessFlowV2) GetID() string {
 // GetName returns the value of Name.
 func (s *AccessFlowV2) GetName() string {
 	return s.Name
+}
+
+// GetDescription returns the value of Description.
+func (s *AccessFlowV2) GetDescription() OptNilString {
+	return s.Description
 }
 
 // GetActive returns the value of Active.
@@ -436,6 +455,11 @@ func (s *AccessFlowV2) SetID(val string) {
 // SetName sets the value of Name.
 func (s *AccessFlowV2) SetName(val string) {
 	s.Name = val
+}
+
+// SetDescription sets the value of Description.
+func (s *AccessFlowV2) SetDescription(val OptNilString) {
+	s.Description = val
 }
 
 // SetActive sets the value of Active.
@@ -547,6 +571,8 @@ type AccessScopeV1 struct {
 	ID string `json:"id"`
 	// Display name of the access scope.
 	Name string `json:"name"`
+	// Description of the access scope.
+	Description OptNilString `json:"description"`
 	// Apono Query Language (AQL) expression that defines filters for cloud resources, integrations, and
 	// permissions.
 	Query string `json:"query"`
@@ -564,6 +590,11 @@ func (s *AccessScopeV1) GetID() string {
 // GetName returns the value of Name.
 func (s *AccessScopeV1) GetName() string {
 	return s.Name
+}
+
+// GetDescription returns the value of Description.
+func (s *AccessScopeV1) GetDescription() OptNilString {
+	return s.Description
 }
 
 // GetQuery returns the value of Query.
@@ -589,6 +620,11 @@ func (s *AccessScopeV1) SetID(val string) {
 // SetName sets the value of Name.
 func (s *AccessScopeV1) SetName(val string) {
 	s.Name = val
+}
+
+// SetDescription sets the value of Description.
+func (s *AccessScopeV1) SetDescription(val OptNilString) {
+	s.Description = val
 }
 
 // SetQuery sets the value of Query.
@@ -5044,6 +5080,8 @@ func (s *UpdateIntegrationV4) SetOwnersMapping(val OptNilUpsertOwnerMappingV4) {
 type UpsertAccessScopeV1 struct {
 	// Display name of the access scope.
 	Name string `json:"name"`
+	// Description of the access scope.
+	Description OptNilString `json:"description"`
 	// Apono Query Language (AQL) expression that defines filters for cloud resources, integrations, and
 	// permissions.
 	Query string `json:"query"`
@@ -5054,6 +5092,11 @@ func (s *UpsertAccessScopeV1) GetName() string {
 	return s.Name
 }
 
+// GetDescription returns the value of Description.
+func (s *UpsertAccessScopeV1) GetDescription() OptNilString {
+	return s.Description
+}
+
 // GetQuery returns the value of Query.
 func (s *UpsertAccessScopeV1) GetQuery() string {
 	return s.Query
@@ -5062,6 +5105,11 @@ func (s *UpsertAccessScopeV1) GetQuery() string {
 // SetName sets the value of Name.
 func (s *UpsertAccessScopeV1) SetName(val string) {
 	s.Name = val
+}
+
+// SetDescription sets the value of Description.
+func (s *UpsertAccessScopeV1) SetDescription(val OptNilString) {
+	s.Description = val
 }
 
 // SetQuery sets the value of Query.

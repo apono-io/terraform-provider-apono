@@ -49,6 +49,10 @@ resource "apono_access_scope" "critical_ec2_instances" {
 - `name` (String) A descriptive name for the access scope. It must be unique within Apono.
 - `query` (String) A query string written in [Apono Query Language](https://docs.apono.io/docs/inventory/apono-query-language).
 
+### Optional
+
+- `description` (String) Description of the access scope.
+
 ### Read-Only
 
 - `id` (String) Unique identifier for this Apono Access Scope. You can reference it in other Terraform resources or use it to import an existing access scope into your Terraform state.

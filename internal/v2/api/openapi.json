@@ -3912,6 +3912,11 @@
             "description": "Display name of the access flow",
             "type": "string"
           },
+          "description": {
+            "description": "Description of the access flow",
+            "type": "string",
+            "nullable": true
+          },
           "active": {
             "description": "Activity state of the access flow (active or inactive)",
             "type": "boolean"
@@ -4059,6 +4064,11 @@
           "name": {
             "description": "Display name of the access flow",
             "type": "string"
+          },
+          "description": {
+            "description": "Description of the access flow",
+            "type": "string",
+            "nullable": true
           },
           "active": {
             "description": "Activity state of the access flow (active or inactive)",
@@ -8231,6 +8241,11 @@
             "description": "Display name of the access scope",
             "type": "string"
           },
+          "description": {
+            "description": "Description of the access scope",
+            "type": "string",
+            "nullable": true
+          },
           "query": {
             "description": "Apono Query Language (AQL) expression that defines filters for cloud resources, integrations, and permissions",
             "type": "string"
@@ -8283,6 +8298,11 @@
           "name": {
             "description": "Display name of the access scope",
             "type": "string"
+          },
+          "description": {
+            "description": "Description of the access scope",
+            "type": "string",
+            "nullable": true
           },
           "query": {
             "description": "Apono Query Language (AQL) expression that defines filters for cloud resources, integrations, and permissions",

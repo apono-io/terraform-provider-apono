@@ -47,6 +47,10 @@ func (r *AponoAccessScopeResource) Schema(_ context.Context, _ resource.SchemaRe
 				Description: "A descriptive name for the access scope. It must be unique within Apono.",
 				Required:    true,
 			},
+			"description": schema.StringAttribute{
+				Description: "Description of the access scope.",
+				Optional:    true,
+			},
 			"query": schema.StringAttribute{
 				MarkdownDescription: "A query string written in [Apono Query Language](https://docs.apono.io/docs/inventory/apono-query-language).",
 				Required:            true,
@@ -70,6 +74,10 @@ func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.Crea
 	createReq := client.UpsertAccessScopeV1{
 		Name:  plan.Name.ValueString(),
 		Query: plan.Query.ValueString(),
+	}
+
+	if !plan.Description.IsNull() {
+		createReq.Description.SetTo(plan.Description.ValueString())
 	}
 
 	tflog.Debug(ctx, "Creating access scope", map[string]any{
@@ -137,6 +145,10 @@ func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.Upda
 	updateReq := client.UpsertAccessScopeV1{
 		Name:  plan.Name.ValueString(),
 		Query: plan.Query.ValueString(),
+	}
+
+	if !plan.Description.IsNull() {
+		updateReq.Description.SetTo(plan.Description.ValueString())
 	}
 
 	tflog.Debug(ctx, "Updating access scope", map[string]any{

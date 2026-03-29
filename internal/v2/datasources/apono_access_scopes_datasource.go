@@ -53,6 +53,10 @@ func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.Sch
 							Description: "The name of the Apono Access Scope.",
 							Computed:    true,
 						},
+						"description": schema.StringAttribute{
+							Description: "Description of the access scope.",
+							Computed:    true,
+						},
 						"query": schema.StringAttribute{
 							Description: "The full query string that is used to define the access scope.",
 							Computed:    true,
