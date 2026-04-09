@@ -234,7 +234,7 @@ resource "apono_access_flow_v2" "sensitive_production_aws" {
     ]
   }
 
-  escalation_policy {
+  escalation_policy = {
     interval_in_min = 30
     approver_groups = [
       {
