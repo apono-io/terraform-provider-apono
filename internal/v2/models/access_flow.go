@@ -11,6 +11,7 @@ type AccessFlowV2Model struct {
 	GrantDurationInMin types.Int32                   `tfsdk:"grant_duration_in_min"`
 	Timeframe          *AccessFlowTimeframeModel     `tfsdk:"timeframe"`
 	ApproverPolicy     *AccessFlowApproverPolicy     `tfsdk:"approver_policy"`
+	EscalationPolicy   *EscalationPolicyModel        `tfsdk:"escalation_policy"`
 	Requestors         *AccessFlowRequestorsModel    `tfsdk:"requestors"`
 	RequestFor         *AccessFlowRequestForModel    `tfsdk:"request_for"`
 	AccessTargets      []AccessFlowAccessTargetModel `tfsdk:"access_targets"`
@@ -32,6 +33,11 @@ type AccessFlowApproverPolicy struct {
 type AccessFlowApproverGroup struct {
 	LogicalOperator types.String          `tfsdk:"logical_operator"`
 	Approvers       []AccessFlowCondition `tfsdk:"approvers"`
+}
+
+type EscalationPolicyModel struct {
+	IntervalInMin  types.Int32               `tfsdk:"interval_in_min"`
+	ApproverGroups []AccessFlowApproverGroup `tfsdk:"approver_groups"`
 }
 
 type AccessFlowCondition struct {

@@ -592,6 +592,12 @@ func (s *AccessFlowUpsertV2) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
+		if s.EscalationPolicy.Set {
+			e.FieldStart("escalation_policy")
+			s.EscalationPolicy.Encode(e)
+		}
+	}
+	{
 		if s.GrantDurationInMin.Set {
 			e.FieldStart("grant_duration_in_min")
 			s.GrantDurationInMin.Encode(e)
@@ -613,7 +619,7 @@ func (s *AccessFlowUpsertV2) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfAccessFlowUpsertV2 = [12]string{
+var jsonFieldsNameOfAccessFlowUpsertV2 = [13]string{
 	0:  "name",
 	1:  "description",
 	2:  "active",
@@ -622,10 +628,11 @@ var jsonFieldsNameOfAccessFlowUpsertV2 = [12]string{
 	5:  "request_for",
 	6:  "access_targets",
 	7:  "approver_policy",
-	8:  "grant_duration_in_min",
-	9:  "timeframe",
-	10: "settings",
-	11: "request_for_others",
+	8:  "escalation_policy",
+	9:  "grant_duration_in_min",
+	10: "timeframe",
+	11: "settings",
+	12: "request_for_others",
 }
 
 // Decode decodes AccessFlowUpsertV2 from json.
@@ -731,6 +738,16 @@ func (s *AccessFlowUpsertV2) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"approver_policy\"")
 			}
+		case "escalation_policy":
+			if err := func() error {
+				s.EscalationPolicy.Reset()
+				if err := s.EscalationPolicy.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"escalation_policy\"")
+			}
 		case "grant_duration_in_min":
 			if err := func() error {
 				s.GrantDurationInMin.Reset()
@@ -752,7 +769,7 @@ func (s *AccessFlowUpsertV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"timeframe\"")
 			}
 		case "settings":
-			requiredBitSet[1] |= 1 << 2
+			requiredBitSet[1] |= 1 << 3
 			if err := func() error {
 				if err := s.Settings.Decode(d); err != nil {
 					return err
@@ -762,7 +779,7 @@ func (s *AccessFlowUpsertV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"settings\"")
 			}
 		case "request_for_others":
-			requiredBitSet[1] |= 1 << 3
+			requiredBitSet[1] |= 1 << 4
 			if err := func() error {
 				v, err := d.Bool()
 				s.RequestForOthers = bool(v)
@@ -784,7 +801,7 @@ func (s *AccessFlowUpsertV2) Decode(d *jx.Decoder) error {
 	var failures []validate.FieldError
 	for i, mask := range [2]uint8{
 		0b01011101,
-		0b00001100,
+		0b00011000,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -886,6 +903,12 @@ func (s *AccessFlowV2) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
+		if s.EscalationPolicy.Set {
+			e.FieldStart("escalation_policy")
+			s.EscalationPolicy.Encode(e)
+		}
+	}
+	{
 		if s.GrantDurationInMin.Set {
 			e.FieldStart("grant_duration_in_min")
 			s.GrantDurationInMin.Encode(e)
@@ -913,7 +936,7 @@ func (s *AccessFlowV2) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfAccessFlowV2 = [14]string{
+var jsonFieldsNameOfAccessFlowV2 = [15]string{
 	0:  "id",
 	1:  "name",
 	2:  "description",
@@ -923,11 +946,12 @@ var jsonFieldsNameOfAccessFlowV2 = [14]string{
 	6:  "request_for",
 	7:  "access_targets",
 	8:  "approver_policy",
-	9:  "grant_duration_in_min",
-	10: "timeframe",
-	11: "settings",
-	12: "creation_date",
-	13: "update_date",
+	9:  "escalation_policy",
+	10: "grant_duration_in_min",
+	11: "timeframe",
+	12: "settings",
+	13: "creation_date",
+	14: "update_date",
 }
 
 // Decode decodes AccessFlowV2 from json.
@@ -1045,6 +1069,16 @@ func (s *AccessFlowV2) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"approver_policy\"")
 			}
+		case "escalation_policy":
+			if err := func() error {
+				s.EscalationPolicy.Reset()
+				if err := s.EscalationPolicy.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"escalation_policy\"")
+			}
 		case "grant_duration_in_min":
 			if err := func() error {
 				s.GrantDurationInMin.Reset()
@@ -1066,7 +1100,7 @@ func (s *AccessFlowV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"timeframe\"")
 			}
 		case "settings":
-			requiredBitSet[1] |= 1 << 3
+			requiredBitSet[1] |= 1 << 4
 			if err := func() error {
 				if err := s.Settings.Decode(d); err != nil {
 					return err
@@ -1076,7 +1110,7 @@ func (s *AccessFlowV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"settings\"")
 			}
 		case "creation_date":
-			requiredBitSet[1] |= 1 << 4
+			requiredBitSet[1] |= 1 << 5
 			if err := func() error {
 				if err := s.CreationDate.Decode(d); err != nil {
 					return err
@@ -1106,7 +1140,7 @@ func (s *AccessFlowV2) Decode(d *jx.Decoder) error {
 	var failures []validate.FieldError
 	for i, mask := range [2]uint8{
 		0b10111011,
-		0b00011000,
+		0b00110000,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -4435,6 +4469,252 @@ func (s *DayOfWeekV2) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
+func (s *EscalationPolicyUpsertV2) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *EscalationPolicyUpsertV2) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("interval_in_min")
+		e.Int32(s.IntervalInMin)
+	}
+	{
+		e.FieldStart("approver_groups")
+		e.ArrStart()
+		for _, elem := range s.ApproverGroups {
+			elem.Encode(e)
+		}
+		e.ArrEnd()
+	}
+}
+
+var jsonFieldsNameOfEscalationPolicyUpsertV2 = [2]string{
+	0: "interval_in_min",
+	1: "approver_groups",
+}
+
+// Decode decodes EscalationPolicyUpsertV2 from json.
+func (s *EscalationPolicyUpsertV2) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode EscalationPolicyUpsertV2 to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "interval_in_min":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Int32()
+				s.IntervalInMin = int32(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"interval_in_min\"")
+			}
+		case "approver_groups":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				s.ApproverGroups = make([]ApproverGroupUpsertV2, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem ApproverGroupUpsertV2
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.ApproverGroups = append(s.ApproverGroups, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"approver_groups\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode EscalationPolicyUpsertV2")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000011,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfEscalationPolicyUpsertV2) {
+					name = jsonFieldsNameOfEscalationPolicyUpsertV2[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *EscalationPolicyUpsertV2) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *EscalationPolicyUpsertV2) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *EscalationPolicyV2) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *EscalationPolicyV2) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("interval_in_min")
+		e.Int32(s.IntervalInMin)
+	}
+	{
+		e.FieldStart("approver_groups")
+		e.ArrStart()
+		for _, elem := range s.ApproverGroups {
+			elem.Encode(e)
+		}
+		e.ArrEnd()
+	}
+}
+
+var jsonFieldsNameOfEscalationPolicyV2 = [2]string{
+	0: "interval_in_min",
+	1: "approver_groups",
+}
+
+// Decode decodes EscalationPolicyV2 from json.
+func (s *EscalationPolicyV2) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode EscalationPolicyV2 to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "interval_in_min":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Int32()
+				s.IntervalInMin = int32(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"interval_in_min\"")
+			}
+		case "approver_groups":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				s.ApproverGroups = make([]ApproverGroupV2, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem ApproverGroupV2
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.ApproverGroups = append(s.ApproverGroups, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"approver_groups\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode EscalationPolicyV2")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000011,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfEscalationPolicyV2) {
+					name = jsonFieldsNameOfEscalationPolicyV2[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *EscalationPolicyV2) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *EscalationPolicyV2) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *GcpSecretConfigV4) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -6606,6 +6886,104 @@ func (s OptNilConnectorSessionsCloudProviderMetadataV3) MarshalJSON() ([]byte, e
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptNilConnectorSessionsCloudProviderMetadataV3) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes EscalationPolicyUpsertV2 as json.
+func (o OptNilEscalationPolicyUpsertV2) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes EscalationPolicyUpsertV2 from json.
+func (o *OptNilEscalationPolicyUpsertV2) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilEscalationPolicyUpsertV2 to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v EscalationPolicyUpsertV2
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilEscalationPolicyUpsertV2) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilEscalationPolicyUpsertV2) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes EscalationPolicyV2 as json.
+func (o OptNilEscalationPolicyV2) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes EscalationPolicyV2 from json.
+func (o *OptNilEscalationPolicyV2) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilEscalationPolicyV2 to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v EscalationPolicyV2
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilEscalationPolicyV2) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilEscalationPolicyV2) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

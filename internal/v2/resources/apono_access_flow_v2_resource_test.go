@@ -86,6 +86,35 @@ resource "apono_access_flow_v2" "test" {
     }
   ]
 
+  approver_policy = {
+    approval_mode = "ANY_OF"
+    approver_groups = [
+      {
+        logical_operator = "OR"
+        approvers = [
+          {
+            type = "user"
+            values = ["%s"]
+          }
+        ]
+      }
+    ]
+  }
+
+  escalation_policy = {
+    approver_groups = [
+      {
+        logical_operator = "OR"
+        approvers = [
+          {
+            type = "user"
+            values = ["%s"]
+          }
+        ]
+      }
+    ]
+  }
+
   settings = {
     justification_required = %t
     require_approver_reason = false
@@ -144,7 +173,7 @@ resource "apono_access_flow_v2" "test_with_request_for" {
 
   settings = {}
 }
-`, name, integrationType, connectorID, resourceType, name, userEmail, resourceType, resourceType, resourceType, justificationRequired, name, userEmail, granteeEmail, resourceType, resourceType, resourceType)
+`, name, integrationType, connectorID, resourceType, name, userEmail, resourceType, resourceType, resourceType, userEmail, userEmail, justificationRequired, name, userEmail, granteeEmail, resourceType, resourceType, resourceType)
 	}
 
 	resource.Test(t, resource.TestCase{
@@ -163,6 +192,10 @@ resource "apono_access_flow_v2" "test_with_request_for" {
 					resource.TestCheckResourceAttr(resourceName, "access_targets.#", "1"),
 					resource.TestCheckResourceAttr(resourceName, "settings.justification_required", "true"),
 					resource.TestCheckResourceAttr(resourceName, "settings.labels.#", "2"),
+					resource.TestCheckResourceAttr(resourceName, "escalation_policy.interval_in_min", "30"),
+					resource.TestCheckResourceAttr(resourceName, "escalation_policy.approver_groups.#", "1"),
+					resource.TestCheckResourceAttr(resourceName, "escalation_policy.approver_groups.0.logical_operator", "OR"),
+					resource.TestCheckResourceAttr(resourceName, "escalation_policy.approver_groups.0.approvers.#", "1"),
 					// Check second resource with request_for
 					resource.TestCheckResourceAttrSet(resourceNameWithRequestFor, "id"),
 					resource.TestCheckResourceAttr(resourceNameWithRequestFor, "name", rName+"-with-request-for"),
