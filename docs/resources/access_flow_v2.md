@@ -186,7 +186,7 @@ resource "apono_access_flow_v2" "managers_request_for_employees" {
 }
 ```
 
-### Access to Sensitive Production for Users via Google Oauth IDP  
+### Access to Production via Google Oauth IDP with 2 Escalation Tiers 
 
 ```terraform
 resource "apono_access_flow_v2" "sensitive_production_aws" {
@@ -228,6 +228,40 @@ resource "apono_access_flow_v2" "sensitive_production_aws" {
             type                    = "user"
             match_operator          = "is"
             values                  = ["example@company.io"]
+          }
+        ]
+      }
+    ]
+  }
+
+  escalation_policy = {
+    interval_in_min = 30
+    approver_groups = [
+      {
+        logical_operator = "OR"
+        approvers = [
+          {
+            source_integration_name = "Google Oauth"
+            type                    = "user"
+            match_operator          = "is"
+            values                  = ["security@company.io"]
+          }
+        ]
+      },
+      {
+        logical_operator = "OR"
+        approvers = [
+          {
+            source_integration_name = "Google Oauth"
+            type                    = "user"
+            match_operator          = "is"
+            values                  = ["platform-admin@company.io"]
+          },
+          {
+            source_integration_name = "Google Oauth"
+            type                    = "user"
+            match_operator          = "is"
+            values                  = ["incident-manager@company.io"]
           }
         ]
       }
@@ -461,6 +495,7 @@ In automatic access flows, requestors specify who will automatically receive acc
 - `active` (Boolean) Whether the access flow is active. Defaults to true.
 - `approver_policy` (Attributes) Approval policy for the access request. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--approver_policy))
 - `description` (String) Description of the access flow.
+- `escalation_policy` (Attributes) Defines an approval escalation policy for a human approval flow. When a request remains pending for the configured interval, Apono escalates it to the approver groups defined in this block. Previously notified approvers can still approve or reject the request even after escalation was triggered. Up to 5 escalation approver groups are supported. (see [below for nested schema](#nestedatt--escalation_policy))
 - `grant_duration_in_min` (Number) How long access is granted, in minutes. If not specified, the grant duration defaults to indefinite.
 - `request_for` (Attributes) Defines who the access request can be made for. This enables support to request on behalf of other users, groups, or identities. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--request_for))
 - `timeframe` (Attributes) Restrict when access can be granted. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--timeframe))
@@ -580,6 +615,44 @@ Required:
 
 <a id="nestedatt--approver_policy--approver_groups--approvers"></a>
 ### Nested Schema for `approver_policy.approver_groups.approvers`
+
+Required:
+
+- `type` (String) Approver identity type - user, group, Owner, manager, Context Integration, or any other custom value.
+Run [this discovery script](https://docs.apono.io/api-reference/discovering-identity-attribute-types) to retrieve the list of supported attribute types for your account. Values are case sensitive.
+
+Optional:
+
+- `match_operator` (String) Comparison operator. Possible values: is, is_not, contains, does_not_contain, starts_with. Defaults to is.
+Note: When using is or is_not with any type, you can specify either the source ID or Apono ID to define the requestors.
+For the user attribute specifically, you may also use the user's email.
+- `source_integration_name` (String) Applies when the identity type stems from a Context or IDP integration.
+- `values` (List of String) Approver values according to the attribute type and match_operator (e.g., user email, group IDs, etc).
+
+
+
+
+<a id="nestedatt--escalation_policy"></a>
+### Nested Schema for `escalation_policy`
+
+Required:
+
+- `approver_groups` (Attributes List) Ordered list of approver groups that define the escalation path. Each item in the list represents an escalation tier. Approver groups are evaluated in the order they are defined and triggered subsequently according to the defined interval. (see [below for nested schema](#nestedatt--escalation_policy--approver_groups))
+
+Optional:
+
+- `interval_in_min` (Number) Time interval in minutes a request can remain pending before it is escalated to the next approver group in the policy. Defaults to 30 minutes.
+
+<a id="nestedatt--escalation_policy--approver_groups"></a>
+### Nested Schema for `escalation_policy.approver_groups`
+
+Required:
+
+- `approvers` (Attributes List) List of approvers. (see [below for nested schema](#nestedatt--escalation_policy--approver_groups--approvers))
+- `logical_operator` (String) Possible values: AND or OR
+
+<a id="nestedatt--escalation_policy--approver_groups--approvers"></a>
+### Nested Schema for `escalation_policy.approver_groups.approvers`
 
 Required:
 

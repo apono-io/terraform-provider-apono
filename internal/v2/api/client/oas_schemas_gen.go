@@ -219,11 +219,12 @@ type AccessFlowUpsertV2 struct {
 	// Activity state of the access flow (active or inactive).
 	Active bool `json:"active"`
 	// Event or action that triggers the access flow.
-	Trigger        string                       `json:"trigger"`
-	Requestors     RequestorsUpsertV2           `json:"requestors"`
-	RequestFor     OptNilRequestForUpsertV2     `json:"request_for"`
-	AccessTargets  []AccessTargetUpsertV2       `json:"access_targets"`
-	ApproverPolicy OptNilApproverPolicyUpsertV2 `json:"approver_policy"`
+	Trigger          string                         `json:"trigger"`
+	Requestors       RequestorsUpsertV2             `json:"requestors"`
+	RequestFor       OptNilRequestForUpsertV2       `json:"request_for"`
+	AccessTargets    []AccessTargetUpsertV2         `json:"access_targets"`
+	ApproverPolicy   OptNilApproverPolicyUpsertV2   `json:"approver_policy"`
+	EscalationPolicy OptNilEscalationPolicyUpsertV2 `json:"escalation_policy"`
 	// Duration of access granted to the user, in minutes.
 	GrantDurationInMin OptNilInt32                 `json:"grant_duration_in_min"`
 	Timeframe          OptNilAccessFlowTimeframeV2 `json:"timeframe"`
@@ -269,6 +270,11 @@ func (s *AccessFlowUpsertV2) GetAccessTargets() []AccessTargetUpsertV2 {
 // GetApproverPolicy returns the value of ApproverPolicy.
 func (s *AccessFlowUpsertV2) GetApproverPolicy() OptNilApproverPolicyUpsertV2 {
 	return s.ApproverPolicy
+}
+
+// GetEscalationPolicy returns the value of EscalationPolicy.
+func (s *AccessFlowUpsertV2) GetEscalationPolicy() OptNilEscalationPolicyUpsertV2 {
+	return s.EscalationPolicy
 }
 
 // GetGrantDurationInMin returns the value of GrantDurationInMin.
@@ -331,6 +337,11 @@ func (s *AccessFlowUpsertV2) SetApproverPolicy(val OptNilApproverPolicyUpsertV2)
 	s.ApproverPolicy = val
 }
 
+// SetEscalationPolicy sets the value of EscalationPolicy.
+func (s *AccessFlowUpsertV2) SetEscalationPolicy(val OptNilEscalationPolicyUpsertV2) {
+	s.EscalationPolicy = val
+}
+
 // SetGrantDurationInMin sets the value of GrantDurationInMin.
 func (s *AccessFlowUpsertV2) SetGrantDurationInMin(val OptNilInt32) {
 	s.GrantDurationInMin = val
@@ -362,11 +373,12 @@ type AccessFlowV2 struct {
 	// Activity state of the access flow (active or inactive).
 	Active bool `json:"active"`
 	// Event or action that triggers the access flow.
-	Trigger        string                 `json:"trigger"`
-	Requestors     RequestorsV2           `json:"requestors"`
-	RequestFor     OptNilRequestForV2     `json:"request_for"`
-	AccessTargets  []AccessTargetV2       `json:"access_targets"`
-	ApproverPolicy OptNilApproverPolicyV2 `json:"approver_policy"`
+	Trigger          string                   `json:"trigger"`
+	Requestors       RequestorsV2             `json:"requestors"`
+	RequestFor       OptNilRequestForV2       `json:"request_for"`
+	AccessTargets    []AccessTargetV2         `json:"access_targets"`
+	ApproverPolicy   OptNilApproverPolicyV2   `json:"approver_policy"`
+	EscalationPolicy OptNilEscalationPolicyV2 `json:"escalation_policy"`
 	// Duration of access granted to the user, in minutes.
 	GrantDurationInMin OptNilInt32                 `json:"grant_duration_in_min"`
 	Timeframe          OptNilAccessFlowTimeframeV2 `json:"timeframe"`
@@ -420,6 +432,11 @@ func (s *AccessFlowV2) GetAccessTargets() []AccessTargetV2 {
 // GetApproverPolicy returns the value of ApproverPolicy.
 func (s *AccessFlowV2) GetApproverPolicy() OptNilApproverPolicyV2 {
 	return s.ApproverPolicy
+}
+
+// GetEscalationPolicy returns the value of EscalationPolicy.
+func (s *AccessFlowV2) GetEscalationPolicy() OptNilEscalationPolicyV2 {
+	return s.EscalationPolicy
 }
 
 // GetGrantDurationInMin returns the value of GrantDurationInMin.
@@ -490,6 +507,11 @@ func (s *AccessFlowV2) SetAccessTargets(val []AccessTargetV2) {
 // SetApproverPolicy sets the value of ApproverPolicy.
 func (s *AccessFlowV2) SetApproverPolicy(val OptNilApproverPolicyV2) {
 	s.ApproverPolicy = val
+}
+
+// SetEscalationPolicy sets the value of EscalationPolicy.
+func (s *AccessFlowV2) SetEscalationPolicy(val OptNilEscalationPolicyV2) {
+	s.EscalationPolicy = val
 }
 
 // SetGrantDurationInMin sets the value of GrantDurationInMin.
@@ -1738,6 +1760,80 @@ type DeleteGroupV1NoContent struct{}
 
 // DeleteIntegrationV4NoContent is response for DeleteIntegrationV4 operation.
 type DeleteIntegrationV4NoContent struct{}
+
+// Defines an approval escalation policy for a human approval flow.
+// When a request remains pending for the configured interval, Apono escalates it to the approver
+// groups defined in this block.
+// Previously notified approvers can still approve or reject the request even after escalation was
+// triggered. Up to 5 escalation approver groups are supported.
+// Ref: #/components/schemas/EscalationPolicyUpsertV2
+type EscalationPolicyUpsertV2 struct {
+	// Time interval in minutes a request can remain pending before it is escalated to the next approver
+	// group in the policy. Default to 30 minutes.
+	IntervalInMin int32 `json:"interval_in_min"`
+	// Ordered list of approver groups that define the escalation path.
+	// Each item in the list represents an escalation tier.
+	// Approver groups are evaluated in the order they are defined and triggered subsequently according
+	// to the defined interval.
+	ApproverGroups []ApproverGroupUpsertV2 `json:"approver_groups"`
+}
+
+// GetIntervalInMin returns the value of IntervalInMin.
+func (s *EscalationPolicyUpsertV2) GetIntervalInMin() int32 {
+	return s.IntervalInMin
+}
+
+// GetApproverGroups returns the value of ApproverGroups.
+func (s *EscalationPolicyUpsertV2) GetApproverGroups() []ApproverGroupUpsertV2 {
+	return s.ApproverGroups
+}
+
+// SetIntervalInMin sets the value of IntervalInMin.
+func (s *EscalationPolicyUpsertV2) SetIntervalInMin(val int32) {
+	s.IntervalInMin = val
+}
+
+// SetApproverGroups sets the value of ApproverGroups.
+func (s *EscalationPolicyUpsertV2) SetApproverGroups(val []ApproverGroupUpsertV2) {
+	s.ApproverGroups = val
+}
+
+// Defines an approval escalation policy for a human approval flow.
+// When a request remains pending for the configured interval, Apono escalates it to the approver
+// groups defined in this block.
+// Previously notified approvers can still approve or reject the request even after escalation was
+// triggered. Up to 5 escalation approver groups are supported.
+// Ref: #/components/schemas/EscalationPolicyV2
+type EscalationPolicyV2 struct {
+	// Time interval in minutes a request can remain pending before it is escalated to the next approver
+	// group in the policy. Default to 30 minutes.
+	IntervalInMin int32 `json:"interval_in_min"`
+	// Ordered list of approver groups that define the escalation path.
+	// Each item in the list represents an escalation tier.
+	// Approver groups are evaluated in the order they are defined and triggered subsequently according
+	// to the defined interval.
+	ApproverGroups []ApproverGroupV2 `json:"approver_groups"`
+}
+
+// GetIntervalInMin returns the value of IntervalInMin.
+func (s *EscalationPolicyV2) GetIntervalInMin() int32 {
+	return s.IntervalInMin
+}
+
+// GetApproverGroups returns the value of ApproverGroups.
+func (s *EscalationPolicyV2) GetApproverGroups() []ApproverGroupV2 {
+	return s.ApproverGroups
+}
+
+// SetIntervalInMin sets the value of IntervalInMin.
+func (s *EscalationPolicyV2) SetIntervalInMin(val int32) {
+	s.IntervalInMin = val
+}
+
+// SetApproverGroups sets the value of ApproverGroups.
+func (s *EscalationPolicyV2) SetApproverGroups(val []ApproverGroupV2) {
+	s.ApproverGroups = val
+}
 
 // Google Secret Manager reference for the connector credentials.
 // Ref: #/components/schemas/GcpSecretConfigV4
@@ -3113,6 +3209,132 @@ func (o OptNilConnectorSessionsCloudProviderMetadataV3) Get() (v ConnectorSessio
 
 // Or returns value if set, or given parameter if does not.
 func (o OptNilConnectorSessionsCloudProviderMetadataV3) Or(d ConnectorSessionsCloudProviderMetadataV3) ConnectorSessionsCloudProviderMetadataV3 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilEscalationPolicyUpsertV2 returns new OptNilEscalationPolicyUpsertV2 with value set to v.
+func NewOptNilEscalationPolicyUpsertV2(v EscalationPolicyUpsertV2) OptNilEscalationPolicyUpsertV2 {
+	return OptNilEscalationPolicyUpsertV2{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilEscalationPolicyUpsertV2 is optional nullable EscalationPolicyUpsertV2.
+type OptNilEscalationPolicyUpsertV2 struct {
+	Value EscalationPolicyUpsertV2
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilEscalationPolicyUpsertV2 was set.
+func (o OptNilEscalationPolicyUpsertV2) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilEscalationPolicyUpsertV2) Reset() {
+	var v EscalationPolicyUpsertV2
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilEscalationPolicyUpsertV2) SetTo(v EscalationPolicyUpsertV2) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilEscalationPolicyUpsertV2) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilEscalationPolicyUpsertV2) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v EscalationPolicyUpsertV2
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilEscalationPolicyUpsertV2) Get() (v EscalationPolicyUpsertV2, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilEscalationPolicyUpsertV2) Or(d EscalationPolicyUpsertV2) EscalationPolicyUpsertV2 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilEscalationPolicyV2 returns new OptNilEscalationPolicyV2 with value set to v.
+func NewOptNilEscalationPolicyV2(v EscalationPolicyV2) OptNilEscalationPolicyV2 {
+	return OptNilEscalationPolicyV2{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilEscalationPolicyV2 is optional nullable EscalationPolicyV2.
+type OptNilEscalationPolicyV2 struct {
+	Value EscalationPolicyV2
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilEscalationPolicyV2 was set.
+func (o OptNilEscalationPolicyV2) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilEscalationPolicyV2) Reset() {
+	var v EscalationPolicyV2
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilEscalationPolicyV2) SetTo(v EscalationPolicyV2) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilEscalationPolicyV2) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilEscalationPolicyV2) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v EscalationPolicyV2
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilEscalationPolicyV2) Get() (v EscalationPolicyV2, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilEscalationPolicyV2) Or(d EscalationPolicyV2) EscalationPolicyV2 {
 	if v, ok := o.Get(); ok {
 		return v
 	}

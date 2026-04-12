@@ -48,6 +48,14 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowV2
 		model.ApproverPolicy = approverPolicy
 	}
 
+	if val, ok := response.EscalationPolicy.Get(); ok {
+		escalationPolicy, err := convertEscalationPolicyToModel(ctx, val)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert escalation policy: %w", err)
+		}
+		model.EscalationPolicy = escalationPolicy
+	}
+
 	requestors, err := convertRequestorsToModel(ctx, response.Requestors)
 	if err != nil {
 		return nil, fmt.Errorf("failed to convert requestors: %w", err)
@@ -122,6 +130,24 @@ func convertApproverGroupToModel(ctx context.Context, group client.ApproverGroup
 		approvers = append(approvers, *approver)
 	}
 	model.Approvers = approvers
+
+	return model, nil
+}
+
+func convertEscalationPolicyToModel(ctx context.Context, policy client.EscalationPolicyV2) (*EscalationPolicyModel, error) {
+	model := &EscalationPolicyModel{
+		IntervalInMin: types.Int32Value(policy.IntervalInMin),
+	}
+
+	var approverGroups []AccessFlowApproverGroup
+	for _, group := range policy.ApproverGroups {
+		approverGroup, err := convertApproverGroupToModel(ctx, group)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert escalation approver group: %w", err)
+		}
+		approverGroups = append(approverGroups, *approverGroup)
+	}
+	model.ApproverGroups = approverGroups
 
 	return model, nil
 }

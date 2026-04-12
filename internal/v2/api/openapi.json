@@ -3952,6 +3952,15 @@
             ],
             "nullable": true
           },
+          "escalation_policy": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EscalationPolicyUpsertV2"
+              }
+            ],
+            "nullable": true
+          },
           "grant_duration_in_min": {
             "format": "int32",
             "description": "Duration of access granted to the user, in minutes",
@@ -4101,6 +4110,15 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/ApproverPolicyV2"
+              }
+            ],
+            "nullable": true
+          },
+          "escalation_policy": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EscalationPolicyV2"
               }
             ],
             "nullable": true
@@ -5725,6 +5743,50 @@
           "name": {
             "description": "Display name of the resource",
             "type": "string"
+          }
+        }
+      },
+      "EscalationPolicyUpsertV2": {
+        "required": [
+          "interval_in_min",
+          "approver_groups"
+        ],
+        "description": "\n    Defines an approval escalation policy for a human approval flow. \n    When a request remains pending for the configured interval, Apono escalates it to the approver groups defined in this block. \n    Previously notified approvers can still approve or reject the request even after escalation was triggered. Up to 5 escalation approver groups are supported.\n",
+        "type": "object",
+        "properties": {
+          "interval_in_min": {
+            "format": "int32",
+            "description": "\n        Time interval in minutes a request can remain pending before it is escalated to the next approver group in the policy. Default to 30 minutes.\n    ",
+            "type": "integer"
+          },
+          "approver_groups": {
+            "description": "\n        Ordered list of approver groups that define the escalation path. \n        Each item in the list represents an escalation tier. \n        Approver groups are evaluated in the order they are defined and triggered subsequently according to the defined interval.\n    ",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApproverGroupUpsertV2"
+            }
+          }
+        }
+      },
+      "EscalationPolicyV2": {
+        "required": [
+          "interval_in_min",
+          "approver_groups"
+        ],
+        "description": "\n    Defines an approval escalation policy for a human approval flow. \n    When a request remains pending for the configured interval, Apono escalates it to the approver groups defined in this block. \n    Previously notified approvers can still approve or reject the request even after escalation was triggered. Up to 5 escalation approver groups are supported.\n",
+        "type": "object",
+        "properties": {
+          "interval_in_min": {
+            "format": "int32",
+            "description": "\n        Time interval in minutes a request can remain pending before it is escalated to the next approver group in the policy. Default to 30 minutes.\n    ",
+            "type": "integer"
+          },
+          "approver_groups": {
+            "description": "\n        Ordered list of approver groups that define the escalation path. \n        Each item in the list represents an escalation tier. \n        Approver groups are evaluated in the order they are defined and triggered subsequently according to the defined interval.\n    ",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApproverGroupV2"
+            }
           }
         }
       },

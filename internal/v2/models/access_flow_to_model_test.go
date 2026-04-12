@@ -111,6 +111,24 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	approverPolicy.ApproverGroups[0].Approvers[0].Values.SetTo([]string{"person@example.com", "person_two@example.com"})
 	response.ApproverPolicy.SetTo(approverPolicy)
 
+	escalationPolicy := client.EscalationPolicyV2{
+		IntervalInMin: 30,
+		ApproverGroups: []client.ApproverGroupV2{
+			{
+				LogicalOperator: "OR",
+				Approvers: []client.ConditionV2{
+					{
+						Type: "user",
+					},
+				},
+			},
+		},
+	}
+	escalationPolicy.ApproverGroups[0].Approvers[0].SourceIntegrationName.SetTo("Google Oauth")
+	escalationPolicy.ApproverGroups[0].Approvers[0].MatchOperator.SetTo("is")
+	escalationPolicy.ApproverGroups[0].Approvers[0].Values.SetTo([]string{"security@company.io"})
+	response.EscalationPolicy.SetTo(escalationPolicy)
+
 	ctx := t.Context()
 	model, err := AccessFlowResponseToModel(ctx, response)
 	require.NoError(t, err)
@@ -195,6 +213,19 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	require.False(t, diags.HasError())
 	assert.ElementsMatch(t, []string{"person@example.com", "person_two@example.com"}, approverValues)
 
+	require.NotNil(t, model.EscalationPolicy)
+	assert.Equal(t, int32(30), model.EscalationPolicy.IntervalInMin.ValueInt32())
+	require.Len(t, model.EscalationPolicy.ApproverGroups, 1)
+	assert.Equal(t, "OR", model.EscalationPolicy.ApproverGroups[0].LogicalOperator.ValueString())
+	require.Len(t, model.EscalationPolicy.ApproverGroups[0].Approvers, 1)
+	assert.Equal(t, "Google Oauth", model.EscalationPolicy.ApproverGroups[0].Approvers[0].SourceIntegrationName.ValueString())
+	assert.Equal(t, "user", model.EscalationPolicy.ApproverGroups[0].Approvers[0].Type.ValueString())
+	assert.Equal(t, "is", model.EscalationPolicy.ApproverGroups[0].Approvers[0].MatchOperator.ValueString())
+	var escalationApproverValues []string
+	diags = model.EscalationPolicy.ApproverGroups[0].Approvers[0].Values.ElementsAs(ctx, &escalationApproverValues, false)
+	require.False(t, diags.HasError())
+	assert.ElementsMatch(t, []string{"security@company.io"}, escalationApproverValues)
+
 	require.NotNil(t, model.RequestFor)
 	var requestScopes []string
 	diags = model.RequestFor.RequestScopes.ElementsAs(ctx, &requestScopes, false)
@@ -259,6 +290,7 @@ func TestAccessFlowResponseToModelMinimalFields(t *testing.T) {
 	assert.True(t, model.GrantDurationInMin.IsNull())
 	assert.Nil(t, model.Timeframe)
 	assert.Nil(t, model.ApproverPolicy)
+	assert.Nil(t, model.EscalationPolicy)
 
 	require.NotNil(t, model.Settings)
 	assert.False(t, model.Settings.JustificationRequired.ValueBool())

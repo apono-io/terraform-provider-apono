@@ -72,6 +72,22 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 				},
 			},
 		},
+		EscalationPolicy: &EscalationPolicyModel{
+			IntervalInMin: types.Int32Value(30),
+			ApproverGroups: []AccessFlowApproverGroup{
+				{
+					LogicalOperator: types.StringValue("OR"),
+					Approvers: []AccessFlowCondition{
+						{
+							SourceIntegrationName: types.StringValue("Google Oauth"),
+							Type:                  types.StringValue("user"),
+							MatchOperator:         types.StringValue("is"),
+							Values:                testcommon.CreateTestStringList(t, []string{"security@company.io"}),
+						},
+					},
+				},
+			},
+		},
 		Settings: &AccessFlowSettingsModel{
 			JustificationRequired:      types.BoolValue(true),
 			RequireApproverReason:      types.BoolValue(false),
@@ -166,7 +182,23 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	values, ok = approverPolicy.ApproverGroups[0].Approvers[0].Values.Get()
 	require.True(t, ok)
 	assert.ElementsMatch(t, []string{"person@example.com", "person_two@example.com"}, values)
-
+	require.True(t, result.EscalationPolicy.IsSet())
+	escalationPolicy, ok := result.EscalationPolicy.Get()
+	require.True(t, ok)
+	assert.Equal(t, int32(30), escalationPolicy.IntervalInMin)
+	require.Len(t, escalationPolicy.ApproverGroups, 1)
+	assert.Equal(t, "OR", escalationPolicy.ApproverGroups[0].LogicalOperator)
+	require.Len(t, escalationPolicy.ApproverGroups[0].Approvers, 1)
+	assert.Equal(t, "user", escalationPolicy.ApproverGroups[0].Approvers[0].Type)
+	escSourceIntegRef, ok := escalationPolicy.ApproverGroups[0].Approvers[0].SourceIntegrationReference.Get()
+	require.True(t, ok)
+	assert.Equal(t, "Google Oauth", escSourceIntegRef)
+	escMatchOp, ok := escalationPolicy.ApproverGroups[0].Approvers[0].MatchOperator.Get()
+	require.True(t, ok)
+	assert.Equal(t, "is", escMatchOp)
+	escValues, ok := escalationPolicy.ApproverGroups[0].Approvers[0].Values.Get()
+	require.True(t, ok)
+	assert.ElementsMatch(t, []string{"security@company.io"}, escValues)
 	assert.True(t, result.Settings.JustificationRequired)
 	assert.False(t, result.Settings.RequireApproverReason)
 	assert.False(t, result.Settings.RequestorCannotApproveHimself)
@@ -230,6 +262,7 @@ func TestAccessFlowV2ModelToUpsertRequestNullValues(t *testing.T) {
 	assert.False(t, result.GrantDurationInMin.IsSet())
 	assert.False(t, result.Timeframe.IsSet())
 	assert.False(t, result.ApproverPolicy.IsSet())
+	assert.False(t, result.EscalationPolicy.IsSet())
 
 	assert.Equal(t, "AND", result.Requestors.LogicalOperator)
 	require.Len(t, result.Requestors.Conditions, 1)
@@ -249,4 +282,75 @@ func TestAccessFlowV2ModelToUpsertRequestNullValues(t *testing.T) {
 
 	assert.False(t, result.RequestFor.IsSet())
 	assert.False(t, result.Description.IsSet())
+}
+
+func TestAccessFlowV2ModelToUpsertRequestEscalationPolicyDefaultInterval(t *testing.T) {
+	// Simulates the case where interval_in_min is omitted in HCL.
+	// The Terraform framework applies the schema default (30) before the model reaches the converter,
+	// so IntervalInMin is always types.Int32Value(30), never null.
+	model := AccessFlowV2Model{
+		Name:    types.StringValue("escalation_flow"),
+		Active:  types.BoolValue(true),
+		Trigger: types.StringValue("SELF_SERVE"),
+		Requestors: &AccessFlowRequestorsModel{
+			LogicalOperator: types.StringValue("OR"),
+			Conditions: []AccessFlowCondition{
+				{
+					Type:          types.StringValue("user"),
+					MatchOperator: types.StringValue("is"),
+					Values:        testcommon.CreateTestStringList(t, []string{"person@example.com"}),
+				},
+			},
+		},
+		AccessTargets: []AccessFlowAccessTargetModel{
+			{
+				Bundle: &AccessFlowTargetBundleModel{
+					Name: types.StringValue("PROD ENV"),
+				},
+			},
+		},
+		EscalationPolicy: &EscalationPolicyModel{
+			IntervalInMin: types.Int32Value(30), // default value applied by framework
+			ApproverGroups: []AccessFlowApproverGroup{
+				{
+					LogicalOperator: types.StringValue("OR"),
+					Approvers: []AccessFlowCondition{
+						{
+							SourceIntegrationName: types.StringValue("Google Oauth"),
+							Type:                  types.StringValue("user"),
+							MatchOperator:         types.StringValue("is"),
+							Values:                testcommon.CreateTestStringList(t, []string{"security@company.io"}),
+						},
+					},
+				},
+			},
+		},
+		Settings: &AccessFlowSettingsModel{
+			JustificationRequired:      types.BoolValue(true),
+			RequireApproverReason:      types.BoolValue(false),
+			RequesterCannotApproveSelf: types.BoolValue(false),
+			RequireMFA:                 types.BoolValue(false),
+			Labels:                     testcommon.CreateTestStringSet(t, []string{}),
+			MaxExtensions:              types.Int32Value(0),
+			ExtensionDurationInMin:     types.Int32Value(0),
+		},
+	}
+
+	ctx := t.Context()
+	result, err := AccessFlowModelToUpsertRequest(ctx, model)
+	require.NoError(t, err)
+	require.NotNil(t, result)
+
+	// Verify the escalation policy is set in the API request
+	require.True(t, result.EscalationPolicy.IsSet(), "escalation_policy must be set in the API request")
+	escalationPolicy, ok := result.EscalationPolicy.Get()
+	require.True(t, ok)
+
+	// Verify the default interval_in_min=30 is sent to the API (where it's required)
+	assert.Equal(t, int32(30), escalationPolicy.IntervalInMin, "interval_in_min default of 30 must be sent to the API")
+
+	require.Len(t, escalationPolicy.ApproverGroups, 1)
+	assert.Equal(t, "OR", escalationPolicy.ApproverGroups[0].LogicalOperator)
+	require.Len(t, escalationPolicy.ApproverGroups[0].Approvers, 1)
+	assert.Equal(t, "user", escalationPolicy.ApproverGroups[0].Approvers[0].Type)
 }

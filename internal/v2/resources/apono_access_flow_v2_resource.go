@@ -184,6 +184,38 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 					},
 				},
 			},
+			"escalation_policy": schema.SingleNestedAttribute{
+				Description: "Defines an approval escalation policy for a human approval flow. When a request remains pending for the configured interval, Apono escalates it to the approver groups defined in this block. Previously notified approvers can still approve or reject the request even after escalation was triggered. Up to 5 escalation approver groups are supported.",
+				Optional:    true,
+				Attributes: map[string]schema.Attribute{
+					"interval_in_min": schema.Int32Attribute{
+						Description: "Time interval in minutes a request can remain pending before it is escalated to the next approver group in the policy. Defaults to 30 minutes.",
+						Optional:    true,
+						Computed:    true,
+						Default:     int32default.StaticInt32(30),
+						Validators: []validator.Int32{
+							int32validator.AtLeast(1),
+						},
+					},
+					"approver_groups": schema.ListNestedAttribute{
+						Description: "Ordered list of approver groups that define the escalation path. Each item in the list represents an escalation tier. Approver groups are evaluated in the order they are defined and triggered subsequently according to the defined interval.",
+						Required:    true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"logical_operator": schema.StringAttribute{
+									Description: `Possible values: AND or OR`,
+									Required:    true,
+								},
+								"approvers": schema.ListNestedAttribute{
+									Description:  "List of approvers.",
+									Required:     true,
+									NestedObject: getIdentityConditionSchema(IdentityConditionSchemaTypeApprover),
+								},
+							},
+						},
+					},
+				},
+			},
 			"requestors": schema.SingleNestedAttribute{
 				Description: "List of users who can request access, based on identity attributes (e.g., users, groups, or shifts) and the conditions under which they can request access.\nIn self-serve access flows, requestors specify who is allowed to submit an access request.\nIn automatic access flows, requestors specify who will automatically receive access when conditions are met (equivalent to \"grantees\" in the UI).",
 				Required:    true,

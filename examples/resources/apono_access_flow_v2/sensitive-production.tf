@@ -43,6 +43,40 @@ resource "apono_access_flow_v2" "sensitive_production_aws" {
     ]
   }
 
+  escalation_policy = {
+    interval_in_min = 30
+    approver_groups = [
+      {
+        logical_operator = "OR"
+        approvers = [
+          {
+            source_integration_name = "Google Oauth"
+            type                    = "user"
+            match_operator          = "is"
+            values                  = ["security@company.io"]
+          }
+        ]
+      },
+      {
+        logical_operator = "OR"
+        approvers = [
+          {
+            source_integration_name = "Google Oauth"
+            type                    = "user"
+            match_operator          = "is"
+            values                  = ["platform-admin@company.io"]
+          },
+          {
+            source_integration_name = "Google Oauth"
+            type                    = "user"
+            match_operator          = "is"
+            values                  = ["incident-manager@company.io"]
+          }
+        ]
+      }
+    ]
+  }
+
   settings = {
     justification_required        = true
     require_approver_reason       = false

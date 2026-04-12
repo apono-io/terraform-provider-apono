@@ -15,6 +15,66 @@ type SecuritySource interface {
 	Authorization(ctx context.Context, operationName OperationName) (Authorization, error)
 }
 
+// operationRolesAuthorization is a private map storing roles per operation.
+var operationRolesAuthorization = map[string][]string{
+	AddGroupMemberV1Operation:      []string{},
+	CreateAccessFlowV2Operation:    []string{},
+	CreateAccessScopesV1Operation:  []string{},
+	CreateBundleV2Operation:        []string{},
+	CreateGroupV1Operation:         []string{},
+	CreateIntegrationV4Operation:   []string{},
+	DeleteAccessFlowV2Operation:    []string{},
+	DeleteAccessScopesV1Operation:  []string{},
+	DeleteBundleV2Operation:        []string{},
+	DeleteConnectorV3Operation:     []string{},
+	DeleteGroupV1Operation:         []string{},
+	DeleteIntegrationV4Operation:   []string{},
+	GetAccessFlowV2Operation:       []string{},
+	GetAccessScopesV1Operation:     []string{},
+	GetBundleV2Operation:           []string{},
+	GetConnectorV3Operation:        []string{},
+	GetGroupV1Operation:            []string{},
+	GetIntegrationsByIdV4Operation: []string{},
+	GetUserOperation:               []string{},
+	ListAccessFlowsV2Operation:     []string{},
+	ListAccessScopesV1Operation:    []string{},
+	ListBundlesV2Operation:         []string{},
+	ListConnectorsV3Operation:      []string{},
+	ListGroupMembersV1Operation:    []string{},
+	ListGroupsV1Operation:          []string{},
+	ListIntegrationsV4Operation:    []string{},
+	ListUsersOperation:             []string{},
+	RemoveGroupMemberV1Operation:   []string{},
+	UpdateAccessFlowV2Operation:    []string{},
+	UpdateAccessScopesV1Operation:  []string{},
+	UpdateBundleV2Operation:        []string{},
+	UpdateConnectorV3Operation:     []string{},
+	UpdateGroupMembersV1Operation:  []string{},
+	UpdateGroupV1Operation:         []string{},
+	UpdateIntegrationV4Operation:   []string{},
+}
+
+// GetRolesForAuthorization returns the required roles for the given operation.
+//
+// This is useful for authorization scenarios where you need to know which roles
+// are required for an operation.
+//
+// Example:
+//
+//	requiredRoles := GetRolesForAuthorization(AddPetOperation)
+//
+// Returns nil if the operation has no role requirements or if the operation is unknown.
+func GetRolesForAuthorization(operation string) []string {
+	roles, ok := operationRolesAuthorization[operation]
+	if !ok {
+		return nil
+	}
+	// Return a copy to prevent external modification
+	result := make([]string, len(roles))
+	copy(result, roles)
+	return result
+}
+
 func (s *Client) securityAuthorization(ctx context.Context, operationName OperationName, req *http.Request) error {
 	t, err := s.sec.Authorization(ctx, operationName)
 	if err != nil {

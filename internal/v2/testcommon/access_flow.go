@@ -111,5 +111,23 @@ func GenerateAccessFlowResponse() *client.AccessFlowV2 {
 	approverPolicy.ApproverGroups[0].Approvers[0].Values.SetTo([]string{"person@example.com", "person_two@example.com"})
 	response.ApproverPolicy.SetTo(approverPolicy)
 
+	escalationPolicy := client.EscalationPolicyV2{
+		IntervalInMin: 30,
+		ApproverGroups: []client.ApproverGroupV2{
+			{
+				LogicalOperator: "OR",
+				Approvers: []client.ConditionV2{
+					{
+						Type: "user",
+					},
+				},
+			},
+		},
+	}
+	escalationPolicy.ApproverGroups[0].Approvers[0].SourceIntegrationName.SetTo("Google Oauth")
+	escalationPolicy.ApproverGroups[0].Approvers[0].MatchOperator.SetTo("is")
+	escalationPolicy.ApproverGroups[0].Approvers[0].Values.SetTo([]string{"security@company.io"})
+	response.EscalationPolicy.SetTo(escalationPolicy)
+
 	return &response
 }

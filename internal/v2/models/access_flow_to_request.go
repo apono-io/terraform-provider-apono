@@ -50,6 +50,15 @@ func AccessFlowModelToUpsertRequest(ctx context.Context, model AccessFlowV2Model
 		upsert.ApproverPolicy.SetTo(*approverPolicy)
 	}
 
+	if model.EscalationPolicy != nil {
+		escalationPolicy, err := convertEscalationPolicyToUpsertRequest(ctx, *model.EscalationPolicy)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert escalation policy: %w", err)
+		}
+
+		upsert.EscalationPolicy.SetTo(*escalationPolicy)
+	}
+
 	requestors, err := convertRequestorsToUpsertRequest(ctx, *model.Requestors)
 	if err != nil {
 		return nil, fmt.Errorf("failed to convert requestors: %w", err)
@@ -284,6 +293,26 @@ func convertResourcesScopesToUpsertRequest(ctx context.Context, scopes []Integra
 	}
 
 	return result, nil
+}
+
+func convertEscalationPolicyToUpsertRequest(ctx context.Context, model EscalationPolicyModel) (*client.EscalationPolicyUpsertV2, error) {
+	policy := client.EscalationPolicyUpsertV2{
+		IntervalInMin: model.IntervalInMin.ValueInt32(),
+	}
+
+	var groups []client.ApproverGroupUpsertV2
+	for i, groupModel := range model.ApproverGroups {
+		group, err := convertApproverGroupToUpsertRequest(ctx, groupModel)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert escalation approver group at index %d: %w", i, err)
+		}
+
+		groups = append(groups, *group)
+	}
+
+	policy.ApproverGroups = groups
+
+	return &policy, nil
 }
 
 func convertSettingsToUpsertRequest(ctx context.Context, model AccessFlowSettingsModel) (*client.AccessFlowSettingsV2, error) {

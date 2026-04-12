@@ -372,7 +372,8 @@ func (c *Client) sendAddGroupMemberV1(ctx context.Context, params AddGroupMember
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeAddGroupMemberV1Response(resp)
 	if err != nil {
@@ -455,7 +456,8 @@ func (c *Client) sendCreateAccessFlowV2(ctx context.Context, request *AccessFlow
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeCreateAccessFlowV2Response(resp)
 	if err != nil {
@@ -527,7 +529,8 @@ func (c *Client) sendCreateAccessScopesV1(ctx context.Context, request *UpsertAc
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeCreateAccessScopesV1Response(resp)
 	if err != nil {
@@ -608,7 +611,8 @@ func (c *Client) sendCreateBundleV2(ctx context.Context, request *UpsertBundleV2
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeCreateBundleV2Response(resp)
 	if err != nil {
@@ -689,7 +693,8 @@ func (c *Client) sendCreateGroupV1(ctx context.Context, request *CreateGroupV1) 
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeCreateGroupV1Response(resp)
 	if err != nil {
@@ -770,7 +775,8 @@ func (c *Client) sendCreateIntegrationV4(ctx context.Context, request *CreateInt
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeCreateIntegrationV4Response(resp)
 	if err != nil {
@@ -857,7 +863,8 @@ func (c *Client) sendDeleteAccessFlowV2(ctx context.Context, params DeleteAccess
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeDeleteAccessFlowV2Response(resp)
 	if err != nil {
@@ -944,7 +951,8 @@ func (c *Client) sendDeleteAccessScopesV1(ctx context.Context, params DeleteAcce
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeDeleteAccessScopesV1Response(resp)
 	if err != nil {
@@ -1031,7 +1039,8 @@ func (c *Client) sendDeleteBundleV2(ctx context.Context, params DeleteBundleV2Pa
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeDeleteBundleV2Response(resp)
 	if err != nil {
@@ -1118,7 +1127,8 @@ func (c *Client) sendDeleteConnectorV3(ctx context.Context, params DeleteConnect
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeDeleteConnectorV3Response(resp)
 	if err != nil {
@@ -1205,7 +1215,8 @@ func (c *Client) sendDeleteGroupV1(ctx context.Context, params DeleteGroupV1Para
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeDeleteGroupV1Response(resp)
 	if err != nil {
@@ -1292,7 +1303,8 @@ func (c *Client) sendDeleteIntegrationV4(ctx context.Context, params DeleteInteg
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeDeleteIntegrationV4Response(resp)
 	if err != nil {
@@ -1379,7 +1391,8 @@ func (c *Client) sendGetAccessFlowV2(ctx context.Context, params GetAccessFlowV2
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeGetAccessFlowV2Response(resp)
 	if err != nil {
@@ -1466,7 +1479,8 @@ func (c *Client) sendGetAccessScopesV1(ctx context.Context, params GetAccessScop
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeGetAccessScopesV1Response(resp)
 	if err != nil {
@@ -1553,7 +1567,8 @@ func (c *Client) sendGetBundleV2(ctx context.Context, params GetBundleV2Params) 
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeGetBundleV2Response(resp)
 	if err != nil {
@@ -1640,7 +1655,8 @@ func (c *Client) sendGetConnectorV3(ctx context.Context, params GetConnectorV3Pa
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeGetConnectorV3Response(resp)
 	if err != nil {
@@ -1727,7 +1743,8 @@ func (c *Client) sendGetGroupV1(ctx context.Context, params GetGroupV1Params) (r
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeGetGroupV1Response(resp)
 	if err != nil {
@@ -1814,7 +1831,8 @@ func (c *Client) sendGetIntegrationsByIdV4(ctx context.Context, params GetIntegr
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeGetIntegrationsByIdV4Response(resp)
 	if err != nil {
@@ -1901,7 +1919,8 @@ func (c *Client) sendGetUser(ctx context.Context, params GetUserParams) (res *Us
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeGetUserResponse(resp)
 	if err != nil {
@@ -2007,7 +2026,8 @@ func (c *Client) sendListAccessFlowsV2(ctx context.Context, params ListAccessFlo
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListAccessFlowsV2Response(resp)
 	if err != nil {
@@ -2130,7 +2150,8 @@ func (c *Client) sendListAccessScopesV1(ctx context.Context, params ListAccessSc
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListAccessScopesV1Response(resp)
 	if err != nil {
@@ -2253,7 +2274,8 @@ func (c *Client) sendListBundlesV2(ctx context.Context, params ListBundlesV2Para
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListBundlesV2Response(resp)
 	if err != nil {
@@ -2385,7 +2407,8 @@ func (c *Client) sendListConnectorsV3(ctx context.Context, params ListConnectors
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListConnectorsV3Response(resp)
 	if err != nil {
@@ -2510,7 +2533,8 @@ func (c *Client) sendListGroupMembersV1(ctx context.Context, params ListGroupMem
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListGroupMembersV1Response(resp)
 	if err != nil {
@@ -2633,7 +2657,8 @@ func (c *Client) sendListGroupsV1(ctx context.Context, params ListGroupsV1Params
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListGroupsV1Response(resp)
 	if err != nil {
@@ -2860,7 +2885,8 @@ func (c *Client) sendListIntegrationsV4(ctx context.Context, params ListIntegrat
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListIntegrationsV4Response(resp)
 	if err != nil {
@@ -2929,7 +2955,8 @@ func (c *Client) sendListUsers(ctx context.Context) (res *PaginatedResponseUserM
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListUsersResponse(resp)
 	if err != nil {
@@ -3035,7 +3062,8 @@ func (c *Client) sendRemoveGroupMemberV1(ctx context.Context, params RemoveGroup
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeRemoveGroupMemberV1Response(resp)
 	if err != nil {
@@ -3134,7 +3162,8 @@ func (c *Client) sendUpdateAccessFlowV2(ctx context.Context, request *AccessFlow
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateAccessFlowV2Response(resp)
 	if err != nil {
@@ -3224,7 +3253,8 @@ func (c *Client) sendUpdateAccessScopesV1(ctx context.Context, request *UpsertAc
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateAccessScopesV1Response(resp)
 	if err != nil {
@@ -3323,7 +3353,8 @@ func (c *Client) sendUpdateBundleV2(ctx context.Context, request *UpsertBundleV2
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateBundleV2Response(resp)
 	if err != nil {
@@ -3413,7 +3444,8 @@ func (c *Client) sendUpdateConnectorV3(ctx context.Context, request *UpsertConne
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateConnectorV3Response(resp)
 	if err != nil {
@@ -3513,7 +3545,8 @@ func (c *Client) sendUpdateGroupMembersV1(ctx context.Context, request *UpdateGr
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateGroupMembersV1Response(resp)
 	if err != nil {
@@ -3604,7 +3637,8 @@ func (c *Client) sendUpdateGroupV1(ctx context.Context, request *UpdateGroupV1, 
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateGroupV1Response(resp)
 	if err != nil {
@@ -3703,7 +3737,8 @@ func (c *Client) sendUpdateIntegrationV4(ctx context.Context, request *UpdateInt
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateIntegrationV4Response(resp)
 	if err != nil {
