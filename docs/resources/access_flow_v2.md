@@ -186,7 +186,7 @@ resource "apono_access_flow_v2" "managers_request_for_employees" {
 }
 ```
 
-### Access to Sensitive Production for Users via Google Oauth IDP  
+### Access to Production via Google Oauth IDP with 2 Escalation Tiers 
 
 ```terraform
 resource "apono_access_flow_v2" "sensitive_production_aws" {
