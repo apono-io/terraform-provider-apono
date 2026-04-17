@@ -53,14 +53,14 @@ func (p *AponoProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp
 			"- **Minimum supported Terraform version:** 1.1\n" +
 			"- **Recommended Terraform version:** 1.3 or above\n" +
 			"- You can configure the provider using environment variables (`APONO_ENDPOINT`, `APONO_PERSONAL_TOKEN`) or provider block attributes.\n" +
-			"- See [Apono API Authentication](https://docs.apono.io/api-reference/api-overview/api-authentication) for details on obtaining a personal token.",
+			"- See [Apono API Authentication](https://docs.apono.io/api-reference#authentication) for details on obtaining a personal token.",
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
 				Description: "Override API endpoint. This can also be set via the APONO_ENDPOINT environment variable, and is usually used for testing purposes.",
 				Optional:    true,
 			},
 			"personal_token": schema.StringAttribute{
-				Description: "[Personal API token](https://docs.apono.io/api-reference/api-overview/api-authentication). This field can be removed from the provider block; instead of the field, you can set the value via the `APONO_PERSONAL_TOKEN` environment variable.",
+				Description: "Service account or personal [API token](https://docs.apono.io/api-reference#authentication). This field can be removed from the provider block; instead of the field, you can set the value via the `APONO_PERSONAL_TOKEN` environment variable.",
 				Optional:    true,
 				Sensitive:   true,
 			},
