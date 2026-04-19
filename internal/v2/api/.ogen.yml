@@ -8,4 +8,4 @@ generator:
       - "client/request/validation"
     disable_all: true
   filters:
-    path_regex: ".*(?:v4/integrations|v1/groups|v2/access-flows|v1/access-scopes|v3/connectors|v2/users|v2/bundles).*"
+    path_regex: ".*(?:v4/integrations|v1/groups|v2/access-flows|v1/access-scopes|v3/connectors|v2/users|v2/bundles|v1/space-scopes|v1/spaces).*"

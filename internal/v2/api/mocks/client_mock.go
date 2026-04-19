@@ -70,9 +70,9 @@ func (_c *Invoker_AddGroupMemberV1_Call) RunAndReturn(run func(context.Context, 
 	return _c
 }
 
-// CreateAccessFlowV2 provides a mock function with given fields: ctx, request
-func (_m *Invoker) CreateAccessFlowV2(ctx context.Context, request *client.AccessFlowUpsertV2) (*client.AccessFlowV2, error) {
-	ret := _m.Called(ctx, request)
+// CreateAccessFlowV2 provides a mock function with given fields: ctx, request, params
+func (_m *Invoker) CreateAccessFlowV2(ctx context.Context, request *client.AccessFlowUpsertV2, params client.CreateAccessFlowV2Params) (*client.AccessFlowV2, error) {
+	ret := _m.Called(ctx, request, params)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreateAccessFlowV2")
@@ -80,19 +80,19 @@ func (_m *Invoker) CreateAccessFlowV2(ctx context.Context, request *client.Acces
 
 	var r0 *client.AccessFlowV2
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertV2) (*client.AccessFlowV2, error)); ok {
-		return rf(ctx, request)
+	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertV2, client.CreateAccessFlowV2Params) (*client.AccessFlowV2, error)); ok {
+		return rf(ctx, request, params)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertV2) *client.AccessFlowV2); ok {
-		r0 = rf(ctx, request)
+	if rf, ok := ret.Get(0).(func(context.Context, *client.AccessFlowUpsertV2, client.CreateAccessFlowV2Params) *client.AccessFlowV2); ok {
+		r0 = rf(ctx, request, params)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*client.AccessFlowV2)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *client.AccessFlowUpsertV2) error); ok {
-		r1 = rf(ctx, request)
+	if rf, ok := ret.Get(1).(func(context.Context, *client.AccessFlowUpsertV2, client.CreateAccessFlowV2Params) error); ok {
+		r1 = rf(ctx, request, params)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -108,13 +108,14 @@ type Invoker_CreateAccessFlowV2_Call struct {
 // CreateAccessFlowV2 is a helper method to define mock.On call
 //   - ctx context.Context
 //   - request *client.AccessFlowUpsertV2
-func (_e *Invoker_Expecter) CreateAccessFlowV2(ctx interface{}, request interface{}) *Invoker_CreateAccessFlowV2_Call {
-	return &Invoker_CreateAccessFlowV2_Call{Call: _e.mock.On("CreateAccessFlowV2", ctx, request)}
+//   - params client.CreateAccessFlowV2Params
+func (_e *Invoker_Expecter) CreateAccessFlowV2(ctx interface{}, request interface{}, params interface{}) *Invoker_CreateAccessFlowV2_Call {
+	return &Invoker_CreateAccessFlowV2_Call{Call: _e.mock.On("CreateAccessFlowV2", ctx, request, params)}
 }
 
-func (_c *Invoker_CreateAccessFlowV2_Call) Run(run func(ctx context.Context, request *client.AccessFlowUpsertV2)) *Invoker_CreateAccessFlowV2_Call {
+func (_c *Invoker_CreateAccessFlowV2_Call) Run(run func(ctx context.Context, request *client.AccessFlowUpsertV2, params client.CreateAccessFlowV2Params)) *Invoker_CreateAccessFlowV2_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*client.AccessFlowUpsertV2))
+		run(args[0].(context.Context), args[1].(*client.AccessFlowUpsertV2), args[2].(client.CreateAccessFlowV2Params))
 	})
 	return _c
 }
@@ -124,14 +125,14 @@ func (_c *Invoker_CreateAccessFlowV2_Call) Return(_a0 *client.AccessFlowV2, _a1 
 	return _c
 }
 
-func (_c *Invoker_CreateAccessFlowV2_Call) RunAndReturn(run func(context.Context, *client.AccessFlowUpsertV2) (*client.AccessFlowV2, error)) *Invoker_CreateAccessFlowV2_Call {
+func (_c *Invoker_CreateAccessFlowV2_Call) RunAndReturn(run func(context.Context, *client.AccessFlowUpsertV2, client.CreateAccessFlowV2Params) (*client.AccessFlowV2, error)) *Invoker_CreateAccessFlowV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// CreateAccessScopesV1 provides a mock function with given fields: ctx, request
-func (_m *Invoker) CreateAccessScopesV1(ctx context.Context, request *client.UpsertAccessScopeV1) (*client.AccessScopeV1, error) {
-	ret := _m.Called(ctx, request)
+// CreateAccessScopesV1 provides a mock function with given fields: ctx, request, params
+func (_m *Invoker) CreateAccessScopesV1(ctx context.Context, request *client.UpsertAccessScopeV1, params client.CreateAccessScopesV1Params) (*client.AccessScopeV1, error) {
+	ret := _m.Called(ctx, request, params)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreateAccessScopesV1")
@@ -139,19 +140,19 @@ func (_m *Invoker) CreateAccessScopesV1(ctx context.Context, request *client.Ups
 
 	var r0 *client.AccessScopeV1
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertAccessScopeV1) (*client.AccessScopeV1, error)); ok {
-		return rf(ctx, request)
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertAccessScopeV1, client.CreateAccessScopesV1Params) (*client.AccessScopeV1, error)); ok {
+		return rf(ctx, request, params)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertAccessScopeV1) *client.AccessScopeV1); ok {
-		r0 = rf(ctx, request)
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertAccessScopeV1, client.CreateAccessScopesV1Params) *client.AccessScopeV1); ok {
+		r0 = rf(ctx, request, params)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*client.AccessScopeV1)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertAccessScopeV1) error); ok {
-		r1 = rf(ctx, request)
+	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertAccessScopeV1, client.CreateAccessScopesV1Params) error); ok {
+		r1 = rf(ctx, request, params)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -167,13 +168,14 @@ type Invoker_CreateAccessScopesV1_Call struct {
 // CreateAccessScopesV1 is a helper method to define mock.On call
 //   - ctx context.Context
 //   - request *client.UpsertAccessScopeV1
-func (_e *Invoker_Expecter) CreateAccessScopesV1(ctx interface{}, request interface{}) *Invoker_CreateAccessScopesV1_Call {
-	return &Invoker_CreateAccessScopesV1_Call{Call: _e.mock.On("CreateAccessScopesV1", ctx, request)}
+//   - params client.CreateAccessScopesV1Params
+func (_e *Invoker_Expecter) CreateAccessScopesV1(ctx interface{}, request interface{}, params interface{}) *Invoker_CreateAccessScopesV1_Call {
+	return &Invoker_CreateAccessScopesV1_Call{Call: _e.mock.On("CreateAccessScopesV1", ctx, request, params)}
 }
 
-func (_c *Invoker_CreateAccessScopesV1_Call) Run(run func(ctx context.Context, request *client.UpsertAccessScopeV1)) *Invoker_CreateAccessScopesV1_Call {
+func (_c *Invoker_CreateAccessScopesV1_Call) Run(run func(ctx context.Context, request *client.UpsertAccessScopeV1, params client.CreateAccessScopesV1Params)) *Invoker_CreateAccessScopesV1_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*client.UpsertAccessScopeV1))
+		run(args[0].(context.Context), args[1].(*client.UpsertAccessScopeV1), args[2].(client.CreateAccessScopesV1Params))
 	})
 	return _c
 }
@@ -183,14 +185,14 @@ func (_c *Invoker_CreateAccessScopesV1_Call) Return(_a0 *client.AccessScopeV1, _
 	return _c
 }
 
-func (_c *Invoker_CreateAccessScopesV1_Call) RunAndReturn(run func(context.Context, *client.UpsertAccessScopeV1) (*client.AccessScopeV1, error)) *Invoker_CreateAccessScopesV1_Call {
+func (_c *Invoker_CreateAccessScopesV1_Call) RunAndReturn(run func(context.Context, *client.UpsertAccessScopeV1, client.CreateAccessScopesV1Params) (*client.AccessScopeV1, error)) *Invoker_CreateAccessScopesV1_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// CreateBundleV2 provides a mock function with given fields: ctx, request
-func (_m *Invoker) CreateBundleV2(ctx context.Context, request *client.UpsertBundleV2) (*client.BundleV2, error) {
-	ret := _m.Called(ctx, request)
+// CreateBundleV2 provides a mock function with given fields: ctx, request, params
+func (_m *Invoker) CreateBundleV2(ctx context.Context, request *client.UpsertBundleV2, params client.CreateBundleV2Params) (*client.BundleV2, error) {
+	ret := _m.Called(ctx, request, params)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreateBundleV2")
@@ -198,19 +200,19 @@ func (_m *Invoker) CreateBundleV2(ctx context.Context, request *client.UpsertBun
 
 	var r0 *client.BundleV2
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundleV2) (*client.BundleV2, error)); ok {
-		return rf(ctx, request)
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundleV2, client.CreateBundleV2Params) (*client.BundleV2, error)); ok {
+		return rf(ctx, request, params)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundleV2) *client.BundleV2); ok {
-		r0 = rf(ctx, request)
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertBundleV2, client.CreateBundleV2Params) *client.BundleV2); ok {
+		r0 = rf(ctx, request, params)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*client.BundleV2)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertBundleV2) error); ok {
-		r1 = rf(ctx, request)
+	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertBundleV2, client.CreateBundleV2Params) error); ok {
+		r1 = rf(ctx, request, params)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -226,13 +228,14 @@ type Invoker_CreateBundleV2_Call struct {
 // CreateBundleV2 is a helper method to define mock.On call
 //   - ctx context.Context
 //   - request *client.UpsertBundleV2
-func (_e *Invoker_Expecter) CreateBundleV2(ctx interface{}, request interface{}) *Invoker_CreateBundleV2_Call {
-	return &Invoker_CreateBundleV2_Call{Call: _e.mock.On("CreateBundleV2", ctx, request)}
+//   - params client.CreateBundleV2Params
+func (_e *Invoker_Expecter) CreateBundleV2(ctx interface{}, request interface{}, params interface{}) *Invoker_CreateBundleV2_Call {
+	return &Invoker_CreateBundleV2_Call{Call: _e.mock.On("CreateBundleV2", ctx, request, params)}
 }
 
-func (_c *Invoker_CreateBundleV2_Call) Run(run func(ctx context.Context, request *client.UpsertBundleV2)) *Invoker_CreateBundleV2_Call {
+func (_c *Invoker_CreateBundleV2_Call) Run(run func(ctx context.Context, request *client.UpsertBundleV2, params client.CreateBundleV2Params)) *Invoker_CreateBundleV2_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(*client.UpsertBundleV2))
+		run(args[0].(context.Context), args[1].(*client.UpsertBundleV2), args[2].(client.CreateBundleV2Params))
 	})
 	return _c
 }
@@ -242,7 +245,7 @@ func (_c *Invoker_CreateBundleV2_Call) Return(_a0 *client.BundleV2, _a1 error) *
 	return _c
 }
 
-func (_c *Invoker_CreateBundleV2_Call) RunAndReturn(run func(context.Context, *client.UpsertBundleV2) (*client.BundleV2, error)) *Invoker_CreateBundleV2_Call {
+func (_c *Invoker_CreateBundleV2_Call) RunAndReturn(run func(context.Context, *client.UpsertBundleV2, client.CreateBundleV2Params) (*client.BundleV2, error)) *Invoker_CreateBundleV2_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -361,6 +364,124 @@ func (_c *Invoker_CreateIntegrationV4_Call) Return(_a0 *client.IntegrationV4, _a
 }
 
 func (_c *Invoker_CreateIntegrationV4_Call) RunAndReturn(run func(context.Context, *client.CreateIntegrationV4) (*client.IntegrationV4, error)) *Invoker_CreateIntegrationV4_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// CreateSpaceScopeV1 provides a mock function with given fields: ctx, request
+func (_m *Invoker) CreateSpaceScopeV1(ctx context.Context, request *client.UpsertSpaceScopeV1) (*client.SpaceScopeV1, error) {
+	ret := _m.Called(ctx, request)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CreateSpaceScopeV1")
+	}
+
+	var r0 *client.SpaceScopeV1
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertSpaceScopeV1) (*client.SpaceScopeV1, error)); ok {
+		return rf(ctx, request)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertSpaceScopeV1) *client.SpaceScopeV1); ok {
+		r0 = rf(ctx, request)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.SpaceScopeV1)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertSpaceScopeV1) error); ok {
+		r1 = rf(ctx, request)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_CreateSpaceScopeV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateSpaceScopeV1'
+type Invoker_CreateSpaceScopeV1_Call struct {
+	*mock.Call
+}
+
+// CreateSpaceScopeV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *client.UpsertSpaceScopeV1
+func (_e *Invoker_Expecter) CreateSpaceScopeV1(ctx interface{}, request interface{}) *Invoker_CreateSpaceScopeV1_Call {
+	return &Invoker_CreateSpaceScopeV1_Call{Call: _e.mock.On("CreateSpaceScopeV1", ctx, request)}
+}
+
+func (_c *Invoker_CreateSpaceScopeV1_Call) Run(run func(ctx context.Context, request *client.UpsertSpaceScopeV1)) *Invoker_CreateSpaceScopeV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*client.UpsertSpaceScopeV1))
+	})
+	return _c
+}
+
+func (_c *Invoker_CreateSpaceScopeV1_Call) Return(_a0 *client.SpaceScopeV1, _a1 error) *Invoker_CreateSpaceScopeV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_CreateSpaceScopeV1_Call) RunAndReturn(run func(context.Context, *client.UpsertSpaceScopeV1) (*client.SpaceScopeV1, error)) *Invoker_CreateSpaceScopeV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// CreateSpaceV1 provides a mock function with given fields: ctx, request
+func (_m *Invoker) CreateSpaceV1(ctx context.Context, request *client.CreateSpaceV1) (*client.SpaceV1, error) {
+	ret := _m.Called(ctx, request)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CreateSpaceV1")
+	}
+
+	var r0 *client.SpaceV1
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *client.CreateSpaceV1) (*client.SpaceV1, error)); ok {
+		return rf(ctx, request)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *client.CreateSpaceV1) *client.SpaceV1); ok {
+		r0 = rf(ctx, request)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.SpaceV1)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *client.CreateSpaceV1) error); ok {
+		r1 = rf(ctx, request)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_CreateSpaceV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateSpaceV1'
+type Invoker_CreateSpaceV1_Call struct {
+	*mock.Call
+}
+
+// CreateSpaceV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *client.CreateSpaceV1
+func (_e *Invoker_Expecter) CreateSpaceV1(ctx interface{}, request interface{}) *Invoker_CreateSpaceV1_Call {
+	return &Invoker_CreateSpaceV1_Call{Call: _e.mock.On("CreateSpaceV1", ctx, request)}
+}
+
+func (_c *Invoker_CreateSpaceV1_Call) Run(run func(ctx context.Context, request *client.CreateSpaceV1)) *Invoker_CreateSpaceV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*client.CreateSpaceV1))
+	})
+	return _c
+}
+
+func (_c *Invoker_CreateSpaceV1_Call) Return(_a0 *client.SpaceV1, _a1 error) *Invoker_CreateSpaceV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_CreateSpaceV1_Call) RunAndReturn(run func(context.Context, *client.CreateSpaceV1) (*client.SpaceV1, error)) *Invoker_CreateSpaceV1_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -643,6 +764,100 @@ func (_c *Invoker_DeleteIntegrationV4_Call) Return(_a0 error) *Invoker_DeleteInt
 }
 
 func (_c *Invoker_DeleteIntegrationV4_Call) RunAndReturn(run func(context.Context, client.DeleteIntegrationV4Params) error) *Invoker_DeleteIntegrationV4_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteSpaceScopeV1 provides a mock function with given fields: ctx, params
+func (_m *Invoker) DeleteSpaceScopeV1(ctx context.Context, params client.DeleteSpaceScopeV1Params) error {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteSpaceScopeV1")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.DeleteSpaceScopeV1Params) error); ok {
+		r0 = rf(ctx, params)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// Invoker_DeleteSpaceScopeV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteSpaceScopeV1'
+type Invoker_DeleteSpaceScopeV1_Call struct {
+	*mock.Call
+}
+
+// DeleteSpaceScopeV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.DeleteSpaceScopeV1Params
+func (_e *Invoker_Expecter) DeleteSpaceScopeV1(ctx interface{}, params interface{}) *Invoker_DeleteSpaceScopeV1_Call {
+	return &Invoker_DeleteSpaceScopeV1_Call{Call: _e.mock.On("DeleteSpaceScopeV1", ctx, params)}
+}
+
+func (_c *Invoker_DeleteSpaceScopeV1_Call) Run(run func(ctx context.Context, params client.DeleteSpaceScopeV1Params)) *Invoker_DeleteSpaceScopeV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.DeleteSpaceScopeV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_DeleteSpaceScopeV1_Call) Return(_a0 error) *Invoker_DeleteSpaceScopeV1_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Invoker_DeleteSpaceScopeV1_Call) RunAndReturn(run func(context.Context, client.DeleteSpaceScopeV1Params) error) *Invoker_DeleteSpaceScopeV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteSpaceV1 provides a mock function with given fields: ctx, params
+func (_m *Invoker) DeleteSpaceV1(ctx context.Context, params client.DeleteSpaceV1Params) error {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteSpaceV1")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.DeleteSpaceV1Params) error); ok {
+		r0 = rf(ctx, params)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// Invoker_DeleteSpaceV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteSpaceV1'
+type Invoker_DeleteSpaceV1_Call struct {
+	*mock.Call
+}
+
+// DeleteSpaceV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.DeleteSpaceV1Params
+func (_e *Invoker_Expecter) DeleteSpaceV1(ctx interface{}, params interface{}) *Invoker_DeleteSpaceV1_Call {
+	return &Invoker_DeleteSpaceV1_Call{Call: _e.mock.On("DeleteSpaceV1", ctx, params)}
+}
+
+func (_c *Invoker_DeleteSpaceV1_Call) Run(run func(ctx context.Context, params client.DeleteSpaceV1Params)) *Invoker_DeleteSpaceV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.DeleteSpaceV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_DeleteSpaceV1_Call) Return(_a0 error) *Invoker_DeleteSpaceV1_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Invoker_DeleteSpaceV1_Call) RunAndReturn(run func(context.Context, client.DeleteSpaceV1Params) error) *Invoker_DeleteSpaceV1_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -997,6 +1212,124 @@ func (_c *Invoker_GetIntegrationsByIdV4_Call) Return(_a0 *client.IntegrationV4, 
 }
 
 func (_c *Invoker_GetIntegrationsByIdV4_Call) RunAndReturn(run func(context.Context, client.GetIntegrationsByIdV4Params) (*client.IntegrationV4, error)) *Invoker_GetIntegrationsByIdV4_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetSpaceScopeV1 provides a mock function with given fields: ctx, params
+func (_m *Invoker) GetSpaceScopeV1(ctx context.Context, params client.GetSpaceScopeV1Params) (*client.SpaceScopeV1, error) {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetSpaceScopeV1")
+	}
+
+	var r0 *client.SpaceScopeV1
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetSpaceScopeV1Params) (*client.SpaceScopeV1, error)); ok {
+		return rf(ctx, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetSpaceScopeV1Params) *client.SpaceScopeV1); ok {
+		r0 = rf(ctx, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.SpaceScopeV1)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, client.GetSpaceScopeV1Params) error); ok {
+		r1 = rf(ctx, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_GetSpaceScopeV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetSpaceScopeV1'
+type Invoker_GetSpaceScopeV1_Call struct {
+	*mock.Call
+}
+
+// GetSpaceScopeV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.GetSpaceScopeV1Params
+func (_e *Invoker_Expecter) GetSpaceScopeV1(ctx interface{}, params interface{}) *Invoker_GetSpaceScopeV1_Call {
+	return &Invoker_GetSpaceScopeV1_Call{Call: _e.mock.On("GetSpaceScopeV1", ctx, params)}
+}
+
+func (_c *Invoker_GetSpaceScopeV1_Call) Run(run func(ctx context.Context, params client.GetSpaceScopeV1Params)) *Invoker_GetSpaceScopeV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.GetSpaceScopeV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_GetSpaceScopeV1_Call) Return(_a0 *client.SpaceScopeV1, _a1 error) *Invoker_GetSpaceScopeV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_GetSpaceScopeV1_Call) RunAndReturn(run func(context.Context, client.GetSpaceScopeV1Params) (*client.SpaceScopeV1, error)) *Invoker_GetSpaceScopeV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetSpaceV1 provides a mock function with given fields: ctx, params
+func (_m *Invoker) GetSpaceV1(ctx context.Context, params client.GetSpaceV1Params) (*client.SpaceV1, error) {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetSpaceV1")
+	}
+
+	var r0 *client.SpaceV1
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetSpaceV1Params) (*client.SpaceV1, error)); ok {
+		return rf(ctx, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, client.GetSpaceV1Params) *client.SpaceV1); ok {
+		r0 = rf(ctx, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.SpaceV1)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, client.GetSpaceV1Params) error); ok {
+		r1 = rf(ctx, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_GetSpaceV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetSpaceV1'
+type Invoker_GetSpaceV1_Call struct {
+	*mock.Call
+}
+
+// GetSpaceV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.GetSpaceV1Params
+func (_e *Invoker_Expecter) GetSpaceV1(ctx interface{}, params interface{}) *Invoker_GetSpaceV1_Call {
+	return &Invoker_GetSpaceV1_Call{Call: _e.mock.On("GetSpaceV1", ctx, params)}
+}
+
+func (_c *Invoker_GetSpaceV1_Call) Run(run func(ctx context.Context, params client.GetSpaceV1Params)) *Invoker_GetSpaceV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.GetSpaceV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_GetSpaceV1_Call) Return(_a0 *client.SpaceV1, _a1 error) *Invoker_GetSpaceV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_GetSpaceV1_Call) RunAndReturn(run func(context.Context, client.GetSpaceV1Params) (*client.SpaceV1, error)) *Invoker_GetSpaceV1_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1473,6 +1806,183 @@ func (_c *Invoker_ListIntegrationsV4_Call) RunAndReturn(run func(context.Context
 	return _c
 }
 
+// ListSpaceMembersV1 provides a mock function with given fields: ctx, params
+func (_m *Invoker) ListSpaceMembersV1(ctx context.Context, params client.ListSpaceMembersV1Params) (*client.PublicApiListResponseSpaceMemberPublicV1Model, error) {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListSpaceMembersV1")
+	}
+
+	var r0 *client.PublicApiListResponseSpaceMemberPublicV1Model
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.ListSpaceMembersV1Params) (*client.PublicApiListResponseSpaceMemberPublicV1Model, error)); ok {
+		return rf(ctx, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, client.ListSpaceMembersV1Params) *client.PublicApiListResponseSpaceMemberPublicV1Model); ok {
+		r0 = rf(ctx, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.PublicApiListResponseSpaceMemberPublicV1Model)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, client.ListSpaceMembersV1Params) error); ok {
+		r1 = rf(ctx, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_ListSpaceMembersV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListSpaceMembersV1'
+type Invoker_ListSpaceMembersV1_Call struct {
+	*mock.Call
+}
+
+// ListSpaceMembersV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.ListSpaceMembersV1Params
+func (_e *Invoker_Expecter) ListSpaceMembersV1(ctx interface{}, params interface{}) *Invoker_ListSpaceMembersV1_Call {
+	return &Invoker_ListSpaceMembersV1_Call{Call: _e.mock.On("ListSpaceMembersV1", ctx, params)}
+}
+
+func (_c *Invoker_ListSpaceMembersV1_Call) Run(run func(ctx context.Context, params client.ListSpaceMembersV1Params)) *Invoker_ListSpaceMembersV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.ListSpaceMembersV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_ListSpaceMembersV1_Call) Return(_a0 *client.PublicApiListResponseSpaceMemberPublicV1Model, _a1 error) *Invoker_ListSpaceMembersV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_ListSpaceMembersV1_Call) RunAndReturn(run func(context.Context, client.ListSpaceMembersV1Params) (*client.PublicApiListResponseSpaceMemberPublicV1Model, error)) *Invoker_ListSpaceMembersV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ListSpaceScopesV1 provides a mock function with given fields: ctx, params
+func (_m *Invoker) ListSpaceScopesV1(ctx context.Context, params client.ListSpaceScopesV1Params) (*client.PublicApiListResponseSpaceScopePublicV1Model, error) {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListSpaceScopesV1")
+	}
+
+	var r0 *client.PublicApiListResponseSpaceScopePublicV1Model
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.ListSpaceScopesV1Params) (*client.PublicApiListResponseSpaceScopePublicV1Model, error)); ok {
+		return rf(ctx, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, client.ListSpaceScopesV1Params) *client.PublicApiListResponseSpaceScopePublicV1Model); ok {
+		r0 = rf(ctx, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.PublicApiListResponseSpaceScopePublicV1Model)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, client.ListSpaceScopesV1Params) error); ok {
+		r1 = rf(ctx, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_ListSpaceScopesV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListSpaceScopesV1'
+type Invoker_ListSpaceScopesV1_Call struct {
+	*mock.Call
+}
+
+// ListSpaceScopesV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.ListSpaceScopesV1Params
+func (_e *Invoker_Expecter) ListSpaceScopesV1(ctx interface{}, params interface{}) *Invoker_ListSpaceScopesV1_Call {
+	return &Invoker_ListSpaceScopesV1_Call{Call: _e.mock.On("ListSpaceScopesV1", ctx, params)}
+}
+
+func (_c *Invoker_ListSpaceScopesV1_Call) Run(run func(ctx context.Context, params client.ListSpaceScopesV1Params)) *Invoker_ListSpaceScopesV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.ListSpaceScopesV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_ListSpaceScopesV1_Call) Return(_a0 *client.PublicApiListResponseSpaceScopePublicV1Model, _a1 error) *Invoker_ListSpaceScopesV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_ListSpaceScopesV1_Call) RunAndReturn(run func(context.Context, client.ListSpaceScopesV1Params) (*client.PublicApiListResponseSpaceScopePublicV1Model, error)) *Invoker_ListSpaceScopesV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ListSpacesV1 provides a mock function with given fields: ctx, params
+func (_m *Invoker) ListSpacesV1(ctx context.Context, params client.ListSpacesV1Params) (*client.PublicApiListResponseSpacePublicV1Model, error) {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListSpacesV1")
+	}
+
+	var r0 *client.PublicApiListResponseSpacePublicV1Model
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.ListSpacesV1Params) (*client.PublicApiListResponseSpacePublicV1Model, error)); ok {
+		return rf(ctx, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, client.ListSpacesV1Params) *client.PublicApiListResponseSpacePublicV1Model); ok {
+		r0 = rf(ctx, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.PublicApiListResponseSpacePublicV1Model)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, client.ListSpacesV1Params) error); ok {
+		r1 = rf(ctx, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_ListSpacesV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListSpacesV1'
+type Invoker_ListSpacesV1_Call struct {
+	*mock.Call
+}
+
+// ListSpacesV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.ListSpacesV1Params
+func (_e *Invoker_Expecter) ListSpacesV1(ctx interface{}, params interface{}) *Invoker_ListSpacesV1_Call {
+	return &Invoker_ListSpacesV1_Call{Call: _e.mock.On("ListSpacesV1", ctx, params)}
+}
+
+func (_c *Invoker_ListSpacesV1_Call) Run(run func(ctx context.Context, params client.ListSpacesV1Params)) *Invoker_ListSpacesV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.ListSpacesV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_ListSpacesV1_Call) Return(_a0 *client.PublicApiListResponseSpacePublicV1Model, _a1 error) *Invoker_ListSpacesV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_ListSpacesV1_Call) RunAndReturn(run func(context.Context, client.ListSpacesV1Params) (*client.PublicApiListResponseSpacePublicV1Model, error)) *Invoker_ListSpacesV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListUsers provides a mock function with given fields: ctx
 func (_m *Invoker) ListUsers(ctx context.Context) (*client.PaginatedResponseUserModel, error) {
 	ret := _m.Called(ctx)
@@ -1574,6 +2084,113 @@ func (_c *Invoker_RemoveGroupMemberV1_Call) Return(_a0 error) *Invoker_RemoveGro
 }
 
 func (_c *Invoker_RemoveGroupMemberV1_Call) RunAndReturn(run func(context.Context, client.RemoveGroupMemberV1Params) error) *Invoker_RemoveGroupMemberV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// RemoveSpaceMemberV1 provides a mock function with given fields: ctx, params
+func (_m *Invoker) RemoveSpaceMemberV1(ctx context.Context, params client.RemoveSpaceMemberV1Params) error {
+	ret := _m.Called(ctx, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RemoveSpaceMemberV1")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, client.RemoveSpaceMemberV1Params) error); ok {
+		r0 = rf(ctx, params)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// Invoker_RemoveSpaceMemberV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RemoveSpaceMemberV1'
+type Invoker_RemoveSpaceMemberV1_Call struct {
+	*mock.Call
+}
+
+// RemoveSpaceMemberV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - params client.RemoveSpaceMemberV1Params
+func (_e *Invoker_Expecter) RemoveSpaceMemberV1(ctx interface{}, params interface{}) *Invoker_RemoveSpaceMemberV1_Call {
+	return &Invoker_RemoveSpaceMemberV1_Call{Call: _e.mock.On("RemoveSpaceMemberV1", ctx, params)}
+}
+
+func (_c *Invoker_RemoveSpaceMemberV1_Call) Run(run func(ctx context.Context, params client.RemoveSpaceMemberV1Params)) *Invoker_RemoveSpaceMemberV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(client.RemoveSpaceMemberV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_RemoveSpaceMemberV1_Call) Return(_a0 error) *Invoker_RemoveSpaceMemberV1_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Invoker_RemoveSpaceMemberV1_Call) RunAndReturn(run func(context.Context, client.RemoveSpaceMemberV1Params) error) *Invoker_RemoveSpaceMemberV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ReplaceSpaceMembersV1 provides a mock function with given fields: ctx, request, params
+func (_m *Invoker) ReplaceSpaceMembersV1(ctx context.Context, request *client.UpdateSpaceMembersV1, params client.ReplaceSpaceMembersV1Params) (*client.PublicApiListResponseSpaceMemberPublicV1Model, error) {
+	ret := _m.Called(ctx, request, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ReplaceSpaceMembersV1")
+	}
+
+	var r0 *client.PublicApiListResponseSpaceMemberPublicV1Model
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpdateSpaceMembersV1, client.ReplaceSpaceMembersV1Params) (*client.PublicApiListResponseSpaceMemberPublicV1Model, error)); ok {
+		return rf(ctx, request, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpdateSpaceMembersV1, client.ReplaceSpaceMembersV1Params) *client.PublicApiListResponseSpaceMemberPublicV1Model); ok {
+		r0 = rf(ctx, request, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.PublicApiListResponseSpaceMemberPublicV1Model)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *client.UpdateSpaceMembersV1, client.ReplaceSpaceMembersV1Params) error); ok {
+		r1 = rf(ctx, request, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_ReplaceSpaceMembersV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ReplaceSpaceMembersV1'
+type Invoker_ReplaceSpaceMembersV1_Call struct {
+	*mock.Call
+}
+
+// ReplaceSpaceMembersV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *client.UpdateSpaceMembersV1
+//   - params client.ReplaceSpaceMembersV1Params
+func (_e *Invoker_Expecter) ReplaceSpaceMembersV1(ctx interface{}, request interface{}, params interface{}) *Invoker_ReplaceSpaceMembersV1_Call {
+	return &Invoker_ReplaceSpaceMembersV1_Call{Call: _e.mock.On("ReplaceSpaceMembersV1", ctx, request, params)}
+}
+
+func (_c *Invoker_ReplaceSpaceMembersV1_Call) Run(run func(ctx context.Context, request *client.UpdateSpaceMembersV1, params client.ReplaceSpaceMembersV1Params)) *Invoker_ReplaceSpaceMembersV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*client.UpdateSpaceMembersV1), args[2].(client.ReplaceSpaceMembersV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_ReplaceSpaceMembersV1_Call) Return(_a0 *client.PublicApiListResponseSpaceMemberPublicV1Model, _a1 error) *Invoker_ReplaceSpaceMembersV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_ReplaceSpaceMembersV1_Call) RunAndReturn(run func(context.Context, *client.UpdateSpaceMembersV1, client.ReplaceSpaceMembersV1Params) (*client.PublicApiListResponseSpaceMemberPublicV1Model, error)) *Invoker_ReplaceSpaceMembersV1_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1982,6 +2599,186 @@ func (_c *Invoker_UpdateIntegrationV4_Call) Return(_a0 *client.IntegrationV4, _a
 }
 
 func (_c *Invoker_UpdateIntegrationV4_Call) RunAndReturn(run func(context.Context, *client.UpdateIntegrationV4, client.UpdateIntegrationV4Params) (*client.IntegrationV4, error)) *Invoker_UpdateIntegrationV4_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateSpaceScopeV1 provides a mock function with given fields: ctx, request, params
+func (_m *Invoker) UpdateSpaceScopeV1(ctx context.Context, request *client.UpsertSpaceScopeV1, params client.UpdateSpaceScopeV1Params) (*client.SpaceScopeV1, error) {
+	ret := _m.Called(ctx, request, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateSpaceScopeV1")
+	}
+
+	var r0 *client.SpaceScopeV1
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertSpaceScopeV1, client.UpdateSpaceScopeV1Params) (*client.SpaceScopeV1, error)); ok {
+		return rf(ctx, request, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpsertSpaceScopeV1, client.UpdateSpaceScopeV1Params) *client.SpaceScopeV1); ok {
+		r0 = rf(ctx, request, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.SpaceScopeV1)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *client.UpsertSpaceScopeV1, client.UpdateSpaceScopeV1Params) error); ok {
+		r1 = rf(ctx, request, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_UpdateSpaceScopeV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateSpaceScopeV1'
+type Invoker_UpdateSpaceScopeV1_Call struct {
+	*mock.Call
+}
+
+// UpdateSpaceScopeV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *client.UpsertSpaceScopeV1
+//   - params client.UpdateSpaceScopeV1Params
+func (_e *Invoker_Expecter) UpdateSpaceScopeV1(ctx interface{}, request interface{}, params interface{}) *Invoker_UpdateSpaceScopeV1_Call {
+	return &Invoker_UpdateSpaceScopeV1_Call{Call: _e.mock.On("UpdateSpaceScopeV1", ctx, request, params)}
+}
+
+func (_c *Invoker_UpdateSpaceScopeV1_Call) Run(run func(ctx context.Context, request *client.UpsertSpaceScopeV1, params client.UpdateSpaceScopeV1Params)) *Invoker_UpdateSpaceScopeV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*client.UpsertSpaceScopeV1), args[2].(client.UpdateSpaceScopeV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_UpdateSpaceScopeV1_Call) Return(_a0 *client.SpaceScopeV1, _a1 error) *Invoker_UpdateSpaceScopeV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_UpdateSpaceScopeV1_Call) RunAndReturn(run func(context.Context, *client.UpsertSpaceScopeV1, client.UpdateSpaceScopeV1Params) (*client.SpaceScopeV1, error)) *Invoker_UpdateSpaceScopeV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateSpaceV1 provides a mock function with given fields: ctx, request, params
+func (_m *Invoker) UpdateSpaceV1(ctx context.Context, request *client.UpdateSpaceV1, params client.UpdateSpaceV1Params) (*client.SpaceV1, error) {
+	ret := _m.Called(ctx, request, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateSpaceV1")
+	}
+
+	var r0 *client.SpaceV1
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpdateSpaceV1, client.UpdateSpaceV1Params) (*client.SpaceV1, error)); ok {
+		return rf(ctx, request, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *client.UpdateSpaceV1, client.UpdateSpaceV1Params) *client.SpaceV1); ok {
+		r0 = rf(ctx, request, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.SpaceV1)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *client.UpdateSpaceV1, client.UpdateSpaceV1Params) error); ok {
+		r1 = rf(ctx, request, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_UpdateSpaceV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateSpaceV1'
+type Invoker_UpdateSpaceV1_Call struct {
+	*mock.Call
+}
+
+// UpdateSpaceV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *client.UpdateSpaceV1
+//   - params client.UpdateSpaceV1Params
+func (_e *Invoker_Expecter) UpdateSpaceV1(ctx interface{}, request interface{}, params interface{}) *Invoker_UpdateSpaceV1_Call {
+	return &Invoker_UpdateSpaceV1_Call{Call: _e.mock.On("UpdateSpaceV1", ctx, request, params)}
+}
+
+func (_c *Invoker_UpdateSpaceV1_Call) Run(run func(ctx context.Context, request *client.UpdateSpaceV1, params client.UpdateSpaceV1Params)) *Invoker_UpdateSpaceV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*client.UpdateSpaceV1), args[2].(client.UpdateSpaceV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_UpdateSpaceV1_Call) Return(_a0 *client.SpaceV1, _a1 error) *Invoker_UpdateSpaceV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_UpdateSpaceV1_Call) RunAndReturn(run func(context.Context, *client.UpdateSpaceV1, client.UpdateSpaceV1Params) (*client.SpaceV1, error)) *Invoker_UpdateSpaceV1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpsertSpaceMemberV1 provides a mock function with given fields: ctx, request, params
+func (_m *Invoker) UpsertSpaceMemberV1(ctx context.Context, request *client.SpaceMemberRolesV1, params client.UpsertSpaceMemberV1Params) (*client.SpaceMemberV1, error) {
+	ret := _m.Called(ctx, request, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpsertSpaceMemberV1")
+	}
+
+	var r0 *client.SpaceMemberV1
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *client.SpaceMemberRolesV1, client.UpsertSpaceMemberV1Params) (*client.SpaceMemberV1, error)); ok {
+		return rf(ctx, request, params)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *client.SpaceMemberRolesV1, client.UpsertSpaceMemberV1Params) *client.SpaceMemberV1); ok {
+		r0 = rf(ctx, request, params)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*client.SpaceMemberV1)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *client.SpaceMemberRolesV1, client.UpsertSpaceMemberV1Params) error); ok {
+		r1 = rf(ctx, request, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Invoker_UpsertSpaceMemberV1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpsertSpaceMemberV1'
+type Invoker_UpsertSpaceMemberV1_Call struct {
+	*mock.Call
+}
+
+// UpsertSpaceMemberV1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request *client.SpaceMemberRolesV1
+//   - params client.UpsertSpaceMemberV1Params
+func (_e *Invoker_Expecter) UpsertSpaceMemberV1(ctx interface{}, request interface{}, params interface{}) *Invoker_UpsertSpaceMemberV1_Call {
+	return &Invoker_UpsertSpaceMemberV1_Call{Call: _e.mock.On("UpsertSpaceMemberV1", ctx, request, params)}
+}
+
+func (_c *Invoker_UpsertSpaceMemberV1_Call) Run(run func(ctx context.Context, request *client.SpaceMemberRolesV1, params client.UpsertSpaceMemberV1Params)) *Invoker_UpsertSpaceMemberV1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*client.SpaceMemberRolesV1), args[2].(client.UpsertSpaceMemberV1Params))
+	})
+	return _c
+}
+
+func (_c *Invoker_UpsertSpaceMemberV1_Call) Return(_a0 *client.SpaceMemberV1, _a1 error) *Invoker_UpsertSpaceMemberV1_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *Invoker_UpsertSpaceMemberV1_Call) RunAndReturn(run func(context.Context, *client.SpaceMemberRolesV1, client.UpsertSpaceMemberV1Params) (*client.SpaceMemberV1, error)) *Invoker_UpsertSpaceMemberV1_Call {
 	_c.Call.Return(run)
 	return _c
 }

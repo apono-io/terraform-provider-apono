@@ -1,0 +1,47 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: "v2"
+description: |-
+  {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Type}}: {{.Name}}
+
+{{ .Description | trimspace }}
+
+## Example Usage
+
+### Basic
+
+{{ tffile "examples/resources/apono_space/basic.tf" }}
+
+### Space with Scopes and Members
+
+{{ tffile "examples/resources/apono_space/with_members.tf" }}
+
+### Space with Multiple Scopes, No Members
+
+{{ tffile "examples/resources/apono_space/multiple_scopes.tf" }}
+
+### Space with Data Source Reference
+
+{{ tffile "examples/resources/apono_space/data_source_reference.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}
+
+## Import
+
+In Terraform v1.5.0 and later, use an import block to import apono_space using the Apono space identifier. For example:
+
+```terraform
+import {
+  to = apono_space.production
+  id = "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+
+Or via CLI:
+
+```shell
+terraform import apono_space.production 123e4567-e89b-12d3-a456-426614174000
+```

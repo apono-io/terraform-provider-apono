@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 var _ datasource.DataSourceWithConfigure = &ResourceIntegrationsDataSource{}
@@ -116,12 +115,6 @@ func (d *ResourceIntegrationsDataSource) Read(ctx context.Context, req datasourc
 		connectorID = config.ConnectorID.ValueString()
 	}
 
-	tflog.Debug(ctx, "Reading resource integrations", map[string]any{
-		"name_filter":         name,
-		"type_filter":         integrationType,
-		"connector_id_filter": connectorID,
-	})
-
 	integrations, err := services.ListIntegrations(ctx, d.client, integrationType, name, connectorID, []string{common.ResourceCategory})
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving resource integrations", fmt.Sprintf("Could not retrieve resource integrations: %v", err))
@@ -141,7 +134,4 @@ func (d *ResourceIntegrationsDataSource) Read(ctx context.Context, req datasourc
 		return
 	}
 
-	tflog.Info(ctx, "Resource integrations retrieved successfully", map[string]any{
-		"count": len(config.Integrations),
-	})
 }

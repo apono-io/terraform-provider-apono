@@ -35,7 +35,7 @@ func TestAponoBundleV2Resource(t *testing.T) {
 		model.ID = types.StringNull()
 
 		mockInvoker.EXPECT().
-			CreateBundleV2(mock.Anything, mock.Anything).
+			CreateBundleV2(mock.Anything, mock.Anything, mock.Anything).
 			Return(mockResponse, nil)
 
 		req := resource.CreateRequest{
