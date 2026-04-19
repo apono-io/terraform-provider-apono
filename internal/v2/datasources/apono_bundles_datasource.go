@@ -11,7 +11,6 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 var _ datasource.DataSourceWithConfigure = &AponoBundlesDataSource{}
@@ -83,10 +82,6 @@ func (d *AponoBundlesDataSource) Read(ctx context.Context, req datasource.ReadRe
 		name = config.Name.ValueString()
 	}
 
-	tflog.Debug(ctx, "Reading bundles", map[string]any{
-		"name_filter": name,
-	})
-
 	bundles, err := services.ListBundles(ctx, d.client, name)
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving bundles", fmt.Sprintf("Could not retrieve bundles: %v", err))
@@ -106,7 +101,4 @@ func (d *AponoBundlesDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
-	tflog.Info(ctx, "Bundles retrieved successfully", map[string]any{
-		"count": len(config.Bundles),
-	})
 }

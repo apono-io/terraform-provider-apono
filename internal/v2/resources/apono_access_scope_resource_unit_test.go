@@ -35,7 +35,7 @@ func TestAponoAccessScopeResource(t *testing.T) {
 		mockInvoker.EXPECT().
 			CreateAccessScopesV1(mock.Anything, mock.MatchedBy(func(req *client.UpsertAccessScopeV1) bool {
 				return req.Name == "test-scope" && req.Query == `resource_type = "mock-duck"`
-			})).
+			}), mock.Anything).
 			Return(&client.AccessScopeV1{
 				ID:    "as-123456",
 				Name:  "test-scope",

@@ -80,6 +80,48 @@ func encodeCreateIntegrationV4Request(
 	return nil
 }
 
+func encodeCreateSpaceScopeV1Request(
+	req *UpsertSpaceScopeV1,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeCreateSpaceV1Request(
+	req *CreateSpaceV1,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeReplaceSpaceMembersV1Request(
+	req *UpdateSpaceMembersV1,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
 func encodeUpdateAccessFlowV2Request(
 	req *AccessFlowUpsertV2,
 	r *http.Request,
@@ -166,6 +208,48 @@ func encodeUpdateGroupV1Request(
 
 func encodeUpdateIntegrationV4Request(
 	req *UpdateIntegrationV4,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateSpaceScopeV1Request(
+	req *UpsertSpaceScopeV1,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateSpaceV1Request(
+	req *UpdateSpaceV1,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpsertSpaceMemberV1Request(
+	req *SpaceMemberRolesV1,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

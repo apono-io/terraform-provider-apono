@@ -383,6 +383,7 @@ type AccessFlowV2 struct {
 	GrantDurationInMin OptNilInt32                 `json:"grant_duration_in_min"`
 	Timeframe          OptNilAccessFlowTimeframeV2 `json:"timeframe"`
 	Settings           AccessFlowSettingsV2        `json:"settings"`
+	Space              OptNilSpaceReferenceV1      `json:"space"`
 	// Timestamp when the resource was created, in ISO 8601 format.
 	CreationDate ApiInstant `json:"creation_date"`
 	// Timestamp when the resource was last modified, in ISO 8601 format.
@@ -452,6 +453,11 @@ func (s *AccessFlowV2) GetTimeframe() OptNilAccessFlowTimeframeV2 {
 // GetSettings returns the value of Settings.
 func (s *AccessFlowV2) GetSettings() AccessFlowSettingsV2 {
 	return s.Settings
+}
+
+// GetSpace returns the value of Space.
+func (s *AccessFlowV2) GetSpace() OptNilSpaceReferenceV1 {
+	return s.Space
 }
 
 // GetCreationDate returns the value of CreationDate.
@@ -529,6 +535,11 @@ func (s *AccessFlowV2) SetSettings(val AccessFlowSettingsV2) {
 	s.Settings = val
 }
 
+// SetSpace sets the value of Space.
+func (s *AccessFlowV2) SetSpace(val OptNilSpaceReferenceV1) {
+	s.Space = val
+}
+
 // SetCreationDate sets the value of CreationDate.
 func (s *AccessFlowV2) SetCreationDate(val ApiInstant) {
 	s.CreationDate = val
@@ -597,7 +608,8 @@ type AccessScopeV1 struct {
 	Description OptNilString `json:"description"`
 	// Apono Query Language (AQL) expression that defines filters for cloud resources, integrations, and
 	// permissions.
-	Query string `json:"query"`
+	Query string                 `json:"query"`
+	Space OptNilSpaceReferenceV1 `json:"space"`
 	// Timestamp when the resource was created, in ISO 8601 format.
 	CreationDate ApiInstant `json:"creation_date"`
 	// Timestamp when the resource was last modified, in ISO 8601 format.
@@ -622,6 +634,11 @@ func (s *AccessScopeV1) GetDescription() OptNilString {
 // GetQuery returns the value of Query.
 func (s *AccessScopeV1) GetQuery() string {
 	return s.Query
+}
+
+// GetSpace returns the value of Space.
+func (s *AccessScopeV1) GetSpace() OptNilSpaceReferenceV1 {
+	return s.Space
 }
 
 // GetCreationDate returns the value of CreationDate.
@@ -652,6 +669,11 @@ func (s *AccessScopeV1) SetDescription(val OptNilString) {
 // SetQuery sets the value of Query.
 func (s *AccessScopeV1) SetQuery(val string) {
 	s.Query = val
+}
+
+// SetSpace sets the value of Space.
+func (s *AccessScopeV1) SetSpace(val OptNilSpaceReferenceV1) {
+	s.Space = val
 }
 
 // SetCreationDate sets the value of CreationDate.
@@ -1027,6 +1049,8 @@ type BundleV2 struct {
 	// Display name of the bundle.
 	Name          string                       `json:"name"`
 	AccessTargets []AccessBundleAccessTargetV2 `json:"access_targets"`
+	// Space this bundle belongs to.
+	Space OptNilSpaceReferenceV1 `json:"space"`
 	// Timestamp when the resource was created, in ISO 8601 format.
 	CreationDate ApiInstant `json:"creation_date"`
 	// Timestamp when the resource was last modified, in ISO 8601 format.
@@ -1046,6 +1070,11 @@ func (s *BundleV2) GetName() string {
 // GetAccessTargets returns the value of AccessTargets.
 func (s *BundleV2) GetAccessTargets() []AccessBundleAccessTargetV2 {
 	return s.AccessTargets
+}
+
+// GetSpace returns the value of Space.
+func (s *BundleV2) GetSpace() OptNilSpaceReferenceV1 {
+	return s.Space
 }
 
 // GetCreationDate returns the value of CreationDate.
@@ -1071,6 +1100,11 @@ func (s *BundleV2) SetName(val string) {
 // SetAccessTargets sets the value of AccessTargets.
 func (s *BundleV2) SetAccessTargets(val []AccessBundleAccessTargetV2) {
 	s.AccessTargets = val
+}
+
+// SetSpace sets the value of Space.
+func (s *BundleV2) SetSpace(val OptNilSpaceReferenceV1) {
+	s.Space = val
 }
 
 // SetCreationDate sets the value of CreationDate.
@@ -1665,6 +1699,47 @@ func (s *CreateIntegrationV4) SetOwnersMapping(val OptNilUpsertOwnerMappingV4) {
 	s.OwnersMapping = val
 }
 
+// Ref: #/components/schemas/CreateSpaceV1
+type CreateSpaceV1 struct {
+	// Space name (3-64 characters, unique per account).
+	Name string `json:"name"`
+	// Space scope IDs or names that define the space's inventory scope. Use the Space Scopes API to
+	// manage scopes.
+	SpaceScopeReferences []string `json:"space_scope_references"`
+	// Initial space members (optional — can be managed separately via member endpoints).
+	Members OptNilUpsertSpaceMemberV1Array `json:"members"`
+}
+
+// GetName returns the value of Name.
+func (s *CreateSpaceV1) GetName() string {
+	return s.Name
+}
+
+// GetSpaceScopeReferences returns the value of SpaceScopeReferences.
+func (s *CreateSpaceV1) GetSpaceScopeReferences() []string {
+	return s.SpaceScopeReferences
+}
+
+// GetMembers returns the value of Members.
+func (s *CreateSpaceV1) GetMembers() OptNilUpsertSpaceMemberV1Array {
+	return s.Members
+}
+
+// SetName sets the value of Name.
+func (s *CreateSpaceV1) SetName(val string) {
+	s.Name = val
+}
+
+// SetSpaceScopeReferences sets the value of SpaceScopeReferences.
+func (s *CreateSpaceV1) SetSpaceScopeReferences(val []string) {
+	s.SpaceScopeReferences = val
+}
+
+// SetMembers sets the value of Members.
+func (s *CreateSpaceV1) SetMembers(val OptNilUpsertSpaceMemberV1Array) {
+	s.Members = val
+}
+
 // Days on which a rule applies.
 // Ref: #/components/schemas/DayOfWeekV2
 type DayOfWeekV2 string
@@ -1761,6 +1836,12 @@ type DeleteGroupV1NoContent struct{}
 // DeleteIntegrationV4NoContent is response for DeleteIntegrationV4 operation.
 type DeleteIntegrationV4NoContent struct{}
 
+// DeleteSpaceScopeV1NoContent is response for DeleteSpaceScopeV1 operation.
+type DeleteSpaceScopeV1NoContent struct{}
+
+// DeleteSpaceV1NoContent is response for DeleteSpaceV1 operation.
+type DeleteSpaceV1NoContent struct{}
+
 // Defines an approval escalation policy for a human approval flow.
 // When a request remains pending for the configured interval, Apono escalates it to the approver
 // groups defined in this block.
@@ -1770,7 +1851,7 @@ type DeleteIntegrationV4NoContent struct{}
 type EscalationPolicyUpsertV2 struct {
 	// Time interval in minutes a request can remain pending before it is escalated to the next approver
 	// group in the policy. Default to 30 minutes.
-	IntervalInMin int32 `json:"interval_in_min"`
+	IntervalInMin OptNilInt32 `json:"interval_in_min"`
 	// Ordered list of approver groups that define the escalation path.
 	// Each item in the list represents an escalation tier.
 	// Approver groups are evaluated in the order they are defined and triggered subsequently according
@@ -1779,7 +1860,7 @@ type EscalationPolicyUpsertV2 struct {
 }
 
 // GetIntervalInMin returns the value of IntervalInMin.
-func (s *EscalationPolicyUpsertV2) GetIntervalInMin() int32 {
+func (s *EscalationPolicyUpsertV2) GetIntervalInMin() OptNilInt32 {
 	return s.IntervalInMin
 }
 
@@ -1789,7 +1870,7 @@ func (s *EscalationPolicyUpsertV2) GetApproverGroups() []ApproverGroupUpsertV2 {
 }
 
 // SetIntervalInMin sets the value of IntervalInMin.
-func (s *EscalationPolicyUpsertV2) SetIntervalInMin(val int32) {
+func (s *EscalationPolicyUpsertV2) SetIntervalInMin(val OptNilInt32) {
 	s.IntervalInMin = val
 }
 
@@ -4223,6 +4304,69 @@ func (o OptNilSecretStoreConfigV4) Or(d SecretStoreConfigV4) SecretStoreConfigV4
 	return d
 }
 
+// NewOptNilSpaceReferenceV1 returns new OptNilSpaceReferenceV1 with value set to v.
+func NewOptNilSpaceReferenceV1(v SpaceReferenceV1) OptNilSpaceReferenceV1 {
+	return OptNilSpaceReferenceV1{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilSpaceReferenceV1 is optional nullable SpaceReferenceV1.
+type OptNilSpaceReferenceV1 struct {
+	Value SpaceReferenceV1
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilSpaceReferenceV1 was set.
+func (o OptNilSpaceReferenceV1) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilSpaceReferenceV1) Reset() {
+	var v SpaceReferenceV1
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilSpaceReferenceV1) SetTo(v SpaceReferenceV1) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilSpaceReferenceV1) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilSpaceReferenceV1) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v SpaceReferenceV1
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilSpaceReferenceV1) Get() (v SpaceReferenceV1, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilSpaceReferenceV1) Or(d SpaceReferenceV1) SpaceReferenceV1 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptNilString returns new OptNilString with value set to v.
 func NewOptNilString(v string) OptNilString {
 	return OptNilString{
@@ -4532,6 +4676,69 @@ func (o OptNilUpsertSecretStoreConfigV4) Get() (v UpsertSecretStoreConfigV4, ok 
 
 // Or returns value if set, or given parameter if does not.
 func (o OptNilUpsertSecretStoreConfigV4) Or(d UpsertSecretStoreConfigV4) UpsertSecretStoreConfigV4 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilUpsertSpaceMemberV1Array returns new OptNilUpsertSpaceMemberV1Array with value set to v.
+func NewOptNilUpsertSpaceMemberV1Array(v []UpsertSpaceMemberV1) OptNilUpsertSpaceMemberV1Array {
+	return OptNilUpsertSpaceMemberV1Array{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilUpsertSpaceMemberV1Array is optional nullable []UpsertSpaceMemberV1.
+type OptNilUpsertSpaceMemberV1Array struct {
+	Value []UpsertSpaceMemberV1
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilUpsertSpaceMemberV1Array was set.
+func (o OptNilUpsertSpaceMemberV1Array) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilUpsertSpaceMemberV1Array) Reset() {
+	var v []UpsertSpaceMemberV1
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilUpsertSpaceMemberV1Array) SetTo(v []UpsertSpaceMemberV1) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilUpsertSpaceMemberV1Array) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilUpsertSpaceMemberV1Array) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v []UpsertSpaceMemberV1
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilUpsertSpaceMemberV1Array) Get() (v []UpsertSpaceMemberV1, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilUpsertSpaceMemberV1Array) Or(d []UpsertSpaceMemberV1) []UpsertSpaceMemberV1 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -4892,6 +5099,84 @@ func (s *PublicApiListResponseIntegrationPublicV4Model) SetPagination(val Public
 	s.Pagination = val
 }
 
+// Ref: #/components/schemas/PublicApiListResponseSpaceMemberPublicV1Model
+type PublicApiListResponseSpaceMemberPublicV1Model struct {
+	Items      []SpaceMemberV1              `json:"items"`
+	Pagination PublicApiPaginationInfoModel `json:"pagination"`
+}
+
+// GetItems returns the value of Items.
+func (s *PublicApiListResponseSpaceMemberPublicV1Model) GetItems() []SpaceMemberV1 {
+	return s.Items
+}
+
+// GetPagination returns the value of Pagination.
+func (s *PublicApiListResponseSpaceMemberPublicV1Model) GetPagination() PublicApiPaginationInfoModel {
+	return s.Pagination
+}
+
+// SetItems sets the value of Items.
+func (s *PublicApiListResponseSpaceMemberPublicV1Model) SetItems(val []SpaceMemberV1) {
+	s.Items = val
+}
+
+// SetPagination sets the value of Pagination.
+func (s *PublicApiListResponseSpaceMemberPublicV1Model) SetPagination(val PublicApiPaginationInfoModel) {
+	s.Pagination = val
+}
+
+// Ref: #/components/schemas/PublicApiListResponseSpacePublicV1Model
+type PublicApiListResponseSpacePublicV1Model struct {
+	Items      []SpaceV1                    `json:"items"`
+	Pagination PublicApiPaginationInfoModel `json:"pagination"`
+}
+
+// GetItems returns the value of Items.
+func (s *PublicApiListResponseSpacePublicV1Model) GetItems() []SpaceV1 {
+	return s.Items
+}
+
+// GetPagination returns the value of Pagination.
+func (s *PublicApiListResponseSpacePublicV1Model) GetPagination() PublicApiPaginationInfoModel {
+	return s.Pagination
+}
+
+// SetItems sets the value of Items.
+func (s *PublicApiListResponseSpacePublicV1Model) SetItems(val []SpaceV1) {
+	s.Items = val
+}
+
+// SetPagination sets the value of Pagination.
+func (s *PublicApiListResponseSpacePublicV1Model) SetPagination(val PublicApiPaginationInfoModel) {
+	s.Pagination = val
+}
+
+// Ref: #/components/schemas/PublicApiListResponseSpaceScopePublicV1Model
+type PublicApiListResponseSpaceScopePublicV1Model struct {
+	Items      []SpaceScopeV1               `json:"items"`
+	Pagination PublicApiPaginationInfoModel `json:"pagination"`
+}
+
+// GetItems returns the value of Items.
+func (s *PublicApiListResponseSpaceScopePublicV1Model) GetItems() []SpaceScopeV1 {
+	return s.Items
+}
+
+// GetPagination returns the value of Pagination.
+func (s *PublicApiListResponseSpaceScopePublicV1Model) GetPagination() PublicApiPaginationInfoModel {
+	return s.Pagination
+}
+
+// SetItems sets the value of Items.
+func (s *PublicApiListResponseSpaceScopePublicV1Model) SetItems(val []SpaceScopeV1) {
+	s.Items = val
+}
+
+// SetPagination sets the value of Pagination.
+func (s *PublicApiListResponseSpaceScopePublicV1Model) SetPagination(val PublicApiPaginationInfoModel) {
+	s.Pagination = val
+}
+
 // Ref: #/components/schemas/PublicApiPaginationInfoModel
 type PublicApiPaginationInfoModel struct {
 	// Token used to retrieve the next page of results in a paginated response.
@@ -4910,6 +5195,9 @@ func (s *PublicApiPaginationInfoModel) SetNextPageToken(val OptNilString) {
 
 // RemoveGroupMemberV1NoContent is response for RemoveGroupMemberV1 operation.
 type RemoveGroupMemberV1NoContent struct{}
+
+// RemoveSpaceMemberV1NoContent is response for RemoveSpaceMemberV1 operation.
+type RemoveSpaceMemberV1NoContent struct{}
 
 // Defines who the access request can be made for. This enables support to request on behalf of other
 // users, groups, or identities.
@@ -5165,6 +5453,258 @@ func (s *SecretStoreConfigV4) SetApono(val OptNilAponoSecretConfigV4) {
 	s.Apono = val
 }
 
+// Ref: #/components/schemas/SpaceMemberRolesV1
+type SpaceMemberRolesV1 struct {
+	// Type of identity: user or group.
+	IdentityType string `json:"identity_type"`
+	// Roles to assign: SpaceOwner (full control) or SpaceManager (manage resources).
+	SpaceRoles []string `json:"space_roles"`
+}
+
+// GetIdentityType returns the value of IdentityType.
+func (s *SpaceMemberRolesV1) GetIdentityType() string {
+	return s.IdentityType
+}
+
+// GetSpaceRoles returns the value of SpaceRoles.
+func (s *SpaceMemberRolesV1) GetSpaceRoles() []string {
+	return s.SpaceRoles
+}
+
+// SetIdentityType sets the value of IdentityType.
+func (s *SpaceMemberRolesV1) SetIdentityType(val string) {
+	s.IdentityType = val
+}
+
+// SetSpaceRoles sets the value of SpaceRoles.
+func (s *SpaceMemberRolesV1) SetSpaceRoles(val []string) {
+	s.SpaceRoles = val
+}
+
+// Ref: #/components/schemas/SpaceMemberV1
+type SpaceMemberV1 struct {
+	// User ID or Group ID.
+	IdentityID string `json:"identity_id"`
+	// Identity type: user or group.
+	IdentityType string `json:"identity_type"`
+	// Roles within the space: SpaceOwner, SpaceManager.
+	SpaceRoles []string `json:"space_roles"`
+	// Display name of the user or group.
+	Name string `json:"name"`
+	// Email address of the member (only applicable for user members).
+	Email OptNilString `json:"email"`
+}
+
+// GetIdentityID returns the value of IdentityID.
+func (s *SpaceMemberV1) GetIdentityID() string {
+	return s.IdentityID
+}
+
+// GetIdentityType returns the value of IdentityType.
+func (s *SpaceMemberV1) GetIdentityType() string {
+	return s.IdentityType
+}
+
+// GetSpaceRoles returns the value of SpaceRoles.
+func (s *SpaceMemberV1) GetSpaceRoles() []string {
+	return s.SpaceRoles
+}
+
+// GetName returns the value of Name.
+func (s *SpaceMemberV1) GetName() string {
+	return s.Name
+}
+
+// GetEmail returns the value of Email.
+func (s *SpaceMemberV1) GetEmail() OptNilString {
+	return s.Email
+}
+
+// SetIdentityID sets the value of IdentityID.
+func (s *SpaceMemberV1) SetIdentityID(val string) {
+	s.IdentityID = val
+}
+
+// SetIdentityType sets the value of IdentityType.
+func (s *SpaceMemberV1) SetIdentityType(val string) {
+	s.IdentityType = val
+}
+
+// SetSpaceRoles sets the value of SpaceRoles.
+func (s *SpaceMemberV1) SetSpaceRoles(val []string) {
+	s.SpaceRoles = val
+}
+
+// SetName sets the value of Name.
+func (s *SpaceMemberV1) SetName(val string) {
+	s.Name = val
+}
+
+// SetEmail sets the value of Email.
+func (s *SpaceMemberV1) SetEmail(val OptNilString) {
+	s.Email = val
+}
+
+// Space details this entity belongs to.
+// Ref: #/components/schemas/SpaceReferenceV1
+type SpaceReferenceV1 struct {
+	// Unique identifier of the space.
+	SpaceID string `json:"space_id"`
+	// Unique name of the space.
+	SpaceName string `json:"space_name"`
+}
+
+// GetSpaceID returns the value of SpaceID.
+func (s *SpaceReferenceV1) GetSpaceID() string {
+	return s.SpaceID
+}
+
+// GetSpaceName returns the value of SpaceName.
+func (s *SpaceReferenceV1) GetSpaceName() string {
+	return s.SpaceName
+}
+
+// SetSpaceID sets the value of SpaceID.
+func (s *SpaceReferenceV1) SetSpaceID(val string) {
+	s.SpaceID = val
+}
+
+// SetSpaceName sets the value of SpaceName.
+func (s *SpaceReferenceV1) SetSpaceName(val string) {
+	s.SpaceName = val
+}
+
+// A space scope defines which resources are visible within a space using an AQL (Apono Query
+// Language) expression. When multiple scopes are assigned to a space, their results are combined (OR
+// logic).
+// Ref: #/components/schemas/SpaceScopeV1
+type SpaceScopeV1 struct {
+	// Unique identifier of the space scope.
+	ID string `json:"id"`
+	// Display name of the space scope (unique per account).
+	Name string `json:"name"`
+	// AQL (Apono Query Language) expression that filters which resources belong to this scope.
+	Query string `json:"query"`
+	// Creation timestamp.
+	CreatedDate ApiInstant `json:"created_date"`
+	// Last update timestamp.
+	UpdatedDate ApiInstant `json:"updated_date"`
+}
+
+// GetID returns the value of ID.
+func (s *SpaceScopeV1) GetID() string {
+	return s.ID
+}
+
+// GetName returns the value of Name.
+func (s *SpaceScopeV1) GetName() string {
+	return s.Name
+}
+
+// GetQuery returns the value of Query.
+func (s *SpaceScopeV1) GetQuery() string {
+	return s.Query
+}
+
+// GetCreatedDate returns the value of CreatedDate.
+func (s *SpaceScopeV1) GetCreatedDate() ApiInstant {
+	return s.CreatedDate
+}
+
+// GetUpdatedDate returns the value of UpdatedDate.
+func (s *SpaceScopeV1) GetUpdatedDate() ApiInstant {
+	return s.UpdatedDate
+}
+
+// SetID sets the value of ID.
+func (s *SpaceScopeV1) SetID(val string) {
+	s.ID = val
+}
+
+// SetName sets the value of Name.
+func (s *SpaceScopeV1) SetName(val string) {
+	s.Name = val
+}
+
+// SetQuery sets the value of Query.
+func (s *SpaceScopeV1) SetQuery(val string) {
+	s.Query = val
+}
+
+// SetCreatedDate sets the value of CreatedDate.
+func (s *SpaceScopeV1) SetCreatedDate(val ApiInstant) {
+	s.CreatedDate = val
+}
+
+// SetUpdatedDate sets the value of UpdatedDate.
+func (s *SpaceScopeV1) SetUpdatedDate(val ApiInstant) {
+	s.UpdatedDate = val
+}
+
+// Ref: #/components/schemas/SpaceV1
+type SpaceV1 struct {
+	// Unique identifier of the space.
+	ID string `json:"id"`
+	// Display name of the space.
+	Name string `json:"name"`
+	// Space scopes that define which resources are visible within this space.
+	SpaceScopes []SpaceScopeV1 `json:"space_scopes"`
+	// Creation timestamp.
+	CreatedDate ApiInstant `json:"created_date"`
+	// Last update timestamp.
+	UpdatedDate ApiInstant `json:"updated_date"`
+}
+
+// GetID returns the value of ID.
+func (s *SpaceV1) GetID() string {
+	return s.ID
+}
+
+// GetName returns the value of Name.
+func (s *SpaceV1) GetName() string {
+	return s.Name
+}
+
+// GetSpaceScopes returns the value of SpaceScopes.
+func (s *SpaceV1) GetSpaceScopes() []SpaceScopeV1 {
+	return s.SpaceScopes
+}
+
+// GetCreatedDate returns the value of CreatedDate.
+func (s *SpaceV1) GetCreatedDate() ApiInstant {
+	return s.CreatedDate
+}
+
+// GetUpdatedDate returns the value of UpdatedDate.
+func (s *SpaceV1) GetUpdatedDate() ApiInstant {
+	return s.UpdatedDate
+}
+
+// SetID sets the value of ID.
+func (s *SpaceV1) SetID(val string) {
+	s.ID = val
+}
+
+// SetName sets the value of Name.
+func (s *SpaceV1) SetName(val string) {
+	s.Name = val
+}
+
+// SetSpaceScopes sets the value of SpaceScopes.
+func (s *SpaceV1) SetSpaceScopes(val []SpaceScopeV1) {
+	s.SpaceScopes = val
+}
+
+// SetCreatedDate sets the value of CreatedDate.
+func (s *SpaceV1) SetCreatedDate(val ApiInstant) {
+	s.CreatedDate = val
+}
+
+// SetUpdatedDate sets the value of UpdatedDate.
+func (s *SpaceV1) SetUpdatedDate(val ApiInstant) {
+	s.UpdatedDate = val
+}
+
 // Ref: #/components/schemas/UpdateGroupMembersV1
 type UpdateGroupMembersV1 struct {
 	// Email addresses to assign as members of the group.
@@ -5296,6 +5836,51 @@ func (s *UpdateIntegrationV4) SetOwner(val OptNilUpsertOwnerV4) {
 // SetOwnersMapping sets the value of OwnersMapping.
 func (s *UpdateIntegrationV4) SetOwnersMapping(val OptNilUpsertOwnerMappingV4) {
 	s.OwnersMapping = val
+}
+
+// Ref: #/components/schemas/UpdateSpaceMembersV1
+type UpdateSpaceMembersV1 struct {
+	// List of members to replace all existing members.
+	Members []UpsertSpaceMemberV1 `json:"members"`
+}
+
+// GetMembers returns the value of Members.
+func (s *UpdateSpaceMembersV1) GetMembers() []UpsertSpaceMemberV1 {
+	return s.Members
+}
+
+// SetMembers sets the value of Members.
+func (s *UpdateSpaceMembersV1) SetMembers(val []UpsertSpaceMemberV1) {
+	s.Members = val
+}
+
+// Ref: #/components/schemas/UpdateSpaceV1
+type UpdateSpaceV1 struct {
+	// Space name (3-64 characters, unique per account).
+	Name string `json:"name"`
+	// Space scope IDs or names that define the space's inventory scope. Use the Space Scopes API to
+	// manage scopes.
+	SpaceScopeReferences []string `json:"space_scope_references"`
+}
+
+// GetName returns the value of Name.
+func (s *UpdateSpaceV1) GetName() string {
+	return s.Name
+}
+
+// GetSpaceScopeReferences returns the value of SpaceScopeReferences.
+func (s *UpdateSpaceV1) GetSpaceScopeReferences() []string {
+	return s.SpaceScopeReferences
+}
+
+// SetName sets the value of Name.
+func (s *UpdateSpaceV1) SetName(val string) {
+	s.Name = val
+}
+
+// SetSpaceScopeReferences sets the value of SpaceScopeReferences.
+func (s *UpdateSpaceV1) SetSpaceScopeReferences(val []string) {
+	s.SpaceScopeReferences = val
 }
 
 // Ref: #/components/schemas/UpsertAccessScopeV1
@@ -5534,6 +6119,74 @@ func (s *UpsertSecretStoreConfigV4) SetHashicorpVault(val OptNilHashicorpVaultSe
 // SetApono sets the value of Apono.
 func (s *UpsertSecretStoreConfigV4) SetApono(val OptNilAponoSecretConfigV4) {
 	s.Apono = val
+}
+
+// Ref: #/components/schemas/UpsertSpaceMemberV1
+type UpsertSpaceMemberV1 struct {
+	// Reference to the identity. For users: user ID or email. For groups: group ID or name.
+	IdentityReference string `json:"identity_reference"`
+	// Type of identity: 'user' or 'group'. Determines how identityReference is resolved.
+	IdentityType string `json:"identity_type"`
+	// Roles to assign: SpaceOwner (full control) or SpaceManager (manage resources).
+	SpaceRoles []string `json:"space_roles"`
+}
+
+// GetIdentityReference returns the value of IdentityReference.
+func (s *UpsertSpaceMemberV1) GetIdentityReference() string {
+	return s.IdentityReference
+}
+
+// GetIdentityType returns the value of IdentityType.
+func (s *UpsertSpaceMemberV1) GetIdentityType() string {
+	return s.IdentityType
+}
+
+// GetSpaceRoles returns the value of SpaceRoles.
+func (s *UpsertSpaceMemberV1) GetSpaceRoles() []string {
+	return s.SpaceRoles
+}
+
+// SetIdentityReference sets the value of IdentityReference.
+func (s *UpsertSpaceMemberV1) SetIdentityReference(val string) {
+	s.IdentityReference = val
+}
+
+// SetIdentityType sets the value of IdentityType.
+func (s *UpsertSpaceMemberV1) SetIdentityType(val string) {
+	s.IdentityType = val
+}
+
+// SetSpaceRoles sets the value of SpaceRoles.
+func (s *UpsertSpaceMemberV1) SetSpaceRoles(val []string) {
+	s.SpaceRoles = val
+}
+
+// Ref: #/components/schemas/UpsertSpaceScopeV1
+type UpsertSpaceScopeV1 struct {
+	// Display name for this space scope (must be unique per account).
+	Name string `json:"name"`
+	// AQL (Apono Query Language) expression that filters which resources belong to this scope.
+	Query string `json:"query"`
+}
+
+// GetName returns the value of Name.
+func (s *UpsertSpaceScopeV1) GetName() string {
+	return s.Name
+}
+
+// GetQuery returns the value of Query.
+func (s *UpsertSpaceScopeV1) GetQuery() string {
+	return s.Query
+}
+
+// SetName sets the value of Name.
+func (s *UpsertSpaceScopeV1) SetName(val string) {
+	s.Name = val
+}
+
+// SetQuery sets the value of Query.
+func (s *UpsertSpaceScopeV1) SetQuery(val string) {
+	s.Query = val
 }
 
 // Ref: #/components/schemas/UserModel

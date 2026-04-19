@@ -17,9 +17,6 @@
   ],
   "tags": [
     {
-      "name": "Access Bundles"
-    },
-    {
       "name": "Access Flows"
     },
     {
@@ -60,6 +57,12 @@
     },
     {
       "name": "Integrations"
+    },
+    {
+      "name": "Space Scopes"
+    },
+    {
+      "name": "Spaces"
     },
     {
       "name": "Users"
@@ -622,14 +625,369 @@
         }
       }
     },
-    "/api/admin/v2/access-flows": {
+    "/api/admin/v1/space-scopes": {
       "get": {
         "tags": [
-          "Access Flows"
+          "Space Scopes"
         ],
-        "summary": "List Access Flows",
-        "operationId": "listAccessFlowsV2",
+        "summary": "List Space Scopes",
+        "operationId": "listSpaceScopesV1",
         "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "default": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filter space scopes by name. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiListResponseSpaceScopePublicV1Model"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Space Scopes"
+        ],
+        "summary": "Create Space Scope",
+        "operationId": "createSpaceScopeV1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertSpaceScopeV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceScopeV1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1/space-scopes/{id}": {
+      "get": {
+        "tags": [
+          "Space Scopes"
+        ],
+        "summary": "Get Space Scope",
+        "operationId": "getSpaceScopeV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier or display name of the space scope",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceScopeV1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Space Scopes"
+        ],
+        "summary": "Update Space Scope",
+        "operationId": "updateSpaceScopeV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier or display name of the space scope",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertSpaceScopeV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceScopeV1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Space Scopes"
+        ],
+        "summary": "Delete Space Scope",
+        "operationId": "deleteSpaceScopeV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier or display name of the space scope",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/api/admin/v1/spaces": {
+      "get": {
+        "tags": [
+          "Spaces"
+        ],
+        "summary": "List Spaces",
+        "operationId": "listSpacesV1",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "default": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filter spaces by name. Supports wildcard (*) for partial matches - use * for contains, prefix* for starts with, *suffix for ends with",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiListResponseSpacePublicV1Model"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Spaces"
+        ],
+        "summary": "Create Space",
+        "operationId": "createSpaceV1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSpaceV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceV1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1/spaces/{id}": {
+      "get": {
+        "tags": [
+          "Spaces"
+        ],
+        "summary": "Get Space",
+        "operationId": "getSpaceV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier or display name of the space",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceV1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Spaces"
+        ],
+        "summary": "Update Space",
+        "operationId": "updateSpaceV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier or display name of the space",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSpaceV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceV1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Spaces"
+        ],
+        "summary": "Delete Space",
+        "operationId": "deleteSpaceV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier or display name of the space",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/api/admin/v1/spaces/{id}/members": {
+      "get": {
+        "tags": [
+          "Spaces"
+        ],
+        "summary": "List Space Members",
+        "operationId": "listSpaceMembersV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier or display name of the space",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "limit",
             "in": "query",
@@ -654,6 +1012,180 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "$ref": "#/components/schemas/PublicApiListResponseSpaceMemberPublicV1Model"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Spaces"
+        ],
+        "summary": "Replace Space Members",
+        "operationId": "replaceSpaceMembersV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier or display name of the space",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSpaceMembersV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiListResponseSpaceMemberPublicV1Model"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/v1/spaces/{id}/members/{identity_reference}": {
+      "put": {
+        "tags": [
+          "Spaces"
+        ],
+        "summary": "Add or Update Space Member",
+        "operationId": "upsertSpaceMemberV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier or display name of the space",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "identity_reference",
+            "in": "path",
+            "description": "Reference to the identity. For users: user ID or email. For groups: group ID or name.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpaceMemberRolesV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceMemberV1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Spaces"
+        ],
+        "summary": "Remove Space Member",
+        "operationId": "removeSpaceMemberV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier or display name of the space",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "identity_reference",
+            "in": "path",
+            "description": "Reference to the identity. For users: user ID or email. For groups: group ID or name.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/api/admin/v2/access-flows": {
+      "get": {
+        "tags": [
+          "Access Flows"
+        ],
+        "summary": "List Access Flows",
+        "operationId": "listAccessFlowsV2",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "format": "int32",
+              "default": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "space_reference",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/PublicApiListResponseAccessFlowPublicV2Model"
                 }
               }
@@ -666,8 +1198,18 @@
           "Access Flows"
         ],
         "summary": "Create Access Flow",
-        "description": "\n        Note: Some fields are only applicable in self-serve access flows and are ignored or not required in automatic access flows. \n        Refer to each field’s description to understand when it applies.\n    ",
+        "description": "\n        Note: Some fields are only applicable in self-serve access flows and are ignored or not required in automatic access flows.\n        Refer to each field's description to understand when it applies.\n    ",
         "operationId": "createAccessFlowV2",
+        "parameters": [
+          {
+            "name": "space_reference",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -817,6 +1359,17 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "space_reference",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -838,6 +1391,16 @@
         ],
         "summary": "Create Bundle",
         "operationId": "createBundleV2",
+        "parameters": [
+          {
+            "name": "space_reference",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2113,7 +2676,7 @@
     "/api/v1/access-bundles": {
       "get": {
         "tags": [
-          "Access Bundles"
+          "Bundles"
         ],
         "summary": "List Access Bundles",
         "operationId": "listAccessBundles",
@@ -2132,7 +2695,7 @@
       },
       "post": {
         "tags": [
-          "Access Bundles"
+          "Bundles"
         ],
         "summary": "Create Access Bundle",
         "operationId": "createAccessBundle",
@@ -2163,7 +2726,7 @@
     "/api/v1/access-bundles/{id}": {
       "get": {
         "tags": [
-          "Access Bundles"
+          "Bundles"
         ],
         "summary": "Get Access Bundle",
         "operationId": "getAccessBundle",
@@ -2192,7 +2755,7 @@
       },
       "delete": {
         "tags": [
-          "Access Bundles"
+          "Bundles"
         ],
         "summary": "Delete Access Bundle",
         "operationId": "deleteAccessBundle",
@@ -2221,7 +2784,7 @@
       },
       "patch": {
         "tags": [
-          "Access Bundles"
+          "Bundles"
         ],
         "summary": "Update Access Bundle",
         "operationId": "updateAccessBundle",
@@ -3545,6 +4108,17 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "space_reference",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -3566,6 +4140,16 @@
         ],
         "summary": "Create Access Scope",
         "operationId": "createAccessScopesV1",
+        "parameters": [
+          {
+            "name": "space_reference",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4140,6 +4724,15 @@
           },
           "settings": {
             "$ref": "#/components/schemas/AccessFlowSettingsV2"
+          },
+          "space": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SpaceReferenceV1"
+              }
+            ],
+            "nullable": true
           },
           "creation_date": {
             "description": "Timestamp when the resource was created, in ISO 8601 format",
@@ -5067,6 +5660,16 @@
               "$ref": "#/components/schemas/AccessBundleAccessTargetV2"
             }
           },
+          "space": {
+            "description": "Space this bundle belongs to",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SpaceReferenceV1"
+              }
+            ],
+            "nullable": true
+          },
           "creation_date": {
             "description": "Timestamp when the resource was created, in ISO 8601 format",
             "type": "string",
@@ -5586,6 +6189,34 @@
           }
         }
       },
+      "CreateSpaceV1": {
+        "required": [
+          "name",
+          "space_scope_references"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Space name (3-64 characters, unique per account)",
+            "type": "string"
+          },
+          "space_scope_references": {
+            "description": "Space scope IDs or names that define the space's inventory scope. Use the Space Scopes API to manage scopes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "members": {
+            "description": "Initial space members (optional — can be managed separately via member endpoints)",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpsertSpaceMemberV1"
+            },
+            "nullable": true
+          }
+        }
+      },
       "DayOfWeek": {
         "enum": [
           "MONDAY",
@@ -5748,7 +6379,6 @@
       },
       "EscalationPolicyUpsertV2": {
         "required": [
-          "interval_in_min",
           "approver_groups"
         ],
         "description": "\n    Defines an approval escalation policy for a human approval flow. \n    When a request remains pending for the configured interval, Apono escalates it to the approver groups defined in this block. \n    Previously notified approvers can still approve or reject the request even after escalation was triggered. Up to 5 escalation approver groups are supported.\n",
@@ -5757,7 +6387,8 @@
           "interval_in_min": {
             "format": "int32",
             "description": "\n        Time interval in minutes a request can remain pending before it is escalated to the next approver group in the policy. Default to 30 minutes.\n    ",
-            "type": "integer"
+            "type": "integer",
+            "nullable": true
           },
           "approver_groups": {
             "description": "\n        Ordered list of approver groups that define the escalation path. \n        Each item in the list represents an escalation tier. \n        Approver groups are evaluated in the order they are defined and triggered subsequently according to the defined interval.\n    ",
@@ -7168,6 +7799,60 @@
           }
         }
       },
+      "PublicApiListResponseSpaceMemberPublicV1Model": {
+        "required": [
+          "items",
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpaceMemberV1"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PublicApiPaginationInfoModel"
+          }
+        }
+      },
+      "PublicApiListResponseSpacePublicV1Model": {
+        "required": [
+          "items",
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpaceV1"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PublicApiPaginationInfoModel"
+          }
+        }
+      },
+      "PublicApiListResponseSpaceScopePublicV1Model": {
+        "required": [
+          "items",
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpaceScopeV1"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PublicApiPaginationInfoModel"
+          }
+        }
+      },
       "PublicApiListResponseUserPublicV3Model": {
         "required": [
           "items",
@@ -7664,6 +8349,167 @@
           }
         }
       },
+      "SpaceMemberRolesV1": {
+        "required": [
+          "identity_type",
+          "space_roles"
+        ],
+        "type": "object",
+        "properties": {
+          "identity_type": {
+            "description": "Type of identity: user or group",
+            "type": "string"
+          },
+          "space_roles": {
+            "description": "Roles to assign: SpaceOwner (full control) or SpaceManager (manage resources)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SpaceMemberV1": {
+        "required": [
+          "identity_id",
+          "identity_type",
+          "space_roles",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "identity_id": {
+            "description": "User ID or Group ID",
+            "type": "string"
+          },
+          "identity_type": {
+            "description": "Identity type: user or group",
+            "type": "string"
+          },
+          "space_roles": {
+            "description": "Roles within the space: SpaceOwner, SpaceManager",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "name": {
+            "description": "Display name of the user or group",
+            "type": "string"
+          },
+          "email": {
+            "description": "Email address of the member (only applicable for user members)",
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SpaceReferenceV1": {
+        "required": [
+          "space_id",
+          "space_name"
+        ],
+        "description": "Space details this entity belongs to",
+        "type": "object",
+        "properties": {
+          "space_id": {
+            "description": "Unique identifier of the space",
+            "type": "string"
+          },
+          "space_name": {
+            "description": "Unique name of the space",
+            "type": "string"
+          }
+        }
+      },
+      "SpaceScopeV1": {
+        "required": [
+          "id",
+          "name",
+          "query",
+          "created_date",
+          "updated_date"
+        ],
+        "description": "A space scope defines which resources are visible within a space using an AQL (Apono Query Language) expression. When multiple scopes are assigned to a space, their results are combined (OR logic).",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the space scope",
+            "type": "string"
+          },
+          "name": {
+            "description": "Display name of the space scope (unique per account)",
+            "type": "string"
+          },
+          "query": {
+            "description": "AQL (Apono Query Language) expression that filters which resources belong to this scope.",
+            "type": "string"
+          },
+          "created_date": {
+            "description": "Creation timestamp",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
+          },
+          "updated_date": {
+            "description": "Last update timestamp",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
+          }
+        }
+      },
+      "SpaceV1": {
+        "required": [
+          "id",
+          "name",
+          "space_scopes",
+          "created_date",
+          "updated_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the space",
+            "type": "string"
+          },
+          "name": {
+            "description": "Display name of the space",
+            "type": "string"
+          },
+          "space_scopes": {
+            "description": "Space scopes that define which resources are visible within this space",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpaceScopeV1"
+            }
+          },
+          "created_date": {
+            "description": "Creation timestamp",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
+          },
+          "updated_date": {
+            "description": "Last update timestamp",
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiInstant"
+              }
+            ]
+          }
+        }
+      },
       "TagV1": {
         "required": [
           "name",
@@ -7958,6 +8804,41 @@
           }
         }
       },
+      "UpdateSpaceMembersV1": {
+        "required": [
+          "members"
+        ],
+        "type": "object",
+        "properties": {
+          "members": {
+            "description": "List of members to replace all existing members",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpsertSpaceMemberV1"
+            }
+          }
+        }
+      },
+      "UpdateSpaceV1": {
+        "required": [
+          "name",
+          "space_scope_references"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Space name (3-64 characters, unique per account)",
+            "type": "string"
+          },
+          "space_scope_references": {
+            "description": "Space scope IDs or names that define the space's inventory scope. Use the Space Scopes API to manage scopes.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "UpsertAccessBundleV1": {
         "required": [
           "name",
@@ -8192,6 +9073,48 @@
           }
         }
       },
+      "UpsertSpaceMemberV1": {
+        "required": [
+          "identity_reference",
+          "identity_type",
+          "space_roles"
+        ],
+        "type": "object",
+        "properties": {
+          "identity_reference": {
+            "description": "Reference to the identity. For users: user ID or email. For groups: group ID or name.",
+            "type": "string"
+          },
+          "identity_type": {
+            "description": "Type of identity: 'user' or 'group'. Determines how identityReference is resolved.",
+            "type": "string"
+          },
+          "space_roles": {
+            "description": "Roles to assign: SpaceOwner (full control) or SpaceManager (manage resources)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UpsertSpaceScopeV1": {
+        "required": [
+          "name",
+          "query"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Display name for this space scope (must be unique per account)",
+            "type": "string"
+          },
+          "query": {
+            "description": "AQL (Apono Query Language) expression that filters which resources belong to this scope",
+            "type": "string"
+          }
+        }
+      },
       "UserModel": {
         "required": [
           "id",
@@ -8311,6 +9234,15 @@
           "query": {
             "description": "Apono Query Language (AQL) expression that defines filters for cloud resources, integrations, and permissions",
             "type": "string"
+          },
+          "space": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SpaceReferenceV1"
+              }
+            ],
+            "nullable": true
           },
           "creation_date": {
             "description": "Timestamp when the resource was created, in ISO 8601 format",

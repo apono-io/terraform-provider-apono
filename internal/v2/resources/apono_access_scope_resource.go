@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 var (
@@ -80,12 +79,7 @@ func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.Crea
 		createReq.Description.SetTo(plan.Description.ValueString())
 	}
 
-	tflog.Debug(ctx, "Creating access scope", map[string]any{
-		"name":  plan.Name.ValueString(),
-		"query": plan.Query.ValueString(),
-	})
-
-	accessScope, err := r.client.CreateAccessScopesV1(ctx, &createReq)
+	accessScope, err := r.client.CreateAccessScopesV1(ctx, &createReq, client.CreateAccessScopesV1Params{})
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating access scope", fmt.Sprintf("Could not create access scope: %v", err))
 		return
@@ -98,7 +92,6 @@ func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	tflog.Info(ctx, "Created access scope successfully", map[string]any{"id": result.ID.ValueString()})
 }
 
 func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -151,12 +144,6 @@ func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.Upda
 		updateReq.Description.SetTo(plan.Description.ValueString())
 	}
 
-	tflog.Debug(ctx, "Updating access scope", map[string]any{
-		"id":    state.ID.ValueString(),
-		"name":  plan.Name.ValueString(),
-		"query": plan.Query.ValueString(),
-	})
-
 	params := client.UpdateAccessScopesV1Params{ID: state.ID.ValueString()}
 	accessScope, err := r.client.UpdateAccessScopesV1(ctx, &updateReq, params)
 	if err != nil {
@@ -171,7 +158,6 @@ func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	tflog.Info(ctx, "Updated access scope successfully", map[string]any{"id": result.ID.ValueString()})
 }
 
 func (r *AponoAccessScopeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
@@ -191,7 +177,6 @@ func (r *AponoAccessScopeResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	tflog.Info(ctx, "Deleted access scope successfully", map[string]any{"id": state.ID.ValueString()})
 }
 
 func (r *AponoAccessScopeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

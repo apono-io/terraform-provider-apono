@@ -8,6 +8,21 @@ type AddGroupMemberV1Params struct {
 	ID    string
 }
 
+// CreateAccessFlowV2Params is parameters of createAccessFlowV2 operation.
+type CreateAccessFlowV2Params struct {
+	SpaceReference OptNilString `json:",omitempty,omitzero"`
+}
+
+// CreateAccessScopesV1Params is parameters of createAccessScopesV1 operation.
+type CreateAccessScopesV1Params struct {
+	SpaceReference OptNilString `json:",omitempty,omitzero"`
+}
+
+// CreateBundleV2Params is parameters of createBundleV2 operation.
+type CreateBundleV2Params struct {
+	SpaceReference OptNilString `json:",omitempty,omitzero"`
+}
+
 // DeleteAccessFlowV2Params is parameters of deleteAccessFlowV2 operation.
 type DeleteAccessFlowV2Params struct {
 	ID string
@@ -35,6 +50,18 @@ type DeleteGroupV1Params struct {
 
 // DeleteIntegrationV4Params is parameters of deleteIntegrationV4 operation.
 type DeleteIntegrationV4Params struct {
+	ID string
+}
+
+// DeleteSpaceScopeV1Params is parameters of deleteSpaceScopeV1 operation.
+type DeleteSpaceScopeV1Params struct {
+	// Unique identifier or display name of the space scope.
+	ID string
+}
+
+// DeleteSpaceV1Params is parameters of deleteSpaceV1 operation.
+type DeleteSpaceV1Params struct {
+	// Unique identifier or display name of the space.
 	ID string
 }
 
@@ -68,6 +95,18 @@ type GetIntegrationsByIdV4Params struct {
 	ID string
 }
 
+// GetSpaceScopeV1Params is parameters of getSpaceScopeV1 operation.
+type GetSpaceScopeV1Params struct {
+	// Unique identifier or display name of the space scope.
+	ID string
+}
+
+// GetSpaceV1Params is parameters of getSpaceV1 operation.
+type GetSpaceV1Params struct {
+	// Unique identifier or display name of the space.
+	ID string
+}
+
 // GetUserParams is parameters of getUser operation.
 type GetUserParams struct {
 	ID string
@@ -75,8 +114,9 @@ type GetUserParams struct {
 
 // ListAccessFlowsV2Params is parameters of listAccessFlowsV2 operation.
 type ListAccessFlowsV2Params struct {
-	Limit     OptInt32     `json:",omitempty,omitzero"`
-	PageToken OptNilString `json:",omitempty,omitzero"`
+	Limit          OptInt32          `json:",omitempty,omitzero"`
+	PageToken      OptNilString      `json:",omitempty,omitzero"`
+	SpaceReference OptNilStringArray `json:",omitempty,omitzero"`
 }
 
 // ListAccessScopesV1Params is parameters of listAccessScopesV1 operation.
@@ -84,8 +124,9 @@ type ListAccessScopesV1Params struct {
 	Limit OptInt32 `json:",omitempty,omitzero"`
 	// Filter access scopes by name. Supports wildcard (*) for partial matches - use * for contains,
 	// prefix* for starts with, *suffix for ends with.
-	Name      OptNilString `json:",omitempty,omitzero"`
-	PageToken OptNilString `json:",omitempty,omitzero"`
+	Name           OptNilString      `json:",omitempty,omitzero"`
+	PageToken      OptNilString      `json:",omitempty,omitzero"`
+	SpaceReference OptNilStringArray `json:",omitempty,omitzero"`
 }
 
 // ListBundlesV2Params is parameters of listBundlesV2 operation.
@@ -93,8 +134,9 @@ type ListBundlesV2Params struct {
 	Limit OptInt32 `json:",omitempty,omitzero"`
 	// Filter bundles by name. Supports wildcard (*) for partial matches - use * for contains, prefix*
 	// for starts with, *suffix for ends with.
-	Name      OptNilString `json:",omitempty,omitzero"`
-	PageToken OptNilString `json:",omitempty,omitzero"`
+	Name           OptNilString      `json:",omitempty,omitzero"`
+	PageToken      OptNilString      `json:",omitempty,omitzero"`
+	SpaceReference OptNilStringArray `json:",omitempty,omitzero"`
 }
 
 // ListConnectorsV3Params is parameters of listConnectorsV3 operation.
@@ -135,10 +177,50 @@ type ListIntegrationsV4Params struct {
 	Type OptNilStringArray `json:",omitempty,omitzero"`
 }
 
+// ListSpaceMembersV1Params is parameters of listSpaceMembersV1 operation.
+type ListSpaceMembersV1Params struct {
+	// Unique identifier or display name of the space.
+	ID        string
+	Limit     OptInt32     `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
+}
+
+// ListSpaceScopesV1Params is parameters of listSpaceScopesV1 operation.
+type ListSpaceScopesV1Params struct {
+	Limit OptInt32 `json:",omitempty,omitzero"`
+	// Filter space scopes by name. Supports wildcard (*) for partial matches - use * for contains,
+	// prefix* for starts with, *suffix for ends with.
+	Name      OptNilString `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
+}
+
+// ListSpacesV1Params is parameters of listSpacesV1 operation.
+type ListSpacesV1Params struct {
+	Limit OptInt32 `json:",omitempty,omitzero"`
+	// Filter spaces by name. Supports wildcard (*) for partial matches - use * for contains, prefix* for
+	// starts with, *suffix for ends with.
+	Name      OptNilString `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
+}
+
 // RemoveGroupMemberV1Params is parameters of removeGroupMemberV1 operation.
 type RemoveGroupMemberV1Params struct {
 	Email string
 	ID    string
+}
+
+// RemoveSpaceMemberV1Params is parameters of removeSpaceMemberV1 operation.
+type RemoveSpaceMemberV1Params struct {
+	// Unique identifier or display name of the space.
+	ID string
+	// Reference to the identity. For users: user ID or email. For groups: group ID or name.
+	IdentityReference string
+}
+
+// ReplaceSpaceMembersV1Params is parameters of replaceSpaceMembersV1 operation.
+type ReplaceSpaceMembersV1Params struct {
+	// Unique identifier or display name of the space.
+	ID string
 }
 
 // UpdateAccessFlowV2Params is parameters of updateAccessFlowV2 operation.
@@ -174,4 +256,24 @@ type UpdateGroupV1Params struct {
 // UpdateIntegrationV4Params is parameters of updateIntegrationV4 operation.
 type UpdateIntegrationV4Params struct {
 	ID string
+}
+
+// UpdateSpaceScopeV1Params is parameters of updateSpaceScopeV1 operation.
+type UpdateSpaceScopeV1Params struct {
+	// Unique identifier or display name of the space scope.
+	ID string
+}
+
+// UpdateSpaceV1Params is parameters of updateSpaceV1 operation.
+type UpdateSpaceV1Params struct {
+	// Unique identifier or display name of the space.
+	ID string
+}
+
+// UpsertSpaceMemberV1Params is parameters of upsertSpaceMemberV1 operation.
+type UpsertSpaceMemberV1Params struct {
+	// Unique identifier or display name of the space.
+	ID string
+	// Reference to the identity. For users: user ID or email. For groups: group ID or name.
+	IdentityReference string
 }

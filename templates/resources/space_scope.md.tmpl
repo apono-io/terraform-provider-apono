@@ -1,0 +1,43 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: "v2"
+description: |-
+  {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Type}}: {{.Name}}
+
+{{ .Description | trimspace }}
+
+## Example Usage
+
+### Scope by Integration Type and Tag
+
+{{ tffile "examples/resources/apono_space_scope/basic.tf" }}
+
+### Scope by Resource Name Pattern
+
+{{ tffile "examples/resources/apono_space_scope/resource_name_pattern.tf" }}
+
+### Scope Combining Multiple Integration Types
+
+{{ tffile "examples/resources/apono_space_scope/multi_integration.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}
+
+## Import
+
+In Terraform v1.5.0 and later, use an import block to import apono_space_scope using the space scope identifier. For example:
+
+```terraform
+import {
+  to = apono_space_scope.production_aws
+  id = "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+
+Using terraform import, import apono_space_scope with the space scope identifier. For example:
+
+```shell
+terraform import apono_space_scope.production_aws 123e4567-e89b-12d3-a456-426614174000
+```

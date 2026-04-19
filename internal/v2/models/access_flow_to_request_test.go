@@ -185,7 +185,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	require.True(t, result.EscalationPolicy.IsSet())
 	escalationPolicy, ok := result.EscalationPolicy.Get()
 	require.True(t, ok)
-	assert.Equal(t, int32(30), escalationPolicy.IntervalInMin)
+	assert.Equal(t, client.NewOptNilInt32(30), escalationPolicy.IntervalInMin)
 	require.Len(t, escalationPolicy.ApproverGroups, 1)
 	assert.Equal(t, "OR", escalationPolicy.ApproverGroups[0].LogicalOperator)
 	require.Len(t, escalationPolicy.ApproverGroups[0].Approvers, 1)
@@ -347,7 +347,7 @@ func TestAccessFlowV2ModelToUpsertRequestEscalationPolicyDefaultInterval(t *test
 	require.True(t, ok)
 
 	// Verify the default interval_in_min=30 is sent to the API (where it's required)
-	assert.Equal(t, int32(30), escalationPolicy.IntervalInMin, "interval_in_min default of 30 must be sent to the API")
+	assert.Equal(t, client.NewOptNilInt32(30), escalationPolicy.IntervalInMin, "interval_in_min default of 30 must be sent to the API")
 
 	require.Len(t, escalationPolicy.ApproverGroups, 1)
 	assert.Equal(t, "OR", escalationPolicy.ApproverGroups[0].LogicalOperator)

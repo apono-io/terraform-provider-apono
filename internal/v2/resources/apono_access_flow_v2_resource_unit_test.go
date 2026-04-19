@@ -35,7 +35,7 @@ func TestAponoAccessFlowV2Resource(t *testing.T) {
 		model.ID = types.StringNull()
 
 		mockInvoker.EXPECT().
-			CreateAccessFlowV2(mock.Anything, mock.Anything).
+			CreateAccessFlowV2(mock.Anything, mock.Anything, mock.Anything).
 			Return(mockResponse, nil)
 
 		req := resource.CreateRequest{
