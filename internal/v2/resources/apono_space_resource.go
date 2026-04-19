@@ -9,6 +9,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -111,7 +112,11 @@ func (r *AponoSpaceResource) Create(ctx context.Context, req resource.CreateRequ
 			return
 		}
 
-		apiMembers := spaceMemberModelsToAPI(ctx, planMembers)
+		apiMembers := spaceMemberModelsToAPI(ctx, planMembers, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+
 		createReq.Members = client.NewOptNilUpsertSpaceMemberV1Array(apiMembers)
 	}
 
@@ -238,7 +243,11 @@ func (r *AponoSpaceResource) Update(ctx context.Context, req resource.UpdateRequ
 			}
 		}
 
-		apiMembers := spaceMemberModelsToAPI(ctx, planMembers)
+		apiMembers := spaceMemberModelsToAPI(ctx, planMembers, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+
 		updateMembersReq := client.UpdateSpaceMembersV1{
 			Members: apiMembers,
 		}
@@ -278,11 +287,12 @@ func (r *AponoSpaceResource) ImportState(ctx context.Context, req resource.Impor
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-func spaceMemberModelsToAPI(_ context.Context, members []models.SpaceMemberModel) []client.UpsertSpaceMemberV1 {
+func spaceMemberModelsToAPI(ctx context.Context, members []models.SpaceMemberModel, diags *diag.Diagnostics) []client.UpsertSpaceMemberV1 {
 	result := make([]client.UpsertSpaceMemberV1, len(members))
 	for i, m := range members {
 		var roles []string
-		m.SpaceRoles.ElementsAs(context.Background(), &roles, false)
+		d := m.SpaceRoles.ElementsAs(ctx, &roles, false)
+		diags.Append(d...)
 
 		result[i] = client.UpsertSpaceMemberV1{
 			IdentityReference: m.IdentityReference.ValueString(),
