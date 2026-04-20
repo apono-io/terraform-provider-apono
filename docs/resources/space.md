@@ -118,7 +118,7 @@ resource "apono_space" "platform" {
 
 Required:
 
-- `identity_reference` (String) Reference to the identity. For users: user ID or email. For groups: group ID or name.
+- `identity_reference` (String) Reference to the identity. For users: email address. For groups: group name.
 - `identity_type` (String) Type of identity: user or group. Determines how identity_reference is resolved.
 - `space_roles` (Set of String) Roles within the space: SpaceOwner (full control) or SpaceManager (manage resources).
 

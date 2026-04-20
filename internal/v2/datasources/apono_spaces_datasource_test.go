@@ -29,6 +29,9 @@ func TestAccAponoSpacesDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr(dataSourceNameExact, "spaces.#", "1"),
 					resource.TestCheckResourceAttr(dataSourceNameExact, "spaces.0.name", spaceName1),
 					resource.TestCheckResourceAttrSet(dataSourceNameExact, "spaces.0.id"),
+					resource.TestCheckResourceAttr(dataSourceNameExact, "spaces.0.space_scopes.#", "1"),
+					resource.TestCheckResourceAttr(dataSourceNameExact, "spaces.0.space_scopes.0.name", scopeName),
+					resource.TestCheckResourceAttrSet(dataSourceNameExact, "spaces.0.space_scopes.0.id"),
 
 					resource.TestCheckResourceAttr(dataSourceNameWildcard, "spaces.#", "2"),
 					resource.TestCheckTypeSetElemNestedAttrs(dataSourceNameWildcard, "spaces.*", map[string]string{

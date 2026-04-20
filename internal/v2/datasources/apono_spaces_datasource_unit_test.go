@@ -26,9 +26,14 @@ func TestAponoSpacesDataSource(t *testing.T) {
 		return tftypes.List{
 			ElementType: tftypes.Object{
 				AttributeTypes: map[string]tftypes.Type{
-					"id":                     tftypes.String,
-					"name":                   tftypes.String,
-					"space_scope_references": tftypes.List{ElementType: tftypes.String},
+					"id":   tftypes.String,
+					"name": tftypes.String,
+					"space_scopes": tftypes.List{ElementType: tftypes.Object{
+						AttributeTypes: map[string]tftypes.Type{
+							"id":   tftypes.String,
+							"name": tftypes.String,
+						},
+					}},
 				},
 			},
 		}
@@ -105,14 +110,17 @@ func TestAponoSpacesDataSource(t *testing.T) {
 
 		assert.Equal(t, "space-123", stateVal.Spaces[0].ID.ValueString())
 		assert.Equal(t, "Production", stateVal.Spaces[0].Name.ValueString())
-		require.Len(t, stateVal.Spaces[0].SpaceScopeReferences, 1)
-		assert.Equal(t, "Production AWS", stateVal.Spaces[0].SpaceScopeReferences[0].ValueString())
+		require.Len(t, stateVal.Spaces[0].SpaceScopes, 1)
+		assert.Equal(t, "ss-1", stateVal.Spaces[0].SpaceScopes[0].ID.ValueString())
+		assert.Equal(t, "Production AWS", stateVal.Spaces[0].SpaceScopes[0].Name.ValueString())
 
 		assert.Equal(t, "space-456", stateVal.Spaces[1].ID.ValueString())
 		assert.Equal(t, "Staging", stateVal.Spaces[1].Name.ValueString())
-		require.Len(t, stateVal.Spaces[1].SpaceScopeReferences, 2)
-		assert.Equal(t, "Staging AWS", stateVal.Spaces[1].SpaceScopeReferences[0].ValueString())
-		assert.Equal(t, "Staging GCP", stateVal.Spaces[1].SpaceScopeReferences[1].ValueString())
+		require.Len(t, stateVal.Spaces[1].SpaceScopes, 2)
+		assert.Equal(t, "ss-2", stateVal.Spaces[1].SpaceScopes[0].ID.ValueString())
+		assert.Equal(t, "Staging AWS", stateVal.Spaces[1].SpaceScopes[0].Name.ValueString())
+		assert.Equal(t, "ss-3", stateVal.Spaces[1].SpaceScopes[1].ID.ValueString())
+		assert.Equal(t, "Staging GCP", stateVal.Spaces[1].SpaceScopes[1].Name.ValueString())
 	})
 
 	t.Run("Read_WithNameFilter", func(t *testing.T) {

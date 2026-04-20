@@ -10,7 +10,6 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var _ datasource.DataSourceWithConfigure = &AponoSpacesDataSource{}
@@ -48,10 +47,21 @@ func (d *AponoSpacesDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 							Description: "Display name of the space.",
 							Computed:    true,
 						},
-						"space_scope_references": schema.ListAttribute{
-							Description: "Names of space scopes assigned to this space.",
+						"space_scopes": schema.ListNestedAttribute{
+							Description: "Space scopes assigned to this space.",
 							Computed:    true,
-							ElementType: types.StringType,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										Description: "Unique identifier of the space scope.",
+										Computed:    true,
+									},
+									"name": schema.StringAttribute{
+										Description: "Display name of the space scope.",
+										Computed:    true,
+									},
+								},
+							},
 						},
 					},
 				},

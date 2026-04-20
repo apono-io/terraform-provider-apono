@@ -8,8 +8,6 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -61,7 +59,7 @@ func (r *AponoSpaceResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"identity_reference": schema.StringAttribute{
-							Description: "Reference to the identity. For users: user ID or email. For groups: group ID or name.",
+							Description: "Reference to the identity. For users: email address. For groups: group name.",
 							Required:    true,
 						},
 						"identity_type": schema.StringAttribute{
@@ -112,7 +110,7 @@ func (r *AponoSpaceResource) Create(ctx context.Context, req resource.CreateRequ
 			return
 		}
 
-		apiMembers := spaceMemberModelsToAPI(ctx, planMembers, &resp.Diagnostics)
+		apiMembers := models.SpaceMemberModelsToAPI(ctx, planMembers, &resp.Diagnostics)
 		if resp.Diagnostics.HasError() {
 			return
 		}
@@ -175,7 +173,7 @@ func (r *AponoSpaceResource) Read(ctx context.Context, req resource.ReadRequest,
 			return
 		}
 
-		membersSet, setDiags := types.SetValueFrom(ctx, spaceMemberObjectType(), memberModels)
+		membersSet, setDiags := types.SetValueFrom(ctx, models.SpaceMemberObjectType(), memberModels)
 		resp.Diagnostics.Append(setDiags...)
 		if resp.Diagnostics.HasError() {
 			return
@@ -183,7 +181,7 @@ func (r *AponoSpaceResource) Read(ctx context.Context, req resource.ReadRequest,
 
 		result.Members = membersSet
 	} else {
-		result.Members = types.SetNull(spaceMemberObjectType())
+		result.Members = types.SetNull(models.SpaceMemberObjectType())
 	}
 
 	diags = resp.State.Set(ctx, result)
@@ -243,7 +241,7 @@ func (r *AponoSpaceResource) Update(ctx context.Context, req resource.UpdateRequ
 			}
 		}
 
-		apiMembers := spaceMemberModelsToAPI(ctx, planMembers, &resp.Diagnostics)
+		apiMembers := models.SpaceMemberModelsToAPI(ctx, planMembers, &resp.Diagnostics)
 		if resp.Diagnostics.HasError() {
 			return
 		}
@@ -285,31 +283,4 @@ func (r *AponoSpaceResource) Delete(ctx context.Context, req resource.DeleteRequ
 
 func (r *AponoSpaceResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-func spaceMemberModelsToAPI(ctx context.Context, members []models.SpaceMemberModel, diags *diag.Diagnostics) []client.UpsertSpaceMemberV1 {
-	result := make([]client.UpsertSpaceMemberV1, len(members))
-	for i, m := range members {
-		var roles []string
-		d := m.SpaceRoles.ElementsAs(ctx, &roles, false)
-		diags.Append(d...)
-
-		result[i] = client.UpsertSpaceMemberV1{
-			IdentityReference: m.IdentityReference.ValueString(),
-			IdentityType:      m.IdentityType.ValueString(),
-			SpaceRoles:        roles,
-		}
-	}
-
-	return result
-}
-
-func spaceMemberObjectType() types.ObjectType {
-	return types.ObjectType{
-		AttrTypes: map[string]attr.Type{
-			"identity_reference": types.StringType,
-			"identity_type":      types.StringType,
-			"space_roles":        types.SetType{ElemType: types.StringType},
-		},
-	}
 }

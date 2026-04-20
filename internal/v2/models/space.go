@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -66,10 +68,15 @@ func SpaceMembersToModels(ctx context.Context, members []client.SpaceMemberV1) (
 	return result, nil
 }
 
+type SpaceScopeDataRefModel struct {
+	ID   types.String `tfsdk:"id"`
+	Name types.String `tfsdk:"name"`
+}
+
 type SpaceDataModel struct {
-	ID                   types.String   `tfsdk:"id"`
-	Name                 types.String   `tfsdk:"name"`
-	SpaceScopeReferences []types.String `tfsdk:"space_scope_references"`
+	ID          types.String             `tfsdk:"id"`
+	Name        types.String             `tfsdk:"name"`
+	SpaceScopes []SpaceScopeDataRefModel `tfsdk:"space_scopes"`
 }
 
 type SpacesDataModel struct {
@@ -78,15 +85,18 @@ type SpacesDataModel struct {
 }
 
 func SpaceToDataModel(space *client.SpaceV1) SpaceDataModel {
-	scopeRefs := make([]types.String, len(space.SpaceScopes))
+	scopes := make([]SpaceScopeDataRefModel, len(space.SpaceScopes))
 	for i, scope := range space.SpaceScopes {
-		scopeRefs[i] = types.StringValue(scope.Name)
+		scopes[i] = SpaceScopeDataRefModel{
+			ID:   types.StringValue(scope.ID),
+			Name: types.StringValue(scope.Name),
+		}
 	}
 
 	return SpaceDataModel{
-		ID:                   types.StringValue(space.ID),
-		Name:                 types.StringValue(space.Name),
-		SpaceScopeReferences: scopeRefs,
+		ID:          types.StringValue(space.ID),
+		Name:        types.StringValue(space.Name),
+		SpaceScopes: scopes,
 	}
 }
 
@@ -96,4 +106,31 @@ func SpacesToDataModels(spaces []client.SpaceV1) []SpaceDataModel {
 		result = append(result, SpaceToDataModel(&space))
 	}
 	return result
+}
+
+func SpaceMemberModelsToAPI(ctx context.Context, members []SpaceMemberModel, diags *diag.Diagnostics) []client.UpsertSpaceMemberV1 {
+	result := make([]client.UpsertSpaceMemberV1, len(members))
+	for i, m := range members {
+		var roles []string
+		d := m.SpaceRoles.ElementsAs(ctx, &roles, false)
+		diags.Append(d...)
+
+		result[i] = client.UpsertSpaceMemberV1{
+			IdentityReference: m.IdentityReference.ValueString(),
+			IdentityType:      m.IdentityType.ValueString(),
+			SpaceRoles:        roles,
+		}
+	}
+
+	return result
+}
+
+func SpaceMemberObjectType() types.ObjectType {
+	return types.ObjectType{
+		AttrTypes: map[string]attr.Type{
+			"identity_reference": types.StringType,
+			"identity_type":      types.StringType,
+			"space_roles":        types.SetType{ElemType: types.StringType},
+		},
+	}
 }

@@ -52,4 +52,12 @@ Read-Only:
 
 - `id` (String) Unique identifier of the space.
 - `name` (String) Display name of the space.
-- `space_scope_references` (List of String) Names of space scopes assigned to this space.
+- `space_scopes` (Attributes List) Space scopes assigned to this space. (see [below for nested schema](#nestedatt--spaces--space_scopes))
+
+<a id="nestedatt--spaces--space_scopes"></a>
+### Nested Schema for `spaces.space_scopes`
+
+Read-Only:
+
+- `id` (String) Unique identifier of the space scope.
+- `name` (String) Display name of the space scope.
