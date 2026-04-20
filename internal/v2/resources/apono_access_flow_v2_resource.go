@@ -366,7 +366,7 @@ func (r *AponoAccessFlowV2Resource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	accessFlow, err := r.client.CreateAccessFlowV2(ctx, upsertRequest)
+	accessFlow, err := r.client.CreateAccessFlowV2(ctx, upsertRequest, client.CreateAccessFlowV2Params{})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating access flow",

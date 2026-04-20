@@ -82,7 +82,7 @@ func (r *AponoBundleV2Resource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	bundle, err := r.client.CreateBundleV2(ctx, upsertRequest)
+	bundle, err := r.client.CreateBundleV2(ctx, upsertRequest, client.CreateBundleV2Params{})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating bundle",

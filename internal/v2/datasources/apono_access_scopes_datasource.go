@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 var _ datasource.DataSourceWithConfigure = &AponoAccessScopesDataSource{}
@@ -85,10 +84,6 @@ func (d *AponoAccessScopesDataSource) Read(ctx context.Context, req datasource.R
 		name = config.Name.ValueString()
 	}
 
-	tflog.Debug(ctx, "Reading access scopes", map[string]any{
-		"name_filter": name,
-	})
-
 	accessScopes, err := services.ListAccessScopesByName(ctx, d.client, name)
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving access scopes", fmt.Sprintf("Could not retrieve access scopes: %v", err))
@@ -103,7 +98,4 @@ func (d *AponoAccessScopesDataSource) Read(ctx context.Context, req datasource.R
 		return
 	}
 
-	tflog.Info(ctx, "Access scopes retrieved successfully", map[string]any{
-		"count": len(config.AccessScopes),
-	})
 }

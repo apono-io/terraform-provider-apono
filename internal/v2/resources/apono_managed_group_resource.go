@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 var (
@@ -83,11 +82,6 @@ func (r *AponoManagedGroupResource) Create(ctx context.Context, req resource.Cre
 		MembersEmails: emails,
 	}
 
-	tflog.Debug(ctx, "Creating group", map[string]any{
-		"name":          plan.Name.ValueString(),
-		"member_emails": emails,
-	})
-
 	group, err := r.client.CreateGroupV1(ctx, &createReq)
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating group", fmt.Sprintf("Could not create group: %v", err))
@@ -103,7 +97,6 @@ func (r *AponoManagedGroupResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	tflog.Info(ctx, "Created group successfully", map[string]any{"id": result.ID.ValueString()})
 }
 
 func (r *AponoManagedGroupResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -172,12 +165,6 @@ func (r *AponoManagedGroupResource) Update(ctx context.Context, req resource.Upd
 			Name: plan.Name.ValueString(),
 		}
 
-		tflog.Debug(ctx, "Updating group name", map[string]any{
-			"id":      state.ID.ValueString(),
-			"oldName": state.Name.ValueString(),
-			"newName": plan.Name.ValueString(),
-		})
-
 		params := client.UpdateGroupV1Params{ID: state.ID.ValueString()}
 		group, err := r.client.UpdateGroupV1(ctx, &updateNameReq, params)
 		if err != nil {
@@ -200,11 +187,6 @@ func (r *AponoManagedGroupResource) Update(ctx context.Context, req resource.Upd
 			MembersEmails: planMembers,
 		}
 
-		tflog.Debug(ctx, "Updating group members", map[string]any{
-			"id":      state.ID.ValueString(),
-			"members": planMembers,
-		})
-
 		err := r.client.UpdateGroupMembersV1(ctx, &updateMembersReq, client.UpdateGroupMembersV1Params{ID: state.ID.ValueString()})
 		if err != nil {
 			resp.Diagnostics.AddError("Error updating group members", fmt.Sprintf("Could not update members for group ID %s: %v", state.ID.ValueString(), err))
@@ -220,7 +202,6 @@ func (r *AponoManagedGroupResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	tflog.Info(ctx, "Updated group successfully", map[string]any{"id": state.ID.ValueString()})
 }
 
 func (r *AponoManagedGroupResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
@@ -240,7 +221,6 @@ func (r *AponoManagedGroupResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	tflog.Info(ctx, "Deleted group successfully", map[string]any{"id": state.ID.ValueString()})
 }
 
 func (r *AponoManagedGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

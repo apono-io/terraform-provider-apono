@@ -1,0 +1,26 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: "v2"
+description: |-
+  {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Type}}: {{.Name}}
+
+{{ .Description | trimspace }}
+
+## Example Usage
+
+### Retrieve All Space Scopes
+
+{{ tffile "examples/data-sources/apono_space_scopes/all-space-scopes.tf" }}
+
+### Retrieve a Specific Space Scope by Exact Name
+
+{{ tffile "examples/data-sources/apono_space_scopes/specific-space-scope.tf" }}
+
+### Retrieve Space Scopes Matching a Pattern
+
+{{ tffile "examples/data-sources/apono_space_scopes/pattern-matching.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

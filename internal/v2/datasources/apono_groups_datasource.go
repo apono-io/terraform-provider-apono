@@ -10,7 +10,6 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 var _ datasource.DataSourceWithConfigure = &AponoGroupsDataSource{}
@@ -89,11 +88,6 @@ func (d *AponoGroupsDataSource) Read(ctx context.Context, req datasource.ReadReq
 		sourceIntegration = config.SourceIntegration.ValueString()
 	}
 
-	tflog.Debug(ctx, "Reading groups", map[string]any{
-		"name_filter":        name,
-		"source_integration": sourceIntegration,
-	})
-
 	allGroups, err := services.ListGroups(ctx, d.client, name)
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving groups", fmt.Sprintf("Could not retrieve groups: %v", err))
@@ -115,7 +109,4 @@ func (d *AponoGroupsDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	tflog.Info(ctx, "Groups retrieved successfully", map[string]any{
-		"count": len(config.Groups),
-	})
 }

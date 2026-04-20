@@ -31,22 +31,22 @@ type Invoker interface {
 	//
 	// Note: Some fields are only applicable in self-serve access flows and are ignored or not required
 	// in automatic access flows.
-	// Refer to each field’s description to understand when it applies.
+	// Refer to each field's description to understand when it applies.
 	//
 	// POST /api/admin/v2/access-flows
-	CreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2) (*AccessFlowV2, error)
+	CreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2, params CreateAccessFlowV2Params) (*AccessFlowV2, error)
 	// CreateAccessScopesV1 invokes createAccessScopesV1 operation.
 	//
 	// Create Access Scope.
 	//
 	// POST /api/admin/v1/access-scopes
-	CreateAccessScopesV1(ctx context.Context, request *UpsertAccessScopeV1) (*AccessScopeV1, error)
+	CreateAccessScopesV1(ctx context.Context, request *UpsertAccessScopeV1, params CreateAccessScopesV1Params) (*AccessScopeV1, error)
 	// CreateBundleV2 invokes createBundleV2 operation.
 	//
 	// Create Bundle.
 	//
 	// POST /api/admin/v2/bundles
-	CreateBundleV2(ctx context.Context, request *UpsertBundleV2) (*BundleV2, error)
+	CreateBundleV2(ctx context.Context, request *UpsertBundleV2, params CreateBundleV2Params) (*BundleV2, error)
 	// CreateGroupV1 invokes createGroupV1 operation.
 	//
 	// Create Group.
@@ -59,6 +59,18 @@ type Invoker interface {
 	//
 	// POST /api/admin/v4/integrations
 	CreateIntegrationV4(ctx context.Context, request *CreateIntegrationV4) (*IntegrationV4, error)
+	// CreateSpaceScopeV1 invokes createSpaceScopeV1 operation.
+	//
+	// Create Space Scope.
+	//
+	// POST /api/admin/v1/space-scopes
+	CreateSpaceScopeV1(ctx context.Context, request *UpsertSpaceScopeV1) (*SpaceScopeV1, error)
+	// CreateSpaceV1 invokes createSpaceV1 operation.
+	//
+	// Create Space.
+	//
+	// POST /api/admin/v1/spaces
+	CreateSpaceV1(ctx context.Context, request *CreateSpaceV1) (*SpaceV1, error)
 	// DeleteAccessFlowV2 invokes deleteAccessFlowV2 operation.
 	//
 	// Delete Access Flow.
@@ -95,6 +107,18 @@ type Invoker interface {
 	//
 	// DELETE /api/admin/v4/integrations/{id}
 	DeleteIntegrationV4(ctx context.Context, params DeleteIntegrationV4Params) error
+	// DeleteSpaceScopeV1 invokes deleteSpaceScopeV1 operation.
+	//
+	// Delete Space Scope.
+	//
+	// DELETE /api/admin/v1/space-scopes/{id}
+	DeleteSpaceScopeV1(ctx context.Context, params DeleteSpaceScopeV1Params) error
+	// DeleteSpaceV1 invokes deleteSpaceV1 operation.
+	//
+	// Delete Space.
+	//
+	// DELETE /api/admin/v1/spaces/{id}
+	DeleteSpaceV1(ctx context.Context, params DeleteSpaceV1Params) error
 	// GetAccessFlowV2 invokes getAccessFlowV2 operation.
 	//
 	// Get Access Flow.
@@ -131,6 +155,18 @@ type Invoker interface {
 	//
 	// GET /api/admin/v4/integrations/{id}
 	GetIntegrationsByIdV4(ctx context.Context, params GetIntegrationsByIdV4Params) (*IntegrationV4, error)
+	// GetSpaceScopeV1 invokes getSpaceScopeV1 operation.
+	//
+	// Get Space Scope.
+	//
+	// GET /api/admin/v1/space-scopes/{id}
+	GetSpaceScopeV1(ctx context.Context, params GetSpaceScopeV1Params) (*SpaceScopeV1, error)
+	// GetSpaceV1 invokes getSpaceV1 operation.
+	//
+	// Get Space.
+	//
+	// GET /api/admin/v1/spaces/{id}
+	GetSpaceV1(ctx context.Context, params GetSpaceV1Params) (*SpaceV1, error)
 	// GetUser invokes getUser operation.
 	//
 	// Get user by Id or Email.
@@ -179,6 +215,24 @@ type Invoker interface {
 	//
 	// GET /api/admin/v4/integrations
 	ListIntegrationsV4(ctx context.Context, params ListIntegrationsV4Params) (*PublicApiListResponseIntegrationPublicV4Model, error)
+	// ListSpaceMembersV1 invokes listSpaceMembersV1 operation.
+	//
+	// List Space Members.
+	//
+	// GET /api/admin/v1/spaces/{id}/members
+	ListSpaceMembersV1(ctx context.Context, params ListSpaceMembersV1Params) (*PublicApiListResponseSpaceMemberPublicV1Model, error)
+	// ListSpaceScopesV1 invokes listSpaceScopesV1 operation.
+	//
+	// List Space Scopes.
+	//
+	// GET /api/admin/v1/space-scopes
+	ListSpaceScopesV1(ctx context.Context, params ListSpaceScopesV1Params) (*PublicApiListResponseSpaceScopePublicV1Model, error)
+	// ListSpacesV1 invokes listSpacesV1 operation.
+	//
+	// List Spaces.
+	//
+	// GET /api/admin/v1/spaces
+	ListSpacesV1(ctx context.Context, params ListSpacesV1Params) (*PublicApiListResponseSpacePublicV1Model, error)
 	// ListUsers invokes listUsers operation.
 	//
 	// List users.
@@ -191,6 +245,18 @@ type Invoker interface {
 	//
 	// DELETE /api/admin/v1/groups/{id}/members/{email}
 	RemoveGroupMemberV1(ctx context.Context, params RemoveGroupMemberV1Params) error
+	// RemoveSpaceMemberV1 invokes removeSpaceMemberV1 operation.
+	//
+	// Remove Space Member.
+	//
+	// DELETE /api/admin/v1/spaces/{id}/members/{identity_reference}
+	RemoveSpaceMemberV1(ctx context.Context, params RemoveSpaceMemberV1Params) error
+	// ReplaceSpaceMembersV1 invokes replaceSpaceMembersV1 operation.
+	//
+	// Replace Space Members.
+	//
+	// PUT /api/admin/v1/spaces/{id}/members
+	ReplaceSpaceMembersV1(ctx context.Context, request *UpdateSpaceMembersV1, params ReplaceSpaceMembersV1Params) (*PublicApiListResponseSpaceMemberPublicV1Model, error)
 	// UpdateAccessFlowV2 invokes updateAccessFlowV2 operation.
 	//
 	// Update Access Flow.
@@ -233,6 +299,24 @@ type Invoker interface {
 	//
 	// PUT /api/admin/v4/integrations/{id}
 	UpdateIntegrationV4(ctx context.Context, request *UpdateIntegrationV4, params UpdateIntegrationV4Params) (*IntegrationV4, error)
+	// UpdateSpaceScopeV1 invokes updateSpaceScopeV1 operation.
+	//
+	// Update Space Scope.
+	//
+	// PUT /api/admin/v1/space-scopes/{id}
+	UpdateSpaceScopeV1(ctx context.Context, request *UpsertSpaceScopeV1, params UpdateSpaceScopeV1Params) (*SpaceScopeV1, error)
+	// UpdateSpaceV1 invokes updateSpaceV1 operation.
+	//
+	// Update Space.
+	//
+	// PUT /api/admin/v1/spaces/{id}
+	UpdateSpaceV1(ctx context.Context, request *UpdateSpaceV1, params UpdateSpaceV1Params) (*SpaceV1, error)
+	// UpsertSpaceMemberV1 invokes upsertSpaceMemberV1 operation.
+	//
+	// Add or Update Space Member.
+	//
+	// PUT /api/admin/v1/spaces/{id}/members/{identity_reference}
+	UpsertSpaceMemberV1(ctx context.Context, request *SpaceMemberRolesV1, params UpsertSpaceMemberV1Params) (*SpaceMemberV1, error)
 }
 
 // Client implements OAS client.
@@ -387,15 +471,15 @@ func (c *Client) sendAddGroupMemberV1(ctx context.Context, params AddGroupMember
 //
 // Note: Some fields are only applicable in self-serve access flows and are ignored or not required
 // in automatic access flows.
-// Refer to each field’s description to understand when it applies.
+// Refer to each field's description to understand when it applies.
 //
 // POST /api/admin/v2/access-flows
-func (c *Client) CreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2) (*AccessFlowV2, error) {
-	res, err := c.sendCreateAccessFlowV2(ctx, request)
+func (c *Client) CreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2, params CreateAccessFlowV2Params) (*AccessFlowV2, error) {
+	res, err := c.sendCreateAccessFlowV2(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2) (res *AccessFlowV2, err error) {
+func (c *Client) sendCreateAccessFlowV2(ctx context.Context, request *AccessFlowUpsertV2, params CreateAccessFlowV2Params) (res *AccessFlowV2, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {
@@ -410,6 +494,26 @@ func (c *Client) sendCreateAccessFlowV2(ctx context.Context, request *AccessFlow
 	var pathParts [1]string
 	pathParts[0] = "/api/admin/v2/access-flows"
 	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "space_reference" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "space_reference",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.SpaceReference.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
 
 	r, err := ht.NewRequest(ctx, "POST", u)
 	if err != nil {
@@ -472,17 +576,37 @@ func (c *Client) sendCreateAccessFlowV2(ctx context.Context, request *AccessFlow
 // Create Access Scope.
 //
 // POST /api/admin/v1/access-scopes
-func (c *Client) CreateAccessScopesV1(ctx context.Context, request *UpsertAccessScopeV1) (*AccessScopeV1, error) {
-	res, err := c.sendCreateAccessScopesV1(ctx, request)
+func (c *Client) CreateAccessScopesV1(ctx context.Context, request *UpsertAccessScopeV1, params CreateAccessScopesV1Params) (*AccessScopeV1, error) {
+	res, err := c.sendCreateAccessScopesV1(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreateAccessScopesV1(ctx context.Context, request *UpsertAccessScopeV1) (res *AccessScopeV1, err error) {
+func (c *Client) sendCreateAccessScopesV1(ctx context.Context, request *UpsertAccessScopeV1, params CreateAccessScopesV1Params) (res *AccessScopeV1, err error) {
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [1]string
 	pathParts[0] = "/api/admin/v1/access-scopes"
 	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "space_reference" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "space_reference",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.SpaceReference.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
 
 	r, err := ht.NewRequest(ctx, "POST", u)
 	if err != nil {
@@ -545,12 +669,12 @@ func (c *Client) sendCreateAccessScopesV1(ctx context.Context, request *UpsertAc
 // Create Bundle.
 //
 // POST /api/admin/v2/bundles
-func (c *Client) CreateBundleV2(ctx context.Context, request *UpsertBundleV2) (*BundleV2, error) {
-	res, err := c.sendCreateBundleV2(ctx, request)
+func (c *Client) CreateBundleV2(ctx context.Context, request *UpsertBundleV2, params CreateBundleV2Params) (*BundleV2, error) {
+	res, err := c.sendCreateBundleV2(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreateBundleV2(ctx context.Context, request *UpsertBundleV2) (res *BundleV2, err error) {
+func (c *Client) sendCreateBundleV2(ctx context.Context, request *UpsertBundleV2, params CreateBundleV2Params) (res *BundleV2, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {
@@ -565,6 +689,26 @@ func (c *Client) sendCreateBundleV2(ctx context.Context, request *UpsertBundleV2
 	var pathParts [1]string
 	pathParts[0] = "/api/admin/v2/bundles"
 	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "space_reference" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "space_reference",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.SpaceReference.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
 
 	r, err := ht.NewRequest(ctx, "POST", u)
 	if err != nil {
@@ -779,6 +923,161 @@ func (c *Client) sendCreateIntegrationV4(ctx context.Context, request *CreateInt
 	defer body.Close()
 
 	result, err := decodeCreateIntegrationV4Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateSpaceScopeV1 invokes createSpaceScopeV1 operation.
+//
+// Create Space Scope.
+//
+// POST /api/admin/v1/space-scopes
+func (c *Client) CreateSpaceScopeV1(ctx context.Context, request *UpsertSpaceScopeV1) (*SpaceScopeV1, error) {
+	res, err := c.sendCreateSpaceScopeV1(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateSpaceScopeV1(ctx context.Context, request *UpsertSpaceScopeV1) (res *SpaceScopeV1, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/admin/v1/space-scopes"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateSpaceScopeV1Request(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, CreateSpaceScopeV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeCreateSpaceScopeV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateSpaceV1 invokes createSpaceV1 operation.
+//
+// Create Space.
+//
+// POST /api/admin/v1/spaces
+func (c *Client) CreateSpaceV1(ctx context.Context, request *CreateSpaceV1) (*SpaceV1, error) {
+	res, err := c.sendCreateSpaceV1(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateSpaceV1(ctx context.Context, request *CreateSpaceV1) (res *SpaceV1, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/admin/v1/spaces"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateSpaceV1Request(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, CreateSpaceV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeCreateSpaceV1Response(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -1314,6 +1613,182 @@ func (c *Client) sendDeleteIntegrationV4(ctx context.Context, params DeleteInteg
 	return result, nil
 }
 
+// DeleteSpaceScopeV1 invokes deleteSpaceScopeV1 operation.
+//
+// Delete Space Scope.
+//
+// DELETE /api/admin/v1/space-scopes/{id}
+func (c *Client) DeleteSpaceScopeV1(ctx context.Context, params DeleteSpaceScopeV1Params) error {
+	_, err := c.sendDeleteSpaceScopeV1(ctx, params)
+	return err
+}
+
+func (c *Client) sendDeleteSpaceScopeV1(ctx context.Context, params DeleteSpaceScopeV1Params) (res *DeleteSpaceScopeV1NoContent, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/admin/v1/space-scopes/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, DeleteSpaceScopeV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeDeleteSpaceScopeV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteSpaceV1 invokes deleteSpaceV1 operation.
+//
+// Delete Space.
+//
+// DELETE /api/admin/v1/spaces/{id}
+func (c *Client) DeleteSpaceV1(ctx context.Context, params DeleteSpaceV1Params) error {
+	_, err := c.sendDeleteSpaceV1(ctx, params)
+	return err
+}
+
+func (c *Client) sendDeleteSpaceV1(ctx context.Context, params DeleteSpaceV1Params) (res *DeleteSpaceV1NoContent, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/admin/v1/spaces/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, DeleteSpaceV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeDeleteSpaceV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // GetAccessFlowV2 invokes getAccessFlowV2 operation.
 //
 // Get Access Flow.
@@ -1842,6 +2317,182 @@ func (c *Client) sendGetIntegrationsByIdV4(ctx context.Context, params GetIntegr
 	return result, nil
 }
 
+// GetSpaceScopeV1 invokes getSpaceScopeV1 operation.
+//
+// Get Space Scope.
+//
+// GET /api/admin/v1/space-scopes/{id}
+func (c *Client) GetSpaceScopeV1(ctx context.Context, params GetSpaceScopeV1Params) (*SpaceScopeV1, error) {
+	res, err := c.sendGetSpaceScopeV1(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetSpaceScopeV1(ctx context.Context, params GetSpaceScopeV1Params) (res *SpaceScopeV1, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/admin/v1/space-scopes/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, GetSpaceScopeV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeGetSpaceScopeV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetSpaceV1 invokes getSpaceV1 operation.
+//
+// Get Space.
+//
+// GET /api/admin/v1/spaces/{id}
+func (c *Client) GetSpaceV1(ctx context.Context, params GetSpaceV1Params) (*SpaceV1, error) {
+	res, err := c.sendGetSpaceV1(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetSpaceV1(ctx context.Context, params GetSpaceV1Params) (res *SpaceV1, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/admin/v1/spaces/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, GetSpaceV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeGetSpaceV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // GetUser invokes getUser operation.
 //
 // Get user by Id or Email.
@@ -1982,6 +2633,32 @@ func (c *Client) sendListAccessFlowsV2(ctx context.Context, params ListAccessFlo
 			return res, errors.Wrap(err, "encode query")
 		}
 	}
+	{
+		// Encode "space_reference" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "space_reference",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.SpaceReference.Get(); ok {
+				return e.EncodeArray(func(e uri.Encoder) error {
+					for i, item := range val {
+						if err := func() error {
+							return e.EncodeValue(conv.StringToString(item))
+						}(); err != nil {
+							return errors.Wrapf(err, "[%d]", i)
+						}
+					}
+					return nil
+				})
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
 	u.RawQuery = q.Values().Encode()
 
 	r, err := ht.NewRequest(ctx, "GET", u)
@@ -2106,6 +2783,32 @@ func (c *Client) sendListAccessScopesV1(ctx context.Context, params ListAccessSc
 			return res, errors.Wrap(err, "encode query")
 		}
 	}
+	{
+		// Encode "space_reference" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "space_reference",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.SpaceReference.Get(); ok {
+				return e.EncodeArray(func(e uri.Encoder) error {
+					for i, item := range val {
+						if err := func() error {
+							return e.EncodeValue(conv.StringToString(item))
+						}(); err != nil {
+							return errors.Wrapf(err, "[%d]", i)
+						}
+					}
+					return nil
+				})
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
 	u.RawQuery = q.Values().Encode()
 
 	r, err := ht.NewRequest(ctx, "GET", u)
@@ -2224,6 +2927,32 @@ func (c *Client) sendListBundlesV2(ctx context.Context, params ListBundlesV2Para
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.PageToken.Get(); ok {
 				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "space_reference" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "space_reference",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.SpaceReference.Get(); ok {
+				return e.EncodeArray(func(e uri.Encoder) error {
+					for i, item := range val {
+						if err := func() error {
+							return e.EncodeValue(conv.StringToString(item))
+						}(); err != nil {
+							return errors.Wrapf(err, "[%d]", i)
+						}
+					}
+					return nil
+				})
 			}
 			return nil
 		}); err != nil {
@@ -2896,6 +3625,380 @@ func (c *Client) sendListIntegrationsV4(ctx context.Context, params ListIntegrat
 	return result, nil
 }
 
+// ListSpaceMembersV1 invokes listSpaceMembersV1 operation.
+//
+// List Space Members.
+//
+// GET /api/admin/v1/spaces/{id}/members
+func (c *Client) ListSpaceMembersV1(ctx context.Context, params ListSpaceMembersV1Params) (*PublicApiListResponseSpaceMemberPublicV1Model, error) {
+	res, err := c.sendListSpaceMembersV1(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListSpaceMembersV1(ctx context.Context, params ListSpaceMembersV1Params) (res *PublicApiListResponseSpaceMemberPublicV1Model, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/admin/v1/spaces/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/members"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "limit" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "limit",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Limit.Get(); ok {
+				return e.EncodeValue(conv.Int32ToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "page_token" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page_token",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PageToken.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, ListSpaceMembersV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeListSpaceMembersV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListSpaceScopesV1 invokes listSpaceScopesV1 operation.
+//
+// List Space Scopes.
+//
+// GET /api/admin/v1/space-scopes
+func (c *Client) ListSpaceScopesV1(ctx context.Context, params ListSpaceScopesV1Params) (*PublicApiListResponseSpaceScopePublicV1Model, error) {
+	res, err := c.sendListSpaceScopesV1(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListSpaceScopesV1(ctx context.Context, params ListSpaceScopesV1Params) (res *PublicApiListResponseSpaceScopePublicV1Model, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/admin/v1/space-scopes"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "limit" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "limit",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Limit.Get(); ok {
+				return e.EncodeValue(conv.Int32ToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "name" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "name",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Name.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "page_token" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page_token",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PageToken.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, ListSpaceScopesV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeListSpaceScopesV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListSpacesV1 invokes listSpacesV1 operation.
+//
+// List Spaces.
+//
+// GET /api/admin/v1/spaces
+func (c *Client) ListSpacesV1(ctx context.Context, params ListSpacesV1Params) (*PublicApiListResponseSpacePublicV1Model, error) {
+	res, err := c.sendListSpacesV1(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListSpacesV1(ctx context.Context, params ListSpacesV1Params) (res *PublicApiListResponseSpacePublicV1Model, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/admin/v1/spaces"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "limit" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "limit",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Limit.Get(); ok {
+				return e.EncodeValue(conv.Int32ToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "name" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "name",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Name.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "page_token" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page_token",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PageToken.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, ListSpacesV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeListSpacesV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // ListUsers invokes listUsers operation.
 //
 // List users.
@@ -3066,6 +4169,214 @@ func (c *Client) sendRemoveGroupMemberV1(ctx context.Context, params RemoveGroup
 	defer body.Close()
 
 	result, err := decodeRemoveGroupMemberV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RemoveSpaceMemberV1 invokes removeSpaceMemberV1 operation.
+//
+// Remove Space Member.
+//
+// DELETE /api/admin/v1/spaces/{id}/members/{identity_reference}
+func (c *Client) RemoveSpaceMemberV1(ctx context.Context, params RemoveSpaceMemberV1Params) error {
+	_, err := c.sendRemoveSpaceMemberV1(ctx, params)
+	return err
+}
+
+func (c *Client) sendRemoveSpaceMemberV1(ctx context.Context, params RemoveSpaceMemberV1Params) (res *RemoveSpaceMemberV1NoContent, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/admin/v1/spaces/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/members/"
+	{
+		// Encode "identity_reference" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "identity_reference",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.IdentityReference))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, RemoveSpaceMemberV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeRemoveSpaceMemberV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReplaceSpaceMembersV1 invokes replaceSpaceMembersV1 operation.
+//
+// Replace Space Members.
+//
+// PUT /api/admin/v1/spaces/{id}/members
+func (c *Client) ReplaceSpaceMembersV1(ctx context.Context, request *UpdateSpaceMembersV1, params ReplaceSpaceMembersV1Params) (*PublicApiListResponseSpaceMemberPublicV1Model, error) {
+	res, err := c.sendReplaceSpaceMembersV1(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendReplaceSpaceMembersV1(ctx context.Context, request *UpdateSpaceMembersV1, params ReplaceSpaceMembersV1Params) (res *PublicApiListResponseSpaceMemberPublicV1Model, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/admin/v1/spaces/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/members"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReplaceSpaceMembersV1Request(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, ReplaceSpaceMembersV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeReplaceSpaceMembersV1Response(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -3741,6 +5052,316 @@ func (c *Client) sendUpdateIntegrationV4(ctx context.Context, request *UpdateInt
 	defer body.Close()
 
 	result, err := decodeUpdateIntegrationV4Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateSpaceScopeV1 invokes updateSpaceScopeV1 operation.
+//
+// Update Space Scope.
+//
+// PUT /api/admin/v1/space-scopes/{id}
+func (c *Client) UpdateSpaceScopeV1(ctx context.Context, request *UpsertSpaceScopeV1, params UpdateSpaceScopeV1Params) (*SpaceScopeV1, error) {
+	res, err := c.sendUpdateSpaceScopeV1(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateSpaceScopeV1(ctx context.Context, request *UpsertSpaceScopeV1, params UpdateSpaceScopeV1Params) (res *SpaceScopeV1, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/admin/v1/space-scopes/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateSpaceScopeV1Request(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, UpdateSpaceScopeV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeUpdateSpaceScopeV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateSpaceV1 invokes updateSpaceV1 operation.
+//
+// Update Space.
+//
+// PUT /api/admin/v1/spaces/{id}
+func (c *Client) UpdateSpaceV1(ctx context.Context, request *UpdateSpaceV1, params UpdateSpaceV1Params) (*SpaceV1, error) {
+	res, err := c.sendUpdateSpaceV1(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateSpaceV1(ctx context.Context, request *UpdateSpaceV1, params UpdateSpaceV1Params) (res *SpaceV1, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/admin/v1/spaces/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateSpaceV1Request(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, UpdateSpaceV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeUpdateSpaceV1Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpsertSpaceMemberV1 invokes upsertSpaceMemberV1 operation.
+//
+// Add or Update Space Member.
+//
+// PUT /api/admin/v1/spaces/{id}/members/{identity_reference}
+func (c *Client) UpsertSpaceMemberV1(ctx context.Context, request *SpaceMemberRolesV1, params UpsertSpaceMemberV1Params) (*SpaceMemberV1, error) {
+	res, err := c.sendUpsertSpaceMemberV1(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpsertSpaceMemberV1(ctx context.Context, request *SpaceMemberRolesV1, params UpsertSpaceMemberV1Params) (res *SpaceMemberV1, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/admin/v1/spaces/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/members/"
+	{
+		// Encode "identity_reference" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "identity_reference",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.IdentityReference))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpsertSpaceMemberV1Request(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityAuthorization(ctx, UpsertSpaceMemberV1Operation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"Authorization\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer body.Close()
+
+	result, err := decodeUpsertSpaceMemberV1Response(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

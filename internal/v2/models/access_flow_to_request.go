@@ -296,9 +296,9 @@ func convertResourcesScopesToUpsertRequest(ctx context.Context, scopes []Integra
 }
 
 func convertEscalationPolicyToUpsertRequest(ctx context.Context, model EscalationPolicyModel) (*client.EscalationPolicyUpsertV2, error) {
-	policy := client.EscalationPolicyUpsertV2{
-		IntervalInMin: model.IntervalInMin.ValueInt32(),
-	}
+	policy := client.EscalationPolicyUpsertV2{}
+
+	policy.IntervalInMin.SetTo(model.IntervalInMin.ValueInt32())
 
 	var groups []client.ApproverGroupUpsertV2
 	for i, groupModel := range model.ApproverGroups {

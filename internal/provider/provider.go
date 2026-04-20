@@ -187,6 +187,8 @@ func (p *AponoProvider) Resources(_ context.Context) []func() resource.Resource 
 		v2resources.NewAponoResourceIntegrationResource,
 		v2resources.NewAponoAccessFlowV2Resource,
 		v2resources.NewAponoBundleV2Resource,
+		v2resources.NewAponoSpaceScopeResource,
+		v2resources.NewAponoSpaceResource,
 	}
 }
 
@@ -199,6 +201,8 @@ func (p *AponoProvider) DataSources(_ context.Context) []func() datasource.DataS
 		v2datasources.NewAponoUserInformationIntegrationsDataSource,
 		v2datasources.NewAponoBundlesDataSource,
 		v2datasources.NewResourceIntegrationsDataSource,
+		v2datasources.NewAponoSpaceScopesDataSource,
+		v2datasources.NewAponoSpacesDataSource,
 	}
 }
 
