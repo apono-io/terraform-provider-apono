@@ -132,9 +132,14 @@ resource "apono_bundle_v2" "aws_accounts_bundle" {
 - `access_targets` (Attributes List) A list of access targets included in the bundle. (see [below for nested schema](#nestedatt--access_targets))
 - `name` (String) Human-readable name for the access flow, must be unique.
 
+### Optional
+
+- `space_reference` (String) Name of the space to create this resource in. If omitted, the resource is created without a space. Changing this value forces the resource to be replaced.
+
 ### Read-Only
 
 - `id` (String) The unique identifier of the bundle.
+- `space` (Attributes) Space this resource belongs to. Null if no space is assigned. (see [below for nested schema](#nestedatt--space))
 
 <a id="nestedatt--access_targets"></a>
 ### Nested Schema for `access_targets`
@@ -177,6 +182,17 @@ Required:
 Optional:
 
 - `key` (String) Tag key. Only required if type = TAG
+
+
+
+
+<a id="nestedatt--space"></a>
+### Nested Schema for `space`
+
+Read-Only:
+
+- `space_id` (String) Unique identifier of the space.
+- `space_name` (String) Unique name of the space.
 
 ## Import
 
