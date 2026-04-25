@@ -27,7 +27,7 @@ Example usage of [`critical_prod_db_bundle`](../resources/access_flow_v2.md#bund
 ### Optional
 
 - `name` (String) Filter by bundle name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "prod*"). Matching is case-insensitive.
-- `space_references` (List of String) Filter results by space names or IDs. If omitted, returns objects from all spaces.
+- `space_references` (List of String) List of space IDs or names to filter results by. If omitted, returns objects from all spaces. To return only objects that belong to no space, include the special value "null" in the list.
 
 ### Read-Only
 
@@ -41,7 +41,7 @@ Read-Only:
 - `access_targets` (Attributes List) A list of access targets included in the bundle. (see [below for nested schema](#nestedatt--bundles--access_targets))
 - `id` (String) Unique identifier of the bundle.
 - `name` (String) Name of the bundle.
-- `space` (Attributes) Space this resource belongs to. Null if no space is assigned. (see [below for nested schema](#nestedatt--bundles--space))
+- `space` (Attributes) Space details this item belongs to. Null for items without a space. (see [below for nested schema](#nestedatt--bundles--space))
 
 <a id="nestedatt--bundles--access_targets"></a>
 ### Nested Schema for `bundles.access_targets`

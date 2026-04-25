@@ -57,7 +57,7 @@ resource "apono_access_scope" "critical_ec2_instances" {
 ### Read-Only
 
 - `id` (String) Unique identifier for this Apono Access Scope. You can reference it in other Terraform resources or use it to import an existing access scope into your Terraform state.
-- `space` (Attributes) Space this resource belongs to. Null if no space is assigned. (see [below for nested schema](#nestedatt--space))
+- `space` (Attributes) Space details this resource belongs to. Null if the resource has no space assigned. (see [below for nested schema](#nestedatt--space))
 
 <a id="nestedatt--space"></a>
 ### Nested Schema for `space`

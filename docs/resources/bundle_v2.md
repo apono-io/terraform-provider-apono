@@ -139,7 +139,7 @@ resource "apono_bundle_v2" "aws_accounts_bundle" {
 ### Read-Only
 
 - `id` (String) The unique identifier of the bundle.
-- `space` (Attributes) Space this resource belongs to. Null if no space is assigned. (see [below for nested schema](#nestedatt--space))
+- `space` (Attributes) Space details this resource belongs to. Null if the resource has no space assigned. (see [below for nested schema](#nestedatt--space))
 
 <a id="nestedatt--access_targets"></a>
 ### Nested Schema for `access_targets`
