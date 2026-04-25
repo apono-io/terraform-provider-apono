@@ -79,6 +79,30 @@ type SpaceDataModel struct {
 	SpaceScopes []SpaceScopeDataRefModel `tfsdk:"space_scopes"`
 }
 
+// SpaceReferenceModel holds the space details returned by the API for a resource.
+type SpaceReferenceModel struct {
+	SpaceID   types.String `tfsdk:"space_id"`
+	SpaceName types.String `tfsdk:"space_name"`
+}
+
+// SpaceReferenceAttrTypes defines the attribute types for a SpaceReferenceModel object.
+var SpaceReferenceAttrTypes = map[string]attr.Type{
+	"space_id":   types.StringType,
+	"space_name": types.StringType,
+}
+
+// SpaceReferenceToObject converts an API OptNilSpaceReferenceV1 to a types.Object.
+// Returns a null object if no space is set.
+func SpaceReferenceToObject(space client.OptNilSpaceReferenceV1) (types.Object, diag.Diagnostics) {
+	if val, ok := space.Get(); ok {
+		return types.ObjectValue(SpaceReferenceAttrTypes, map[string]attr.Value{
+			"space_id":   types.StringValue(val.SpaceID),
+			"space_name": types.StringValue(val.SpaceName),
+		})
+	}
+	return types.ObjectNull(SpaceReferenceAttrTypes), nil
+}
+
 type SpacesDataModel struct {
 	Name   types.String     `tfsdk:"name"`
 	Spaces []SpaceDataModel `tfsdk:"spaces"`

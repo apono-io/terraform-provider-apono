@@ -7,9 +7,11 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/mocks"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -75,7 +77,9 @@ func TestAponoBundlesDataSource(t *testing.T) {
 			Schema: schema,
 		}
 
-		diag := plan.Set(ctx, models.BundlesDataModel{})
+		diag := plan.Set(ctx, models.BundlesDataModel{
+			SpaceReferences: types.ListNull(types.StringType),
+		})
 		require.False(t, diag.HasError(), "Error setting plan: %s", diag.Errors())
 
 		req := datasource.ReadRequest{
@@ -106,6 +110,7 @@ func TestAponoBundlesDataSource(t *testing.T) {
 		bundle1 := state.Bundles[0]
 		assert.Equal(t, "bundle-123", bundle1.ID.ValueString())
 		assert.Equal(t, "test-bundle-1", bundle1.Name.ValueString())
+		assert.True(t, bundle1.Space.IsNull())
 		require.Len(t, bundle1.AccessTargets, 1)
 		assert.NotNil(t, bundle1.AccessTargets[0].Integration)
 		assert.Equal(t, "test-integration", bundle1.AccessTargets[0].Integration.IntegrationName.ValueString())
@@ -113,9 +118,62 @@ func TestAponoBundlesDataSource(t *testing.T) {
 		bundle2 := state.Bundles[1]
 		assert.Equal(t, "bundle-456", bundle2.ID.ValueString())
 		assert.Equal(t, "test-bundle-2", bundle2.Name.ValueString())
+		assert.True(t, bundle2.Space.IsNull())
 		require.Len(t, bundle2.AccessTargets, 1)
 		assert.NotNil(t, bundle2.AccessTargets[0].AccessScope)
 		assert.Equal(t, "test-access-scope", bundle2.AccessTargets[0].AccessScope.Name.ValueString())
+	})
+
+	t.Run("Read_WithSpaceReferences", func(t *testing.T) {
+		mockInvoker := mocks.NewInvoker(t)
+		d := &AponoBundlesDataSource{client: mockInvoker}
+
+		ctx := t.Context()
+
+		spaceBundle := client.BundleV2{
+			ID:            "bundle-sp1",
+			Name:          "space-bundle",
+			AccessTargets: []client.AccessBundleAccessTargetV2{},
+		}
+		spaceBundle.Space.SetTo(client.SpaceReferenceV1{SpaceID: "sp-1", SpaceName: "prod"})
+
+		mockInvoker.EXPECT().
+			ListBundlesV2(mock.Anything, mock.MatchedBy(func(params client.ListBundlesV2Params) bool {
+				val, ok := params.SpaceReferences.Get()
+				return ok && len(val) == 1 && val[0] == "prod"
+			})).
+			Return(&client.PublicApiListResponseBundlePublicV2Model{
+				Items:      []client.BundleV2{spaceBundle},
+				Pagination: client.PublicApiPaginationInfoModel{},
+			}, nil)
+
+		schema := d.getTestSchema(ctx)
+		plan := tfsdk.Plan{Schema: schema}
+		diag := plan.Set(ctx, models.BundlesDataModel{
+			SpaceReferences: types.ListValueMust(types.StringType, []attr.Value{types.StringValue("prod")}),
+		})
+		require.False(t, diag.HasError(), "Error setting plan: %s", diag.Errors())
+
+		req := datasource.ReadRequest{
+			Config: tfsdk.Config{Schema: schema, Raw: plan.Raw},
+		}
+		resp := datasource.ReadResponse{
+			State: tfsdk.State{Schema: schema, Raw: tftypes.NewValue(schema.Type().TerraformType(ctx), nil)},
+		}
+
+		d.Read(ctx, req, &resp)
+
+		require.False(t, resp.Diagnostics.HasError(), "Read returned error: %s", resp.Diagnostics.Errors())
+
+		var state models.BundlesDataModel
+		resp.Diagnostics.Append(resp.State.Get(ctx, &state)...)
+		require.False(t, resp.Diagnostics.HasError())
+
+		require.Len(t, state.Bundles, 1)
+		require.False(t, state.Bundles[0].Space.IsNull())
+		spaceName, ok := state.Bundles[0].Space.Attributes()["space_name"].(types.String)
+		require.True(t, ok)
+		assert.Equal(t, "prod", spaceName.ValueString())
 	})
 }
 

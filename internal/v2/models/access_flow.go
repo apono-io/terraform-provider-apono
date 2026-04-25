@@ -16,6 +16,8 @@ type AccessFlowV2Model struct {
 	RequestFor         *AccessFlowRequestForModel    `tfsdk:"request_for"`
 	AccessTargets      []AccessFlowAccessTargetModel `tfsdk:"access_targets"`
 	Settings           *AccessFlowSettingsModel      `tfsdk:"settings"`
+	SpaceReference     types.String                  `tfsdk:"space_reference"`
+	Space              types.Object                  `tfsdk:"space"`
 }
 
 type AccessFlowTimeframeModel struct {

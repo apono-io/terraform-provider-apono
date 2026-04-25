@@ -23,10 +23,17 @@ func TestAponoAccessScopeResource(t *testing.T) {
 	getStateType := func() tftypes.Object {
 		return tftypes.Object{
 			AttributeTypes: map[string]tftypes.Type{
-				"id":          tftypes.String,
-				"name":        tftypes.String,
-				"description": tftypes.String,
-				"query":       tftypes.String,
+				"id":              tftypes.String,
+				"name":            tftypes.String,
+				"description":     tftypes.String,
+				"query":           tftypes.String,
+				"space_reference": tftypes.String,
+				"space": tftypes.Object{
+					AttributeTypes: map[string]tftypes.Type{
+						"space_id":   tftypes.String,
+						"space_name": tftypes.String,
+					},
+				},
 			},
 		}
 	}
@@ -46,10 +53,12 @@ func TestAponoAccessScopeResource(t *testing.T) {
 		ctx := t.Context()
 		planType := getStateType()
 		planVal := tftypes.NewValue(planType, map[string]tftypes.Value{
-			"id":          tftypes.NewValue(tftypes.String, nil),
-			"name":        tftypes.NewValue(tftypes.String, "test-scope"),
-			"description": tftypes.NewValue(tftypes.String, nil),
-			"query":       tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"id":              tftypes.NewValue(tftypes.String, nil),
+			"name":            tftypes.NewValue(tftypes.String, "test-scope"),
+			"description":     tftypes.NewValue(tftypes.String, nil),
+			"query":           tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"space_reference": tftypes.NewValue(tftypes.String, nil),
+			"space":           tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"space_id": tftypes.String, "space_name": tftypes.String}}, nil),
 		})
 
 		schema := r.getTestSchema(ctx)
@@ -86,10 +95,12 @@ func TestAponoAccessScopeResource(t *testing.T) {
 		ctx := t.Context()
 		stateType := getStateType()
 		stateVal := tftypes.NewValue(stateType, map[string]tftypes.Value{
-			"id":          tftypes.NewValue(tftypes.String, "as-123456"),
-			"name":        tftypes.NewValue(tftypes.String, "old-name"),
-			"description": tftypes.NewValue(tftypes.String, nil),
-			"query":       tftypes.NewValue(tftypes.String, `resource_type = "valid-resource"`),
+			"id":              tftypes.NewValue(tftypes.String, "as-123456"),
+			"name":            tftypes.NewValue(tftypes.String, "old-name"),
+			"description":     tftypes.NewValue(tftypes.String, nil),
+			"query":           tftypes.NewValue(tftypes.String, `resource_type = "valid-resource"`),
+			"space_reference": tftypes.NewValue(tftypes.String, nil),
+			"space":           tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"space_id": tftypes.String, "space_name": tftypes.String}}, nil),
 		})
 
 		schema := r.getTestSchema(ctx)
@@ -122,10 +133,12 @@ func TestAponoAccessScopeResource(t *testing.T) {
 		ctx := t.Context()
 		stateType := getStateType()
 		stateVal := tftypes.NewValue(stateType, map[string]tftypes.Value{
-			"id":          tftypes.NewValue(tftypes.String, "as-not-found"),
-			"name":        tftypes.NewValue(tftypes.String, "test-scope"),
-			"description": tftypes.NewValue(tftypes.String, nil),
-			"query":       tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"id":              tftypes.NewValue(tftypes.String, "as-not-found"),
+			"name":            tftypes.NewValue(tftypes.String, "test-scope"),
+			"description":     tftypes.NewValue(tftypes.String, nil),
+			"query":           tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"space_reference": tftypes.NewValue(tftypes.String, nil),
+			"space":           tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"space_id": tftypes.String, "space_name": tftypes.String}}, nil),
 		})
 
 		schema := r.getTestSchema(ctx)
@@ -200,16 +213,20 @@ func TestAponoAccessScopeResource(t *testing.T) {
 		stateType := getStateType()
 
 		stateVal := tftypes.NewValue(stateType, map[string]tftypes.Value{
-			"id":          tftypes.NewValue(tftypes.String, "as-123456"),
-			"name":        tftypes.NewValue(tftypes.String, "test-scope"),
-			"description": tftypes.NewValue(tftypes.String, "old description"),
-			"query":       tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"id":              tftypes.NewValue(tftypes.String, "as-123456"),
+			"name":            tftypes.NewValue(tftypes.String, "test-scope"),
+			"description":     tftypes.NewValue(tftypes.String, "old description"),
+			"query":           tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"space_reference": tftypes.NewValue(tftypes.String, nil),
+			"space":           tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"space_id": tftypes.String, "space_name": tftypes.String}}, nil),
 		})
 		planVal := tftypes.NewValue(stateType, map[string]tftypes.Value{
-			"id":          tftypes.NewValue(tftypes.String, "as-123456"),
-			"name":        tftypes.NewValue(tftypes.String, "test-scope"),
-			"description": tftypes.NewValue(tftypes.String, nil),
-			"query":       tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"id":              tftypes.NewValue(tftypes.String, "as-123456"),
+			"name":            tftypes.NewValue(tftypes.String, "test-scope"),
+			"description":     tftypes.NewValue(tftypes.String, nil),
+			"query":           tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"space_reference": tftypes.NewValue(tftypes.String, nil),
+			"space":           tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"space_id": tftypes.String, "space_name": tftypes.String}}, nil),
 		})
 
 		schema := r.getTestSchema(ctx)
@@ -228,6 +245,100 @@ func TestAponoAccessScopeResource(t *testing.T) {
 		diags := resp.State.Get(ctx, &stateModel)
 		require.False(t, diags.HasError())
 		assert.True(t, stateModel.Description.IsNull())
+	})
+
+	t.Run("CreateWithSpaceReference", func(t *testing.T) {
+		mockInvoker := mocks.NewInvoker(t)
+		r := &AponoAccessScopeResource{client: mockInvoker}
+
+		mockResp := &client.AccessScopeV1{
+			ID:    "as-with-space",
+			Name:  "test-scope",
+			Query: `resource_type = "mock-duck"`,
+		}
+		mockResp.Space.SetTo(client.SpaceReferenceV1{SpaceID: "space-123", SpaceName: "prod-space"})
+
+		mockInvoker.EXPECT().
+			CreateAccessScopesV1(
+				mock.Anything,
+				mock.Anything,
+				mock.MatchedBy(func(params client.CreateAccessScopesV1Params) bool {
+					val, ok := params.SpaceReference.Get()
+					return ok && val == "prod-space"
+				}),
+			).
+			Return(mockResp, nil).
+			Once()
+
+		ctx := t.Context()
+		stateType := getStateType()
+		planVal := tftypes.NewValue(stateType, map[string]tftypes.Value{
+			"id":              tftypes.NewValue(tftypes.String, nil),
+			"name":            tftypes.NewValue(tftypes.String, "test-scope"),
+			"description":     tftypes.NewValue(tftypes.String, nil),
+			"query":           tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"space_reference": tftypes.NewValue(tftypes.String, "prod-space"),
+			"space":           tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"space_id": tftypes.String, "space_name": tftypes.String}}, nil),
+		})
+
+		testSchema := r.getTestSchema(ctx)
+		req := resource.CreateRequest{Plan: tfsdk.Plan{Schema: testSchema, Raw: planVal}}
+		resp := resource.CreateResponse{State: tfsdk.State{Schema: testSchema, Raw: tftypes.NewValue(stateType, nil)}}
+
+		r.Create(ctx, req, &resp)
+
+		require.False(t, resp.Diagnostics.HasError())
+		var stateModel services.AccessScopeModel
+		diags := resp.State.Get(ctx, &stateModel)
+		require.False(t, diags.HasError())
+		assert.Equal(t, "prod-space", stateModel.SpaceReference.ValueString())
+		assert.False(t, stateModel.Space.IsNull())
+	})
+
+	t.Run("CreateWithoutSpaceReference", func(t *testing.T) {
+		mockInvoker := mocks.NewInvoker(t)
+		r := &AponoAccessScopeResource{client: mockInvoker}
+
+		mockResp := &client.AccessScopeV1{
+			ID:    "as-no-space",
+			Name:  "test-scope",
+			Query: `resource_type = "mock-duck"`,
+		}
+
+		mockInvoker.EXPECT().
+			CreateAccessScopesV1(
+				mock.Anything,
+				mock.Anything,
+				mock.MatchedBy(func(params client.CreateAccessScopesV1Params) bool {
+					return !params.SpaceReference.IsSet()
+				}),
+			).
+			Return(mockResp, nil).
+			Once()
+
+		ctx := t.Context()
+		stateType := getStateType()
+		planVal := tftypes.NewValue(stateType, map[string]tftypes.Value{
+			"id":              tftypes.NewValue(tftypes.String, nil),
+			"name":            tftypes.NewValue(tftypes.String, "test-scope"),
+			"description":     tftypes.NewValue(tftypes.String, nil),
+			"query":           tftypes.NewValue(tftypes.String, `resource_type = "mock-duck"`),
+			"space_reference": tftypes.NewValue(tftypes.String, nil),
+			"space":           tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{"space_id": tftypes.String, "space_name": tftypes.String}}, nil),
+		})
+
+		testSchema := r.getTestSchema(ctx)
+		req := resource.CreateRequest{Plan: tfsdk.Plan{Schema: testSchema, Raw: planVal}}
+		resp := resource.CreateResponse{State: tfsdk.State{Schema: testSchema, Raw: tftypes.NewValue(stateType, nil)}}
+
+		r.Create(ctx, req, &resp)
+
+		require.False(t, resp.Diagnostics.HasError())
+		var stateModel services.AccessScopeModel
+		diags := resp.State.Get(ctx, &stateModel)
+		require.False(t, diags.HasError())
+		assert.True(t, stateModel.SpaceReference.IsNull())
+		assert.True(t, stateModel.Space.IsNull())
 	})
 }
 

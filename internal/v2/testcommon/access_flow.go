@@ -129,5 +129,10 @@ func GenerateAccessFlowResponse() *client.AccessFlowV2 {
 	escalationPolicy.ApproverGroups[0].Approvers[0].Values.SetTo([]string{"security@company.io"})
 	response.EscalationPolicy.SetTo(escalationPolicy)
 
+	response.Space.SetTo(client.SpaceReferenceV1{
+		SpaceID:   "space-123",
+		SpaceName: "prod-space",
+	})
+
 	return &response
 }

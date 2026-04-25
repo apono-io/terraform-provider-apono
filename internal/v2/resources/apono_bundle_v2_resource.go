@@ -57,6 +57,8 @@ func (r *AponoBundleV2Resource) Schema(_ context.Context, _ resource.SchemaReque
 					},
 				},
 			},
+			"space_reference": schemas.GetSpaceReferenceResourceAttribute(),
+			"space":           schemas.GetSpaceComputedAttribute(),
 		},
 	}
 }
@@ -82,7 +84,12 @@ func (r *AponoBundleV2Resource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	bundle, err := r.client.CreateBundleV2(ctx, upsertRequest, client.CreateBundleV2Params{})
+	createParams := client.CreateBundleV2Params{}
+	if !plan.SpaceReference.IsNull() {
+		createParams.SpaceReference.SetTo(plan.SpaceReference.ValueString())
+	}
+
+	bundle, err := r.client.CreateBundleV2(ctx, upsertRequest, createParams)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating bundle",

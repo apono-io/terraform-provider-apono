@@ -199,6 +199,88 @@ func TestAponoBundleV2Resource(t *testing.T) {
 		assert.Equal(t, *planModel, got)
 	})
 
+	t.Run("CreateWithSpaceReference", func(t *testing.T) {
+		mockInvoker := mocks.NewInvoker(t)
+		r.client = mockInvoker
+
+		mockResponse := testcommon.GenerateBundleResponse()
+		ctx := t.Context()
+
+		model, err := models.BundleResponseToModel(ctx, *mockResponse)
+		require.NoError(t, err, "Failed to convert mock response to model")
+
+		model.ID = types.StringNull()
+
+		expectedSpaceRef := model.SpaceReference.ValueString()
+		require.NotEmpty(t, expectedSpaceRef, "Expected SpaceReference to be set in mock response")
+
+		mockInvoker.EXPECT().
+			CreateBundleV2(
+				mock.Anything,
+				mock.Anything,
+				mock.MatchedBy(func(params client.CreateBundleV2Params) bool {
+					val, ok := params.SpaceReference.Get()
+					return ok && val == expectedSpaceRef
+				}),
+			).
+			Return(mockResponse, nil)
+
+		req := resource.CreateRequest{
+			Plan: tfsdk.Plan{Schema: r.getTestSchema(ctx)},
+		}
+		diags := req.Plan.Set(ctx, model)
+		require.False(t, diags.HasError(), "Error setting plan: %s", diags.Errors())
+
+		resp := resource.CreateResponse{
+			State: tfsdk.State{Schema: r.getTestSchema(ctx), Raw: req.Plan.Raw},
+		}
+
+		r.Create(ctx, req, &resp)
+
+		require.False(t, resp.Diagnostics.HasError(), "Create returned error: %s", resp.Diagnostics.Errors())
+	})
+
+	t.Run("CreateWithoutSpaceReference", func(t *testing.T) {
+		mockInvoker := mocks.NewInvoker(t)
+		r.client = mockInvoker
+
+		mockResponse := testcommon.GenerateBundleResponse()
+		mockResponse.Space.Reset()
+		ctx := t.Context()
+
+		model, err := models.BundleResponseToModel(ctx, *mockResponse)
+		require.NoError(t, err, "Failed to convert mock response to model")
+
+		model.ID = types.StringNull()
+
+		assert.True(t, model.SpaceReference.IsNull(), "Expected SpaceReference to be null")
+		assert.True(t, model.Space.IsNull(), "Expected Space to be null")
+
+		mockInvoker.EXPECT().
+			CreateBundleV2(
+				mock.Anything,
+				mock.Anything,
+				mock.MatchedBy(func(params client.CreateBundleV2Params) bool {
+					return !params.SpaceReference.IsSet()
+				}),
+			).
+			Return(mockResponse, nil)
+
+		req := resource.CreateRequest{
+			Plan: tfsdk.Plan{Schema: r.getTestSchema(ctx)},
+		}
+		diags := req.Plan.Set(ctx, model)
+		require.False(t, diags.HasError(), "Error setting plan: %s", diags.Errors())
+
+		resp := resource.CreateResponse{
+			State: tfsdk.State{Schema: r.getTestSchema(ctx), Raw: req.Plan.Raw},
+		}
+
+		r.Create(ctx, req, &resp)
+
+		require.False(t, resp.Diagnostics.HasError(), "Create returned error: %s", resp.Diagnostics.Errors())
+	})
+
 	t.Run("Delete", func(t *testing.T) {
 		mockInvoker := mocks.NewInvoker(t)
 		r.client = mockInvoker

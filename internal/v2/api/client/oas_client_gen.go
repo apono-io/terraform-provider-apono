@@ -2634,15 +2634,15 @@ func (c *Client) sendListAccessFlowsV2(ctx context.Context, params ListAccessFlo
 		}
 	}
 	{
-		// Encode "space_reference" parameter.
+		// Encode "space_references" parameter.
 		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "space_reference",
+			Name:    "space_references",
 			Style:   uri.QueryStyleForm,
 			Explode: true,
 		}
 
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.SpaceReference.Get(); ok {
+			if val, ok := params.SpaceReferences.Get(); ok {
 				return e.EncodeArray(func(e uri.Encoder) error {
 					for i, item := range val {
 						if err := func() error {
@@ -2784,15 +2784,15 @@ func (c *Client) sendListAccessScopesV1(ctx context.Context, params ListAccessSc
 		}
 	}
 	{
-		// Encode "space_reference" parameter.
+		// Encode "space_references" parameter.
 		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "space_reference",
+			Name:    "space_references",
 			Style:   uri.QueryStyleForm,
 			Explode: true,
 		}
 
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.SpaceReference.Get(); ok {
+			if val, ok := params.SpaceReferences.Get(); ok {
 				return e.EncodeArray(func(e uri.Encoder) error {
 					for i, item := range val {
 						if err := func() error {
@@ -2934,15 +2934,15 @@ func (c *Client) sendListBundlesV2(ctx context.Context, params ListBundlesV2Para
 		}
 	}
 	{
-		// Encode "space_reference" parameter.
+		// Encode "space_references" parameter.
 		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "space_reference",
+			Name:    "space_references",
 			Style:   uri.QueryStyleForm,
 			Explode: true,
 		}
 
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.SpaceReference.Get(); ok {
+			if val, ok := params.SpaceReferences.Get(); ok {
 				return e.EncodeArray(func(e uri.Encoder) error {
 					for i, item := range val {
 						if err := func() error {

@@ -91,3 +91,50 @@ data "apono_access_scopes" "wildcard" {
 }
 `
 }
+
+func TestAccAponoAccessScopesDataSourceWithSpace(t *testing.T) {
+	rName := acctest.RandomWithPrefix("tf-acc-test-space")
+	dataSourceName := "data.apono_access_scopes.by_space"
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testcommon.TestAccPreCheck(t) },
+		ProtoV6ProviderFactories: testprovider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccAponoAccessScopesDataSourceWithSpaceConfig(rName),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr(dataSourceName, "access_scopes.#", "1"),
+					resource.TestCheckResourceAttr(dataSourceName, "access_scopes.0.name", rName),
+					resource.TestCheckResourceAttrSet(dataSourceName, "access_scopes.0.id"),
+					resource.TestCheckResourceAttrSet(dataSourceName, "access_scopes.0.space.space_id"),
+					resource.TestCheckResourceAttr(dataSourceName, "access_scopes.0.space.space_name", rName),
+				),
+			},
+		},
+	})
+}
+
+func testAccAponoAccessScopesDataSourceWithSpaceConfig(name string) string {
+	return `
+resource "apono_space_scope" "test" {
+  name  = "` + name + `"
+  query = "resource_type = \"mock-duck\""
+}
+
+resource "apono_space" "test" {
+  name                   = "` + name + `"
+  space_scope_references = [apono_space_scope.test.name]
+}
+
+resource "apono_access_scope" "test" {
+  name            = "` + name + `"
+  space_reference = apono_space.test.name
+  query           = "resource_type = \"mock-duck\""
+}
+
+data "apono_access_scopes" "by_space" {
+  space_references = [apono_space.test.name]
+  depends_on       = [apono_access_scope.test]
+}
+`
+}

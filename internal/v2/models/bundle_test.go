@@ -18,6 +18,7 @@ func TestBundleConversions(t *testing.T) {
 			ID:   "bundle-123",
 			Name: "Test Bundle",
 		}
+		response.Space.SetTo(client.SpaceReferenceV1{SpaceID: "space-123", SpaceName: "prod-space"})
 
 		integrationTarget := client.AccessBundleAccessTargetV2{}
 		integrationData := client.IntegrationAccessTargetV2{
@@ -72,12 +73,39 @@ func TestBundleConversions(t *testing.T) {
 
 		require.NotNil(t, model.AccessTargets[1].AccessScope)
 		assert.Equal(t, "Test Scope", model.AccessTargets[1].AccessScope.Name.ValueString())
+
+		assert.Equal(t, "prod-space", model.SpaceReference.ValueString())
+		require.False(t, model.Space.IsNull())
+		spaceAttrs := model.Space.Attributes()
+		spaceID, ok := spaceAttrs["space_id"].(types.String)
+		require.True(t, ok)
+		assert.Equal(t, "space-123", spaceID.ValueString())
+		spaceName, ok := spaceAttrs["space_name"].(types.String)
+		require.True(t, ok)
+		assert.Equal(t, "prod-space", spaceName.ValueString())
+	})
+
+	t.Run("BundleResponseToModelWithoutSpace", func(t *testing.T) {
+		response := client.BundleV2{
+			ID:   "bundle-123",
+			Name: "Test Bundle",
+		}
+		response.AccessTargets = []client.AccessBundleAccessTargetV2{}
+
+		model, err := BundleResponseToModel(ctx, response)
+		require.NoError(t, err)
+		require.NotNil(t, model)
+
+		assert.True(t, model.SpaceReference.IsNull())
+		assert.True(t, model.Space.IsNull())
 	})
 
 	t.Run("BundleModelToUpsertRequest", func(t *testing.T) {
 		model := BundleV2Model{
-			ID:   types.StringValue("bundle-123"),
-			Name: types.StringValue("Test Bundle"),
+			ID:             types.StringValue("bundle-123"),
+			Name:           types.StringValue("Test Bundle"),
+			SpaceReference: types.StringNull(),
+			Space:          types.ObjectNull(SpaceReferenceAttrTypes),
 			AccessTargets: []BundleAccessTargetModel{
 				{
 					Integration: &IntegrationTargetModel{
@@ -152,5 +180,44 @@ func TestBundleConversions(t *testing.T) {
 		_, err := BundleModelToUpsertRequest(ctx, model)
 		require.Error(t, err)
 		assert.Contains(t, err.Error(), "exactly one of 'integration' or 'access_scope' must be configured")
+	})
+
+	t.Run("BundleResponseToDataSourceItemModel_WithSpace", func(t *testing.T) {
+		response := client.BundleV2{
+			ID:            "bundle-ds-1",
+			Name:          "DS Bundle",
+			AccessTargets: []client.AccessBundleAccessTargetV2{},
+		}
+		response.Space.SetTo(client.SpaceReferenceV1{SpaceID: "space-123", SpaceName: "prod-space"})
+
+		model, err := BundleResponseToDataSourceItemModel(ctx, response)
+		require.NoError(t, err)
+		require.NotNil(t, model)
+
+		assert.Equal(t, "bundle-ds-1", model.ID.ValueString())
+		assert.Equal(t, "DS Bundle", model.Name.ValueString())
+		require.False(t, model.Space.IsNull())
+		spaceAttrs := model.Space.Attributes()
+		spaceID, ok := spaceAttrs["space_id"].(types.String)
+		require.True(t, ok)
+		assert.Equal(t, "space-123", spaceID.ValueString())
+		spaceName, ok := spaceAttrs["space_name"].(types.String)
+		require.True(t, ok)
+		assert.Equal(t, "prod-space", spaceName.ValueString())
+	})
+
+	t.Run("BundleResponseToDataSourceItemModel_WithoutSpace", func(t *testing.T) {
+		response := client.BundleV2{
+			ID:            "bundle-ds-2",
+			Name:          "DS Bundle No Space",
+			AccessTargets: []client.AccessBundleAccessTargetV2{},
+		}
+
+		model, err := BundleResponseToDataSourceItemModel(ctx, response)
+		require.NoError(t, err)
+		require.NotNil(t, model)
+
+		assert.Equal(t, "bundle-ds-2", model.ID.ValueString())
+		assert.True(t, model.Space.IsNull())
 	})
 }

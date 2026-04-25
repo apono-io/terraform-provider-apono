@@ -10,16 +10,22 @@ type AddGroupMemberV1Params struct {
 
 // CreateAccessFlowV2Params is parameters of createAccessFlowV2 operation.
 type CreateAccessFlowV2Params struct {
+	// ID or name of the space where to create the resource. If null, the object is created without a
+	// space.
 	SpaceReference OptNilString `json:",omitempty,omitzero"`
 }
 
 // CreateAccessScopesV1Params is parameters of createAccessScopesV1 operation.
 type CreateAccessScopesV1Params struct {
+	// ID or name of the space where to create the resource. If null, the object is created without a
+	// space.
 	SpaceReference OptNilString `json:",omitempty,omitzero"`
 }
 
 // CreateBundleV2Params is parameters of createBundleV2 operation.
 type CreateBundleV2Params struct {
+	// ID or name of the space where to create the resource. If null, the object is created without a
+	// space.
 	SpaceReference OptNilString `json:",omitempty,omitzero"`
 }
 
@@ -114,9 +120,10 @@ type GetUserParams struct {
 
 // ListAccessFlowsV2Params is parameters of listAccessFlowsV2 operation.
 type ListAccessFlowsV2Params struct {
-	Limit          OptInt32          `json:",omitempty,omitzero"`
-	PageToken      OptNilString      `json:",omitempty,omitzero"`
-	SpaceReference OptNilStringArray `json:",omitempty,omitzero"`
+	Limit     OptInt32     `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
+	// List of IDs or names of spaces to list from. If null, returns objects without a space.
+	SpaceReferences OptNilStringArray `json:",omitempty,omitzero"`
 }
 
 // ListAccessScopesV1Params is parameters of listAccessScopesV1 operation.
@@ -124,9 +131,10 @@ type ListAccessScopesV1Params struct {
 	Limit OptInt32 `json:",omitempty,omitzero"`
 	// Filter access scopes by name. Supports wildcard (*) for partial matches - use * for contains,
 	// prefix* for starts with, *suffix for ends with.
-	Name           OptNilString      `json:",omitempty,omitzero"`
-	PageToken      OptNilString      `json:",omitempty,omitzero"`
-	SpaceReference OptNilStringArray `json:",omitempty,omitzero"`
+	Name      OptNilString `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
+	// List of IDs or names of spaces to list from. If null, returns objects without a space.
+	SpaceReferences OptNilStringArray `json:",omitempty,omitzero"`
 }
 
 // ListBundlesV2Params is parameters of listBundlesV2 operation.
@@ -134,9 +142,10 @@ type ListBundlesV2Params struct {
 	Limit OptInt32 `json:",omitempty,omitzero"`
 	// Filter bundles by name. Supports wildcard (*) for partial matches - use * for contains, prefix*
 	// for starts with, *suffix for ends with.
-	Name           OptNilString      `json:",omitempty,omitzero"`
-	PageToken      OptNilString      `json:",omitempty,omitzero"`
-	SpaceReference OptNilStringArray `json:",omitempty,omitzero"`
+	Name      OptNilString `json:",omitempty,omitzero"`
+	PageToken OptNilString `json:",omitempty,omitzero"`
+	// List of IDs or names of spaces to list from. If null, returns objects without a space.
+	SpaceReferences OptNilStringArray `json:",omitempty,omitzero"`
 }
 
 // ListConnectorsV3Params is parameters of listConnectorsV3 operation.

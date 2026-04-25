@@ -1169,8 +1169,9 @@
             }
           },
           {
-            "name": "space_reference",
+            "name": "space_references",
             "in": "query",
+            "description": "List of IDs or names of spaces to list from. If null, returns objects without a space",
             "schema": {
               "type": "array",
               "items": {
@@ -1204,6 +1205,7 @@
           {
             "name": "space_reference",
             "in": "query",
+            "description": "ID or name of the space where to create the resource. If null, the object is created without a space",
             "schema": {
               "type": "string",
               "nullable": true
@@ -1361,8 +1363,9 @@
             }
           },
           {
-            "name": "space_reference",
+            "name": "space_references",
             "in": "query",
+            "description": "List of IDs or names of spaces to list from. If null, returns objects without a space",
             "schema": {
               "type": "array",
               "items": {
@@ -1395,6 +1398,7 @@
           {
             "name": "space_reference",
             "in": "query",
+            "description": "ID or name of the space where to create the resource. If null, the object is created without a space",
             "schema": {
               "type": "string",
               "nullable": true
@@ -4110,8 +4114,9 @@
             }
           },
           {
-            "name": "space_reference",
+            "name": "space_references",
             "in": "query",
+            "description": "List of IDs or names of spaces to list from. If null, returns objects without a space",
             "schema": {
               "type": "array",
               "items": {
@@ -4144,6 +4149,7 @@
           {
             "name": "space_reference",
             "in": "query",
+            "description": "ID or name of the space where to create the resource. If null, the object is created without a space",
             "schema": {
               "type": "string",
               "nullable": true

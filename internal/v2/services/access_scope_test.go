@@ -5,7 +5,9 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/mocks"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestListAccessScopesByName(t *testing.T) {
@@ -126,7 +128,7 @@ func TestListAccessScopesByName(t *testing.T) {
 			mockClient := new(mocks.Invoker)
 			tc.setupMock(mockClient)
 
-			scopes, err := ListAccessScopesByName(ctx, mockClient, tc.scopeName)
+			scopes, err := ListAccessScopesByName(ctx, mockClient, tc.scopeName, nil)
 
 			if tc.expectError {
 				assert.Error(t, err)
@@ -138,4 +140,116 @@ func TestListAccessScopesByName(t *testing.T) {
 			mockClient.AssertExpectations(t)
 		})
 	}
+}
+
+func TestListAccessScopesByNameWithSpaceReferences(t *testing.T) {
+	ctx := t.Context()
+
+	mockClient := new(mocks.Invoker)
+	expectedParams := client.ListAccessScopesV1Params{}
+	expectedParams.SpaceReferences.SetTo([]string{"prod", "staging"})
+	mockClient.On("ListAccessScopesV1", ctx, expectedParams).Return(&client.PublicApiListResponseAccessScopePublicV1Model{
+		Items: []client.AccessScopeV1{{ID: "s1"}},
+		Pagination: client.PublicApiPaginationInfoModel{
+			NextPageToken: client.NewOptNilString(""),
+		},
+	}, nil)
+
+	scopes, err := ListAccessScopesByName(ctx, mockClient, "", []string{"prod", "staging"})
+
+	assert.NoError(t, err)
+	assert.Len(t, scopes, 1)
+	mockClient.AssertExpectations(t)
+}
+
+func TestAccessScopeToModel(t *testing.T) {
+	t.Run("WithSpace", func(t *testing.T) {
+		apiScope := &client.AccessScopeV1{
+			ID:    "scope-123",
+			Name:  "prod-scope",
+			Query: `resource_type = "mock-duck"`,
+		}
+		apiScope.Description.SetTo("a description")
+		apiScope.Space.SetTo(client.SpaceReferenceV1{SpaceID: "space-123", SpaceName: "prod-space"})
+
+		model, diags := AccessScopeToModel(apiScope)
+		require.False(t, diags.HasError())
+		require.NotNil(t, model)
+
+		assert.Equal(t, "scope-123", model.ID.ValueString())
+		assert.Equal(t, "prod-scope", model.Name.ValueString())
+		assert.Equal(t, `resource_type = "mock-duck"`, model.Query.ValueString())
+		assert.Equal(t, "a description", model.Description.ValueString())
+		assert.Equal(t, "prod-space", model.SpaceReference.ValueString())
+		require.False(t, model.Space.IsNull())
+		spaceAttrs := model.Space.Attributes()
+		spaceID, ok := spaceAttrs["space_id"].(types.String)
+		require.True(t, ok)
+		assert.Equal(t, "space-123", spaceID.ValueString())
+		spaceName, ok := spaceAttrs["space_name"].(types.String)
+		require.True(t, ok)
+		assert.Equal(t, "prod-space", spaceName.ValueString())
+	})
+
+	t.Run("WithoutSpace", func(t *testing.T) {
+		apiScope := &client.AccessScopeV1{
+			ID:    "scope-456",
+			Name:  "no-space-scope",
+			Query: `resource_type = "mock-duck"`,
+		}
+
+		model, diags := AccessScopeToModel(apiScope)
+		require.False(t, diags.HasError())
+		require.NotNil(t, model)
+
+		assert.Equal(t, "scope-456", model.ID.ValueString())
+		assert.True(t, model.Description.IsNull())
+		assert.True(t, model.SpaceReference.IsNull())
+		assert.True(t, model.Space.IsNull())
+	})
+}
+
+func TestAccessScopeToDataSourceItemModel(t *testing.T) {
+	t.Run("WithSpace", func(t *testing.T) {
+		apiScope := &client.AccessScopeV1{
+			ID:    "scope-123",
+			Name:  "prod-scope",
+			Query: `resource_type = "mock-duck"`,
+		}
+		apiScope.Description.SetTo("a description")
+		apiScope.Space.SetTo(client.SpaceReferenceV1{SpaceID: "space-123", SpaceName: "prod-space"})
+
+		model, diags := AccessScopeToDataSourceItemModel(apiScope)
+		require.False(t, diags.HasError())
+		require.NotNil(t, model)
+
+		assert.Equal(t, "scope-123", model.ID.ValueString())
+		assert.Equal(t, "prod-scope", model.Name.ValueString())
+		assert.Equal(t, `resource_type = "mock-duck"`, model.Query.ValueString())
+		assert.Equal(t, "a description", model.Description.ValueString())
+		require.False(t, model.Space.IsNull())
+		spaceAttrs := model.Space.Attributes()
+		spaceID, ok := spaceAttrs["space_id"].(types.String)
+		require.True(t, ok)
+		assert.Equal(t, "space-123", spaceID.ValueString())
+		spaceName, ok := spaceAttrs["space_name"].(types.String)
+		require.True(t, ok)
+		assert.Equal(t, "prod-space", spaceName.ValueString())
+	})
+
+	t.Run("WithoutSpace", func(t *testing.T) {
+		apiScope := &client.AccessScopeV1{
+			ID:    "scope-456",
+			Name:  "no-space-scope",
+			Query: `resource_type = "mock-duck"`,
+		}
+
+		model, diags := AccessScopeToDataSourceItemModel(apiScope)
+		require.False(t, diags.HasError())
+		require.NotNil(t, model)
+
+		assert.Equal(t, "scope-456", model.ID.ValueString())
+		assert.True(t, model.Description.IsNull())
+		assert.True(t, model.Space.IsNull())
+	})
 }

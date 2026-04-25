@@ -76,6 +76,17 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowV2
 	}
 	model.AccessTargets = accessTargets
 
+	spaceObj, spaceDiags := SpaceReferenceToObject(response.Space)
+	if spaceDiags.HasError() {
+		return nil, fmt.Errorf("failed to convert space: %s", spaceDiags.Errors()[0].Summary())
+	}
+	model.Space = spaceObj
+	if val, ok := response.Space.Get(); ok {
+		model.SpaceReference = types.StringValue(val.SpaceName)
+	} else {
+		model.SpaceReference = types.StringNull()
+	}
+
 	return &model, nil
 }
 
