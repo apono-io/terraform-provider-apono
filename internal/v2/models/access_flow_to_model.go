@@ -81,6 +81,8 @@ func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowV2
 		return nil, fmt.Errorf("failed to convert space: %s", spaceDiags.Errors()[0].Summary())
 	}
 	model.Space = spaceObj
+	// Repopulate space_reference from the response space name so state stays consistent.
+	// space_reference is name-only per spec; using SpaceName here prevents ID→name drift.
 	if val, ok := response.Space.Get(); ok {
 		model.SpaceReference = types.StringValue(val.SpaceName)
 	} else {

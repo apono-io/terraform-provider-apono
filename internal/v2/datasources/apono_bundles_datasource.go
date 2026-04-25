@@ -59,7 +59,7 @@ func (d *AponoBundlesDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 								},
 							},
 						},
-						"space": schemas.GetSpaceComputedAttribute(),
+						"space": schemas.GetSpaceComputedAttribute(schemas.DataSourceMode),
 					},
 				},
 			},

@@ -56,7 +56,7 @@ func (r *AponoAccessScopeResource) Schema(_ context.Context, _ resource.SchemaRe
 				Required:            true,
 			},
 			"space_reference": schemas.GetSpaceReferenceResourceAttribute(),
-			"space":           schemas.GetSpaceComputedAttribute(),
+			"space":           schemas.GetSpaceComputedAttribute(schemas.ResourceMode),
 		},
 	}
 }

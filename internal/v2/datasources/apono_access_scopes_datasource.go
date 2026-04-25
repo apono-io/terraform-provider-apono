@@ -63,7 +63,7 @@ func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.Sch
 							Description: "The full query string that is used to define the access scope.",
 							Computed:    true,
 						},
-						"space": schemas.GetSpaceComputedAttribute(),
+						"space": schemas.GetSpaceComputedAttribute(schemas.DataSourceMode),
 					},
 				},
 			},

@@ -342,7 +342,7 @@ Defaults to ["self"].`,
 				},
 			},
 			"space_reference": schemas.GetSpaceReferenceResourceAttribute(),
-			"space":           schemas.GetSpaceComputedAttribute(),
+			"space":           schemas.GetSpaceComputedAttribute(schemas.ResourceMode),
 		},
 	}
 }

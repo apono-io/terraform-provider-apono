@@ -58,7 +58,7 @@ func (r *AponoBundleV2Resource) Schema(_ context.Context, _ resource.SchemaReque
 				},
 			},
 			"space_reference": schemas.GetSpaceReferenceResourceAttribute(),
-			"space":           schemas.GetSpaceComputedAttribute(),
+			"space":           schemas.GetSpaceComputedAttribute(schemas.ResourceMode),
 		},
 	}
 }
