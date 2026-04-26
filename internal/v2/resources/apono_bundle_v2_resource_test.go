@@ -114,6 +114,7 @@ resource "apono_bundle_v2" "test" {
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", updatedName),
+					resource.TestCheckNoResourceAttr(resourceName, "space_reference"),
 					resource.TestCheckResourceAttr(resourceName, "access_targets.#", "2"),
 
 					// Check for the updated integration name

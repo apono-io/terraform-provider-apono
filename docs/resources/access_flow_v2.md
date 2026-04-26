@@ -498,11 +498,13 @@ In automatic access flows, requestors specify who will automatically receive acc
 - `escalation_policy` (Attributes) Defines an approval escalation policy for a human approval flow. When a request remains pending for the configured interval, Apono escalates it to the approver groups defined in this block. Previously notified approvers can still approve or reject the request even after escalation was triggered. Up to 5 escalation approver groups are supported. (see [below for nested schema](#nestedatt--escalation_policy))
 - `grant_duration_in_min` (Number) How long access is granted, in minutes. If not specified, the grant duration defaults to indefinite.
 - `request_for` (Attributes) Defines who the access request can be made for. This enables support to request on behalf of other users, groups, or identities. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--request_for))
+- `space_reference` (String) Name of the space to create this resource in. If omitted, the resource is created without a space. Changing this value forces the resource to be replaced.
 - `timeframe` (Attributes) Restrict when access can be granted. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--timeframe))
 
 ### Read-Only
 
 - `id` (String) The unique identifier of the access flow.
+- `space` (Attributes) Space details this resource belongs to. Null if the resource has no space assigned. (see [below for nested schema](#nestedatt--space))
 
 <a id="nestedatt--access_targets"></a>
 ### Nested Schema for `access_targets`
@@ -718,6 +720,15 @@ Required:
 - `end_time` (String) End time (e.g., 17:00).
 - `start_time` (String) Start time (e.g., 08:00).
 - `time_zone` (String) Timezone name (e.g., Asia/Jerusalem).
+
+
+<a id="nestedatt--space"></a>
+### Nested Schema for `space`
+
+Read-Only:
+
+- `space_id` (String) Unique identifier of the space.
+- `space_name` (String) Unique name of the space.
 
 ## Import
 

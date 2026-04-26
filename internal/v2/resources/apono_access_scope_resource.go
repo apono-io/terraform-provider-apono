@@ -6,6 +6,7 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -54,6 +55,8 @@ func (r *AponoAccessScopeResource) Schema(_ context.Context, _ resource.SchemaRe
 				MarkdownDescription: "A query string written in [Apono Query Language](https://docs.apono.io/docs/inventory/apono-query-language).",
 				Required:            true,
 			},
+			"space_reference": schemas.GetSpaceReferenceResourceAttribute(),
+			"space":           schemas.GetSpaceComputedAttribute(schemas.ResourceMode),
 		},
 	}
 }
@@ -79,13 +82,22 @@ func (r *AponoAccessScopeResource) Create(ctx context.Context, req resource.Crea
 		createReq.Description.SetTo(plan.Description.ValueString())
 	}
 
-	accessScope, err := r.client.CreateAccessScopesV1(ctx, &createReq, client.CreateAccessScopesV1Params{})
+	createParams := client.CreateAccessScopesV1Params{}
+	if !plan.SpaceReference.IsNull() {
+		createParams.SpaceReference.SetTo(plan.SpaceReference.ValueString())
+	}
+
+	accessScope, err := r.client.CreateAccessScopesV1(ctx, &createReq, createParams)
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating access scope", fmt.Sprintf("Could not create access scope: %v", err))
 		return
 	}
 
-	result := services.AccessScopeToModel(accessScope)
+	result, resultDiags := services.AccessScopeToModel(accessScope)
+	resp.Diagnostics.Append(resultDiags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -112,7 +124,11 @@ func (r *AponoAccessScopeResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	result := services.AccessScopeToModel(accessScope)
+	result, resultDiags := services.AccessScopeToModel(accessScope)
+	resp.Diagnostics.Append(resultDiags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -151,7 +167,11 @@ func (r *AponoAccessScopeResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	result := services.AccessScopeToModel(accessScope)
+	result, resultDiags := services.AccessScopeToModel(accessScope)
+	resp.Diagnostics.Append(resultDiags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	diags = resp.State.Set(ctx, result)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

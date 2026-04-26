@@ -32,14 +32,24 @@ type BundleAccessTargetModel struct {
 }
 
 type BundleV2Model struct {
-	ID            types.String              `tfsdk:"id"`
-	Name          types.String              `tfsdk:"name"`
-	AccessTargets []BundleAccessTargetModel `tfsdk:"access_targets"`
+	ID             types.String              `tfsdk:"id"`
+	Name           types.String              `tfsdk:"name"`
+	AccessTargets  []BundleAccessTargetModel `tfsdk:"access_targets"`
+	SpaceReference types.String              `tfsdk:"space_reference"`
+	Space          types.Object              `tfsdk:"space"`
 }
 
 type BundlesDataModel struct {
-	Name    types.String    `tfsdk:"name"`
-	Bundles []BundleV2Model `tfsdk:"bundles"`
+	Name            types.String                `tfsdk:"name"`
+	SpaceReferences types.List                  `tfsdk:"space_references"`
+	Bundles         []BundleDataSourceItemModel `tfsdk:"bundles"`
+}
+
+type BundleDataSourceItemModel struct {
+	ID            types.String              `tfsdk:"id"`
+	Name          types.String              `tfsdk:"name"`
+	AccessTargets []BundleAccessTargetModel `tfsdk:"access_targets"`
+	Space         types.Object              `tfsdk:"space"`
 }
 
 func BundleResponseToModel(ctx context.Context, response client.BundleV2) (*BundleV2Model, error) {
@@ -53,6 +63,19 @@ func BundleResponseToModel(ctx context.Context, response client.BundleV2) (*Bund
 		return nil, fmt.Errorf("failed to convert access targets: %w", err)
 	}
 	model.AccessTargets = accessTargets
+
+	spaceObj, spaceDiags := SpaceReferenceToObject(response.Space)
+	if spaceDiags.HasError() {
+		return nil, fmt.Errorf("failed to convert space: %s", spaceDiags.Errors()[0].Summary())
+	}
+	model.Space = spaceObj
+	// Repopulate space_reference from the response space name so state stays consistent.
+	// space_reference is name-only per spec; using SpaceName here prevents ID→name drift.
+	if val, ok := response.Space.Get(); ok {
+		model.SpaceReference = types.StringValue(val.SpaceName)
+	} else {
+		model.SpaceReference = types.StringNull()
+	}
 
 	return &model, nil
 }
@@ -70,6 +93,33 @@ func BundlesResponseToModels(ctx context.Context, bundles []client.BundleV2) ([]
 	}
 
 	return bundleModels, nil
+}
+
+func BundleResponseToDataSourceItemModel(ctx context.Context, response client.BundleV2) (*BundleDataSourceItemModel, error) {
+	full, err := BundleResponseToModel(ctx, response)
+	if err != nil {
+		return nil, err
+	}
+	return &BundleDataSourceItemModel{
+		ID:            full.ID,
+		Name:          full.Name,
+		AccessTargets: full.AccessTargets,
+		Space:         full.Space,
+	}, nil
+}
+
+func BundlesResponseToDataSourceItemModels(ctx context.Context, bundles []client.BundleV2) ([]BundleDataSourceItemModel, error) {
+	var result []BundleDataSourceItemModel
+
+	for _, bundle := range bundles {
+		model, err := BundleResponseToDataSourceItemModel(ctx, bundle)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, *model)
+	}
+
+	return result, nil
 }
 
 func BundleModelToUpsertRequest(ctx context.Context, model BundleV2Model) (*client.UpsertBundleV2, error) {

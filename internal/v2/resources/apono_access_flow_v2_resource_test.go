@@ -210,6 +210,7 @@ resource "apono_access_flow_v2" "test_with_request_for" {
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
 					resource.TestCheckResourceAttr(resourceName, "settings.justification_required", "false"),
+					resource.TestCheckNoResourceAttr(resourceName, "space_reference"),
 				),
 			},
 			{
@@ -219,4 +220,104 @@ resource "apono_access_flow_v2" "test_with_request_for" {
 			},
 		},
 	})
+}
+
+func TestAccAponoAccessFlowV2ResourceWithSpace(t *testing.T) {
+	rName := acctest.RandomWithPrefix("tf-acc-test")
+	resourceName := "apono_access_flow_v2.test"
+
+	integrationType := common.MockDuck
+	resourceType := common.MockDuck
+
+	connectorID := testcommon.GetTestConnectorID(t)
+
+	users, err := testcommon.GetUsers(t)
+	if err != nil {
+		t.Fatalf("failed to get users: %v", err)
+	}
+	if len(users) < 1 {
+		t.Fatalf("need at least 1 user for test, found %d", len(users))
+	}
+	userEmail := users[0].Email
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testcommon.TestAccPreCheck(t) },
+		ProtoV6ProviderFactories: testprovider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccAponoAccessFlowV2WithSpaceConfig(rName, integrationType, connectorID, resourceType, userEmail),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttrSet(resourceName, "id"),
+					resource.TestCheckResourceAttr(resourceName, "name", rName),
+					resource.TestCheckResourceAttr(resourceName, "space_reference", rName+"-space"),
+					resource.TestCheckResourceAttrSet(resourceName, "space.space_id"),
+					resource.TestCheckResourceAttr(resourceName, "space.space_name", rName+"-space"),
+				),
+			},
+			{
+				ResourceName:      resourceName,
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccAponoAccessFlowV2WithSpaceConfig(name, integrationType, connectorID, resourceType, userEmail string) string {
+	return fmt.Sprintf(`
+resource "apono_space_scope" "test" {
+  name  = "%[1]s-scope"
+  query = "integration in (\"aws-account\")"
+}
+
+resource "apono_space" "test" {
+  name = "%[1]s-space"
+  space_scope_references = [apono_space_scope.test.name]
+}
+
+resource "apono_resource_integration" "test" {
+  name                     = "%[1]s-integration"
+  type                     = "%[2]s"
+  connector_id             = "%[3]s"
+  connected_resource_types = ["%[4]s"]
+  integration_config = {
+    key = "value"
+  }
+  secret_store_config = {
+    aws = {
+      region    = "us-east-1"
+      secret_id = "test-secret-id"
+    }
+  }
+}
+
+resource "apono_access_flow_v2" "test" {
+  name            = "%[1]s"
+  trigger         = "SELF_SERVE"
+  active          = true
+  space_reference = apono_space.test.name
+
+  requestors = {
+    logical_operator = "OR"
+    conditions = [
+      {
+        type   = "user"
+        values = ["%[5]s"]
+      }
+    ]
+  }
+
+  access_targets = [
+    {
+      integration = {
+        integration_name = apono_resource_integration.test.name
+        resource_type    = "%[4]s"
+        permissions      = ["read"]
+      }
+    }
+  ]
+
+  settings = {}
+}
+`, name, integrationType, connectorID, resourceType, userEmail)
 }

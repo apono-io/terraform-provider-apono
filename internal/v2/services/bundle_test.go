@@ -107,7 +107,7 @@ func TestListBundles(t *testing.T) {
 			mockClient := new(mocks.Invoker)
 			tc.setupMock(mockClient)
 
-			bundles, err := ListBundles(ctx, mockClient, tc.bundleName)
+			bundles, err := ListBundles(ctx, mockClient, tc.bundleName, nil)
 
 			if tc.expectError {
 				assert.Error(t, err)
@@ -119,4 +119,24 @@ func TestListBundles(t *testing.T) {
 			mockClient.AssertExpectations(t)
 		})
 	}
+}
+
+func TestListBundlesWithSpaceReferences(t *testing.T) {
+	ctx := t.Context()
+
+	mockClient := new(mocks.Invoker)
+	expectedParams := client.ListBundlesV2Params{}
+	expectedParams.SpaceReferences.SetTo([]string{"prod", "staging"})
+	mockClient.On("ListBundlesV2", ctx, expectedParams).Return(&client.PublicApiListResponseBundlePublicV2Model{
+		Items: []client.BundleV2{{ID: "b1"}},
+		Pagination: client.PublicApiPaginationInfoModel{
+			NextPageToken: client.NewOptNilString(""),
+		},
+	}, nil)
+
+	bundles, err := ListBundles(ctx, mockClient, "", []string{"prod", "staging"})
+
+	assert.NoError(t, err)
+	assert.Len(t, bundles, 1)
+	mockClient.AssertExpectations(t)
 }

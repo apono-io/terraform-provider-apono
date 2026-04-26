@@ -29,6 +29,12 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 					"name":        tftypes.String,
 					"description": tftypes.String,
 					"query":       tftypes.String,
+					"space": tftypes.Object{
+						AttributeTypes: map[string]tftypes.Type{
+							"space_id":   tftypes.String,
+							"space_name": tftypes.String,
+						},
+					},
 				},
 			},
 		}
@@ -37,8 +43,9 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 	getConfigType := func() tftypes.Object {
 		return tftypes.Object{
 			AttributeTypes: map[string]tftypes.Type{
-				"name":          tftypes.String,
-				"access_scopes": getAccessScopesListType(),
+				"name":             tftypes.String,
+				"space_references": tftypes.List{ElementType: tftypes.String},
+				"access_scopes":    getAccessScopesListType(),
 			},
 		}
 	}
@@ -77,8 +84,9 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
-			"name":          tftypes.NewValue(tftypes.String, nil),
-			"access_scopes": tftypes.NewValue(accessScopesType, nil),
+			"name":             tftypes.NewValue(tftypes.String, nil),
+			"space_references": tftypes.NewValue(tftypes.List{ElementType: tftypes.String}, nil),
+			"access_scopes":    tftypes.NewValue(accessScopesType, nil),
 		})
 
 		schema := d.getTestSchema(ctx)
@@ -103,11 +111,13 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		assert.Equal(t, "test-scope-1", stateVal.AccessScopes[0].Name.ValueString())
 		assert.Equal(t, "my description", stateVal.AccessScopes[0].Description.ValueString())
 		assert.Equal(t, `resource_type = "mock-1"`, stateVal.AccessScopes[0].Query.ValueString())
+		assert.True(t, stateVal.AccessScopes[0].Space.IsNull())
 
 		assert.Equal(t, "as-789012", stateVal.AccessScopes[1].ID.ValueString())
 		assert.Equal(t, "test-scope-2", stateVal.AccessScopes[1].Name.ValueString())
 		assert.True(t, stateVal.AccessScopes[1].Description.IsNull())
 		assert.Equal(t, `resource_type = "mock-2"`, stateVal.AccessScopes[1].Query.ValueString())
+		assert.True(t, stateVal.AccessScopes[1].Space.IsNull())
 	})
 
 	t.Run("Read_WithNameFilter", func(t *testing.T) {
@@ -141,8 +151,9 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
-			"name":          tftypes.NewValue(tftypes.String, "filtered*"),
-			"access_scopes": tftypes.NewValue(accessScopesType, nil),
+			"name":             tftypes.NewValue(tftypes.String, "filtered*"),
+			"space_references": tftypes.NewValue(tftypes.List{ElementType: tftypes.String}, nil),
+			"access_scopes":    tftypes.NewValue(accessScopesType, nil),
 		})
 
 		schema := d.getTestSchema(ctx)
@@ -181,8 +192,9 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 		require.True(t, ok)
 
 		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
-			"name":          tftypes.NewValue(tftypes.String, nil),
-			"access_scopes": tftypes.NewValue(accessScopesType, nil),
+			"name":             tftypes.NewValue(tftypes.String, nil),
+			"space_references": tftypes.NewValue(tftypes.List{ElementType: tftypes.String}, nil),
+			"access_scopes":    tftypes.NewValue(accessScopesType, nil),
 		})
 
 		schema := d.getTestSchema(ctx)
@@ -196,6 +208,65 @@ func TestAponoAccessScopesDataSource(t *testing.T) {
 
 		require.True(t, resp.Diagnostics.HasError())
 		assert.Contains(t, resp.Diagnostics.Errors()[0].Detail(), "API error")
+	})
+
+	t.Run("Read_WithSpaceReferences", func(t *testing.T) {
+		mockListResponse := &client.PublicApiListResponseAccessScopePublicV1Model{
+			Items: []client.AccessScopeV1{
+				{
+					ID:    "as-999",
+					Name:  "space-scope",
+					Query: `resource_type = "mock-duck"`,
+				},
+			},
+			Pagination: client.PublicApiPaginationInfoModel{
+				NextPageToken: client.OptNilString{},
+			},
+		}
+		mockListResponse.Items[0].Space.SetTo(client.SpaceReferenceV1{SpaceID: "sp-1", SpaceName: "prod"})
+
+		mockInvoker.EXPECT().
+			ListAccessScopesV1(mock.Anything, mock.MatchedBy(func(params client.ListAccessScopesV1Params) bool {
+				val, ok := params.SpaceReferences.Get()
+				return ok && len(val) == 1 && val[0] == "prod"
+			})).
+			Return(mockListResponse, nil).
+			Once()
+
+		ctx := t.Context()
+		configType := getConfigType()
+		accessScopesAttr := d.getTestSchema(ctx).Attributes["access_scopes"]
+		accessScopesType, ok := accessScopesAttr.GetType().TerraformType(ctx).(tftypes.List)
+		require.True(t, ok)
+
+		configVal := tftypes.NewValue(configType, map[string]tftypes.Value{
+			"name":             tftypes.NewValue(tftypes.String, nil),
+			"space_references": tftypes.NewValue(tftypes.List{ElementType: tftypes.String}, []tftypes.Value{tftypes.NewValue(tftypes.String, "prod")}),
+			"access_scopes":    tftypes.NewValue(accessScopesType, nil),
+		})
+
+		schema := d.getTestSchema(ctx)
+		config := tfsdk.Config{Schema: schema, Raw: configVal}
+		state := tfsdk.State{Schema: schema, Raw: tftypes.NewValue(configType, nil)}
+
+		req := datasource.ReadRequest{Config: config}
+		resp := datasource.ReadResponse{State: state}
+
+		d.Read(ctx, req, &resp)
+
+		require.False(t, resp.Diagnostics.HasError())
+
+		var stateVal accessScopesDataSourceModel
+		diags := resp.State.Get(ctx, &stateVal)
+		require.False(t, diags.HasError())
+
+		require.Len(t, stateVal.AccessScopes, 1)
+		assert.Equal(t, "space-scope", stateVal.AccessScopes[0].Name.ValueString())
+		require.False(t, stateVal.AccessScopes[0].Space.IsNull())
+		spaceAttrs := stateVal.AccessScopes[0].Space.Attributes()
+		spaceName, ok := spaceAttrs["space_name"].(types.String)
+		require.True(t, ok)
+		assert.Equal(t, "prod", spaceName.ValueString())
 	})
 }
 

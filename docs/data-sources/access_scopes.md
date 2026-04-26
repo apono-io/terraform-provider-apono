@@ -44,6 +44,7 @@ By specifying a wildcard pattern `*Production*`, all access scopes with a name t
 ### Optional
 
 - `name` (String) Filters the returned access scopes by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. Matching is case-insensitive.
+- `space_references` (List of String) List of space IDs or names to filter results by. If omitted, returns objects from all spaces. To return only objects that belong to no space, include the special value "null" in the list.
 
 ### Read-Only
 
@@ -58,3 +59,12 @@ Read-Only:
 - `id` (String) The unique identifier of the Apono Access Scope.
 - `name` (String) The name of the Apono Access Scope.
 - `query` (String) The full query string that is used to define the access scope.
+- `space` (Attributes) Space details this item belongs to. Null for items without a space. (see [below for nested schema](#nestedatt--access_scopes--space))
+
+<a id="nestedatt--access_scopes--space"></a>
+### Nested Schema for `access_scopes.space`
+
+Read-Only:
+
+- `space_id` (String) Unique identifier of the space.
+- `space_name` (String) Unique name of the space.

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -129,6 +130,8 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	escalationPolicy.ApproverGroups[0].Approvers[0].Values.SetTo([]string{"security@company.io"})
 	response.EscalationPolicy.SetTo(escalationPolicy)
 
+	response.Space.SetTo(client.SpaceReferenceV1{SpaceID: "space-123", SpaceName: "prod-space"})
+
 	ctx := t.Context()
 	model, err := AccessFlowResponseToModel(ctx, response)
 	require.NoError(t, err)
@@ -243,6 +246,16 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	diags = model.RequestFor.Grantees.Conditions[0].Values.ElementsAs(ctx, &granteeValues, false)
 	require.False(t, diags.HasError())
 	assert.ElementsMatch(t, []string{"user1@example.com"}, granteeValues)
+
+	assert.Equal(t, "prod-space", model.SpaceReference.ValueString())
+	require.False(t, model.Space.IsNull())
+	spaceAttrs := model.Space.Attributes()
+	spaceID, ok := spaceAttrs["space_id"].(types.String)
+	require.True(t, ok)
+	assert.Equal(t, "space-123", spaceID.ValueString())
+	spaceName, ok := spaceAttrs["space_name"].(types.String)
+	require.True(t, ok)
+	assert.Equal(t, "prod-space", spaceName.ValueString())
 }
 
 func TestAccessFlowResponseToModelMinimalFields(t *testing.T) {
@@ -316,4 +329,7 @@ func TestAccessFlowResponseToModelMinimalFields(t *testing.T) {
 	assert.Equal(t, "QA ENV", model.AccessTargets[0].Bundle.Name.ValueString())
 
 	assert.Nil(t, model.RequestFor)
+
+	assert.True(t, model.SpaceReference.IsNull())
+	assert.True(t, model.Space.IsNull())
 }

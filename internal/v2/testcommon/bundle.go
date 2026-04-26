@@ -34,5 +34,7 @@ func GenerateBundleResponse() *client.BundleV2 {
 
 	bundle.AccessTargets = []client.AccessBundleAccessTargetV2{integrationTarget, accessScopeTarget}
 
+	bundle.Space.SetTo(client.SpaceReferenceV1{SpaceID: "space-123", SpaceName: "prod-space"})
+
 	return bundle
 }

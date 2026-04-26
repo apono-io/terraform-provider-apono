@@ -341,6 +341,8 @@ Defaults to ["self"].`,
 					},
 				},
 			},
+			"space_reference": schemas.GetSpaceReferenceResourceAttribute(),
+			"space":           schemas.GetSpaceComputedAttribute(schemas.ResourceMode),
 		},
 	}
 }
@@ -366,7 +368,12 @@ func (r *AponoAccessFlowV2Resource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	accessFlow, err := r.client.CreateAccessFlowV2(ctx, upsertRequest, client.CreateAccessFlowV2Params{})
+	createParams := client.CreateAccessFlowV2Params{}
+	if !plan.SpaceReference.IsNull() {
+		createParams.SpaceReference.SetTo(plan.SpaceReference.ValueString())
+	}
+
+	accessFlow, err := r.client.CreateAccessFlowV2(ctx, upsertRequest, createParams)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating access flow",

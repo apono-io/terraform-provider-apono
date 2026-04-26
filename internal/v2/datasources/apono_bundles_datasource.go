@@ -35,6 +35,7 @@ func (d *AponoBundlesDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				Description: `Filter by bundle name. Partial matching is supported with asterisks for contains, starts with, and ends with. (e.g., "prod*"). Matching is case-insensitive.`,
 				Optional:    true,
 			},
+			"space_references": schemas.GetSpaceReferencesFilterAttribute(),
 			"bundles": schema.ListNestedAttribute{
 				Description: "A list of bundles matching the filter.",
 				Computed:    true,
@@ -58,6 +59,7 @@ func (d *AponoBundlesDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 								},
 							},
 						},
+						"space": schemas.GetSpaceComputedAttribute(schemas.DataSourceMode),
 					},
 				},
 			},
@@ -82,13 +84,22 @@ func (d *AponoBundlesDataSource) Read(ctx context.Context, req datasource.ReadRe
 		name = config.Name.ValueString()
 	}
 
-	bundles, err := services.ListBundles(ctx, d.client, name)
+	var spaceReferences []string
+	if !config.SpaceReferences.IsNull() && !config.SpaceReferences.IsUnknown() {
+		diags = config.SpaceReferences.ElementsAs(ctx, &spaceReferences, false)
+		resp.Diagnostics.Append(diags...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+	}
+
+	bundles, err := services.ListBundles(ctx, d.client, name, spaceReferences)
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving bundles", fmt.Sprintf("Could not retrieve bundles: %v", err))
 		return
 	}
 
-	bundleModels, err := models.BundlesResponseToModels(ctx, bundles)
+	bundleModels, err := models.BundlesResponseToDataSourceItemModels(ctx, bundles)
 	if err != nil {
 		resp.Diagnostics.AddError("Error converting bundles", fmt.Sprintf("Could not convert bundles: %v", err))
 		return

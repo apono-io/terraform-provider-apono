@@ -6,6 +6,7 @@ import (
 
 	"github.com/apono-io/terraform-provider-apono/internal/v2/api/client"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/common"
+	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/services"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -23,8 +24,9 @@ type AponoAccessScopesDataSource struct {
 }
 
 type accessScopesDataSourceModel struct {
-	Name         types.String                `tfsdk:"name"`
-	AccessScopes []services.AccessScopeModel `tfsdk:"access_scopes"`
+	Name            types.String                              `tfsdk:"name"`
+	SpaceReferences types.List                                `tfsdk:"space_references"`
+	AccessScopes    []services.AccessScopeDataSourceItemModel `tfsdk:"access_scopes"`
 }
 
 func (d *AponoAccessScopesDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -39,6 +41,7 @@ func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.Sch
 				Description: "Filters the returned access scopes by their name. Partial matching is supported with asterisks for contains, starts with, and ends with. Matching is case-insensitive.",
 				Optional:    true,
 			},
+			"space_references": schemas.GetSpaceReferencesFilterAttribute(),
 			"access_scopes": schema.ListNestedAttribute{
 				Description: "A list of access scopes that match the specified criteria.",
 				Computed:    true,
@@ -60,6 +63,7 @@ func (d *AponoAccessScopesDataSource) Schema(_ context.Context, _ datasource.Sch
 							Description: "The full query string that is used to define the access scope.",
 							Computed:    true,
 						},
+						"space": schemas.GetSpaceComputedAttribute(schemas.DataSourceMode),
 					},
 				},
 			},
@@ -84,13 +88,22 @@ func (d *AponoAccessScopesDataSource) Read(ctx context.Context, req datasource.R
 		name = config.Name.ValueString()
 	}
 
-	accessScopes, err := services.ListAccessScopesByName(ctx, d.client, name)
+	var spaceReferences []string
+	if !config.SpaceReferences.IsNull() && !config.SpaceReferences.IsUnknown() {
+		diags = config.SpaceReferences.ElementsAs(ctx, &spaceReferences, false)
+		resp.Diagnostics.Append(diags...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+	}
+
+	accessScopes, err := services.ListAccessScopesByName(ctx, d.client, name, spaceReferences)
 	if err != nil {
 		resp.Diagnostics.AddError("Error retrieving access scopes", fmt.Sprintf("Could not retrieve access scopes: %v", err))
 		return
 	}
 
-	config.AccessScopes = services.AccessScopesToModels(accessScopes)
+	config.AccessScopes = services.AccessScopesToDataSourceItemModels(accessScopes)
 
 	diags = resp.State.Set(ctx, config)
 	resp.Diagnostics.Append(diags...)
