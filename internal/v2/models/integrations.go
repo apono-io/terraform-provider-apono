@@ -19,6 +19,10 @@ type SecretStoreConfig struct {
 	Kubernetes     *KubernetesSecretConfig `tfsdk:"kubernetes"`
 }
 
+func (s *SecretStoreConfig) IsEmpty() bool {
+	return s.AWS == nil && s.GCP == nil && s.Azure == nil && s.HashicorpVault == nil && s.Kubernetes == nil
+}
+
 type AWSSecretConfig struct {
 	Region   types.String `tfsdk:"region"`
 	SecretID types.String `tfsdk:"secret_id"`

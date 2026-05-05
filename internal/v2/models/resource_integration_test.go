@@ -219,6 +219,22 @@ func TestResourceIntegrationModelToCreateRequest(t *testing.T) {
 		assert.Equal(t, "test-secret", secretConfig.Kubernetes.Value.Name)
 	})
 
+	t.Run("with empty secret store config block", func(t *testing.T) {
+		model := ResourceIntegrationModel{
+			Name: types.StringValue("test-integration"),
+			Type: types.StringValue("postgres"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
+			SecretStoreConfig: &SecretStoreConfig{},
+		}
+
+		req, err := ResourceIntegrationModelToCreateRequest(ctx, model)
+
+		require.NoError(t, err)
+		assert.False(t, req.SecretStoreConfig.IsSet())
+	})
+
 	t.Run("with custom access details", func(t *testing.T) {
 		model := ResourceIntegrationModel{
 			Name: types.StringValue("test-integration"),
@@ -804,6 +820,21 @@ func TestResourceIntegrationModelToUpdateRequest(t *testing.T) {
 		assert.True(t, secretConfig.Kubernetes.IsSet())
 		assert.Equal(t, "updated-namespace", secretConfig.Kubernetes.Value.Namespace)
 		assert.Equal(t, "updated-secret", secretConfig.Kubernetes.Value.Name)
+	})
+
+	t.Run("with empty secret store config block", func(t *testing.T) {
+		model := ResourceIntegrationModel{
+			Name: types.StringValue("updated-integration"),
+			ConnectedResourceTypes: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("database"),
+			}),
+			SecretStoreConfig: &SecretStoreConfig{},
+		}
+
+		req, err := ResourceIntegrationModelToUpdateRequest(ctx, model)
+
+		require.NoError(t, err)
+		assert.False(t, req.SecretStoreConfig.IsSet())
 	})
 
 	t.Run("with custom access details", func(t *testing.T) {
