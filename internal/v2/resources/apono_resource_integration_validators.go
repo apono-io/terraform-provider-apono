@@ -8,13 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 )
 
-// secretStoreConfigNotEmpty enforces, at plan time, that when the user provides
-// a secret_store_config block they pick exactly one inner provider. Combined
-// with the existing Conflicting() validator (which forbids more than one),
-// this gives an "exactly one when present" rule that mirrors the API contract.
-//
-// Absence of the block is intentionally allowed - integrations may legitimately
-// have no external secret store.
 type secretStoreConfigNotEmpty struct{}
 
 func (v secretStoreConfigNotEmpty) Description(_ context.Context) string {
@@ -43,8 +36,6 @@ func (v secretStoreConfigNotEmpty) ValidateResource(ctx context.Context, req res
 	)
 }
 
-// secretStoreConfigPresentButEmpty returns true iff the user wrote a
-// secret_store_config block but did not set any inner provider.
 func secretStoreConfigPresentButEmpty(s *models.SecretStoreConfig) bool {
 	if s == nil {
 		return false
