@@ -46,6 +46,7 @@ func (r *AponoResourceIntegrationResource) ConfigValidators(_ context.Context) [
 			path.MatchRelative().AtName("secret_store_config").AtName("hashicorp_vault"),
 			path.MatchRelative().AtName("secret_store_config").AtName("kubernetes"),
 		),
+		secretStoreConfigNotEmpty{},
 	}
 }
 

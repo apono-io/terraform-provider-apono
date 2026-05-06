@@ -62,7 +62,7 @@ func ResourceIntegrationModelToCreateRequest(ctx context.Context, model Resource
 		}
 	}
 
-	if model.SecretStoreConfig != nil && !model.SecretStoreConfig.IsEmpty() {
+	if model.SecretStoreConfig != nil {
 		req.SecretStoreConfig.SetTo(upsertSecretStoreConfig(model.SecretStoreConfig))
 	}
 
@@ -104,7 +104,7 @@ func ResourceIntegrationModelToUpdateRequest(ctx context.Context, model Resource
 		return nil, err
 	}
 
-	if model.SecretStoreConfig != nil && !model.SecretStoreConfig.IsEmpty() {
+	if model.SecretStoreConfig != nil {
 		req.SecretStoreConfig.SetTo(upsertSecretStoreConfig(model.SecretStoreConfig))
 	}
 
