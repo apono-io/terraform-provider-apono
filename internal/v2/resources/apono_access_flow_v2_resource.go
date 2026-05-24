@@ -25,8 +25,9 @@ import (
 )
 
 var (
-	_ resource.ResourceWithConfigure   = &AponoAccessFlowV2Resource{}
-	_ resource.ResourceWithImportState = &AponoAccessFlowV2Resource{}
+	_ resource.ResourceWithConfigure        = &AponoAccessFlowV2Resource{}
+	_ resource.ResourceWithImportState      = &AponoAccessFlowV2Resource{}
+	_ resource.ResourceWithConfigValidators = &AponoAccessFlowV2Resource{}
 
 	defaultRequestScopes = setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
 		types.StringValue("self"),
@@ -281,6 +282,7 @@ Defaults to ["self"].`,
 							},
 						},
 						"access_scope": schemas.GetAccessScopeTargetSchema(schemas.ResourceMode),
+						"query_target": schemas.GetQueryTargetSchema(schemas.ResourceMode),
 					},
 				},
 			},
@@ -343,6 +345,14 @@ Defaults to ["self"].`,
 			},
 			"space_reference": schemas.GetSpaceReferenceResourceAttribute(),
 			"space":           schemas.GetSpaceComputedAttribute(schemas.ResourceMode),
+		},
+	}
+}
+
+func (r *AponoAccessFlowV2Resource) ConfigValidators(_ context.Context) []resource.ConfigValidator {
+	return []resource.ConfigValidator{
+		accessTargetExclusivityValidator{
+			kindNames: []string{"integration", "bundle", "access_scope", "query_target"},
 		},
 	}
 }

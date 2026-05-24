@@ -50,6 +50,7 @@ Read-Only:
 
 - `access_scope` (Attributes) Access scope target. (see [below for nested schema](#nestedatt--bundles--access_targets--access_scope))
 - `integration` (Attributes) Defines an integration and resources to which access will be granted. (see [below for nested schema](#nestedatt--bundles--access_targets--integration))
+- `query_target` (Attributes) Query target. Resources matched by an inline AQL expression evaluated at access-resolution time. (see [below for nested schema](#nestedatt--bundles--access_targets--query_target))
 
 <a id="nestedatt--bundles--access_targets--access_scope"></a>
 ### Nested Schema for `bundles.access_targets.access_scope`
@@ -79,6 +80,14 @@ Read-Only:
 - `type` (String) NAME - specify resources by their name, APONO_ID - specify resources by their ID, or TAG - specify resources by tag.
 - `values` (List of String) Resource values to match (IDs, names, or tag values).
 
+
+
+<a id="nestedatt--bundles--access_targets--query_target"></a>
+### Nested Schema for `bundles.access_targets.query_target`
+
+Read-Only:
+
+- `query` (String) [AQL (Apono Query Language)](https://docs.apono.io/docs/inventory/apono-query-language) expression evaluated at resolution time. Maximum 8 KB.
 
 
 

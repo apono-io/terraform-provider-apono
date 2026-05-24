@@ -92,7 +92,10 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	}
 	accessScopeTarget.AccessScope.SetTo(accessScopeData)
 
-	response.AccessTargets = []client.AccessTargetV2{bundleTarget, integrationTarget, accessScopeTarget}
+	queryTarget := client.AccessTargetV2{}
+	queryTarget.QueryTarget.SetTo(client.QueryAccessTargetV2{Query: `resource_type = "database"`})
+
+	response.AccessTargets = []client.AccessTargetV2{bundleTarget, integrationTarget, accessScopeTarget, queryTarget}
 
 	approverPolicy := client.ApproverPolicyV2{
 		ApprovalMode: "ANY_OF",
@@ -176,7 +179,7 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	require.False(t, diags.HasError())
 	assert.ElementsMatch(t, []string{"person@example.com", "person_two@example.com"}, values)
 
-	require.Len(t, model.AccessTargets, 3)
+	require.Len(t, model.AccessTargets, 4)
 
 	require.NotNil(t, model.AccessTargets[0].Bundle)
 	assert.Equal(t, "PROD ENV", model.AccessTargets[0].Bundle.Name.ValueString())
@@ -201,6 +204,9 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 
 	require.NotNil(t, model.AccessTargets[2].AccessScope)
 	assert.Equal(t, "Test Scope", model.AccessTargets[2].AccessScope.Name.ValueString())
+
+	require.NotNil(t, model.AccessTargets[3].QueryTarget)
+	assert.Equal(t, `resource_type = "database"`, model.AccessTargets[3].QueryTarget.Query.ValueString())
 
 	require.NotNil(t, model.ApproverPolicy)
 	assert.Equal(t, "ANY_OF", model.ApproverPolicy.ApprovalMode.ValueString())

@@ -381,6 +381,74 @@ func TestAponoAccessFlowV2Resource(t *testing.T) {
 		require.False(t, diags.HasError())
 		assert.Equal(t, *model, imported)
 	})
+
+	t.Run("PlanValidation_ExclusivityViolation_MultipleKindsSet", func(t *testing.T) {
+		ctx := t.Context()
+
+		withValidators, ok := any(r).(resource.ResourceWithConfigValidators)
+		require.True(t, ok, "resource must implement ResourceWithConfigValidators for plan-time exclusivity checking")
+
+		validators := withValidators.ConfigValidators(ctx)
+		require.NotEmpty(t, validators, "expected at least one config validator registered")
+
+		mockResponse := testcommon.GenerateAccessFlowResponse()
+		model, err := models.AccessFlowResponseToModel(ctx, *mockResponse)
+		require.NoError(t, err)
+
+		// Introduce conflict: AccessTargets[0] already has Bundle set; add QueryTarget too
+		model.AccessTargets[0].QueryTarget = &models.QueryTargetModel{
+			Query: types.StringValue(`resource_type = "database"`),
+		}
+
+		cfgPlan := tfsdk.Plan{Schema: r.getTestSchema(ctx)}
+		diags := cfgPlan.Set(ctx, model)
+		require.False(t, diags.HasError(), "Error setting config: %s", diags.Errors())
+		cfg := tfsdk.Config{Schema: r.getTestSchema(ctx), Raw: cfgPlan.Raw}
+
+		hasError := false
+		for _, v := range validators {
+			req := resource.ValidateConfigRequest{Config: cfg}
+			resp := resource.ValidateConfigResponse{}
+			v.ValidateResource(ctx, req, &resp)
+			if resp.Diagnostics.HasError() {
+				hasError = true
+			}
+		}
+		require.True(t, hasError, "expected plan-time error for exclusivity violation (multiple target kinds set)")
+	})
+
+	t.Run("PlanValidation_ExclusivityViolation_NoKindSet", func(t *testing.T) {
+		ctx := t.Context()
+
+		withValidators, ok := any(r).(resource.ResourceWithConfigValidators)
+		require.True(t, ok, "resource must implement ResourceWithConfigValidators for plan-time exclusivity checking")
+
+		validators := withValidators.ConfigValidators(ctx)
+		require.NotEmpty(t, validators, "expected at least one config validator registered")
+
+		mockResponse := testcommon.GenerateAccessFlowResponse()
+		model, err := models.AccessFlowResponseToModel(ctx, *mockResponse)
+		require.NoError(t, err)
+
+		// Introduce conflict: clear all kinds from first access target
+		model.AccessTargets[0] = models.AccessFlowAccessTargetModel{}
+
+		cfgPlan := tfsdk.Plan{Schema: r.getTestSchema(ctx)}
+		diags := cfgPlan.Set(ctx, model)
+		require.False(t, diags.HasError(), "Error setting config: %s", diags.Errors())
+		cfg := tfsdk.Config{Schema: r.getTestSchema(ctx), Raw: cfgPlan.Raw}
+
+		hasError := false
+		for _, v := range validators {
+			req := resource.ValidateConfigRequest{Config: cfg}
+			resp := resource.ValidateConfigResponse{}
+			v.ValidateResource(ctx, req, &resp)
+			if resp.Diagnostics.HasError() {
+				hasError = true
+			}
+		}
+		require.True(t, hasError, "expected plan-time error for exclusivity violation (no target kind set)")
+	})
 }
 
 func (r *AponoAccessFlowV2Resource) getTestSchema(ctx context.Context) schema.Schema {

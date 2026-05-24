@@ -10,22 +10,22 @@ type AddGroupMemberV1Params struct {
 
 // CreateAccessFlowV2Params is parameters of createAccessFlowV2 operation.
 type CreateAccessFlowV2Params struct {
-	// ID or name of the space where to create the resource. If null, the object is created without a
-	// space.
+	// ID or name of the space where to create the resource. If null or empty, the object is created
+	// without a space.
 	SpaceReference OptNilString `json:",omitempty,omitzero"`
 }
 
 // CreateAccessScopesV1Params is parameters of createAccessScopesV1 operation.
 type CreateAccessScopesV1Params struct {
-	// ID or name of the space where to create the resource. If null, the object is created without a
-	// space.
+	// ID or name of the space where to create the resource. If null or empty, the object is created
+	// without a space.
 	SpaceReference OptNilString `json:",omitempty,omitzero"`
 }
 
 // CreateBundleV2Params is parameters of createBundleV2 operation.
 type CreateBundleV2Params struct {
-	// ID or name of the space where to create the resource. If null, the object is created without a
-	// space.
+	// ID or name of the space where to create the resource. If null or empty, the object is created
+	// without a space.
 	SpaceReference OptNilString `json:",omitempty,omitzero"`
 }
 
@@ -122,7 +122,8 @@ type GetUserParams struct {
 type ListAccessFlowsV2Params struct {
 	Limit     OptInt32     `json:",omitempty,omitzero"`
 	PageToken OptNilString `json:",omitempty,omitzero"`
-	// List of IDs or names of spaces to list from. If null, returns objects without a space.
+	// List of space IDs or names to filter results by. If omitted, returns objects from all spaces. To
+	// return only objects that belong to no space, include the special value "null" in the list.
 	SpaceReferences OptNilStringArray `json:",omitempty,omitzero"`
 }
 
@@ -133,7 +134,8 @@ type ListAccessScopesV1Params struct {
 	// prefix* for starts with, *suffix for ends with.
 	Name      OptNilString `json:",omitempty,omitzero"`
 	PageToken OptNilString `json:",omitempty,omitzero"`
-	// List of IDs or names of spaces to list from. If null, returns objects without a space.
+	// List of space IDs or names to filter results by. If omitted, returns objects from all spaces. To
+	// return only objects that belong to no space, include the special value "null" in the list.
 	SpaceReferences OptNilStringArray `json:",omitempty,omitzero"`
 }
 
@@ -144,7 +146,8 @@ type ListBundlesV2Params struct {
 	// for starts with, *suffix for ends with.
 	Name      OptNilString `json:",omitempty,omitzero"`
 	PageToken OptNilString `json:",omitempty,omitzero"`
-	// List of IDs or names of spaces to list from. If null, returns objects without a space.
+	// List of space IDs or names to filter results by. If omitted, returns objects from all spaces. To
+	// return only objects that belong to no space, include the special value "null" in the list.
 	SpaceReferences OptNilStringArray `json:",omitempty,omitzero"`
 }
 

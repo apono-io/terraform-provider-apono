@@ -34,11 +34,18 @@ func (s *AccessBundleAccessTargetUpsertV2) encodeFields(e *jx.Encoder) {
 			s.AccessScope.Encode(e)
 		}
 	}
+	{
+		if s.QueryTarget.Set {
+			e.FieldStart("query_target")
+			s.QueryTarget.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfAccessBundleAccessTargetUpsertV2 = [2]string{
+var jsonFieldsNameOfAccessBundleAccessTargetUpsertV2 = [3]string{
 	0: "integration",
 	1: "access_scope",
+	2: "query_target",
 }
 
 // Decode decodes AccessBundleAccessTargetUpsertV2 from json.
@@ -68,6 +75,16 @@ func (s *AccessBundleAccessTargetUpsertV2) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"access_scope\"")
+			}
+		case "query_target":
+			if err := func() error {
+				s.QueryTarget.Reset()
+				if err := s.QueryTarget.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"query_target\"")
 			}
 		default:
 			return d.Skip()
@@ -114,11 +131,18 @@ func (s *AccessBundleAccessTargetV2) encodeFields(e *jx.Encoder) {
 			s.AccessScope.Encode(e)
 		}
 	}
+	{
+		if s.QueryTarget.Set {
+			e.FieldStart("query_target")
+			s.QueryTarget.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfAccessBundleAccessTargetV2 = [2]string{
+var jsonFieldsNameOfAccessBundleAccessTargetV2 = [3]string{
 	0: "integration",
 	1: "access_scope",
+	2: "query_target",
 }
 
 // Decode decodes AccessBundleAccessTargetV2 from json.
@@ -148,6 +172,16 @@ func (s *AccessBundleAccessTargetV2) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"access_scope\"")
+			}
+		case "query_target":
+			if err := func() error {
+				s.QueryTarget.Reset()
+				if err := s.QueryTarget.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"query_target\"")
 			}
 		default:
 			return d.Skip()
@@ -1633,12 +1667,19 @@ func (s *AccessTargetUpsertV2) encodeFields(e *jx.Encoder) {
 			s.AccessScope.Encode(e)
 		}
 	}
+	{
+		if s.QueryTarget.Set {
+			e.FieldStart("query_target")
+			s.QueryTarget.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfAccessTargetUpsertV2 = [3]string{
+var jsonFieldsNameOfAccessTargetUpsertV2 = [4]string{
 	0: "integration",
 	1: "bundle",
 	2: "access_scope",
+	3: "query_target",
 }
 
 // Decode decodes AccessTargetUpsertV2 from json.
@@ -1678,6 +1719,16 @@ func (s *AccessTargetUpsertV2) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"access_scope\"")
+			}
+		case "query_target":
+			if err := func() error {
+				s.QueryTarget.Reset()
+				if err := s.QueryTarget.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"query_target\"")
 			}
 		default:
 			return d.Skip()
@@ -1730,12 +1781,19 @@ func (s *AccessTargetV2) encodeFields(e *jx.Encoder) {
 			s.AccessScope.Encode(e)
 		}
 	}
+	{
+		if s.QueryTarget.Set {
+			e.FieldStart("query_target")
+			s.QueryTarget.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfAccessTargetV2 = [3]string{
+var jsonFieldsNameOfAccessTargetV2 = [4]string{
 	0: "integration",
 	1: "bundle",
 	2: "access_scope",
+	3: "query_target",
 }
 
 // Decode decodes AccessTargetV2 from json.
@@ -1775,6 +1833,16 @@ func (s *AccessTargetV2) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"access_scope\"")
+			}
+		case "query_target":
+			if err := func() error {
+				s.QueryTarget.Reset()
+				if err := s.QueryTarget.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"query_target\"")
 			}
 		default:
 			return d.Skip()
@@ -7673,6 +7741,104 @@ func (s *OptNilOwnerV4) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes QueryAccessTargetUpsertV2 as json.
+func (o OptNilQueryAccessTargetUpsertV2) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes QueryAccessTargetUpsertV2 from json.
+func (o *OptNilQueryAccessTargetUpsertV2) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilQueryAccessTargetUpsertV2 to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v QueryAccessTargetUpsertV2
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilQueryAccessTargetUpsertV2) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilQueryAccessTargetUpsertV2) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes QueryAccessTargetV2 as json.
+func (o OptNilQueryAccessTargetV2) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes QueryAccessTargetV2 from json.
+func (o *OptNilQueryAccessTargetV2) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilQueryAccessTargetV2 to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v QueryAccessTargetV2
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilQueryAccessTargetV2) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilQueryAccessTargetV2) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes RequestForUpsertV2 as json.
 func (o OptNilRequestForUpsertV2) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -10078,6 +10244,198 @@ func (s *PublicApiPaginationInfoModel) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *PublicApiPaginationInfoModel) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *QueryAccessTargetUpsertV2) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *QueryAccessTargetUpsertV2) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("query")
+		e.Str(s.Query)
+	}
+}
+
+var jsonFieldsNameOfQueryAccessTargetUpsertV2 = [1]string{
+	0: "query",
+}
+
+// Decode decodes QueryAccessTargetUpsertV2 from json.
+func (s *QueryAccessTargetUpsertV2) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode QueryAccessTargetUpsertV2 to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "query":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.Query = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"query\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode QueryAccessTargetUpsertV2")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfQueryAccessTargetUpsertV2) {
+					name = jsonFieldsNameOfQueryAccessTargetUpsertV2[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *QueryAccessTargetUpsertV2) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *QueryAccessTargetUpsertV2) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *QueryAccessTargetV2) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *QueryAccessTargetV2) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("query")
+		e.Str(s.Query)
+	}
+}
+
+var jsonFieldsNameOfQueryAccessTargetV2 = [1]string{
+	0: "query",
+}
+
+// Decode decodes QueryAccessTargetV2 from json.
+func (s *QueryAccessTargetV2) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode QueryAccessTargetV2 to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "query":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.Query = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"query\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode QueryAccessTargetV2")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfQueryAccessTargetV2) {
+					name = jsonFieldsNameOfQueryAccessTargetV2[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *QueryAccessTargetV2) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *QueryAccessTargetV2) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

@@ -56,6 +56,7 @@ func (d *AponoBundlesDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 								Attributes: map[string]schema.Attribute{
 									"integration":  schemas.GetIntegrationTargetSchema(schemas.DataSourceMode),
 									"access_scope": schemas.GetAccessScopeTargetSchema(schemas.DataSourceMode),
+									"query_target": schemas.GetQueryTargetSchema(schemas.DataSourceMode),
 								},
 							},
 						},

@@ -55,6 +55,11 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 					},
 				},
 			},
+			{
+				QueryTarget: &QueryTargetModel{
+					Query: types.StringValue(`resource_type = "database"`),
+				},
+			},
 		},
 		ApproverPolicy: &AccessFlowApproverPolicy{
 			ApprovalMode: types.StringValue("ANY_OF"),
@@ -144,7 +149,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	require.True(t, ok)
 	assert.ElementsMatch(t, []string{"person@example.com", "person_two@example.com"}, values)
 
-	require.Len(t, result.AccessTargets, 2)
+	require.Len(t, result.AccessTargets, 3)
 
 	assert.True(t, result.AccessTargets[0].Bundle.IsSet())
 	bundle, ok := result.AccessTargets[0].Bundle.Get()
@@ -164,6 +169,11 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	assert.Equal(t, "include_resources", resourceScopes[0].ScopeMode)
 	assert.Equal(t, "NAME", resourceScopes[0].Type)
 	assert.ElementsMatch(t, []string{"db1", "db2"}, resourceScopes[0].Values)
+
+	assert.True(t, result.AccessTargets[2].QueryTarget.IsSet())
+	qt, ok := result.AccessTargets[2].QueryTarget.Get()
+	require.True(t, ok)
+	assert.Equal(t, `resource_type = "database"`, qt.Query)
 
 	require.True(t, result.ApproverPolicy.IsSet())
 	approverPolicy, ok := result.ApproverPolicy.Get()

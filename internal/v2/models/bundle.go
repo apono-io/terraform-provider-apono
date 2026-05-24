@@ -26,9 +26,14 @@ type AccessScopeTargetModel struct {
 	Name types.String `tfsdk:"name"`
 }
 
+type QueryTargetModel struct {
+	Query types.String `tfsdk:"query"`
+}
+
 type BundleAccessTargetModel struct {
 	Integration *IntegrationTargetModel `tfsdk:"integration"`
 	AccessScope *AccessScopeTargetModel `tfsdk:"access_scope"`
+	QueryTarget *QueryTargetModel       `tfsdk:"query_target"`
 }
 
 type BundleV2Model struct {
@@ -157,6 +162,12 @@ func convertBundleAccessTargetsToModel(ctx context.Context, accessTargets []clie
 			}
 		}
 
+		if val, ok := target.QueryTarget.Get(); ok {
+			modelTarget.QueryTarget = &QueryTargetModel{
+				Query: types.StringValue(val.Query),
+			}
+		}
+
 		modelTargets = append(modelTargets, modelTarget)
 	}
 
@@ -168,7 +179,6 @@ func convertBundleAccessTargetsToUpsertRequest(ctx context.Context, models []Bun
 
 	for i, model := range models {
 		target := client.AccessBundleAccessTargetUpsertV2{}
-		setCount := 0
 
 		if model.Integration != nil {
 			integration, err := convertIntegrationTargetToUpsertRequest(ctx, *model.Integration)
@@ -177,7 +187,6 @@ func convertBundleAccessTargetsToUpsertRequest(ctx context.Context, models []Bun
 			}
 
 			target.Integration.SetTo(*integration)
-			setCount++
 		}
 
 		if model.AccessScope != nil {
@@ -186,11 +195,14 @@ func convertBundleAccessTargetsToUpsertRequest(ctx context.Context, models []Bun
 			}
 
 			target.AccessScope.SetTo(scope)
-			setCount++
 		}
 
-		if setCount != 1 {
-			return nil, fmt.Errorf("exactly one of 'integration' or 'access_scope' must be configured for each access target (index %d)", i)
+		if model.QueryTarget != nil {
+			qt := client.QueryAccessTargetUpsertV2{
+				Query: model.QueryTarget.Query.ValueString(),
+			}
+
+			target.QueryTarget.SetTo(qt)
 		}
 
 		targets = append(targets, target)
