@@ -62,6 +62,17 @@ func TestAponoBundlesDataSource(t *testing.T) {
 					},
 				},
 			},
+			{
+				ID:   "bundle-789",
+				Name: "test-bundle-3",
+				AccessTargets: []client.AccessBundleAccessTargetV2{
+					func() client.AccessBundleAccessTargetV2 {
+						t := client.AccessBundleAccessTargetV2{}
+						t.QueryTarget.SetTo(client.QueryAccessTargetV2{Query: `integration_name = "aws"`})
+						return t
+					}(),
+				},
+			},
 		}
 
 		mockInvoker.EXPECT().
@@ -104,7 +115,7 @@ func TestAponoBundlesDataSource(t *testing.T) {
 		resp.Diagnostics.Append(resp.State.Get(ctx, &state)...)
 		require.False(t, resp.Diagnostics.HasError(), "Error getting state: %s", resp.Diagnostics.Errors())
 
-		assert.Len(t, state.Bundles, 2, "Expected 2 bundles")
+		assert.Len(t, state.Bundles, 3, "Expected 3 bundles")
 
 		// Directly check the order since bundles are sorted by ID
 		bundle1 := state.Bundles[0]
@@ -122,6 +133,14 @@ func TestAponoBundlesDataSource(t *testing.T) {
 		require.Len(t, bundle2.AccessTargets, 1)
 		assert.NotNil(t, bundle2.AccessTargets[0].AccessScope)
 		assert.Equal(t, "test-access-scope", bundle2.AccessTargets[0].AccessScope.Name.ValueString())
+
+		bundle3 := state.Bundles[2]
+		assert.Equal(t, "bundle-789", bundle3.ID.ValueString())
+		assert.Equal(t, "test-bundle-3", bundle3.Name.ValueString())
+		assert.True(t, bundle3.Space.IsNull())
+		require.Len(t, bundle3.AccessTargets, 1)
+		require.NotNil(t, bundle3.AccessTargets[0].QueryTarget)
+		assert.Equal(t, `integration_name = "aws"`, bundle3.AccessTargets[0].QueryTarget.Query.ValueString())
 	})
 
 	t.Run("Read_WithSpaceReferences", func(t *testing.T) {

@@ -9,11 +9,12 @@ import (
 	"github.com/go-faster/jx"
 )
 
-// Resource integration or access scope included in the bundle with defined permissions.
+// Resource integration, access scope or query target included in the bundle with defined permissions.
 // Ref: #/components/schemas/AccessBundleAccessTargetUpsertV2
 type AccessBundleAccessTargetUpsertV2 struct {
 	Integration OptNilIntegrationAccessTargetUpsertV2 `json:"integration"`
 	AccessScope OptNilAccessScopeAccessTargetUpsertV2 `json:"access_scope"`
+	QueryTarget OptNilQueryAccessTargetUpsertV2       `json:"query_target"`
 }
 
 // GetIntegration returns the value of Integration.
@@ -26,6 +27,11 @@ func (s *AccessBundleAccessTargetUpsertV2) GetAccessScope() OptNilAccessScopeAcc
 	return s.AccessScope
 }
 
+// GetQueryTarget returns the value of QueryTarget.
+func (s *AccessBundleAccessTargetUpsertV2) GetQueryTarget() OptNilQueryAccessTargetUpsertV2 {
+	return s.QueryTarget
+}
+
 // SetIntegration sets the value of Integration.
 func (s *AccessBundleAccessTargetUpsertV2) SetIntegration(val OptNilIntegrationAccessTargetUpsertV2) {
 	s.Integration = val
@@ -36,11 +42,17 @@ func (s *AccessBundleAccessTargetUpsertV2) SetAccessScope(val OptNilAccessScopeA
 	s.AccessScope = val
 }
 
-// Resource integration or access scope included in the bundle with defined permissions.
+// SetQueryTarget sets the value of QueryTarget.
+func (s *AccessBundleAccessTargetUpsertV2) SetQueryTarget(val OptNilQueryAccessTargetUpsertV2) {
+	s.QueryTarget = val
+}
+
+// Resource integration, access scope or query target included in the bundle with defined permissions.
 // Ref: #/components/schemas/AccessBundleAccessTargetV2
 type AccessBundleAccessTargetV2 struct {
 	Integration OptNilIntegrationAccessTargetV2 `json:"integration"`
 	AccessScope OptNilAccessScopeAccessTargetV2 `json:"access_scope"`
+	QueryTarget OptNilQueryAccessTargetV2       `json:"query_target"`
 }
 
 // GetIntegration returns the value of Integration.
@@ -53,6 +65,11 @@ func (s *AccessBundleAccessTargetV2) GetAccessScope() OptNilAccessScopeAccessTar
 	return s.AccessScope
 }
 
+// GetQueryTarget returns the value of QueryTarget.
+func (s *AccessBundleAccessTargetV2) GetQueryTarget() OptNilQueryAccessTargetV2 {
+	return s.QueryTarget
+}
+
 // SetIntegration sets the value of Integration.
 func (s *AccessBundleAccessTargetV2) SetIntegration(val OptNilIntegrationAccessTargetV2) {
 	s.Integration = val
@@ -61,6 +78,11 @@ func (s *AccessBundleAccessTargetV2) SetIntegration(val OptNilIntegrationAccessT
 // SetAccessScope sets the value of AccessScope.
 func (s *AccessBundleAccessTargetV2) SetAccessScope(val OptNilAccessScopeAccessTargetV2) {
 	s.AccessScope = val
+}
+
+// SetQueryTarget sets the value of QueryTarget.
+func (s *AccessBundleAccessTargetV2) SetQueryTarget(val OptNilQueryAccessTargetV2) {
+	s.QueryTarget = val
 }
 
 // List of additional settings in the access flow.
@@ -686,12 +708,14 @@ func (s *AccessScopeV1) SetUpdateDate(val ApiInstant) {
 	s.UpdateDate = val
 }
 
-// Resource integration, bundle or access scopes included in the access flow with defined permissions.
+// Resource integration, bundle, access scope or query target included in the access flow with
+// defined permissions.
 // Ref: #/components/schemas/AccessTargetUpsertV2
 type AccessTargetUpsertV2 struct {
 	Integration OptNilIntegrationAccessTargetUpsertV2 `json:"integration"`
 	Bundle      OptNilBundleAccessTargetUpsertV2      `json:"bundle"`
 	AccessScope OptNilAccessScopeAccessTargetUpsertV2 `json:"access_scope"`
+	QueryTarget OptNilQueryAccessTargetUpsertV2       `json:"query_target"`
 }
 
 // GetIntegration returns the value of Integration.
@@ -709,6 +733,11 @@ func (s *AccessTargetUpsertV2) GetAccessScope() OptNilAccessScopeAccessTargetUps
 	return s.AccessScope
 }
 
+// GetQueryTarget returns the value of QueryTarget.
+func (s *AccessTargetUpsertV2) GetQueryTarget() OptNilQueryAccessTargetUpsertV2 {
+	return s.QueryTarget
+}
+
 // SetIntegration sets the value of Integration.
 func (s *AccessTargetUpsertV2) SetIntegration(val OptNilIntegrationAccessTargetUpsertV2) {
 	s.Integration = val
@@ -724,12 +753,19 @@ func (s *AccessTargetUpsertV2) SetAccessScope(val OptNilAccessScopeAccessTargetU
 	s.AccessScope = val
 }
 
-// Resource integration, bundle or access scopes included in the access flow with defined permissions.
+// SetQueryTarget sets the value of QueryTarget.
+func (s *AccessTargetUpsertV2) SetQueryTarget(val OptNilQueryAccessTargetUpsertV2) {
+	s.QueryTarget = val
+}
+
+// Resource integration, bundle, access scope or query target included in the access flow with
+// defined permissions.
 // Ref: #/components/schemas/AccessTargetV2
 type AccessTargetV2 struct {
 	Integration OptNilIntegrationAccessTargetV2 `json:"integration"`
 	Bundle      OptNilBundleAccessTargetV2      `json:"bundle"`
 	AccessScope OptNilAccessScopeAccessTargetV2 `json:"access_scope"`
+	QueryTarget OptNilQueryAccessTargetV2       `json:"query_target"`
 }
 
 // GetIntegration returns the value of Integration.
@@ -747,6 +783,11 @@ func (s *AccessTargetV2) GetAccessScope() OptNilAccessScopeAccessTargetV2 {
 	return s.AccessScope
 }
 
+// GetQueryTarget returns the value of QueryTarget.
+func (s *AccessTargetV2) GetQueryTarget() OptNilQueryAccessTargetV2 {
+	return s.QueryTarget
+}
+
 // SetIntegration sets the value of Integration.
 func (s *AccessTargetV2) SetIntegration(val OptNilIntegrationAccessTargetV2) {
 	s.Integration = val
@@ -760,6 +801,11 @@ func (s *AccessTargetV2) SetBundle(val OptNilBundleAccessTargetV2) {
 // SetAccessScope sets the value of AccessScope.
 func (s *AccessTargetV2) SetAccessScope(val OptNilAccessScopeAccessTargetV2) {
 	s.AccessScope = val
+}
+
+// SetQueryTarget sets the value of QueryTarget.
+func (s *AccessTargetV2) SetQueryTarget(val OptNilQueryAccessTargetV2) {
+	s.QueryTarget = val
 }
 
 // AddGroupMemberV1NoContent is response for AddGroupMemberV1 operation.
@@ -4052,6 +4098,132 @@ func (o OptNilOwnerV4) Or(d OwnerV4) OwnerV4 {
 	return d
 }
 
+// NewOptNilQueryAccessTargetUpsertV2 returns new OptNilQueryAccessTargetUpsertV2 with value set to v.
+func NewOptNilQueryAccessTargetUpsertV2(v QueryAccessTargetUpsertV2) OptNilQueryAccessTargetUpsertV2 {
+	return OptNilQueryAccessTargetUpsertV2{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilQueryAccessTargetUpsertV2 is optional nullable QueryAccessTargetUpsertV2.
+type OptNilQueryAccessTargetUpsertV2 struct {
+	Value QueryAccessTargetUpsertV2
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilQueryAccessTargetUpsertV2 was set.
+func (o OptNilQueryAccessTargetUpsertV2) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilQueryAccessTargetUpsertV2) Reset() {
+	var v QueryAccessTargetUpsertV2
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilQueryAccessTargetUpsertV2) SetTo(v QueryAccessTargetUpsertV2) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilQueryAccessTargetUpsertV2) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilQueryAccessTargetUpsertV2) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v QueryAccessTargetUpsertV2
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilQueryAccessTargetUpsertV2) Get() (v QueryAccessTargetUpsertV2, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilQueryAccessTargetUpsertV2) Or(d QueryAccessTargetUpsertV2) QueryAccessTargetUpsertV2 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilQueryAccessTargetV2 returns new OptNilQueryAccessTargetV2 with value set to v.
+func NewOptNilQueryAccessTargetV2(v QueryAccessTargetV2) OptNilQueryAccessTargetV2 {
+	return OptNilQueryAccessTargetV2{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilQueryAccessTargetV2 is optional nullable QueryAccessTargetV2.
+type OptNilQueryAccessTargetV2 struct {
+	Value QueryAccessTargetV2
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilQueryAccessTargetV2 was set.
+func (o OptNilQueryAccessTargetV2) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilQueryAccessTargetV2) Reset() {
+	var v QueryAccessTargetV2
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilQueryAccessTargetV2) SetTo(v QueryAccessTargetV2) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilQueryAccessTargetV2) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilQueryAccessTargetV2) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v QueryAccessTargetV2
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilQueryAccessTargetV2) Get() (v QueryAccessTargetV2, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilQueryAccessTargetV2) Or(d QueryAccessTargetV2) QueryAccessTargetV2 {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptNilRequestForUpsertV2 returns new OptNilRequestForUpsertV2 with value set to v.
 func NewOptNilRequestForUpsertV2(v RequestForUpsertV2) OptNilRequestForUpsertV2 {
 	return OptNilRequestForUpsertV2{
@@ -5191,6 +5363,40 @@ func (s *PublicApiPaginationInfoModel) GetNextPageToken() OptNilString {
 // SetNextPageToken sets the value of NextPageToken.
 func (s *PublicApiPaginationInfoModel) SetNextPageToken(val OptNilString) {
 	s.NextPageToken = val
+}
+
+// Query target. Resources matched by an inline AQL expression evaluated at access-resolution time.
+// Ref: #/components/schemas/QueryAccessTargetUpsertV2
+type QueryAccessTargetUpsertV2 struct {
+	// AQL expression evaluated at resolution time. Max 8 KB.
+	Query string `json:"query"`
+}
+
+// GetQuery returns the value of Query.
+func (s *QueryAccessTargetUpsertV2) GetQuery() string {
+	return s.Query
+}
+
+// SetQuery sets the value of Query.
+func (s *QueryAccessTargetUpsertV2) SetQuery(val string) {
+	s.Query = val
+}
+
+// Query target. Resources matched by an inline AQL expression evaluated at access-resolution time.
+// Ref: #/components/schemas/QueryAccessTargetV2
+type QueryAccessTargetV2 struct {
+	// AQL expression evaluated at resolution time.
+	Query string `json:"query"`
+}
+
+// GetQuery returns the value of Query.
+func (s *QueryAccessTargetV2) GetQuery() string {
+	return s.Query
+}
+
+// SetQuery sets the value of Query.
+func (s *QueryAccessTargetV2) SetQuery(val string) {
+	s.Query = val
 }
 
 // RemoveGroupMemberV1NoContent is response for RemoveGroupMemberV1 operation.

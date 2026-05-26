@@ -83,3 +83,22 @@ func GetAccessScopeTargetSchema(mode SchemaMode) schema.SingleNestedAttribute {
 		},
 	}
 }
+
+func GetQueryTargetSchema(mode SchemaMode) schema.SingleNestedAttribute {
+	isComputed := mode == DataSourceMode
+	fieldsRequired := mode == ResourceMode
+	fieldsComputed := mode == DataSourceMode
+
+	return schema.SingleNestedAttribute{
+		Description: "Query target. Resources matched by an inline AQL expression evaluated at access-resolution time.",
+		Optional:    !isComputed,
+		Computed:    isComputed,
+		Attributes: map[string]schema.Attribute{
+			"query": schema.StringAttribute{
+				MarkdownDescription: "[AQL (Apono Query Language)](https://docs.apono.io/docs/inventory/apono-query-language) expression evaluated at resolution time. Maximum 8 KB.",
+				Required:            fieldsRequired,
+				Computed:            fieldsComputed,
+			},
+		},
+	}
+}

@@ -16,8 +16,9 @@ import (
 )
 
 var (
-	_ resource.ResourceWithConfigure   = &AponoBundleV2Resource{}
-	_ resource.ResourceWithImportState = &AponoBundleV2Resource{}
+	_ resource.ResourceWithConfigure        = &AponoBundleV2Resource{}
+	_ resource.ResourceWithImportState      = &AponoBundleV2Resource{}
+	_ resource.ResourceWithConfigValidators = &AponoBundleV2Resource{}
 )
 
 func NewAponoBundleV2Resource() resource.Resource {
@@ -54,11 +55,20 @@ func (r *AponoBundleV2Resource) Schema(_ context.Context, _ resource.SchemaReque
 					Attributes: map[string]schema.Attribute{
 						"integration":  schemas.GetIntegrationTargetSchema(schemas.ResourceMode),
 						"access_scope": schemas.GetAccessScopeTargetSchema(schemas.ResourceMode),
+						"query_target": schemas.GetQueryTargetSchema(schemas.ResourceMode),
 					},
 				},
 			},
 			"space_reference": schemas.GetSpaceReferenceResourceAttribute(),
 			"space":           schemas.GetSpaceComputedAttribute(schemas.ResourceMode),
+		},
+	}
+}
+
+func (r *AponoBundleV2Resource) ConfigValidators(_ context.Context) []resource.ConfigValidator {
+	return []resource.ConfigValidator{
+		accessTargetExclusivityValidator{
+			kindNames: []string{"integration", "access_scope", "query_target"},
 		},
 	}
 }

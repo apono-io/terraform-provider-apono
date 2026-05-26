@@ -236,6 +236,12 @@ func convertAccessTargetsToModel(ctx context.Context, accessTargets []client.Acc
 			}
 		}
 
+		if val, ok := target.QueryTarget.Get(); ok {
+			modelTarget.QueryTarget = &QueryTargetModel{
+				Query: types.StringValue(val.Query),
+			}
+		}
+
 		modelTargets = append(modelTargets, modelTarget)
 	}
 

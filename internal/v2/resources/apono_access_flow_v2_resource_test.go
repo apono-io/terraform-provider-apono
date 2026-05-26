@@ -226,11 +226,6 @@ func TestAccAponoAccessFlowV2ResourceWithSpace(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-test")
 	resourceName := "apono_access_flow_v2.test"
 
-	integrationType := common.MockDuck
-	resourceType := common.MockDuck
-
-	connectorID := testcommon.GetTestConnectorID(t)
-
 	users, err := testcommon.GetUsers(t)
 	if err != nil {
 		t.Fatalf("failed to get users: %v", err)
@@ -245,7 +240,7 @@ func TestAccAponoAccessFlowV2ResourceWithSpace(t *testing.T) {
 		ProtoV6ProviderFactories: testprovider.TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccAponoAccessFlowV2WithSpaceConfig(rName, integrationType, connectorID, resourceType, userEmail),
+				Config: testAccAponoAccessFlowV2WithSpaceConfig(rName, userEmail),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "id"),
 					resource.TestCheckResourceAttr(resourceName, "name", rName),
@@ -263,32 +258,16 @@ func TestAccAponoAccessFlowV2ResourceWithSpace(t *testing.T) {
 	})
 }
 
-func testAccAponoAccessFlowV2WithSpaceConfig(name, integrationType, connectorID, resourceType, userEmail string) string {
+func testAccAponoAccessFlowV2WithSpaceConfig(name, userEmail string) string {
 	return fmt.Sprintf(`
 resource "apono_space_scope" "test" {
   name  = "%[1]s-scope"
-  query = "integration in (\"aws-account\")"
+  query = "resource_type = \"mock-duck\""
 }
 
 resource "apono_space" "test" {
-  name = "%[1]s-space"
+  name                   = "%[1]s-space"
   space_scope_references = [apono_space_scope.test.name]
-}
-
-resource "apono_resource_integration" "test" {
-  name                     = "%[1]s-integration"
-  type                     = "%[2]s"
-  connector_id             = "%[3]s"
-  connected_resource_types = ["%[4]s"]
-  integration_config = {
-    key = "value"
-  }
-  secret_store_config = {
-    aws = {
-      region    = "us-east-1"
-      secret_id = "test-secret-id"
-    }
-  }
 }
 
 resource "apono_access_flow_v2" "test" {
@@ -302,22 +281,20 @@ resource "apono_access_flow_v2" "test" {
     conditions = [
       {
         type   = "user"
-        values = ["%[5]s"]
+        values = ["%[2]s"]
       }
     ]
   }
 
   access_targets = [
     {
-      integration = {
-        integration_name = apono_resource_integration.test.name
-        resource_type    = "%[4]s"
-        permissions      = ["read"]
+      query_target = {
+        query = "resource_type = \"mock-duck\""
       }
     }
   ]
 
   settings = {}
 }
-`, name, integrationType, connectorID, resourceType, userEmail)
+`, name, userEmail)
 }

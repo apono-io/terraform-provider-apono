@@ -91,7 +91,10 @@ func GenerateAccessFlowResponse() *client.AccessFlowV2 {
 	}
 	accessScopeTarget.AccessScope.SetTo(accessScopeData)
 
-	response.AccessTargets = []client.AccessTargetV2{bundleTarget, integrationTarget, accessScopeTarget}
+	queryTarget := client.AccessTargetV2{}
+	queryTarget.QueryTarget.SetTo(client.QueryAccessTargetV2{Query: `resource_type = "database"`})
+
+	response.AccessTargets = []client.AccessTargetV2{bundleTarget, integrationTarget, accessScopeTarget, queryTarget}
 
 	approverPolicy := client.ApproverPolicyV2{
 		ApprovalMode: "ANY_OF",

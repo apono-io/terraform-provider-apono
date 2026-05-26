@@ -47,6 +47,26 @@ This access flow allows **only those members of the specified group who are iden
 
 {{ tffile "examples/resources/apono_access_flow_v2/owner-approver.tf" }}
 
+### Query Target — Single Inline Query
+
+{{ tffile "examples/resources/apono_access_flow_v2/query-target.tf" }}
+
+### Query Target — Heredoc Form to Avoid Escaping Double Quotes
+
+HCL has no single-quoted string, so any literal `"` inside a `"..."` query has to be escaped as `\"`. For readability, prefer a heredoc (`<<-EOT ... EOT`) — the AQL goes in verbatim, no escapes:
+
+{{ tffile "examples/resources/apono_access_flow_v2/query-target-heredoc.tf" }}
+
+Equivalent to the escaped form `"integration in (\"aws-rds\") and resource_tag[\"environment\"] = \"production\""` but easier to read and review.
+
+### Query Target Mixed with Other Target Kinds
+
+{{ tffile "examples/resources/apono_access_flow_v2/query-target-mixed.tf" }}
+
+### Query Target — Multi-line AQL via Heredoc
+
+{{ tffile "examples/resources/apono_access_flow_v2/query-target-multiline.tf" }}
+
 {{ .SchemaMarkdown | trimspace }}
 
 ## Import

@@ -201,7 +201,6 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessFlo
 
 	for i, model := range models {
 		target := client.AccessTargetUpsertV2{}
-		setCount := 0
 
 		if model.Integration != nil {
 			integration, err := convertIntegrationTargetToUpsertRequest(ctx, *model.Integration)
@@ -210,8 +209,6 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessFlo
 			}
 
 			target.Integration.SetTo(*integration)
-
-			setCount++
 		}
 
 		if model.Bundle != nil {
@@ -220,9 +217,6 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessFlo
 			}
 
 			target.Bundle.SetTo(bundle)
-
-			setCount++
-
 		}
 
 		if model.AccessScope != nil {
@@ -231,12 +225,14 @@ func convertAccessTargetsToUpsertRequest(ctx context.Context, models []AccessFlo
 			}
 
 			target.AccessScope.SetTo(scope)
-
-			setCount++
 		}
 
-		if setCount != 1 {
-			return nil, fmt.Errorf("exactly one of 'integration', 'bundle', or 'access_scope' must be configured for each access target (index %d)", i)
+		if model.QueryTarget != nil {
+			qt := client.QueryAccessTargetUpsertV2{
+				Query: model.QueryTarget.Query.ValueString(),
+			}
+
+			target.QueryTarget.SetTo(qt)
 		}
 
 		targets = append(targets, target)

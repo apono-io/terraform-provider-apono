@@ -72,6 +72,7 @@ type AccessFlowAccessTargetModel struct {
 	Integration *IntegrationTargetModel      `tfsdk:"integration"`
 	Bundle      *AccessFlowTargetBundleModel `tfsdk:"bundle"`
 	AccessScope *AccessScopeTargetModel      `tfsdk:"access_scope"`
+	QueryTarget *QueryTargetModel            `tfsdk:"query_target"`
 }
 
 type AccessFlowRequestForModel struct {

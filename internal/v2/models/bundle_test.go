@@ -42,7 +42,10 @@ func TestBundleConversions(t *testing.T) {
 		}
 		accessScopeTarget.AccessScope.SetTo(accessScopeData)
 
-		response.AccessTargets = []client.AccessBundleAccessTargetV2{integrationTarget, accessScopeTarget}
+		queryTarget := client.AccessBundleAccessTargetV2{}
+		queryTarget.QueryTarget.SetTo(client.QueryAccessTargetV2{Query: `integration_name = "aws"`})
+
+		response.AccessTargets = []client.AccessBundleAccessTargetV2{integrationTarget, accessScopeTarget, queryTarget}
 
 		model, err := BundleResponseToModel(ctx, response)
 		require.NoError(t, err)
@@ -51,7 +54,7 @@ func TestBundleConversions(t *testing.T) {
 		assert.Equal(t, "bundle-123", model.ID.ValueString())
 		assert.Equal(t, "Test Bundle", model.Name.ValueString())
 
-		require.Len(t, model.AccessTargets, 2)
+		require.Len(t, model.AccessTargets, 3)
 
 		require.NotNil(t, model.AccessTargets[0].Integration)
 		assert.Equal(t, "postgresql", model.AccessTargets[0].Integration.IntegrationName.ValueString())
@@ -73,6 +76,9 @@ func TestBundleConversions(t *testing.T) {
 
 		require.NotNil(t, model.AccessTargets[1].AccessScope)
 		assert.Equal(t, "Test Scope", model.AccessTargets[1].AccessScope.Name.ValueString())
+
+		require.NotNil(t, model.AccessTargets[2].QueryTarget)
+		assert.Equal(t, `integration_name = "aws"`, model.AccessTargets[2].QueryTarget.Query.ValueString())
 
 		assert.Equal(t, "prod-space", model.SpaceReference.ValueString())
 		require.False(t, model.Space.IsNull())
@@ -127,6 +133,11 @@ func TestBundleConversions(t *testing.T) {
 						Name: types.StringValue("Test Scope"),
 					},
 				},
+				{
+					QueryTarget: &QueryTargetModel{
+						Query: types.StringValue(`integration_name = "aws"`),
+					},
+				},
 			},
 		}
 
@@ -136,7 +147,7 @@ func TestBundleConversions(t *testing.T) {
 
 		assert.Equal(t, "Test Bundle", request.Name)
 
-		require.Len(t, request.AccessTargets, 2)
+		require.Len(t, request.AccessTargets, 3)
 
 		assert.True(t, request.AccessTargets[0].Integration.IsSet())
 		integration, ok := request.AccessTargets[0].Integration.Get()
@@ -158,28 +169,11 @@ func TestBundleConversions(t *testing.T) {
 		accessScope, ok := request.AccessTargets[1].AccessScope.Get()
 		require.True(t, ok)
 		assert.Equal(t, "Test Scope", accessScope.AccessScopeReference)
-	})
 
-	t.Run("BundleModelToUpsertRequest_ValidationError", func(t *testing.T) {
-		model := BundleV2Model{
-			Name: types.StringValue("Invalid Bundle"),
-			AccessTargets: []BundleAccessTargetModel{
-				{
-					Integration: &IntegrationTargetModel{
-						IntegrationName: types.StringValue("postgresql"),
-						ResourceType:    types.StringValue("database"),
-						Permissions:     testcommon.CreateTestStringSet(t, []string{"read"}),
-					},
-					AccessScope: &AccessScopeTargetModel{
-						Name: types.StringValue("Test Scope"),
-					},
-				},
-			},
-		}
-
-		_, err := BundleModelToUpsertRequest(ctx, model)
-		require.Error(t, err)
-		assert.Contains(t, err.Error(), "exactly one of 'integration' or 'access_scope' must be configured")
+		assert.True(t, request.AccessTargets[2].QueryTarget.IsSet())
+		qt, ok := request.AccessTargets[2].QueryTarget.Get()
+		require.True(t, ok)
+		assert.Equal(t, `integration_name = "aws"`, qt.Query)
 	})
 
 	t.Run("BundleResponseToDataSourceItemModel_WithSpace", func(t *testing.T) {

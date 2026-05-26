@@ -32,7 +32,10 @@ func GenerateBundleResponse() *client.BundleV2 {
 	}
 	accessScopeTarget.AccessScope.SetTo(accessScopeData)
 
-	bundle.AccessTargets = []client.AccessBundleAccessTargetV2{integrationTarget, accessScopeTarget}
+	queryTarget := client.AccessBundleAccessTargetV2{}
+	queryTarget.QueryTarget.SetTo(client.QueryAccessTargetV2{Query: `integration_name = "aws"`})
+
+	bundle.AccessTargets = []client.AccessBundleAccessTargetV2{integrationTarget, accessScopeTarget, queryTarget}
 
 	bundle.Space.SetTo(client.SpaceReferenceV1{SpaceID: "space-123", SpaceName: "prod-space"})
 

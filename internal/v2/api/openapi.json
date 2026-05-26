@@ -1171,7 +1171,7 @@
           {
             "name": "space_references",
             "in": "query",
-            "description": "List of IDs or names of spaces to list from. If null, returns objects without a space",
+            "description": "List of space IDs or names to filter results by. If omitted, returns objects from all spaces. To return only objects that belong to no space, include the special value \"null\" in the list",
             "schema": {
               "type": "array",
               "items": {
@@ -1205,7 +1205,7 @@
           {
             "name": "space_reference",
             "in": "query",
-            "description": "ID or name of the space where to create the resource. If null, the object is created without a space",
+            "description": "ID or name of the space where to create the resource. If null or empty, the object is created without a space",
             "schema": {
               "type": "string",
               "nullable": true
@@ -1365,7 +1365,7 @@
           {
             "name": "space_references",
             "in": "query",
-            "description": "List of IDs or names of spaces to list from. If null, returns objects without a space",
+            "description": "List of space IDs or names to filter results by. If omitted, returns objects from all spaces. To return only objects that belong to no space, include the special value \"null\" in the list",
             "schema": {
               "type": "array",
               "items": {
@@ -1398,7 +1398,7 @@
           {
             "name": "space_reference",
             "in": "query",
-            "description": "ID or name of the space where to create the resource. If null, the object is created without a space",
+            "description": "ID or name of the space where to create the resource. If null or empty, the object is created without a space",
             "schema": {
               "type": "string",
               "nullable": true
@@ -4116,7 +4116,7 @@
           {
             "name": "space_references",
             "in": "query",
-            "description": "List of IDs or names of spaces to list from. If null, returns objects without a space",
+            "description": "List of space IDs or names to filter results by. If omitted, returns objects from all spaces. To return only objects that belong to no space, include the special value \"null\" in the list",
             "schema": {
               "type": "array",
               "items": {
@@ -4149,7 +4149,7 @@
           {
             "name": "space_reference",
             "in": "query",
-            "description": "ID or name of the space where to create the resource. If null, the object is created without a space",
+            "description": "ID or name of the space where to create the resource. If null or empty, the object is created without a space",
             "schema": {
               "type": "string",
               "nullable": true
@@ -4298,7 +4298,7 @@
         }
       },
       "AccessBundleAccessTargetUpsertV2": {
-        "description": "Resource integration or access scope included in the bundle with defined permissions",
+        "description": "Resource integration, access scope or query target included in the bundle with defined permissions",
         "type": "object",
         "properties": {
           "integration": {
@@ -4318,11 +4318,20 @@
               }
             ],
             "nullable": true
+          },
+          "query_target": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QueryAccessTargetUpsertV2"
+              }
+            ],
+            "nullable": true
           }
         }
       },
       "AccessBundleAccessTargetV2": {
-        "description": "Resource integration or access scope included in the bundle with defined permissions",
+        "description": "Resource integration, access scope or query target included in the bundle with defined permissions",
         "type": "object",
         "properties": {
           "integration": {
@@ -4339,6 +4348,15 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/AccessScopeAccessTargetV2"
+              }
+            ],
+            "nullable": true
+          },
+          "query_target": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QueryAccessTargetV2"
               }
             ],
             "nullable": true
@@ -5135,7 +5153,7 @@
         }
       },
       "AccessTargetUpsertV2": {
-        "description": "Resource integration, bundle or access scopes included in the access flow with defined permissions",
+        "description": "Resource integration, bundle, access scope or query target included in the access flow with defined permissions",
         "type": "object",
         "properties": {
           "integration": {
@@ -5164,11 +5182,20 @@
               }
             ],
             "nullable": true
+          },
+          "query_target": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QueryAccessTargetUpsertV2"
+              }
+            ],
+            "nullable": true
           }
         }
       },
       "AccessTargetV2": {
-        "description": "Resource integration, bundle or access scopes included in the access flow with defined permissions",
+        "description": "Resource integration, bundle, access scope or query target included in the access flow with defined permissions",
         "type": "object",
         "properties": {
           "integration": {
@@ -5194,6 +5221,15 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/AccessScopeAccessTargetV2"
+              }
+            ],
+            "nullable": true
+          },
+          "query_target": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QueryAccessTargetV2"
               }
             ],
             "nullable": true
@@ -7895,6 +7931,32 @@
             "description": "Token used to retrieve the next page of results in a paginated response",
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "QueryAccessTargetUpsertV2": {
+        "required": [
+          "query"
+        ],
+        "description": "Query target. Resources matched by an inline AQL expression evaluated at access-resolution time",
+        "type": "object",
+        "properties": {
+          "query": {
+            "description": "AQL expression evaluated at resolution time. Max 8 KB.",
+            "type": "string"
+          }
+        }
+      },
+      "QueryAccessTargetV2": {
+        "required": [
+          "query"
+        ],
+        "description": "Query target. Resources matched by an inline AQL expression evaluated at access-resolution time",
+        "type": "object",
+        "properties": {
+          "query": {
+            "description": "AQL expression evaluated at resolution time",
+            "type": "string"
           }
         }
       },
