@@ -2,11 +2,11 @@ name: Tests
 
 on:
   pull_request:
-    branches: [main, 'v2']
+    branches: [main]
     paths-ignore:
       - 'README.md'
   push:
-    branches: [main, 'v2']
+    branches: [main]
     paths-ignore:
       - 'README.md'
 
