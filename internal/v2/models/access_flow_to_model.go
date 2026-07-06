@@ -11,11 +11,19 @@ import (
 )
 
 func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowV2) (*AccessFlowV2Model, error) {
+	// Normalize an empty/missing requestor_identity_type to the schema default (HUMAN)
+	// so older servers that omit the field don't cause perpetual diffs against the default.
+	requestorIdentityType := response.RequestorIdentityType
+	if requestorIdentityType == "" {
+		requestorIdentityType = common.DefaultRequestorIdentityType
+	}
+
 	model := AccessFlowV2Model{
-		ID:      types.StringValue(response.ID),
-		Name:    types.StringValue(response.Name),
-		Active:  types.BoolValue(response.Active),
-		Trigger: types.StringValue(response.Trigger),
+		ID:                    types.StringValue(response.ID),
+		Name:                  types.StringValue(response.Name),
+		Active:                types.BoolValue(response.Active),
+		Trigger:               types.StringValue(response.Trigger),
+		RequestorIdentityType: types.StringValue(requestorIdentityType),
 	}
 
 	if val, ok := response.Description.Get(); ok {

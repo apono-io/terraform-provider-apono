@@ -602,6 +602,10 @@ func (s *AccessFlowUpsertV2) encodeFields(e *jx.Encoder) {
 		e.Str(s.Trigger)
 	}
 	{
+		e.FieldStart("requestor_identity_type")
+		e.Str(s.RequestorIdentityType)
+	}
+	{
 		e.FieldStart("requestors")
 		s.Requestors.Encode(e)
 	}
@@ -653,20 +657,21 @@ func (s *AccessFlowUpsertV2) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfAccessFlowUpsertV2 = [13]string{
+var jsonFieldsNameOfAccessFlowUpsertV2 = [14]string{
 	0:  "name",
 	1:  "description",
 	2:  "active",
 	3:  "trigger",
-	4:  "requestors",
-	5:  "request_for",
-	6:  "access_targets",
-	7:  "approver_policy",
-	8:  "escalation_policy",
-	9:  "grant_duration_in_min",
-	10: "timeframe",
-	11: "settings",
-	12: "request_for_others",
+	4:  "requestor_identity_type",
+	5:  "requestors",
+	6:  "request_for",
+	7:  "access_targets",
+	8:  "approver_policy",
+	9:  "escalation_policy",
+	10: "grant_duration_in_min",
+	11: "timeframe",
+	12: "settings",
+	13: "request_for_others",
 }
 
 // Decode decodes AccessFlowUpsertV2 from json.
@@ -724,8 +729,20 @@ func (s *AccessFlowUpsertV2) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"trigger\"")
 			}
-		case "requestors":
+		case "requestor_identity_type":
 			requiredBitSet[0] |= 1 << 4
+			if err := func() error {
+				v, err := d.Str()
+				s.RequestorIdentityType = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"requestor_identity_type\"")
+			}
+		case "requestors":
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				if err := s.Requestors.Decode(d); err != nil {
 					return err
@@ -745,7 +762,7 @@ func (s *AccessFlowUpsertV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"request_for\"")
 			}
 		case "access_targets":
-			requiredBitSet[0] |= 1 << 6
+			requiredBitSet[0] |= 1 << 7
 			if err := func() error {
 				s.AccessTargets = make([]AccessTargetUpsertV2, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -803,7 +820,7 @@ func (s *AccessFlowUpsertV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"timeframe\"")
 			}
 		case "settings":
-			requiredBitSet[1] |= 1 << 3
+			requiredBitSet[1] |= 1 << 4
 			if err := func() error {
 				if err := s.Settings.Decode(d); err != nil {
 					return err
@@ -813,7 +830,7 @@ func (s *AccessFlowUpsertV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"settings\"")
 			}
 		case "request_for_others":
-			requiredBitSet[1] |= 1 << 4
+			requiredBitSet[1] |= 1 << 5
 			if err := func() error {
 				v, err := d.Bool()
 				s.RequestForOthers = bool(v)
@@ -834,8 +851,8 @@ func (s *AccessFlowUpsertV2) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [2]uint8{
-		0b01011101,
-		0b00011000,
+		0b10111101,
+		0b00110000,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -913,6 +930,10 @@ func (s *AccessFlowV2) encodeFields(e *jx.Encoder) {
 		e.Str(s.Trigger)
 	}
 	{
+		e.FieldStart("requestor_identity_type")
+		e.Str(s.RequestorIdentityType)
+	}
+	{
 		e.FieldStart("requestors")
 		s.Requestors.Encode(e)
 	}
@@ -976,23 +997,24 @@ func (s *AccessFlowV2) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfAccessFlowV2 = [16]string{
+var jsonFieldsNameOfAccessFlowV2 = [17]string{
 	0:  "id",
 	1:  "name",
 	2:  "description",
 	3:  "active",
 	4:  "trigger",
-	5:  "requestors",
-	6:  "request_for",
-	7:  "access_targets",
-	8:  "approver_policy",
-	9:  "escalation_policy",
-	10: "grant_duration_in_min",
-	11: "timeframe",
-	12: "settings",
-	13: "space",
-	14: "creation_date",
-	15: "update_date",
+	5:  "requestor_identity_type",
+	6:  "requestors",
+	7:  "request_for",
+	8:  "access_targets",
+	9:  "approver_policy",
+	10: "escalation_policy",
+	11: "grant_duration_in_min",
+	12: "timeframe",
+	13: "settings",
+	14: "space",
+	15: "creation_date",
+	16: "update_date",
 }
 
 // Decode decodes AccessFlowV2 from json.
@@ -1000,7 +1022,7 @@ func (s *AccessFlowV2) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode AccessFlowV2 to nil")
 	}
-	var requiredBitSet [2]uint8
+	var requiredBitSet [3]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -1062,8 +1084,20 @@ func (s *AccessFlowV2) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"trigger\"")
 			}
-		case "requestors":
+		case "requestor_identity_type":
 			requiredBitSet[0] |= 1 << 5
+			if err := func() error {
+				v, err := d.Str()
+				s.RequestorIdentityType = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"requestor_identity_type\"")
+			}
+		case "requestors":
+			requiredBitSet[0] |= 1 << 6
 			if err := func() error {
 				if err := s.Requestors.Decode(d); err != nil {
 					return err
@@ -1083,7 +1117,7 @@ func (s *AccessFlowV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"request_for\"")
 			}
 		case "access_targets":
-			requiredBitSet[0] |= 1 << 7
+			requiredBitSet[1] |= 1 << 0
 			if err := func() error {
 				s.AccessTargets = make([]AccessTargetV2, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -1141,7 +1175,7 @@ func (s *AccessFlowV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"timeframe\"")
 			}
 		case "settings":
-			requiredBitSet[1] |= 1 << 4
+			requiredBitSet[1] |= 1 << 5
 			if err := func() error {
 				if err := s.Settings.Decode(d); err != nil {
 					return err
@@ -1161,7 +1195,7 @@ func (s *AccessFlowV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"space\"")
 			}
 		case "creation_date":
-			requiredBitSet[1] |= 1 << 6
+			requiredBitSet[1] |= 1 << 7
 			if err := func() error {
 				if err := s.CreationDate.Decode(d); err != nil {
 					return err
@@ -1189,9 +1223,10 @@ func (s *AccessFlowV2) Decode(d *jx.Decoder) error {
 	}
 	// Validate required fields.
 	var failures []validate.FieldError
-	for i, mask := range [2]uint8{
-		0b10111011,
-		0b01010000,
+	for i, mask := range [3]uint8{
+		0b01111011,
+		0b10100001,
+		0b00000000,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -3003,6 +3038,12 @@ func (s *BundleV2) encodeFields(e *jx.Encoder) {
 		e.Str(s.Name)
 	}
 	{
+		if s.Description.Set {
+			e.FieldStart("description")
+			s.Description.Encode(e)
+		}
+	}
+	{
 		e.FieldStart("access_targets")
 		e.ArrStart()
 		for _, elem := range s.AccessTargets {
@@ -3026,13 +3067,14 @@ func (s *BundleV2) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfBundleV2 = [6]string{
+var jsonFieldsNameOfBundleV2 = [7]string{
 	0: "id",
 	1: "name",
-	2: "access_targets",
-	3: "space",
-	4: "creation_date",
-	5: "update_date",
+	2: "description",
+	3: "access_targets",
+	4: "space",
+	5: "creation_date",
+	6: "update_date",
 }
 
 // Decode decodes BundleV2 from json.
@@ -3068,8 +3110,18 @@ func (s *BundleV2) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"name\"")
 			}
+		case "description":
+			if err := func() error {
+				s.Description.Reset()
+				if err := s.Description.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"description\"")
+			}
 		case "access_targets":
-			requiredBitSet[0] |= 1 << 2
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
 				s.AccessTargets = make([]AccessBundleAccessTargetV2, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -3097,7 +3149,7 @@ func (s *BundleV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"space\"")
 			}
 		case "creation_date":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				if err := s.CreationDate.Decode(d); err != nil {
 					return err
@@ -3107,7 +3159,7 @@ func (s *BundleV2) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"creation_date\"")
 			}
 		case "update_date":
-			requiredBitSet[0] |= 1 << 5
+			requiredBitSet[0] |= 1 << 6
 			if err := func() error {
 				if err := s.UpdateDate.Decode(d); err != nil {
 					return err
@@ -3126,7 +3178,7 @@ func (s *BundleV2) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00110111,
+		0b01101011,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -12779,6 +12831,12 @@ func (s *UpsertBundleV2) encodeFields(e *jx.Encoder) {
 		e.Str(s.Name)
 	}
 	{
+		if s.Description.Set {
+			e.FieldStart("description")
+			s.Description.Encode(e)
+		}
+	}
+	{
 		e.FieldStart("access_targets")
 		e.ArrStart()
 		for _, elem := range s.AccessTargets {
@@ -12788,9 +12846,10 @@ func (s *UpsertBundleV2) encodeFields(e *jx.Encoder) {
 	}
 }
 
-var jsonFieldsNameOfUpsertBundleV2 = [2]string{
+var jsonFieldsNameOfUpsertBundleV2 = [3]string{
 	0: "name",
-	1: "access_targets",
+	1: "description",
+	2: "access_targets",
 }
 
 // Decode decodes UpsertBundleV2 from json.
@@ -12814,8 +12873,18 @@ func (s *UpsertBundleV2) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"name\"")
 			}
+		case "description":
+			if err := func() error {
+				s.Description.Reset()
+				if err := s.Description.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"description\"")
+			}
 		case "access_targets":
-			requiredBitSet[0] |= 1 << 1
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
 				s.AccessTargets = make([]AccessBundleAccessTargetUpsertV2, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -12842,7 +12911,7 @@ func (s *UpsertBundleV2) Decode(d *jx.Decoder) error {
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00000011,
+		0b00000101,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.

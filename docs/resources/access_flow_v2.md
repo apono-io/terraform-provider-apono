@@ -75,6 +75,50 @@ resource "apono_access_flow_v2" "aws_auto_grant_flow" {
 }
 ```
 
+### Agent Access Flow — Requestor Identity Type
+
+Restrict a flow to AI agents acting on behalf of a user by setting `requestor_identity_type = "AGENT"`. Omit the attribute (or set it to `"HUMAN"`) for the default human-requestor behavior. Agent flows are request-driven; Apono rejects the combination of `requestor_identity_type = "AGENT"` with `trigger = "AUTOMATIC"` and returns an error.
+
+```terraform
+resource "apono_access_flow_v2" "agent_prod_db" {
+  name                    = "Agent access to production DBs"
+  active                  = true
+  grant_duration_in_min   = 60
+  trigger                 = "SELF_SERVE"
+  requestor_identity_type = "AGENT"
+
+  requestors = {
+    logical_operator = "AND"
+    conditions = [
+      {
+        type           = "group"
+        match_operator = "contains"
+        values         = ["RND-team"]
+      }
+    ]
+  }
+
+  access_targets = [
+    {
+      integration = {
+        integration_name = "aws-account-prod"
+        resource_type    = "aws-account-s3-bucket"
+        permissions      = ["ReadOnlyAccess"]
+      }
+    }
+  ]
+
+  settings = {
+    justification_required        = true
+    requester_cannot_approve_self = true
+    require_mfa                   = false
+    max_extensions                = 0
+    extension_duration_in_min     = 0
+    labels                        = ["agentic"]
+  }
+}
+```
+
 ### Auto-approved Access Flow for on-call OpsGenie responders
 
 Auto-approved Access Flow for on-call OpsGenie responders to request access on behalf of the R&D group.
@@ -616,6 +660,7 @@ In automatic access flows, requestors specify who will automatically receive acc
 - `escalation_policy` (Attributes) Defines an approval escalation policy for a human approval flow. When a request remains pending for the configured interval, Apono escalates it to the approver groups defined in this block. Previously notified approvers can still approve or reject the request even after escalation was triggered. Up to 5 escalation approver groups are supported. (see [below for nested schema](#nestedatt--escalation_policy))
 - `grant_duration_in_min` (Number) How long access is granted, in minutes. If not specified, the grant duration defaults to indefinite.
 - `request_for` (Attributes) Defines who the access request can be made for. This enables support to request on behalf of other users, groups, or identities. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--request_for))
+- `requestor_identity_type` (String) The type of identity that can request access through this flow. HUMAN (default) = reachable only by human requestors; AGENT = reachable only by AI agents acting on behalf of a user. Allowed values: HUMAN, AGENT.
 - `space_reference` (String) Name of the space to create this resource in. If omitted, the resource is created without a space. Changing this value forces the resource to be replaced.
 - `timeframe` (Attributes) Restrict when access can be granted. Only applicable in self-serve access flows (trigger = "SELF_SERVE"). (see [below for nested schema](#nestedatt--timeframe))
 

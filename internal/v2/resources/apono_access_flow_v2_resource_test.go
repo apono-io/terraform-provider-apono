@@ -188,6 +188,7 @@ resource "apono_access_flow_v2" "test_with_request_for" {
 					resource.TestCheckResourceAttr(resourceName, "description", "test access flow description"),
 					resource.TestCheckResourceAttr(resourceName, "trigger", "SELF_SERVE"),
 					resource.TestCheckResourceAttr(resourceName, "active", "true"),
+					resource.TestCheckResourceAttr(resourceName, "requestor_identity_type", "HUMAN"),
 					resource.TestCheckResourceAttr(resourceName, "requestors.logical_operator", "OR"),
 					resource.TestCheckResourceAttr(resourceName, "access_targets.#", "1"),
 					resource.TestCheckResourceAttr(resourceName, "settings.justification_required", "true"),
@@ -297,4 +298,90 @@ resource "apono_access_flow_v2" "test" {
   settings = {}
 }
 `, name, userEmail)
+}
+
+func TestAccAponoAccessFlowV2ResourceRequestorIdentityType(t *testing.T) {
+	rName := acctest.RandomWithPrefix("tf-acc-test")
+	resourceName := "apono_access_flow_v2.test"
+
+	users, err := testcommon.GetUsers(t)
+	if err != nil {
+		t.Fatalf("failed to get users: %v", err)
+	}
+	if len(users) < 1 {
+		t.Fatalf("need at least 1 user for test, found %d", len(users))
+	}
+	userEmail := users[0].Email
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testcommon.TestAccPreCheck(t) },
+		ProtoV6ProviderFactories: testprovider.TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				// requestor_identity_type omitted -> defaults to HUMAN.
+				Config: testAccAponoAccessFlowV2RequestorIdentityTypeConfig(rName, userEmail, ""),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttrSet(resourceName, "id"),
+					resource.TestCheckResourceAttr(resourceName, "requestor_identity_type", "HUMAN"),
+				),
+			},
+			{
+				// Explicit AGENT flow.
+				Config: testAccAponoAccessFlowV2RequestorIdentityTypeConfig(rName, userEmail, "AGENT"),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttrSet(resourceName, "id"),
+					resource.TestCheckResourceAttr(resourceName, "requestor_identity_type", "AGENT"),
+				),
+			},
+			{
+				ResourceName:      resourceName,
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				// Explicit HUMAN flow.
+				Config: testAccAponoAccessFlowV2RequestorIdentityTypeConfig(rName, userEmail, "HUMAN"),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttrSet(resourceName, "id"),
+					resource.TestCheckResourceAttr(resourceName, "requestor_identity_type", "HUMAN"),
+				),
+			},
+		},
+	})
+}
+
+func testAccAponoAccessFlowV2RequestorIdentityTypeConfig(name, userEmail, requestorIdentityType string) string {
+	requestorIdentityTypeLine := ""
+	if requestorIdentityType != "" {
+		requestorIdentityTypeLine = fmt.Sprintf("requestor_identity_type = %q", requestorIdentityType)
+	}
+
+	return fmt.Sprintf(`
+resource "apono_access_flow_v2" "test" {
+  name    = "%[1]s"
+  trigger = "SELF_SERVE"
+  active  = true
+  %[3]s
+
+  requestors = {
+    logical_operator = "OR"
+    conditions = [
+      {
+        type   = "user"
+        values = ["%[2]s"]
+      }
+    ]
+  }
+
+  access_targets = [
+    {
+      query_target = {
+        query = "resource_type = \"mock-duck\""
+      }
+    }
+  ]
+
+  settings = {}
+}
+`, name, userEmail, requestorIdentityTypeLine)
 }

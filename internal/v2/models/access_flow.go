@@ -3,21 +3,22 @@ package models
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AccessFlowV2Model struct {
-	ID                 types.String                  `tfsdk:"id"`
-	Name               types.String                  `tfsdk:"name"`
-	Description        types.String                  `tfsdk:"description"`
-	Active             types.Bool                    `tfsdk:"active"`
-	Trigger            types.String                  `tfsdk:"trigger"`
-	GrantDurationInMin types.Int32                   `tfsdk:"grant_duration_in_min"`
-	Timeframe          *AccessFlowTimeframeModel     `tfsdk:"timeframe"`
-	ApproverPolicy     *AccessFlowApproverPolicy     `tfsdk:"approver_policy"`
-	EscalationPolicy   *EscalationPolicyModel        `tfsdk:"escalation_policy"`
-	Requestors         *AccessFlowRequestorsModel    `tfsdk:"requestors"`
-	RequestFor         *AccessFlowRequestForModel    `tfsdk:"request_for"`
-	AccessTargets      []AccessFlowAccessTargetModel `tfsdk:"access_targets"`
-	Settings           *AccessFlowSettingsModel      `tfsdk:"settings"`
-	SpaceReference     types.String                  `tfsdk:"space_reference"`
-	Space              types.Object                  `tfsdk:"space"`
+	ID                    types.String                  `tfsdk:"id"`
+	Name                  types.String                  `tfsdk:"name"`
+	Description           types.String                  `tfsdk:"description"`
+	Active                types.Bool                    `tfsdk:"active"`
+	Trigger               types.String                  `tfsdk:"trigger"`
+	RequestorIdentityType types.String                  `tfsdk:"requestor_identity_type"`
+	GrantDurationInMin    types.Int32                   `tfsdk:"grant_duration_in_min"`
+	Timeframe             *AccessFlowTimeframeModel     `tfsdk:"timeframe"`
+	ApproverPolicy        *AccessFlowApproverPolicy     `tfsdk:"approver_policy"`
+	EscalationPolicy      *EscalationPolicyModel        `tfsdk:"escalation_policy"`
+	Requestors            *AccessFlowRequestorsModel    `tfsdk:"requestors"`
+	RequestFor            *AccessFlowRequestForModel    `tfsdk:"request_for"`
+	AccessTargets         []AccessFlowAccessTargetModel `tfsdk:"access_targets"`
+	Settings              *AccessFlowSettingsModel      `tfsdk:"settings"`
+	SpaceReference        types.String                  `tfsdk:"space_reference"`
+	Space                 types.Object                  `tfsdk:"space"`
 }
 
 type AccessFlowTimeframeModel struct {

@@ -122,6 +122,8 @@ type GetUserParams struct {
 type ListAccessFlowsV2Params struct {
 	Limit     OptInt32     `json:",omitempty,omitzero"`
 	PageToken OptNilString `json:",omitempty,omitzero"`
+	// Filter access flows by the requestor identity type they serve. Allowed values: HUMAN, AGENT.
+	RequestorIdentityType OptNilString `json:",omitempty,omitzero"`
 	// List of space IDs or names to filter results by. If omitted, returns objects from all spaces. To
 	// return only objects that belong to no space, include the special value "null" in the list.
 	SpaceReferences OptNilStringArray `json:",omitempty,omitzero"`

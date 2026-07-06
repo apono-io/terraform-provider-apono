@@ -241,12 +241,16 @@ type AccessFlowUpsertV2 struct {
 	// Activity state of the access flow (active or inactive).
 	Active bool `json:"active"`
 	// Event or action that triggers the access flow.
-	Trigger          string                         `json:"trigger"`
-	Requestors       RequestorsUpsertV2             `json:"requestors"`
-	RequestFor       OptNilRequestForUpsertV2       `json:"request_for"`
-	AccessTargets    []AccessTargetUpsertV2         `json:"access_targets"`
-	ApproverPolicy   OptNilApproverPolicyUpsertV2   `json:"approver_policy"`
-	EscalationPolicy OptNilEscalationPolicyUpsertV2 `json:"escalation_policy"`
+	Trigger string `json:"trigger"`
+	// The type of identity that can request access through this flow. HUMAN (default) = reachable only
+	// by human requestors; AGENT = reachable only by AI agents acting on behalf of a user. Allowed
+	// values: HUMAN, AGENT.
+	RequestorIdentityType string                         `json:"requestor_identity_type"`
+	Requestors            RequestorsUpsertV2             `json:"requestors"`
+	RequestFor            OptNilRequestForUpsertV2       `json:"request_for"`
+	AccessTargets         []AccessTargetUpsertV2         `json:"access_targets"`
+	ApproverPolicy        OptNilApproverPolicyUpsertV2   `json:"approver_policy"`
+	EscalationPolicy      OptNilEscalationPolicyUpsertV2 `json:"escalation_policy"`
 	// Duration of access granted to the user, in minutes.
 	GrantDurationInMin OptNilInt32                 `json:"grant_duration_in_min"`
 	Timeframe          OptNilAccessFlowTimeframeV2 `json:"timeframe"`
@@ -272,6 +276,11 @@ func (s *AccessFlowUpsertV2) GetActive() bool {
 // GetTrigger returns the value of Trigger.
 func (s *AccessFlowUpsertV2) GetTrigger() string {
 	return s.Trigger
+}
+
+// GetRequestorIdentityType returns the value of RequestorIdentityType.
+func (s *AccessFlowUpsertV2) GetRequestorIdentityType() string {
+	return s.RequestorIdentityType
 }
 
 // GetRequestors returns the value of Requestors.
@@ -339,6 +348,11 @@ func (s *AccessFlowUpsertV2) SetTrigger(val string) {
 	s.Trigger = val
 }
 
+// SetRequestorIdentityType sets the value of RequestorIdentityType.
+func (s *AccessFlowUpsertV2) SetRequestorIdentityType(val string) {
+	s.RequestorIdentityType = val
+}
+
 // SetRequestors sets the value of Requestors.
 func (s *AccessFlowUpsertV2) SetRequestors(val RequestorsUpsertV2) {
 	s.Requestors = val
@@ -395,12 +409,16 @@ type AccessFlowV2 struct {
 	// Activity state of the access flow (active or inactive).
 	Active bool `json:"active"`
 	// Event or action that triggers the access flow.
-	Trigger          string                   `json:"trigger"`
-	Requestors       RequestorsV2             `json:"requestors"`
-	RequestFor       OptNilRequestForV2       `json:"request_for"`
-	AccessTargets    []AccessTargetV2         `json:"access_targets"`
-	ApproverPolicy   OptNilApproverPolicyV2   `json:"approver_policy"`
-	EscalationPolicy OptNilEscalationPolicyV2 `json:"escalation_policy"`
+	Trigger string `json:"trigger"`
+	// The type of identity that can request access through this flow. HUMAN = reachable only by human
+	// requestors; AGENT = reachable only by AI agents acting on behalf of a user. Allowed values: HUMAN,
+	// AGENT.
+	RequestorIdentityType string                   `json:"requestor_identity_type"`
+	Requestors            RequestorsV2             `json:"requestors"`
+	RequestFor            OptNilRequestForV2       `json:"request_for"`
+	AccessTargets         []AccessTargetV2         `json:"access_targets"`
+	ApproverPolicy        OptNilApproverPolicyV2   `json:"approver_policy"`
+	EscalationPolicy      OptNilEscalationPolicyV2 `json:"escalation_policy"`
 	// Duration of access granted to the user, in minutes.
 	GrantDurationInMin OptNilInt32                 `json:"grant_duration_in_min"`
 	Timeframe          OptNilAccessFlowTimeframeV2 `json:"timeframe"`
@@ -435,6 +453,11 @@ func (s *AccessFlowV2) GetActive() bool {
 // GetTrigger returns the value of Trigger.
 func (s *AccessFlowV2) GetTrigger() string {
 	return s.Trigger
+}
+
+// GetRequestorIdentityType returns the value of RequestorIdentityType.
+func (s *AccessFlowV2) GetRequestorIdentityType() string {
+	return s.RequestorIdentityType
 }
 
 // GetRequestors returns the value of Requestors.
@@ -515,6 +538,11 @@ func (s *AccessFlowV2) SetActive(val bool) {
 // SetTrigger sets the value of Trigger.
 func (s *AccessFlowV2) SetTrigger(val string) {
 	s.Trigger = val
+}
+
+// SetRequestorIdentityType sets the value of RequestorIdentityType.
+func (s *AccessFlowV2) SetRequestorIdentityType(val string) {
+	s.RequestorIdentityType = val
 }
 
 // SetRequestors sets the value of Requestors.
@@ -1093,7 +1121,9 @@ type BundleV2 struct {
 	// Unique identifier of the bundle.
 	ID string `json:"id"`
 	// Display name of the bundle.
-	Name          string                       `json:"name"`
+	Name string `json:"name"`
+	// Description of the bundle.
+	Description   OptNilString                 `json:"description"`
 	AccessTargets []AccessBundleAccessTargetV2 `json:"access_targets"`
 	// Space this bundle belongs to.
 	Space OptNilSpaceReferenceV1 `json:"space"`
@@ -1111,6 +1141,11 @@ func (s *BundleV2) GetID() string {
 // GetName returns the value of Name.
 func (s *BundleV2) GetName() string {
 	return s.Name
+}
+
+// GetDescription returns the value of Description.
+func (s *BundleV2) GetDescription() OptNilString {
+	return s.Description
 }
 
 // GetAccessTargets returns the value of AccessTargets.
@@ -1141,6 +1176,11 @@ func (s *BundleV2) SetID(val string) {
 // SetName sets the value of Name.
 func (s *BundleV2) SetName(val string) {
 	s.Name = val
+}
+
+// SetDescription sets the value of Description.
+func (s *BundleV2) SetDescription(val OptNilString) {
+	s.Description = val
 }
 
 // SetAccessTargets sets the value of AccessTargets.
@@ -6133,13 +6173,20 @@ func (s *UpsertAccessScopeV1) SetQuery(val string) {
 // Ref: #/components/schemas/UpsertBundleV2
 type UpsertBundleV2 struct {
 	// Display name of the bundle.
-	Name          string                             `json:"name"`
+	Name string `json:"name"`
+	// Description of the bundle.
+	Description   OptNilString                       `json:"description"`
 	AccessTargets []AccessBundleAccessTargetUpsertV2 `json:"access_targets"`
 }
 
 // GetName returns the value of Name.
 func (s *UpsertBundleV2) GetName() string {
 	return s.Name
+}
+
+// GetDescription returns the value of Description.
+func (s *UpsertBundleV2) GetDescription() OptNilString {
+	return s.Description
 }
 
 // GetAccessTargets returns the value of AccessTargets.
@@ -6150,6 +6197,11 @@ func (s *UpsertBundleV2) GetAccessTargets() []AccessBundleAccessTargetUpsertV2 {
 // SetName sets the value of Name.
 func (s *UpsertBundleV2) SetName(val string) {
 	s.Name = val
+}
+
+// SetDescription sets the value of Description.
+func (s *UpsertBundleV2) SetDescription(val OptNilString) {
+	s.Description = val
 }
 
 // SetAccessTargets sets the value of AccessTargets.

@@ -13,10 +13,11 @@ import (
 
 func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	model := AccessFlowV2Model{
-		Name:               types.StringValue("postgresql_prod"),
-		Active:             types.BoolValue(true),
-		Trigger:            types.StringValue("SELF_SERVE"),
-		GrantDurationInMin: types.Int32Null(),
+		Name:                  types.StringValue("postgresql_prod"),
+		Active:                types.BoolValue(true),
+		Trigger:               types.StringValue("SELF_SERVE"),
+		RequestorIdentityType: types.StringValue("AGENT"),
+		GrantDurationInMin:    types.Int32Null(),
 		Timeframe: &AccessFlowTimeframeModel{
 			StartTime:  types.StringValue("10:00"),
 			EndTime:    types.StringValue("23:59"),
@@ -124,6 +125,7 @@ func TestAccessFlowV2ModelToUpsertRequest(t *testing.T) {
 	assert.Equal(t, "postgresql_prod", result.Name)
 	assert.True(t, result.Active)
 	assert.Equal(t, "SELF_SERVE", result.Trigger)
+	assert.Equal(t, "AGENT", result.RequestorIdentityType)
 	assert.False(t, result.GrantDurationInMin.IsSet())
 
 	require.True(t, result.Timeframe.IsSet())
