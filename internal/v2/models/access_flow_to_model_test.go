@@ -308,6 +308,8 @@ func TestAccessFlowResponseToModelMinimalFields(t *testing.T) {
 	assert.Equal(t, "minimal_flow", model.Name.ValueString())
 	assert.False(t, model.Active.ValueBool())
 	assert.Equal(t, "AUTOMATIC", model.Trigger.ValueString())
+	// requestor_identity_type omitted by the server is normalized to the schema default.
+	assert.Equal(t, "HUMAN", model.RequestorIdentityType.ValueString())
 	assert.True(t, model.GrantDurationInMin.IsNull())
 	assert.Nil(t, model.Timeframe)
 	assert.Nil(t, model.ApproverPolicy)

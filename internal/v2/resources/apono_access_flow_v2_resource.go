@@ -136,7 +136,7 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 				Description: "The type of identity that can request access through this flow. HUMAN (default) = reachable only by human requestors; AGENT = reachable only by AI agents acting on behalf of a user. Allowed values: HUMAN, AGENT.",
 				Optional:    true,
 				Computed:    true,
-				Default:     stringdefault.StaticString("HUMAN"),
+				Default:     stringdefault.StaticString(common.DefaultRequestorIdentityType),
 				Validators: []validator.String{
 					stringvalidator.OneOf("HUMAN", "AGENT"),
 				},

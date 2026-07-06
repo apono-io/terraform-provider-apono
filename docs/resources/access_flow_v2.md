@@ -77,7 +77,7 @@ resource "apono_access_flow_v2" "aws_auto_grant_flow" {
 
 ### Agent Access Flow — Requestor Identity Type
 
-Restrict a flow to AI agents acting on behalf of a user by setting `requestor_identity_type = "AGENT"`. Omit the attribute (or set it to `"HUMAN"`) for the default human-requestor behavior. Agent flows are request-driven and do not support the `AUTOMATIC` trigger.
+Restrict a flow to AI agents acting on behalf of a user by setting `requestor_identity_type = "AGENT"`. Omit the attribute (or set it to `"HUMAN"`) for the default human-requestor behavior. Agent flows are request-driven; Apono rejects the combination of `requestor_identity_type = "AGENT"` with `trigger = "AUTOMATIC"` and returns an error.
 
 ```terraform
 resource "apono_access_flow_v2" "agent_prod_db" {
