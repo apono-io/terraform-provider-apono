@@ -19,6 +19,12 @@ description: |-
 
 {{ tffile "examples/resources/apono_access_flow_v2/automatic-approval.tf" }}
 
+### Agent Access Flow — Requestor Identity Type
+
+Restrict a flow to AI agents acting on behalf of a user by setting `requestor_identity_type = "AGENT"`. Omit the attribute (or set it to `"HUMAN"`) for the default human-requestor behavior. Agent flows are request-driven and do not support the `AUTOMATIC` trigger.
+
+{{ tffile "examples/resources/apono_access_flow_v2/agent-identity.tf" }}
+
 ### Auto-approved Access Flow for on-call OpsGenie responders
 
 Auto-approved Access Flow for on-call OpsGenie responders to request access on behalf of the R&D group.

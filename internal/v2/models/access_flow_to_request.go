@@ -9,9 +9,10 @@ import (
 
 func AccessFlowModelToUpsertRequest(ctx context.Context, model AccessFlowV2Model) (*client.AccessFlowUpsertV2, error) {
 	upsert := client.AccessFlowUpsertV2{
-		Name:    model.Name.ValueString(),
-		Active:  model.Active.ValueBool(),
-		Trigger: model.Trigger.ValueString(),
+		Name:                  model.Name.ValueString(),
+		Active:                model.Active.ValueBool(),
+		Trigger:               model.Trigger.ValueString(),
+		RequestorIdentityType: model.RequestorIdentityType.ValueString(),
 	}
 
 	if !model.Description.IsNull() {

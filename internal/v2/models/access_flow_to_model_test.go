@@ -11,10 +11,11 @@ import (
 
 func TestAccessFlowResponseToModel(t *testing.T) {
 	response := client.AccessFlowV2{
-		ID:      "flow-123",
-		Name:    "postgresql_prod",
-		Active:  true,
-		Trigger: "SELF_SERVE",
+		ID:                    "flow-123",
+		Name:                  "postgresql_prod",
+		Active:                true,
+		Trigger:               "SELF_SERVE",
+		RequestorIdentityType: "HUMAN",
 		Settings: client.AccessFlowSettingsV2{
 			JustificationRequired:         true,
 			RequireApproverReason:         false,
@@ -144,6 +145,7 @@ func TestAccessFlowResponseToModel(t *testing.T) {
 	assert.Equal(t, "postgresql_prod", model.Name.ValueString())
 	assert.True(t, model.Active.ValueBool())
 	assert.Equal(t, "SELF_SERVE", model.Trigger.ValueString())
+	assert.Equal(t, "HUMAN", model.RequestorIdentityType.ValueString())
 	assert.Equal(t, int32(60), model.GrantDurationInMin.ValueInt32())
 
 	require.NotNil(t, model.Timeframe)

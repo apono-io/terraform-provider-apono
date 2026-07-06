@@ -9,6 +9,7 @@ import (
 	"github.com/apono-io/terraform-provider-apono/internal/v2/models"
 	"github.com/apono-io/terraform-provider-apono/internal/v2/schemas"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int32validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -130,6 +131,15 @@ func (r *AponoAccessFlowV2Resource) Schema(_ context.Context, _ resource.SchemaR
 			"trigger": schema.StringAttribute{
 				Description: `The trigger type for the access flow. Possible values: SELF_SERVE, AUTOMATIC.`,
 				Required:    true,
+			},
+			"requestor_identity_type": schema.StringAttribute{
+				Description: "The type of identity that can request access through this flow. HUMAN (default) = reachable only by human requestors; AGENT = reachable only by AI agents acting on behalf of a user. Allowed values: HUMAN, AGENT.",
+				Optional:    true,
+				Computed:    true,
+				Default:     stringdefault.StaticString("HUMAN"),
+				Validators: []validator.String{
+					stringvalidator.OneOf("HUMAN", "AGENT"),
+				},
 			},
 			"grant_duration_in_min": schema.Int32Attribute{
 				Description: "How long access is granted, in minutes. If not specified, the grant duration defaults to indefinite.",

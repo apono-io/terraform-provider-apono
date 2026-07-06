@@ -12,10 +12,11 @@ import (
 
 func AccessFlowResponseToModel(ctx context.Context, response client.AccessFlowV2) (*AccessFlowV2Model, error) {
 	model := AccessFlowV2Model{
-		ID:      types.StringValue(response.ID),
-		Name:    types.StringValue(response.Name),
-		Active:  types.BoolValue(response.Active),
-		Trigger: types.StringValue(response.Trigger),
+		ID:                    types.StringValue(response.ID),
+		Name:                  types.StringValue(response.Name),
+		Active:                types.BoolValue(response.Active),
+		Trigger:               types.StringValue(response.Trigger),
+		RequestorIdentityType: types.StringValue(response.RequestorIdentityType),
 	}
 
 	if val, ok := response.Description.Get(); ok {

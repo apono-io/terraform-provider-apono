@@ -1169,6 +1169,15 @@
             }
           },
           {
+            "name": "requestor_identity_type",
+            "in": "query",
+            "description": "Filter access flows by the requestor identity type they serve. Allowed values: HUMAN, AGENT.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "space_references",
             "in": "query",
             "description": "List of space IDs or names to filter results by. If omitted, returns objects from all spaces. To return only objects that belong to no space, include the special value \"null\" in the list",
@@ -4509,6 +4518,7 @@
           "name",
           "active",
           "trigger",
+          "requestor_identity_type",
           "requestors",
           "access_targets",
           "settings",
@@ -4531,6 +4541,10 @@
           },
           "trigger": {
             "description": "Event or action that triggers the access flow",
+            "type": "string"
+          },
+          "requestor_identity_type": {
+            "description": "The type of identity that can request access through this flow. HUMAN (default) = reachable only by human requestors; AGENT = reachable only by AI agents acting on behalf of a user. Allowed values: HUMAN, AGENT.",
             "type": "string"
           },
           "requestors": {
@@ -4667,6 +4681,7 @@
           "name",
           "active",
           "trigger",
+          "requestor_identity_type",
           "requestors",
           "access_targets",
           "settings",
@@ -4693,6 +4708,10 @@
           },
           "trigger": {
             "description": "Event or action that triggers the access flow",
+            "type": "string"
+          },
+          "requestor_identity_type": {
+            "description": "The type of identity that can request access through this flow. HUMAN = reachable only by human requestors; AGENT = reachable only by AI agents acting on behalf of a user. Allowed values: HUMAN, AGENT.",
             "type": "string"
           },
           "requestors": {
@@ -5695,6 +5714,11 @@
           "name": {
             "description": "Display name of the bundle",
             "type": "string"
+          },
+          "description": {
+            "description": "Description of the bundle",
+            "type": "string",
+            "nullable": true
           },
           "access_targets": {
             "type": "array",
@@ -8996,6 +9020,11 @@
           "name": {
             "description": "Display name of the bundle",
             "type": "string"
+          },
+          "description": {
+            "description": "Description of the bundle",
+            "type": "string",
+            "nullable": true
           },
           "access_targets": {
             "type": "array",

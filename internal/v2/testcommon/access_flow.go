@@ -6,10 +6,11 @@ import (
 
 func GenerateAccessFlowResponse() *client.AccessFlowV2 {
 	response := client.AccessFlowV2{
-		ID:      "flow-123",
-		Name:    "postgresql_prod",
-		Active:  true,
-		Trigger: "SELF_SERVE",
+		ID:                    "flow-123",
+		Name:                  "postgresql_prod",
+		Active:                true,
+		Trigger:               "SELF_SERVE",
+		RequestorIdentityType: "HUMAN",
 		Settings: client.AccessFlowSettingsV2{
 			JustificationRequired:         true,
 			RequireApproverReason:         false,
