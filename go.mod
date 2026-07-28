@@ -14,7 +14,7 @@ require (
 	github.com/hashicorp/terraform-plugin-log v0.10.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.40.1
 	github.com/hashicorp/terraform-plugin-testing v1.14.0
-	github.com/jarcoal/httpmock v1.4.1
+	github.com/jarcoal/httpmock v1.4.2
 	github.com/ogen-go/ogen v1.20.3
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/exp v0.0.0-20260508232706-74f9aab9d74a
